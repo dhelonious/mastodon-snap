@@ -1,0 +1,7 @@
+#!/bin/bash -e
+
+. "$SNAP/postgres.env"
+
+check_root
+
+exec pg_dumpall -h "$PG_SOCK_DIR" -U postgres "$@"

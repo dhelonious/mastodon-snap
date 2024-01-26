@@ -1,0 +1,31 @@
+#!/bin/bash -e
+
+. "$SNAP/mastodon.env"
+. "$SNAP/postgres.env"
+
+check_root
+check_setup
+
+export_dir="$BACKUP_DIR/$(date +'%Y%m%d-%H%M%S')"
+mkdir -p "$export_dir"
+echo Export backup to $export_dir
+
+echo Export version
+cp "$SNAP_COMMON/version" "$export_dir/"
+
+echo Export settings
+for setting in $SETTINGS; do
+    setting_key=${setting%,*}
+    echo "$setting_key=$(snapctl get $setting_key)" >> "$export_dir/settings"
+done
+
+echo Export configuration
+cp "$SNAP_COMMON/mastodon.conf" "$export_dir/"
+
+echo Export database
+$SNAP/bin/pg_dumpall.wrapper -f "$export_dir/database.sql"
+
+if ! [ -z "$(ls -A $MEDIA_DIR)" ]; then
+    echo Export media
+    tar -czf "$export_dir/media.tar.gz" -C "$(dirname $MEDIA_DIR)" --exclude=*/cache "$(basename $MEDIA_DIR)"
+fi

@@ -1,0 +1,10 @@
+#!/bin/bash -e
+
+. "$SNAP/redis.env"
+
+if ! $(config_exists redis redis.conf); then
+    echo "Redis is not yet configured"
+    exit 0
+fi
+
+redis-server "$SNAP_DATA/redis/config/redis.conf"

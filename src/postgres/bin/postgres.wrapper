@@ -1,0 +1,16 @@
+#!/bin/bash -e
+
+. "$SNAP/postgres.env"
+
+if ! $(config_exists postgres postgresql.conf); then
+    echo "Postgres is not yet configured"
+    exit 0
+fi
+
+mkdir -p "$PG_SOCK_DIR"
+
+postgres \
+    -D "$PG_DATA_DIR" \
+    -k "$PG_SOCK_DIR" \
+    -h "" \
+    2>&1 | tee -a "$PG_LOG_DIR/postgres.log"

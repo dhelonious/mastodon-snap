@@ -1,0 +1,70 @@
+#!/bin/bash -e
+
+. "$SNAP/snap.env"
+set_default_settings
+
+export CURRENT_SNAP_VERSION="$(get_snap_version_file)"
+
+echo Update configs
+
+# Postgres
+
+. "$SNAP/postgres.env"
+
+echo Update postgres config
+copy_postgres_config
+
+. "$SNAP/postgres.env"
+if [ "$PG_VERSION" != "$CURRENT_PG_VERSION" ]; then
+    if [ -f "$SNAP_COMMON/database.sql" ]; then
+        echo Update postgres data
+        snapctl stop "$SNAP_NAME.postgres"
+        run_as_daemon_user rm -rf "$SNAP_DATA/postgres/data"
+        run_as_daemon_user mkdir "$SNAP_DATA/postgres/data"
+        setup_postgres_database
+        postgres_waitready
+        psql.wrapper -f "$SNAP_COMMON/database.sql" template1 > /dev/null
+        rm -f "$SNAP_COMMON/database.sql"
+    fi
+fi
+
+# Redis
+
+echo Update redis config
+copy_config redis redis.conf
+
+# Mastodon
+
+. "$SNAP/mastodon.env"
+if [ "$SNAP_VERSION" != "$CURRENT_SNAP_VERSION" ]; then
+    if $(mastodon_config_exists); then
+        load_mastodon_env
+
+        echo Update mastodon
+        update_mastodon_files
+        link_mastodon_config
+
+        echo Update mastodon database
+        snapctl start "$SNAP_NAME.postgres"
+        postgres_waitready
+        mastodon_rails db:prepare
+
+        echo Remove old logs and tempfiles
+        mastodon_rails log:clear tmp:clear
+    fi
+fi
+
+# Nginx
+
+. "$SNAP/nginx.env"
+
+echo Update nginx configs
+copy_nginx_configs
+
+# Logrotate
+
+echo Update logrotate config
+copy_config logrotate logrotate.conf
+
+update_bundle_path
+update_snap_version_file

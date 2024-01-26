@@ -1,0 +1,837 @@
+name: mastodon-server
+summary: Unofficial snap for Mastodon (decentralized social media)
+description: |
+  Mastodon is a free, open-source social network server based on ActivityPub
+  where users can follow friends and discover new ones. On Mastodon, users can
+  publish anything they want: links, pictures, text, video. All Mastodon servers
+  are interoperable as a federated network (users on one server can seamlessly
+  communicate with users from another one, including non-Mastodon software that
+  implements ActivityPub!)
+
+base: core20
+version: 4.2.4snap1
+grade: stable
+confinement: strict
+
+architectures:
+  - build-on: amd64
+  - build-on: arm64
+
+# TODO: From snapd 2.61 onwards, snap_daemon is being deprecated and replaced with _daemon_ (with underscores), which now possesses a UID of 584792.
+system-usernames:
+  snap_daemon:
+    scope: shared
+
+environment:
+  PATH: $SNAP/bin:$SNAP/usr/bin:$PATH
+  LD_LIBRARY_PATH: $SNAP/jemalloc/lib:$SNAP/lib:$SNAP/lib/x86_64-linux-gnu:$SNAP/lib/arm64-linux-gnu:$SNAP/usr/lib:$SNAP/usr/lib/x86_64-linux-gnu:$SNAP/usr/lib/arm64-linux-gnu
+  LD_PRELOAD: libjemalloc.so
+  RUBYLIB: $SNAP/ruby/lib/ruby/3.2.0:$SNAP/ruby/lib/ruby/3.2.0/$SNAP_ARCH
+  RAILS_ENV: production
+  NODE_ENV: production
+  RAILS_SERVE_STATIC_FILES: "true"
+  MAGICK_CONFIGURE_PATH: $SNAP/mastodon/config/imagemagick:$SNAP/imagemagick/config
+  MAGIC: $SNAP/usr/lib/file/magic.mgc
+  PG_VERSION: 16
+
+plugs:
+  resolv-conf:
+    interface: system-files
+    read:
+      - /etc/resolv.conf
+
+apps:
+  logrotate:
+    command: bin/logrotate.wrapper
+    daemon: simple
+    timer: 00:00
+
+  postgres:
+    command: bin/postgres.wrapper_as_daemon_user
+    daemon: simple
+    plugs:
+      - network
+      - network-bind
+      - removable-media
+
+  psql:
+    command: bin/psql.wrapper
+
+  postgres-dump:
+    command: bin/pg_dumpall.wrapper
+
+  export:
+    command: bin/export
+    plugs:
+      - removable-media
+
+  restore:
+    command: bin/restore
+    completer: restore.bash-completer
+    plugs:
+      - network
+      - removable-media
+      - resolv-conf
+
+  backup:
+    command: bin/backup
+    daemon: simple
+    timer: 00:00
+    plugs:
+      - removable-media
+
+  nginx:
+    command: bin/nginx.wrapper
+    stop-command: bin/nginx.wrapper -s quit
+    reload-command: bin/nginx.wrapper -s reload
+    daemon: simple
+    environment:
+      LD_PRELOAD: $SNAP/wraplib.so
+    plugs:
+      - network
+      - network-bind
+      - removable-media
+
+  redis:
+    command: bin/redis.wrapper
+    daemon: simple
+    plugs:
+      - network
+      - network-bind
+      - removable-media
+
+  acme:
+    command: bin/acme.sh-renew.wrapper
+    daemon: simple
+    timer: 03:00
+
+  backend:
+    command: bin/mastodon-backend
+    daemon: simple
+    plugs:
+      - network
+      - network-bind
+      - removable-media
+    environment:
+      LD_LIBRARY_PATH: $LD_LIBRARY_PATH:$SNAP/usr/lib/x86_64-linux-gnu/pulseaudio:$SNAP/usr/lib/arm64-linux-gnu/pulseaudio
+
+  sidekiq:
+    command: bin/mastodon-sidekiq
+    daemon: simple
+    environment:
+      DB_PORT: 5432
+      DB_POOL: 25
+      MALLOC_ARENA_MAX: 2
+      LD_LIBRARY_PATH: $LD_LIBRARY_PATH:$SNAP/usr/lib/x86_64-linux-gnu/pulseaudio:$SNAP/usr/lib/arm64-linux-gnu/pulseaudio
+    plugs:
+      - network
+      - network-bind
+      - removable-media
+
+  streaming:
+    command: bin/mastodon-streaming
+    daemon: simple
+    plugs:
+      - network
+      - network-bind
+      - removable-media
+
+  setup:
+    command: bin/setup
+    plugs:
+      - removable-media
+
+  tootctl:
+    command: bin/tootctl.wrapper
+    plugs:
+      - network
+      - removable-media
+      - resolv-conf
+
+  console:
+    command: bin/rails-console.wrapper
+
+  generate-secret:
+    command: bin/rake-secret.wrapper
+
+  generate-vapid-key:
+    command: bin/rake-generate-vapid-key.wrapper
+
+  get-certificate:
+    command: bin/get-certificate
+    environment:
+      OPENSSL_CONF: /dev/null
+    plugs:
+      - network
+      - network-bind
+
+  cleanup:
+    command: bin/cleanup
+    daemon: simple
+    timer: 00:00
+    plugs:
+      - removable-media
+
+parts:
+  base:
+    plugin: dump
+    source: src/snap/
+
+  envsubst:
+    plugin: nil
+    stage-packages:
+      - gettext-base
+    organize:
+      usr/bin/envsubst: bin/
+    stage:
+      - bin/envsubst
+
+  rsync:
+    plugin: nil
+    stage-packages:
+      - rsync
+    organize:
+      usr/bin/rsync: bin/
+    stage:
+      - bin/rsync
+
+  setpriv:
+    plugin: nil
+    stage-packages:
+      - util-linux
+    organize:
+      usr/bin/setpriv: bin/
+    stage:
+      - bin/setpriv
+
+  wraplib:
+    after:
+      - setpriv
+    plugin: make
+    source: src/wraplib/
+
+  ipv6loganon:
+    plugin: nil
+    stage-packages:
+      - ipv6calc
+      - libgeoip1
+    organize:
+      usr/bin/ipv6loganon: bin/
+      usr/lib/*/libGeoIP.so.*: lib/
+    stage:
+      - bin/ipv6loganon
+      - lib/libGeoIP.so.*
+
+  logrotate:
+    after:
+      - logrotate-customizations
+      - ipv6loganon
+    # NOTE: https://github.com/logrotate/logrotate/releases/latest
+    source: https://github.com/logrotate/logrotate/releases/download/3.21.0/logrotate-3.21.0.tar.gz
+    source-checksum: sha256/1680947a9431de1aaa629fedde358696ff49a808ae903feecf996682949e3cff
+    plugin: autotools
+    build-packages:
+      - autoconf
+      - automake
+      - libpopt-dev
+      - libtool
+      - make
+      - xz-utils
+    override-build: |
+      autoreconf -fiv
+      ./configure
+      make -j"$(nproc)"
+      make install DESTDIR=$SNAPCRAFT_PART_INSTALL/logrotate
+      cp $SNAPCRAFT_PART_SRC/COPYING $SNAPCRAFT_PART_INSTALL/logrotate/
+    organize:
+      logrotate/usr/local/sbin/logrotate: logrotate/bin/logrotate
+    stage:
+      - logrotate/COPYING
+      - logrotate/bin/logrotate
+
+  logrotate-customizations:
+    plugin: dump
+    source: src/logrotate/
+    organize:
+      config/*: config/logrotate/
+
+  openssl1:
+    # NOTE: https://github.com/openssl/openssl/releases
+    source: https://github.com/openssl/openssl/releases/download/OpenSSL_1_1_1w/openssl-1.1.1w.tar.gz
+    source-checksum: sha256/cf3098950cb4d853ad95c0841f1f9c6d3dc102dccfcacd521d93925208b76ac8
+    plugin: make
+    override-build: |
+      ./config --prefix=$SNAPCRAFT_PART_INSTALL/openssl1 --openssldir=/openssl1 shared
+      make -j"$(nproc)"
+      make install_sw
+      cp $SNAPCRAFT_PART_SRC/LICENSE $SNAPCRAFT_PART_INSTALL/openssl1/
+    stage:
+      - -openssl1/share/doc
+      - -openssl1/share/man
+
+  curl:
+    after:
+      - openssl1
+    # NOTE: https://github.com/curl/curl/releases/latest
+    source: https://curl.se/download/curl-8.4.0.tar.gz
+    source-checksum: sha256/816e41809c043ff285e8c0f06a75a1fa250211bbfb2dc0a037eeef39f1a9e427
+    plugin: autotools
+    build-environment:
+      - PKG_CONFIG_PATH: $SNAPCRAFT_STAGE/openssl1/lib/pkgconfig
+    override-build: |
+      ./configure --prefix=$SNAPCRAFT_PART_INSTALL/curl --with-openssl
+      make -j"$(nproc)"
+      make install
+      cp $SNAPCRAFT_PART_SRC/COPYING $SNAPCRAFT_PART_INSTALL/curl/
+    stage:
+      - -curl/share/doc
+      - -curl/share/man
+      - -curl/share/aclocal
+
+  postgres:
+    after:
+      - postgres-customizations
+      - setpriv
+    # NOTE: https://www.postgresql.org/ftp/latest/
+    source: https://ftp.postgresql.org/pub/source/v16.1/postgresql-16.1.tar.gz
+    source-checksum: sha256/bf0564725613f7c57f1c3ebf5c909b3ec58b9cfb3d81b4bb1209d88767065a87
+    plugin: autotools
+    build-packages:
+      - gcc
+      - libreadline-dev
+      - zlib1g-dev
+      - libpq-dev
+    build-environment:
+      - PATH: $SNAPCRAFT_STAGE/postgres/bin:$PATH
+      - LD_LIBRARY_PATH: $SNAPCRAFT_STAGE/postgres/lib:$LD_LIBRARY_PATH
+    override-build: |
+      ./configure --prefix=$SNAPCRAFT_PART_INSTALL/postgres
+      make -j"$(nproc)"
+      make install
+      cp $SNAPCRAFT_PART_SRC/COPYRIGHT $SNAPCRAFT_PART_INSTALL/postgres/
+      echo Build pg_stat_statements extension
+      cd contrib/pg_stat_statements
+      make -j"$(nproc)"
+      make install
+      mkdir -p "$SNAPCRAFT_PART_INSTALL/postgres/share/extension"
+      sh ../../config/install-sh -c -m 755 pg_stat_statements.so "$SNAPCRAFT_PART_INSTALL/postgres/lib/pg_stat_statements.so"
+      sh ../../config/install-sh -c -m 644 pg_stat_statements.control "$SNAPCRAFT_PART_INSTALL/postgres/share/extension/"
+      sh ../../config/install-sh -c -m 644 \
+        pg_stat_statements--1.4.sql \
+        pg_stat_statements--1.7--1.8.sql \
+        pg_stat_statements--1.6--1.7.sql \
+        pg_stat_statements--1.5--1.6.sql \
+        pg_stat_statements--1.4--1.5.sql \
+        pg_stat_statements--1.3--1.4.sql \
+        pg_stat_statements--1.2--1.3.sql \
+        pg_stat_statements--1.1--1.2.sql \
+        pg_stat_statements--1.0--1.1.sql \
+        "$SNAPCRAFT_PART_INSTALL/postgres/share/extension/"
+    stage-packages:
+      - libasn1-8-heimdal
+      - libgssapi3-heimdal
+      - libhcrypto4-heimdal
+      - libheimbase1-heimdal
+      - libheimntlm0-heimdal
+      - libhx509-5-heimdal
+      - libkrb5-26-heimdal
+      - libldap-2.4-2
+      - libroken18-heimdal
+      - libsasl2-2
+      - libwind0-heimdal
+    stage:
+      - -postgres/share/doc
+      - -postgres/share/man
+      - -usr/share/lintian
+
+  postgres-customizations:
+    plugin: dump
+    source: src/postgres/
+    organize:
+      config/*: config/postgres/
+
+  nginx:
+    after:
+      - nginx-customizations
+    # NOTE: https://nginx.org/en/download.html (mainline version)
+    source: https://nginx.org/download/nginx-1.25.3.tar.gz
+    source-checksum: sha256/64c5b975ca287939e828303fa857d22f142b251f17808dfe41733512d9cded86
+    plugin: autotools
+    build-environment:
+      - PATH: $SNAPCRAFT_STAGE/nginx/bin:$PATH
+      - LD_LIBRARY_PATH: $SNAPCRAFT_STAGE/nginx/lib:$LD_LIBRARY_PATH
+    build-packages:
+      - build-essential
+      - libpcre3-dev
+      - libssl-dev
+      - zlib1g-dev
+    override-build: |
+      ./configure \
+        --prefix=$SNAPCRAFT_PART_INSTALL/nginx \
+        --user=root \
+        --group=root \
+        --with-stream \
+        --with-stream_ssl_module \
+        --with-http_ssl_module \
+        --with-http_v2_module
+      make -j"$(nproc)"
+      make install
+      cp $SNAPCRAFT_PART_SRC/LICENSE $SNAPCRAFT_PART_INSTALL/nginx/
+    stage-packages:
+      - zlib1g
+    organize:
+      nginx/sbin/nginx: nginx/bin/nginx
+    stage:
+      - -nginx/share/doc
+      - -nginx/share/man
+      - -nginx/html
+      - -nginx/logs
+
+  nginx-customizations:
+    plugin: dump
+    source: src/nginx/
+    organize:
+      config/*: config/nginx/
+
+  redis:
+    after:
+      - redis-customizations
+    # NOTE: https://github.com/redis/redis/releases/latest
+    source: https://download.redis.io/releases/redis-7.2.3.tar.gz
+    source-checksum: sha256/3e2b196d6eb4ddb9e743088bfc2915ccbb42d40f5a8a3edd8cb69c716ec34be7
+    plugin: make
+    override-build: |
+      make -j"$(nproc)"
+      make install PREFIX=$SNAPCRAFT_PART_INSTALL/redis
+      cp $SNAPCRAFT_PART_SRC/COPYING $SNAPCRAFT_PART_INSTALL/redis/
+    stage:
+      - -redis/share/doc
+      - -redis/share/man
+
+  redis-customizations:
+    plugin: dump
+    source: src/redis/
+    organize:
+      config/*: config/redis/
+
+  acme:
+    after:
+      - acme-customizations
+      - curl
+      - openssl1
+    # NOTE: https://github.com/acmesh-official/acme.sh/releases/latest
+    source: https://github.com/acmesh-official/acme.sh/archive/refs/tags/3.0.7.tar.gz
+    source-checksum: sha256/abd446d6bd45d0b44dca1dcbd931348797a3f82d1ed6fb171472eaf851a8d849
+    plugin: dump
+    organize:
+      "*": acme/
+    stage:
+      - -acme/Dockerfile
+      - -acme/README.md
+
+  acme-customizations:
+    after:
+      - nginx-customizations
+    plugin: dump
+    source: src/acme/
+
+  # Snapcraft pull is not used because advanced grammar is not supported in source-checksum.
+  node:
+    after:
+      - curl
+    plugin: nil
+    build-environment:
+      - PATH: $SNAPCRAFT_STAGE/node/bin:$SNAPCRAFT_STAGE/curl/bin:$PATH
+      - LD_LIBRARY_PATH: $SNAPCRAFT_STAGE/node/lib:$SNAPCRAFT_STAGE/curl/lib:$LD_LIBRARY_PATH
+    # NOTE: source see `Vagrantfile`; see [#25787](https://github.com/mastodon/mastodon/discussions/25787#discussioncomment-6382898
+    override-build: |
+      snapcraftctl pull
+      case "$SNAP_ARCH" in
+      "amd64")
+        source="https://nodejs.org/download/release/latest-v16.x/node-v16.20.2-linux-x64.tar.gz"
+        checksum="c9193e6c414891694759febe846f4f023bf48410a6924a8b1520c46565859665"
+        arch="x64"
+        ;;
+      "arm64")
+        source="https://nodejs.org/download/release/latest-v16.x/node-v16.20.2-linux-arm64.tar.gz"
+        checksum="b6945fcc9ad220386bb814bfae7137189fd17297f2959a744105e1bee006035a"
+        arch="arm64"
+        ;;
+      *)
+        echo "Unsupported architecture $SNAP_ARCH"
+        exit 1
+        ;;
+      esac
+      echo Download source
+      curl $source --output $SNAPCRAFT_PART_SRC/source.tar.gz
+      source_checksum=$(sha256sum $SNAPCRAFT_PART_SRC/source.tar.gz | cut -d " " -f 1)
+      if [ "$source_checksum" != "$checksum" ]; then
+        echo "$(tput setaf 1)Expected the digest for source to be $checksum, but it was $source_checksum$(tput sgr0)"
+        exit 1
+      fi
+      echo Extract source
+      tar -xzf $SNAPCRAFT_PART_SRC/source.tar.gz --directory $SNAPCRAFT_PART_INSTALL --strip-components=1
+    organize:
+      "*": node/
+    stage:
+      - -node/share/doc
+      - -node/share/man
+      - -node/share/systemtap
+
+  yarn:
+    # NOTE: https://github.com/yarnpkg/yarn/releases/latest (latest classic version)
+    source: https://yarnpkg.com/downloads/1.22.21/yarn-v1.22.21.tar.gz
+    source-checksum: sha256/a55bb4e85405f5dfd6e7154a444e7e33ad305d7ca858bad8546e932a6688df08
+    plugin: dump
+    build-environment:
+      - PATH: $SNAPCRAFT_STAGE/yarn/bin:$PATH
+      - LD_LIBRARY_PATH: $SNAPCRAFT_STAGE/yarn/lib:$LD_LIBRARY_PATH
+    override-build: |
+      snapcraftctl build
+      chmod -R g-s $SNAPCRAFT_PART_INSTALL
+      sed -i "s/var stdio = spinner ? undefined : 'inherit';/var stdio = 'inherit';/" $SNAPCRAFT_PART_INSTALL/lib/cli.js
+      cp $SNAPCRAFT_PART_SRC/LICENSE $SNAPCRAFT_PART_INSTALL/
+    organize:
+      "*": yarn/
+    stage:
+      - -yarn/share/doc
+      - -yarn/share/man
+      - -yarn/README.md
+      - -yarn/preinstall.js
+      - -yarn/packagejson
+
+  jemalloc:
+    # NOTE: https://github.com/jemalloc/jemalloc/releases/latest
+    source: https://github.com/jemalloc/jemalloc/archive/refs/tags/5.3.0.tar.gz
+    source-checksum: sha256/ef6f74fd45e95ee4ef7f9e19ebe5b075ca6b7fbe0140612b2a161abafb7ee179
+    plugin: autotools
+    override-build: |
+      ./autogen.sh --prefix=$SNAPCRAFT_PART_INSTALL/jemalloc
+      make -j"$(nproc)" MALLOC=libc
+      make build_lib_shared
+      make install_bin
+      make install_lib_shared
+      make install_include
+      cp $SNAPCRAFT_PART_SRC/COPYING $SNAPCRAFT_PART_INSTALL/jemalloc/
+    stage:
+      - -jemalloc/share/doc
+      - -jemalloc/share/man
+
+  ruby:
+    after:
+      - jemalloc
+      - curl
+    # NOTE: see `.ruby-version`
+    source: https://cache.ruby-lang.org/pub/ruby/3.2/ruby-3.2.3.tar.gz
+    source-checksum: sha256/af7f1757d9ddb630345988139211f1fd570ff5ba830def1cc7c468ae9b65c9ba
+    plugin: autotools
+    build-packages:
+      - ruby
+      - gcc
+      - autoconf
+      - bison
+      - libssl-dev
+      - libyaml-dev
+      - libreadline-dev
+      - zlib1g-dev
+      - libncurses5-dev
+      - libffi-dev
+      - libdb-dev
+      - libgdbm-dev
+    stage-packages:
+      - libgdbm6
+    build-environment:
+      - RUBY_VERSION: "3.2.3" # NOTE: must be updated with ruby source
+      - RUBY_BRANCH: "3.2" # NOTE: must be updated with ruby source
+      - PATH: $SNAPCRAFT_STAGE/ruby/bin:$SNAPCRAFT_STAGE/jemalloc/bin:$PATH
+      - LD_LIBRARY_PATH: $SNAPCRAFT_STAGE/ruby/lib:$SNAPCRAFT_STAGE/jemalloc/lib:$LD_LIBRARY_PATH
+      - LDFLAGS: -L$SNAPCRAFT_STAGE/jemalloc/lib
+      - CPPFLAGS: -I$SNAPCRAFT_STAGE/jemalloc/include
+      - DEBIAN_DISABLE_RUBYGEMS_INTEGRATION: "true"
+    override-build: |
+      ./configure --prefix=/ --enable-shared --disable-install-doc --with-jemalloc
+      make -j"$(nproc)"
+      make extract-gems
+      make install DESTDIR=$SNAPCRAFT_PART_INSTALL/ruby
+      case "$SNAP_ARCH" in
+      "amd64")
+        target="x86_64-linux"
+        ;;
+      "arm64")
+        target="aarch64-linux"
+        ;;
+      *)
+        echo "Unsupported architecture $SNAP_ARCH"
+        exit 1
+        ;;
+      esac
+      ln -s $target $SNAPCRAFT_PART_INSTALL/ruby/lib/ruby/$RUBY_BRANCH.0/$SNAP_ARCH
+      ln -sfn libruby.so.$RUBY_VERSION $SNAPCRAFT_PART_INSTALL/ruby/lib/libruby.so
+      ln -sfn libruby.so.$RUBY_VERSION $SNAPCRAFT_PART_INSTALL/ruby/lib/libruby.so.$RUBY_BRANCH
+      cp $SNAPCRAFT_PART_SRC/LEGAL $SNAPCRAFT_PART_INSTALL/ruby/
+    override-stage: |
+      snapcraftctl stage
+      find $SNAPCRAFT_STAGE/ruby/bin -type f -exec grep -Iq . {} \; -and -exec sed -i -e "s|^#!//bin/ruby$|#!$SNAPCRAFT_STAGE/ruby/bin/ruby|" {} \;
+    override-prime: |
+      snapcraftctl prime
+      find $SNAPCRAFT_PRIME/ruby/bin -type f -exec grep -Iq . {} \; -and -exec sed -i -e "s|^#!$SNAPCRAFT_STAGE/ruby/bin/ruby$|#!/snap/mastodon-server/current/ruby/bin/ruby|" {} \;
+    stage:
+      - -ruby/share/doc
+      - -ruby/share/man
+
+  musl-libc:
+    # NOTE: https://git.musl-libc.org/cgit/musl
+    source: https://musl.libc.org/releases/musl-1.2.4.tar.gz
+    source-checksum: sha256/7a35eae33d5372a7c0da1188de798726f68825513b7ae3ebe97aaaa52114f039
+    plugin: autotools
+    override-build: |
+      ./configure --prefix=$SNAPCRAFT_PART_INSTALL/musl-libc
+      make -j"$(nproc)"
+      make install
+      case "$SNAP_ARCH" in
+      "amd64")
+        target="x86_64"
+        ;;
+      "arm64")
+        target="aarch64"
+        ;;
+      *)
+        echo "Unsupported architecture $SNAP_ARCH"
+        exit 1
+        ;;
+      esac
+      ln -s libc.so $SNAPCRAFT_PART_INSTALL/musl-libc/lib/libc.musl-$target.so.1
+      cp $SNAPCRAFT_PART_SRC/COPYRIGHT $SNAPCRAFT_PART_INSTALL/musl-libc/
+    stage:
+      - -musl-libc/share/doc
+      - -musl-libc/share/man
+
+  imagemagick:
+    after:
+      - imagemagick-customizations
+    # NOTE: https://github.com/ImageMagick/ImageMagick/releases/latest
+    source: https://github.com/ImageMagick/ImageMagick/archive/refs/tags/7.1.1-21.tar.gz
+    source-checksum: sha256/09402e5f17c6575ef9f010bb2e21ae1710f1f3426f115ad4317ee9129c32608e
+    plugin: autotools
+    build-packages:
+      - build-essential
+      - zlib1g-dev
+      - libxext-dev
+      - libjpeg-dev
+      - libpng-dev
+      - libheif-dev
+      - libraw-dev
+      - libtiff-dev
+      - libwebp-dev
+      - libopenjp2-7-dev
+      - libfreetype6-dev
+      - libopenexr-dev
+      - libltdl-dev
+    build-environment:
+      - LD_LIBRARY_PATH: $SNAPCRAFT_STAGE/libjxl/lib:$LD_LIBRARY_PATH
+    override-build: |
+      ./configure \
+        --prefix=$SNAPCRAFT_PART_INSTALL/imagemagick \
+        --disable-shared \
+        --with-modules \
+        --enable-file-type \
+        --with-quantum-depth=32 \
+        --with-jpeg=yes \
+        --with-png=yes \
+        --with-gif=yes \
+        --with-webp=yes \
+        --with-heic=yes \
+        --with-raw=yes \
+        --with-tiff=yes \
+        --with-openjp2 \
+        --with-freetype=yes \
+        --with-openexr=yes \
+        --with-gslib=yes
+      make -j"$(nproc)"
+      make install
+      cp $SNAPCRAFT_PART_SRC/LICENSE $SNAPCRAFT_PART_INSTALL/imagemagick/
+    stage-packages:
+      - libgomp1
+      - libicu66
+      - libxml2
+      - libjpeg62
+      - libjpeg-turbo-progs
+      - libpng16-16
+      - libtiff5
+      - libopenjp2-tools
+      - libltdl7
+      - libde265-0
+      - libfreetype6
+      - libheif1
+      - libilmbase24
+      - libnuma1
+      - libopenexr24
+      - libraw19
+      - libx11-6
+      - libx265-179
+      - libxau6
+      - libxcb1
+      - libxdmcp6
+      - libxext6
+      - libwebp6
+      - libwebpmux3
+      - libwebpdemux2
+    override-prime: |
+      snapcraftctl prime
+      case "$SNAP_ARCH" in
+      "amd64")
+        target="x86_64-linux-gnu"
+        ;;
+      "arm64")
+        target="aarch64-linux-gnu"
+        ;;
+      *)
+        echo "Unsupported architecture $SNAP_ARCH"
+        exit 1
+        ;;
+      esac
+      # ln -s libwebpmux.so.3 $SNAPCRAFT_PRIME/usr/lib/$target/libwebpmux.so.2
+    organize:
+      imagemagick/etc/ImageMagick-7: imagemagick/config
+    stage:
+      - -imagemagick/share
+      - -imagemagick/etc
+
+  imagemagick-customizations:
+    plugin: dump
+    source: src/imagemagick/
+    organize:
+      config/*: config/imagemagick/
+
+  mastodon:
+    after:
+      - mastodon-customizations
+      - curl
+      - ruby
+      - node
+      - yarn
+      - postgres
+      - musl-libc
+      - openssl1
+      - imagemagick
+    # NOTE: https://github.com/mastodon/mastodon/releases/latest
+    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.2.4.tar.gz
+    source-checksum: sha256/041b0d513ff7ba8c9e1f2fc20cb24ad8cb7af8cabd7e9504212be013de5e2568
+    plugin: nil
+    build-environment:
+      - RUBY_BRANCH: "3.2" # NOTE: must be updated with ruby source
+      - BUNDLER_VERSION: "2.5.4" # NOTE: see `Gemfile.lock`
+      - BIRD_UI_VERSION: "1.8.2" # NOTE: https://github.com/ronilaukkarinen/mastodon-bird-ui/releases
+      - TANGERINE_UI_VERSION: "1.9.4" # NOTE: https://github.com/nileane/TangerineUI-for-Mastodon/releases/latest
+      - RAILS_ENV: production
+      - NODE_ENV: production
+      - OTP_SECRET: precompile_placeholder
+      - SECRET_KEY_BASE: precompile_placeholder
+      - PATH: $SNAPCRAFT_STAGE/ruby/bin:$SNAPCRAFT_STAGE/node/bin:$SNAPCRAFT_STAGE/yarn/bin:$SNAPCRAFT_STAGE/jemalloc/bin:$SNAPCRAFT_STAGE/curl/bin:$PATH
+      - LD_LIBRARY_PATH: $SNAPCRAFT_STAGE/ruby/lib:$SNAPCRAFT_STAGE/node/lib:$SNAPCRAFT_STAGE/yarn/lib:$SNAPCRAFT_STAGE/jemalloc/lib:$SNAPCRAFT_STAGE/curl/lib:$LD_LIBRARY_PATH
+      - RUBYLIB: $SNAPCRAFT_STAGE/ruby/lib/ruby/$RUBY_BRANCH.0:$SNAPCRAFT_STAGE/ruby/lib/ruby/$RUBY_BRANCH.0/$SNAP_ARCH
+      - BUNDLE_PATH: $SNAPCRAFT_PART_BUILD/vendor/bundle
+      - BUNDLE_GEMFILE: $SNAPCRAFT_PART_BUILD/Gemfile
+      - BUNDLE_RAKEFILE: $SNAPCRAFT_PART_BUILD/Rakefile
+      - GEM_HOME: $SNAPCRAFT_PART_BUILD/vendor/ruby
+      - GEM_PATH: $GEM_HOME
+    override-build: |
+      gem install bundler -v $BUNDLER_VERSION --no-document --install-dir $GEM_PATH
+      bundle config deployment "true"
+      bundle config without "development test"
+      bundle config set --local path "$BUNDLE_PATH"
+      bundle config set --local silence_root_warning true
+      bundle config build.openssl --with-openssl-dir=$SNAPCRAFT_STAGE/openssl1
+      bundle config build.pg --with-pg-config=$SNAPCRAFT_STAGE/postgres/bin/pg_config
+      bundle install -j"$(nproc)"
+      yarn install --pure-lockfile
+      yarn cache clean
+      bundle exec rails assets:precompile
+
+      mkdir -p app/javascript/styles/mastodon-bird-ui
+      curl https://raw.githubusercontent.com/ronilaukkarinen/mastodon-bird-ui/$BIRD_UI_VERSION/LICENSE -o app/javascript/styles/mastodon-bird-ui/LICENSE
+      curl https://raw.githubusercontent.com/ronilaukkarinen/mastodon-bird-ui/$BIRD_UI_VERSION/layout-single-column.css -o app/javascript/styles/mastodon-bird-ui/layout-single-column.scss
+      sed -i "s/theme-contrast/theme-mastodon-bird-ui-contrast/g" app/javascript/styles/mastodon-bird-ui/layout-single-column.scss
+      sed -i "s/theme-mastodon-light/theme-mastodon-bird-ui-light/g" app/javascript/styles/mastodon-bird-ui/layout-single-column.scss
+      curl https://raw.githubusercontent.com/ronilaukkarinen/mastodon-bird-ui/$BIRD_UI_VERSION/layout-multiple-columns.css -o app/javascript/styles/mastodon-bird-ui/layout-multiple-columns.scss
+      sed -i "s/theme-contrast/theme-mastodon-bird-ui-contrast/g" app/javascript/styles/mastodon-bird-ui/layout-multiple-columns.scss
+      sed -i "s/theme-mastodon-light/theme-mastodon-bird-ui-light/g" app/javascript/styles/mastodon-bird-ui/layout-multiple-columns.scss
+      echo -e "@import 'application';\n@import 'mastodon-bird-ui/layout-single-column.scss';\n@import 'mastodon-bird-ui/layout-multiple-columns.scss';" > app/javascript/styles/mastodon-bird-ui-dark.scss
+      echo -e "mastodon-bird-ui-dark: styles/mastodon-bird-ui-dark.scss" >> config/themes.yml
+      echo -e "@import 'mastodon-light/variables';\n@import 'application';\n@import 'mastodon-light/diff';\n@import 'mastodon-bird-ui/layout-single-column.scss';\n@import 'mastodon-bird-ui/layout-multiple-columns.scss';" > app/javascript/styles/mastodon-bird-ui-light.scss
+      echo -e "mastodon-bird-ui-light: styles/mastodon-bird-ui-light.scss" >> config/themes.yml
+      echo -e "@import 'contrast/variables';\n@import 'application';\n@import 'contrast/diff';\n@import 'mastodon-bird-ui/layout-single-column.scss';\n@import 'mastodon-bird-ui/layout-multiple-columns.scss';" > app/javascript/styles/mastodon-bird-ui-contrast.scss
+      echo -e "mastodon-bird-ui-contrast: styles/mastodon-bird-ui-contrast.scss" >> config/themes.yml
+      cat app/javascript/styles/mastodon-bird-ui-contrast.scss $SNAPCRAFT_STAGE/themes/mastodon-bird-ui/accessible.scss > app/javascript/styles/mastodon-bird-ui-accessible.scss
+      echo -e "mastodon-bird-ui-accessible: styles/mastodon-bird-ui-accessible.scss" >> config/themes.yml
+
+      mkdir -p app/javascript/styles/tangerine-ui
+      curl https://raw.githubusercontent.com/nileane/TangerineUI-for-Mastodon/v$TANGERINE_UI_VERSION/LICENSE -o app/javascript/styles/tangerine-ui/LICENSE
+      curl https://raw.githubusercontent.com/nileane/TangerineUI-for-Mastodon/v$TANGERINE_UI_VERSION/mastodon/app/javascript/styles/tangerineui/layout-single-column.scss -o app/javascript/styles/tangerine-ui/layout-single-column.scss
+      curl https://raw.githubusercontent.com/nileane/TangerineUI-for-Mastodon/v$TANGERINE_UI_VERSION/mastodon/app/javascript/styles/tangerineui-purple/layout-single-column.scss -o app/javascript/styles/tangerine-ui/layout-single-column-purple.scss
+      echo -e "@import 'application';\n@import 'tangerine-ui/layout-single-column.scss';" > app/javascript/styles/tangerine-ui.scss
+      echo -e "tangerine-ui: styles/tangerine-ui.scss" >> config/themes.yml
+      echo -e "@import 'application';\n@import 'tangerine-ui/layout-single-column-purple.scss';" > app/javascript/styles/tangerine-ui-purple.scss
+      echo -e "tangerine-ui-purple: styles/tangerine-ui-purple.scss" >> config/themes.yml
+
+      for locale in config/locales/*.yml; do
+        sed -i "s/default: Mastodon (\(.*\))/&\n    mastodon-bird-ui-dark: Mastodon Bird UI (\1)/" $locale
+        sed -i "s/mastodon-light: Mastodon (\(.*\))/&\n    mastodon-bird-ui-light: Mastodon Bird UI (\1)/" $locale
+        sed -i "s/contrast: Mastodon (\(.*\))/&\n    mastodon-bird-ui-contrast: Mastodon Bird UI (\1)\n    mastodon-bird-ui-accessible: Mastodon Bird UI (\1++) ♿/" $locale
+        sed -i "s/themes:$/&\n    tangerine-ui: Tangerine UI 🍊/" $locale
+        sed -i "s/themes:$/&\n    tangerine-ui-purple: Tangerine UI 🪻/" $locale
+      done
+
+      bundle exec rails assets:precompile
+      cp -r $SNAPCRAFT_PART_BUILD $SNAPCRAFT_PART_INSTALL/mastodon
+    build-packages:
+      - build-essential
+      - libicu-dev
+      - libidn11-dev
+      - libpq-dev
+      - libxml2-dev
+      - libxslt1-dev
+      - libssl-dev
+      - libnode-dev
+      - git
+    stage-packages:
+      - file
+      - ffmpeg
+      - libglu1-mesa
+      - freeglut3
+      - libicu66
+      - libidn11
+      - libpq5
+      - libmagic-mgc
+    stage:
+      - -mastodon/share/doc
+      - -mastodon/share/man
+      - -mastodon/dist
+      - -mastodon/chart
+      - -mastodon/log
+      - -mastodon/*.md
+      - -mastodon/Vagrantfile
+      - -mastodon/Dockerfile
+      - -mastodon/docker-compose.yml
+      - -mastodon/.dockerignore
+      - -mastodon/node_modules/.cache
+      - -mastodon/.env.*
+      - -mastodon/.devcontainer
+      - -mastodon/.husky
+      - -mastodon/.buildpacks
+      - -mastodon/.editorconfig
+      - -mastodon/.foreman
+      - -mastodon/.gitattributes
+      - -mastodon/.gitignore
+      - -mastodon/.nanoignore
+      - -mastodon/.prettierignore
+      - -mastodon/.prettierrc.js
+      - -mastodon/.rubocop*.yml
+      - -mastodon/stylelint.config.js
+      - -mastodon/.*lint*
+
+  mastodon-customizations:
+    plugin: dump
+    source: src/mastodon/
+    organize:
+      config/*: config/mastodon/

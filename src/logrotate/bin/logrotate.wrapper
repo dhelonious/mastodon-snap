@@ -1,0 +1,15 @@
+#!/bin/bash -e
+
+. "$SNAP/logrotate.env"
+
+if ! $(config_exists logrotate logrotate.conf); then
+    echo "Logrotate is not configured"
+    exit 0
+fi
+
+logrotate "$SNAP_DATA/logrotate/config/logrotate.conf" --state "$LOGROTATE_STATUS_FILE"
+
+if [ $? -ne 0 ]; then
+    rm -f "$LOGROTATE_STATUS_FILE"
+    exit 1
+fi

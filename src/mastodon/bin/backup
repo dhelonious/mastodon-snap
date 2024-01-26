@@ -1,0 +1,22 @@
+#!/bin/bash -e
+
+. "$SNAP/mastodon.env"
+
+check_setup
+
+if [ "$BACKUP_DAYS" -lt "1" ]; then
+    echo "Backup not enabled (days < 1)"
+    exit 0
+fi
+
+echo_log() {
+    echo "[$(date)] $1" | tee -a "$LOG_DIR/backup.log"
+}
+
+echo_log "Export data"
+$SNAP/bin/export | tee -a "$LOG_DIR/backup.log"
+
+echo_log "Delete exports older than $BACKUP_DAYS days"
+find "$BACKUP_DIR" -mindepth 1 -maxdepth 1 -mtime +$BACKUP_DAYS -type d -printf "%T@ %p\n" \
+    | sort -n | head -n -1 | cut -d " " -f2 | xargs -r rm -rf \
+    | tee -a "$LOG_DIR/backup.log"

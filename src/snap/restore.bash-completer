@@ -1,0 +1,8 @@
+backup_dir=$(cat /var/snap/mastodon-server/common/backup.dir)
+
+_restore_complete() {
+    local cur_word=${COMP_WORDS[COMP_CWORD]}
+    COMPREPLY=( $(compgen -d -- "$backup_dir$cur_word" | sed -e "s|$backup_dir||") )
+}
+
+complete -o nospace -F _restore_complete mastodon-server.restore restore
