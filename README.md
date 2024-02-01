@@ -437,7 +437,7 @@ To allow Mastodon to access your private server IP, you can add it to the `ALLOW
 
 # 📋 TODO
 
-- [ ] Use GitHub multi-arch build action (https://github.com/diddlesnaps/snapcraft-multiarch-action) to provide pre-built snaps
 - [ ] Test on arm64
+- [ ] Use GitHub-hosted arm64 runner when available (https://github.com/orgs/community/discussions/19197)
 - [ ] Publish on snapcraft.io
 - [ ] Submit to Snapcrafters (see https://github.com/snapcrafters/fork-and-rename-me)
