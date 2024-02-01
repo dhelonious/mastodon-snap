@@ -1,4 +1,4 @@
-# Unofficial snap for Mastodon 4.2.4
+# Unofficial snap for Mastodon 4.2.5
 
 It consists of:
 
@@ -18,4 +18,6 @@ It consists of:
 * mastodon-bird-ui 1.8.3
 * tangerine-ui 1.9.4
 
-See also the release notes for Mastodon 4.2.4: https://github.com/mastodon/mastodon/releases/tag/v4.2.4
+See also the release notes: https://github.com/mastodon/mastodon/releases/tag/v4.2.5
+
+⚠️ This release is an important security release fixing a critical security issue (CVE-2024-23832, [GHSA-3fjr-858r-92rw](https://github.com/mastodon/mastodon/security/advisories/GHSA-3fjr-858r-92rw)).

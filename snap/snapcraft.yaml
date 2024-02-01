@@ -9,7 +9,7 @@ description: |
   implements ActivityPub!)
 
 base: core20
-version: 4.2.4snap1
+version: 4.2.5snap1
 grade: stable
 confinement: strict
 
@@ -715,13 +715,13 @@ parts:
       - openssl1
       - imagemagick
     # NOTE: https://github.com/mastodon/mastodon/releases/latest
-    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.2.4.tar.gz
-    source-checksum: sha256/041b0d513ff7ba8c9e1f2fc20cb24ad8cb7af8cabd7e9504212be013de5e2568
+    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.2.5.tar.gz
+    source-checksum: sha256/7d7b03d2500fc4146a9849a5569a1f5ca9ae8d8a0c1e52c9c72a323a245ce8ce
     plugin: nil
     build-environment:
       - RUBY_BRANCH: "3.2" # NOTE: must be updated with ruby source
-      - BUNDLER_VERSION: "2.5.4" # NOTE: see `Gemfile.lock`
-      - BIRD_UI_VERSION: "1.8.2" # NOTE: https://github.com/ronilaukkarinen/mastodon-bird-ui/releases
+      - BUNDLER_VERSION: "2.4.13" # NOTE: see `Gemfile.lock`
+      - BIRD_UI_VERSION: "1.8.3" # NOTE: https://github.com/ronilaukkarinen/mastodon-bird-ui/releases
       - TANGERINE_UI_VERSION: "1.9.4" # NOTE: https://github.com/nileane/TangerineUI-for-Mastodon/releases/latest
       - RAILS_ENV: production
       - NODE_ENV: production
