@@ -5,6 +5,8 @@
 
 export CURRENT_PG_VERSION="$(get_postgres_version_file)"
 
+$SNAP/bin/export
+
 if [ "$PG_VERSION" != "$CURRENT_PG_VERSION" ]; then
     echo Create postgres backup
     pg_dumpall.wrapper -f "$SNAP_COMMON/database.sql"
