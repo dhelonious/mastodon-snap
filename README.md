@@ -73,7 +73,7 @@ An initial setup command is required to initialize the database and configuratio
 
 Once the snap is set up, an administrator account with a randomly generated password can be created using the `tootctl` command:
 
-    sudo mastodon-server.tootctl accounts create administrator --email admin@examle.com --role Owner --confirmed
+    sudo mastodon-server.tootctl accounts create administrator --email admin@example.com --role Owner --confirmed
 
 > Note: Be patient, the creation of an account takes some time.
 
@@ -104,7 +104,7 @@ The following settings are available:
 | Key                  | Values                        | Default value          | Description                                                           |
 |----------------------|-------------------------------|------------------------|-----------------------------------------------------------------------|
 | `domain`             | valid FQDN                    |                        | FQDN of the Mastodon instance                                         |
-| `email`              | valid e-mail                  |                        | E-mail address of the owner of the mastodon instance                  |
+| `email`              | valid e-mail                  |                        | E-mail address of the owner of the Mastodon instance                  |
 | `ports.http`         | 0 to 65353                    | 80                     | HTTP port                                                             |
 | `ports.https`        | 0 to 65353                    | 443                    | HTTPS port                                                            |
 | `acme.server`        | letsencrypt, zerossl          | letsencrypt            | CA used for acquiring an SSL certificate                              |
@@ -193,7 +193,7 @@ The [bucket policy](https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucket
           },
           "Effect": "Allow",
           "Action": "s3:GetObject",
-          "Resource": "arn:aws:s3:::mastodon-snap/*"
+          "Resource": "arn:aws:s3:::mastodon-server/*"
         }
       ]
     }
