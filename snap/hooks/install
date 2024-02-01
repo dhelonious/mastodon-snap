@@ -1,0 +1,79 @@
+#!/bin/bash -e
+
+. "$SNAP/snap.env"
+set_default_settings
+
+update_snap_version_file
+
+reset_restart_required redis
+reset_restart_required postgres
+reset_restart_required backend
+reset_restart_required sidekiq
+reset_restart_required streaming
+reset_restart_required nginx
+
+mkdir -p "$LOG_DIR" "$SECRET_DIR" "$CERT_DIR"
+mkdir -p "$DEFAULT_MEDIA_DIR" "$DEFAULT_BACKUP_DIR"
+
+# Postgres
+
+echo Install postgres
+. "$SNAP/postgres.env"
+
+export PG_PASSWORD=$(generate_secret postgres)
+
+create_postgres_dirs
+copy_postgres_config
+setup_postgres_database
+
+# Redis
+
+echo Install redis
+. "$SNAP/redis.env"
+
+# export REDIS_PASSWORD=$(generate_secret redis)
+
+mkdir -p "$SNAP_DATA/redis/data"
+
+copy_config redis redis.conf
+
+# Mastodon
+
+echo Install mastodon
+. "$SNAP/mastodon.env"
+
+update_mastodon_files
+setup_mastodon_database
+update_backup_dir_file
+
+# Nginx
+
+echo Install nginx
+. "$SNAP/nginx.env"
+
+mkdir -p "$SNAP_DATA/nginx/data" "$SNAP_COMMON/.well-known"
+
+copy_nginx_configs
+
+# Acme
+
+echo Install acme
+. "$SNAP/acme.env"
+
+mkdir -p "$SNAP_DATA/acme/config"
+
+cd $SNAP/acme && $SNAP/acme/acme.sh --install \
+    --nocron \
+    --noprofile \
+    --home "$SNAP_DATA/acme" \
+    --config-home "$SNAP_DATA/acme/config" \
+    --cert-home "$CERT_DIR"
+
+# Logrotate
+
+echo Install logrotate
+. "$SNAP/logrotate.env"
+
+mkdir -p "$LOGROTATE_DATA_DIR"
+
+copy_config logrotate logrotate.conf

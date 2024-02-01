@@ -1,0 +1,11 @@
+#!/bin/bash -e
+
+. "$SNAP/mastodon.env"
+
+check_setup
+
+export DB_POOL=25
+export MALLOC_ARENA_MAX=2
+
+mastodon_node ./streaming \
+    2>&1 | tee -a "$LOG_DIR/streaming.log"

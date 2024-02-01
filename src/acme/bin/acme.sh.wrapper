@@ -1,0 +1,13 @@
+#!/bin/bash -e
+
+. "$SNAP/acme.env"
+
+acme.sh \
+    --home "$SNAP_DATA/acme" \
+    --config-home "$SNAP_DATA/acme/config" \
+    --cert-home "$CERT_DIR" \
+    --log "$LOG_DIR/acme.sh.log" \
+    --server "$ACME_SERVER" \
+    --openssl-bin "$SNAP/openssl1/bin/openssl" \
+    -w "$SNAP_COMMON" \
+    "$@"

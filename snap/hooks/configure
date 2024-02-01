@@ -1,0 +1,54 @@
+#!/bin/bash -e
+
+. "$SNAP/nginx.env"
+. "$SNAP/mastodon.env"
+
+export CURRENT_HTTP_PORT="$(nginx_get_http_port)"
+export CURRENT_HTTPS_PORT="$(nginx_get_https_port)"
+export CURRENT_NGINX_ACCESS_LOG="$(nginx_get_access_log)"
+export CURRENT_MEDIA_DIR="$(readlink -f $SNAP_DATA/mastodon/public/system)"
+export CURRENT_BACKUP_DIR="$(get_backup_dir_file)"
+
+if [ "$NGINX_ACCESS_LOG" != "$CURRENT_NGINX_ACCESS_LOG" ]; then
+    restart_required nginx
+fi
+
+if [ "$HTTP_PORT" != "$CURRENT_HTTP_PORT" ] || \
+   [ "$HTTPS_PORT" != "$CURRENT_HTTPS_PORT" ]
+then
+    restart_required nginx
+fi
+
+if [ "$MEDIA_DIR" != "$CURRENT_MEDIA_DIR" ]; then
+    echo "Link media dir to $MEDIA_DIR"
+    link_media_dir
+    restart_required backend
+    restart_required sidekiq
+    restart_required streaming
+    restart_required redis
+    restart_required nginx
+fi
+
+if [ "$BACKUP_DIR" != "$CURRENT_BACKUP_DIR" ]; then
+    echo "Update backup dir to $MEDIA_DIR"
+    update_backup_dir_file
+fi
+
+if $(mastodon_config_exists); then
+    export CURRENT_DOMAIN="$(mastodon_get_var LOCAL_DOMAIN)"
+
+    if [ "$DOMAIN" != "$CURRENT_DOMAIN" ]; then
+        echo_error "DOMAIN cannot be changed safely! Setup a new instance if you really want to change it."
+        exit 1
+    fi
+fi
+
+echo Restart services
+
+restart_service_if_required redis
+restart_service_if_required postgres
+postgres_waitready
+restart_service_if_required backend
+restart_service_if_required sidekiq
+restart_service_if_required streaming
+restart_service_if_required nginx

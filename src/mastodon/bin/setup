@@ -1,0 +1,33 @@
+#!/bin/bash -e
+
+. "$SNAP/mastodon.env"
+. "$SNAP/postgres.env"
+. "$SNAP/nginx.env"
+
+export PATH="$SNAP/ruby/bin:$PATH"
+
+check_root
+
+if $(mastodon_config_exists); then
+    echo_error "Mastodon is already set up"
+    exit 0
+fi
+
+check_domain
+
+echo Create config
+generate_mastodon_secrets
+copy_mastodon_config
+
+echo Setup database
+mastodon_rails db:setup
+$SNAP/bin/psql.wrapper -d "$MASTODON_DBNAME" -c "create extension pg_stat_statements;"
+
+echo Remove old logs and tempfiles
+mastodon_rails log:clear tmp:clear
+
+echo Restart services
+snapctl restart "$SNAP_NAME.backend"
+snapctl restart "$SNAP_NAME.streaming"
+snapctl restart "$SNAP_NAME.sidekiq"
+snapctl restart "$SNAP_NAME.nginx"

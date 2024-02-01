@@ -1,0 +1,12 @@
+#!/bin/bash -e
+
+. "$SNAP/acme.env"
+. "$SNAP/nginx.env"
+
+check_root
+check_domain
+check_email
+
+acme.sh.wrapper --issue -d "$DOMAIN" --accountemail "$EMAIL"
+
+snapctl restart "$SNAP_NAME.nginx"

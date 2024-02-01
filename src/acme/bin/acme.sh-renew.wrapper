@@ -1,0 +1,5 @@
+#!/bin/bash -e
+
+. "$SNAP/acme.env"
+
+acme.sh.wrapper --renew -d "$DOMAIN" "$@"

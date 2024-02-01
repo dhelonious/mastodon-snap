@@ -1,0 +1,7 @@
+#!/bin/bash -e
+
+. "$SNAP/postgres.env"
+
+mkdir -p "$PG_DATA_DIR"
+
+exec initdb -D "$PG_DATA_DIR" -U postgres -A trust -E UTF8 --locale=C

@@ -1,0 +1,38 @@
+#!/bin/bash -e
+
+. "$SNAP/mastodon.env"
+
+check_setup
+
+if [ "$CLEANUP_DAYS" -lt "1" ]; then
+    echo "Cleanup not enabled (days < 1)"
+    exit 0
+fi
+
+echo_log() {
+    echo "[$(date)] $1" | tee -a "$LOG_DIR/cleanup.log"
+}
+
+if $CLEANUP_MEDIA; then
+    echo_log "Cleanup media files older than $CLEANUP_DAYS days"
+    $SNAP/bin/tootctl.wrapper media remove --days=$CLEANUP_DAYS \
+        2>&1 | tee -a "$LOG_DIR/cleanup.log"
+fi
+
+if $CLEANUP_PREVIEWS; then
+    echo_log "Cleanup preview cards older than $CLEANUP_DAYS days"
+    $SNAP/bin/tootctl.wrapper preview_cards remove --days=$CLEANUP_DAYS \
+        2>&1 | tee -a "$LOG_DIR/cleanup.log"
+fi
+
+if $CLEANUP_STATUSES; then
+    echo_log "Cleanup unreferenced statuses older than $CLEANUP_DAYS days"
+    $SNAP/bin/tootctl.wrapper statuses remove --days=$CLEANUP_DAYS \
+        2>&1 | tee -a "$LOG_DIR/cleanup.log"
+fi
+
+if $CLEANUP_ORPHANS; then
+    echo_log "Cleanup orphaned media files"
+    $SNAP/bin/tootctl.wrapper media remove-orphans \
+        2>&1 | tee -a "$LOG_DIR/cleanup.log"
+fi
