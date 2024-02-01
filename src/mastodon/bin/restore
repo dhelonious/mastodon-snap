@@ -57,8 +57,10 @@ if [ -f "$backup_dir/media.tar.gz" ]; then
     echo Restore uploads
     tar -xzf "$backup_dir/media.tar.gz" -C "$MEDIA_DIR" --strip-components=1
 
-    echo Refresh remote account avatars and headers
-    $SNAP/bin/tootctl.wrapper accounts refresh --all --concurrency 5
+    echo The following action may take a long time to complete
+
+    confirm "Refresh remote account avatars and headers?" && \
+        $SNAP/bin/tootctl.wrapper accounts refresh --all --concurrency 5
 
     # TODO: Make --concurrency N configurable (default 5)
 fi
