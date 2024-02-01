@@ -313,7 +313,7 @@ A backup can be restored using the `mastodon-server.restore` command, e. g:
 
 > Note: The error messages indicating that some roles already exist can be safely ignored.
 
-If the media cache is lost between export and restore, the [tootctl media refresh] command (https://docs.joinmastodon.org/admin/tootctl/#media-refresh) can be used with `--force` to manually restore media files. In general, `--account` is used to restore media attachments from a specific external user. Experts can also use `--status` and restore specific images after retrieving their IDs from the database. Using `--days` a larger amount of media can be restored.
+If the media cache is lost between export and restore, the [tootctl media refresh command](https://docs.joinmastodon.org/admin/tootctl/#media-refresh) can be used with `--force` to manually restore media files. In general, `--account` is used to restore media attachments from a specific external user. Experts can also use `--status` and restore specific images after retrieving their IDs from the database. Using `--days` a larger amount of media can be restored.
 
 > Note: Changes to `mastodon.conf` may be required when restoring from an older version. Check the changelog and compare the configuration files.
 
