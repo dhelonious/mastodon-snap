@@ -279,7 +279,7 @@ parts:
     build-environment:
       - PKG_CONFIG_PATH: $SNAPCRAFT_STAGE/openssl1/lib/pkgconfig
     override-build: |
-      ./configure --prefix=$SNAPCRAFT_PART_INSTALL/curl --with-openssl
+      ./configure --prefix=$SNAPCRAFT_PART_INSTALL/curl --with-openssl --without-libpsl
       make -j"$(nproc)"
       make install
       cp $SNAPCRAFT_PART_SRC/COPYING $SNAPCRAFT_PART_INSTALL/curl/
