@@ -1,4 +1,4 @@
-# Unofficial snap for Mastodon 4.2.5
+# Unofficial snap for Mastodon 4.2.6
 
 It consists of:
 
@@ -7,17 +7,17 @@ It consists of:
 * Bundle 2.4.13
 * Yarn 1.22.21
 * Nginx 1.25.3
-* PostgreSQL 16.1
-* Redis 7.2.3
+* **PostgreSQL 16.2** (updated)
+* **Redis 7.2.4** (updated)
 * Acme.sh 3.0.7
-* ImageMagick 7.1.1-21
+* **ImageMagick 7.1.1-28** (updated)
 * OpenSSL 1.1.1w
-* Curl 8.4.0
+* **Curl 8.6.0** (updated)
 * Jemalloc 5.3.0
 * musl-libc 1.2.4
-* mastodon-bird-ui 1.8.3
+* mastodon-bird-ui 1.8.4
 * tangerine-ui 1.9.4
 
-See also the release notes: https://github.com/mastodon/mastodon/releases/tag/v4.2.5
+See also the release notes: https://github.com/mastodon/mastodon/releases/tag/v4.2.6
 
-⚠️ This release is an important security release fixing a critical security issue (CVE-2024-23832, [GHSA-3fjr-858r-92rw](https://github.com/mastodon/mastodon/security/advisories/GHSA-3fjr-858r-92rw)).
+⚠️ This release is an important security release fixing several security issues.
