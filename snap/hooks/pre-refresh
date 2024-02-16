@@ -6,9 +6,9 @@
 export CURRENT_PG_VERSION="$(get_postgres_version_file)"
 
 if $UPDATE_BACKUP; then
-    $SNAP/bin/export "$UPDATE_BACKUP_DIR"
+    SKIP_MEDIA_EXPORT=true $SNAP/bin/export "$UPDATE_BACKUP_DIR"
     find "$UPDATE_BACKUP_DIR" -mindepth 1 -maxdepth 1 -type d -printf "%T@ %p\n" \
-        | sort -g | head -n -1 | cut -d " " -f2 | xargs -r rm -rf
+        | sort -g | head -n -3 | cut -d " " -f2 | xargs -r rm -rf
 fi
 
 if [ "$PG_VERSION" != "$CURRENT_PG_VERSION" ]; then

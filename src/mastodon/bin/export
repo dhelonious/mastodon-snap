@@ -25,7 +25,7 @@ cp "$SNAP_COMMON/mastodon.conf" "$export_dir/"
 echo Export database
 $SNAP/bin/pg_dumpall.wrapper -f "$export_dir/database.sql"
 
-if ! [ -z "$(ls -A $MEDIA_DIR)" ]; then
+if ! [ -z "$(ls -A $MEDIA_DIR)" ] && [ -z $SKIP_MEDIA_EXPORT ]; then
     echo Export media
     tar -czf "$export_dir/media.tar.gz" -C "$(dirname $MEDIA_DIR)" --exclude=*/cache "$(basename $MEDIA_DIR)"
 fi
