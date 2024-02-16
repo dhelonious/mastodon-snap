@@ -108,7 +108,7 @@ The following settings are available:
 | `ports.http`         | 0 to 65353                    | 80                     | HTTP port                                                             |
 | `ports.https`        | 0 to 65353                    | 443                    | HTTPS port                                                            |
 | `acme.server`        | letsencrypt, zerossl          | letsencrypt            | CA used for acquiring an SSL certificate                              |
-| `update.backup`      | true, false                   | true                   | Create a backup in `/var/snap/mastodon-server/common/updates/backups` before updating |
+| `update.backups`     | true, false                   | true                   | Create a backup in `/var/snap/mastodon-server/common/update/backups` before updating |
 | `media.dir`          | absolute path                 | `$SNAP_COMMON/media`   | Location of the media directory (*public/system*)                     |
 | `backup.dir`         | absolute path                 | `$SNAP_COMMON/backups` | Location of the backup directory                                      |
 | `backup.days`        | integer                       | 0                      | Create and keep backups for `backup.days` (enabled if > 0)            |
