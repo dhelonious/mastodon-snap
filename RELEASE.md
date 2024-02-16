@@ -26,5 +26,5 @@ This release contains:
 Changelog:
 
 * Uploaded media are excluded from pre-update backups.
-* The creation of pre-update backups can be disabled using the `update.backup` setting.
+* The creation of pre-update backups can be disabled using the `update.backups` setting.
 * Only the last three pre-update backups are kept.
