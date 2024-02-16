@@ -1,5 +1,9 @@
 # Unofficial snap for Mastodon 4.2.7
 
+⚠️ This release is an important security release fixing a major security issue in Mastodon.
+
+See also the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.2.7
+
 This release contains:
 
 * Mastodon 4.2.7
@@ -19,6 +23,7 @@ This release contains:
 * mastodon-bird-ui 1.8.4
 * tangerine-ui 1.9.4
 
-See also the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.2.7
+Changelog:
 
-⚠️ This release is an important security release fixing a major security issue.
+* The creation of pre-update backups can be disabled using the `update.backup` setting.
+* Only the last pre-update backup is kept.

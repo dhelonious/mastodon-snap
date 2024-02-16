@@ -13,6 +13,7 @@ reset_restart_required streaming
 reset_restart_required nginx
 
 mkdir -p "$LOG_DIR" "$SECRET_DIR" "$CERT_DIR"
+mkdir -p "$UPDATE_DIR" "$UPDATE_BACKUP_DIR"
 mkdir -p "$DEFAULT_MEDIA_DIR" "$DEFAULT_BACKUP_DIR"
 
 # Postgres
