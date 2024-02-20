@@ -12,16 +12,13 @@ The goal of this project is to further simplify the installation process of Mast
 Supported architectures:
 
 * amd64
-* arm64 (**untested**)
 
 For more information, see the latest [release readme](RELEASE.md).
 
 
 # 🚀 Quickstart
 
-Download the snap file and run the following commands:
-
-    sudo snap install mastodon-server_4.2.4snap1_X64.snap --dangerous
+    sudo snap install mastodon-server
 
     sudo snap set mastodon-server domain="example.com"
     sudo snap set mastodon-server email="admin@example.com"
@@ -36,11 +33,17 @@ Congratulations! You are now the owner of your very own Mastodon instance!
 
 # 📦 Installation
 
+[![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/mastodon-server)
+
+If you prefer, you can also install the snap directly from the command line:
+
+    sudo snap install mastodon-server
+
 A common criticism of snaps is their dependence on Canonical. However, it is possible to install snaps offline and also build them directly from source.
 
 ## Install from a snap file
 
-Download a snap file of the desired `VERSION` (e.g. `4.2.4snap1`) and `ARCH` (`amd64` or `arm64`). It can be installed using:
+Download a snap file of the desired `VERSION` (e.g. `4.2.4snap1`) and `ARCH` (e.g. `amd64`). It can be installed using:
 
     sudo snap install mastodon-server_VERSION_ARCH.snap --dangerous
 
