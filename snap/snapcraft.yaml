@@ -34,12 +34,6 @@ environment:
   MAGIC: $SNAP/usr/lib/file/magic.mgc
   PG_VERSION: 16
 
-plugs:
-  resolv-conf:
-    interface: system-files
-    read:
-      - /etc/resolv.conf
-
 apps:
   logrotate:
     command: bin/logrotate.wrapper
@@ -71,7 +65,6 @@ apps:
     plugs:
       - network
       - removable-media
-      - resolv-conf
 
   backup:
     command: bin/backup
@@ -146,7 +139,6 @@ apps:
     plugs:
       - network
       - removable-media
-      - resolv-conf
 
   console:
     command: bin/rails-console.wrapper
