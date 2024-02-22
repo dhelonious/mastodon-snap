@@ -65,6 +65,16 @@ in the repository's root directory.
 
 > Note: Snapcraft relies on either `multipassd` or `lxd` to create snaps inside a virtual machine. Therefore, snaps cannot be created on a virtual infrastructure that does not support nested virtualization.
 
+## Updates
+
+A Snap Store installation is automatically updated when new versions are released.
+
+To update your local installation, you can simply repeat the steps above with a newer version of the snap file. This will update your Mastodon instance in-place by creating a new snap revision.
+
+If you have installed a snap file locally and still want to benefit from automatic updates, you can switch to the Snap Store installation using:
+
+    snap refresh --amend mastodon-server
+
 
 # 🦣 Setup your instance
 
