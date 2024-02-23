@@ -1,12 +1,12 @@
-# Unofficial snap for Mastodon 4.2.7
+# Unofficial snap for Mastodon 4.2.8
 
-⚠️ This release is an important security release fixing a major security issue in Mastodon.
+⚠️ This update changes registrations to be closed by default.
 
-See also the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.2.7
+See also the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.2.8
 
 This release contains:
 
-* Mastodon 4.2.7
+* Mastodon 4.2.8
 * Node 16.20.2 (see [#25787](https://github.com/mastodon/mastodon/discussions/25787#discussioncomment-6382898))
 * Ruby 3.2.3
 * Bundle 2.4.13
@@ -20,11 +20,5 @@ This release contains:
 * Curl 8.6.0
 * Jemalloc 5.3.0
 * musl-libc 1.2.4
-* mastodon-bird-ui 1.8.4
+* mastodon-bird-ui 1.8.5
 * tangerine-ui 1.9.4
-
-Changelog:
-
-* Uploaded media are excluded from pre-update backups.
-* The creation of pre-update backups can be disabled using the `update.backups` setting.
-* Only the last three pre-update backups are kept.
