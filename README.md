@@ -20,9 +20,6 @@ For more information, see the latest [release readme](RELEASE.md).
 
     sudo snap install mastodon-server
 
-    sudo snap set mastodon-server domain="example.com"
-    sudo snap set mastodon-server email="admin@example.com"
-
     sudo mastodon-server.setup
     sudo mastodon-server.get-certificate
 
