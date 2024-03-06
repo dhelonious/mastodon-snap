@@ -11,6 +11,17 @@ on:
     - 'snap/**'
     - 'src/**'
     - '!**.md'
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'warning'
+        type: choice
+        options:
+        - info
+        - warning
+        - debug
 jobs:
   build:
     if: ${{ !startsWith(github.ref, 'refs/tags') }}
