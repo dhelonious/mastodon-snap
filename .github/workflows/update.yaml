@@ -1,0 +1,36 @@
+name: update
+run-name: Rebuild snap and update release
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Tag of the release to update
+        required: true
+        type: string
+      logLevel:
+        description: Log level
+        required: true
+        default: warning
+        type: choice
+        options:
+        - info
+        - warning
+        - debug
+jobs:
+  rebuild-and-update-release:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: snapcore/action-build@v1
+      id: snapcraft
+    - uses: ncipollo/release-action@v1
+      with:
+        tag: ${{ inputs.release_tag }}
+        artifacts: ${{ steps.snapcraft.outputs.snap }}
+        allowUpdates: true
+        replacesArtifacts: true
+        omitNameDuringUpdate: true
+        omitBodyDuringUpdate: true
+        omitPrereleaseDuringUpdate: true
+        omitDraftDuringUpdate: true
+        artifactErrorsFailBuild: true

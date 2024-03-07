@@ -13,6 +13,8 @@ jobs:
       id: snapcraft
     - uses: ncipollo/release-action@v1
       with:
-        artifacts: ${{ steps.snapcraft.outputs.snap }}
         bodyFile: RELEASE.md
-        replacesArtifacts: true
+        artifacts: ${{ steps.snapcraft.outputs.snap }}
+        makeLatest: true
+        skipIfReleaseExists: true
+        artifactErrorsFailBuild: true
