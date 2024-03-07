@@ -1,0 +1,40 @@
+name: 🐞 Bug Report
+description: Use this to report bugs or general issues
+labels: ["bug", "help wanted"]
+body:
+- type: checkboxes
+  attributes:
+    label: Is there an existing issue for this?
+    description: Please search to see if an issue already exists for the bug you encountered.
+    options:
+    - label: I have searched the existing issues
+      required: true
+- type: textarea
+  attributes:
+    label: Description
+    description: A detailed description of what you're experiencing and what you expected to happen.
+    render: markdown
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Version
+    description: What version are you using?
+  validations:
+    required: true
+- type: dropdown
+  attributes:
+    label: Architecture
+    description: What architecture are you running?
+    options:
+      - amd64
+      - arm64
+    default: 0
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: OS
+    description: What OS and version are you running?
+  validations:
+    required: true

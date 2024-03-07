@@ -1,0 +1,11 @@
+name: ❓ Question
+description: Use this if you have a any questions
+labels: ["question"]
+body:
+- type: textarea
+  attributes:
+    label: Description
+    description: Ask your questions here.
+    render: markdown
+  validations:
+    required: true
