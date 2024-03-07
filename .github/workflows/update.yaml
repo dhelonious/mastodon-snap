@@ -16,6 +16,11 @@ on:
         - info
         - warning
         - debug
+  workflow_call:
+    inputs:
+      release_tag:
+        required: true
+        type: string
 jobs:
   rebuild-and-update-release:
     runs-on: ubuntu-latest

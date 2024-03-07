@@ -1,0 +1,21 @@
+name: commands
+run-name: Run workflows based on commands
+on:
+  issue_comment:
+    types:
+    - created
+    - edited
+jobs:
+  rebuild:
+    if: ${{ contains(github.event.comment.body, '/rebuild') }}
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions-ecosystem/action-regex-match@v2
+      id: regex
+      with:
+        text: ${{ github.event.comment.body }}
+        regex: '^\/rebuild\s*([\w\.]+?)$'
+    - uses: actions/checkout@v4
+    - uses: ./.github/workflows/update.yaml
+      with:
+        release_tag: ${{ steps.regex.outputs.group1 }}
