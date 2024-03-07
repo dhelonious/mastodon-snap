@@ -9,12 +9,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - uses: snapcore/action-build@v1
-      id: snapcraft
+    - uses: ./.github/actions/build
+      id: build
     - uses: ncipollo/release-action@v1
       with:
         bodyFile: RELEASE.md
-        artifacts: ${{ steps.snapcraft.outputs.snap }}
+        artifacts: ${{ steps.build.outputs.snap }}
         makeLatest: true
         skipIfReleaseExists: true
         artifactErrorsFailBuild: true

@@ -28,15 +28,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - uses: snapcore/action-build@v1
-      id: snapcraft
+    - uses: ./.github/actions/build
+      id: build
     - uses: actions/upload-artifact@v4
       with:
-        name: ${{ steps.snapcraft.outputs.snap }}
-        path: ${{ steps.snapcraft.outputs.snap }}
+        name: ${{ steps.build.outputs.snap }}
+        path: ${{ steps.build.outputs.snap }}
     - name: Test installation
       run: |
-        sudo snap install --dangerous ${{ steps.snapcraft.outputs.snap }}
+        sudo snap install --dangerous ${{ steps.build.outputs.snap }}
         sudo snap set mastodon-server domain="localhost"
         sudo snap set mastodon-server email="admin@local.host"
         sudo mastodon-server.setup

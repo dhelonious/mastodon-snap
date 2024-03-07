@@ -1,5 +1,5 @@
 name: commands
-run-name: Run workflows based on commands
+run-name: Issue comment
 on:
   issue_comment:
     types:
@@ -9,13 +9,19 @@ jobs:
   rebuild:
     if: ${{ contains(github.event.comment.body, '/rebuild') }}
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
     steps:
     - uses: actions-ecosystem/action-regex-match@v2
-      id: regex
       with:
         text: ${{ github.event.comment.body }}
-        regex: '^\/rebuild\s*([\w\.]+?)$'
+        regex: '^/rebuild\s*([\w\.]+?)$'
+      id: regex
     - uses: actions/checkout@v4
-    - uses: ./.github/workflows/update.yaml
+    - uses: ./.github/actions/rebuild
       with:
-        release_tag: ${{ steps.regex.outputs.group1 }}
+        tag: ${{ steps.regex.outputs.group1 }}
+    - run: gh issue comment "${{ github.event.issue.number }}" --body "${{ steps.regex.outputs.group1 }} rebuild completed successfully"
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GH_REPO: ${{ github.repository }}

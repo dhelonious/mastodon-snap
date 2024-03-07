@@ -1,0 +1,17 @@
+name: build
+run-name: Build snap
+inputs:
+  tag:
+    required: false
+    type: string
+outputs:
+  snap:
+    value: ${{ steps.build.outputs.snap }}
+runs:
+  using: composite
+  steps:
+  - uses: actions/checkout@v4
+    with:
+      ref: ${{ inputs.tag }}
+  - uses: snapcore/action-build@v1
+    id: build

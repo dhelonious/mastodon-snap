@@ -3,7 +3,7 @@ run-name: Rebuild snap and update release
 on:
   workflow_dispatch:
     inputs:
-      release_tag:
+      tag:
         description: Tag of the release to update
         required: true
         type: string
@@ -18,7 +18,7 @@ on:
         - debug
   workflow_call:
     inputs:
-      release_tag:
+      tag:
         required: true
         type: string
 jobs:
@@ -26,16 +26,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - uses: snapcore/action-build@v1
-      id: snapcraft
-    - uses: ncipollo/release-action@v1
+    - uses: ./.github/actions/rebuild
       with:
-        tag: ${{ inputs.release_tag }}
-        artifacts: ${{ steps.snapcraft.outputs.snap }}
-        allowUpdates: true
-        replacesArtifacts: true
-        omitNameDuringUpdate: true
-        omitBodyDuringUpdate: true
-        omitPrereleaseDuringUpdate: true
-        omitDraftDuringUpdate: true
-        artifactErrorsFailBuild: true
+        tag: ${{ inputs.tag }}
