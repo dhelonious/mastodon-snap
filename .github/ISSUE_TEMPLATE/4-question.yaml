@@ -6,6 +6,5 @@ body:
   attributes:
     label: Description
     description: Ask your questions here.
-    render: markdown
   validations:
     required: true

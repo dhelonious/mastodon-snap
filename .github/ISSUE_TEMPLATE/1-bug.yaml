@@ -13,10 +13,9 @@ body:
   attributes:
     label: Description
     description: A detailed description of what you're experiencing and what you expected to happen.
-    render: markdown
   validations:
     required: true
-- type: textarea
+- type: input
   attributes:
     label: Version
     description: Which version are you using?
@@ -31,7 +30,7 @@ body:
     default: 0
   validations:
     required: true
-- type: textarea
+- type: input
   attributes:
     label: OS
     description: What OS and version are you running?

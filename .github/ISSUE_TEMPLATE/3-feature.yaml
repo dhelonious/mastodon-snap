@@ -13,6 +13,5 @@ body:
   attributes:
     label: Description
     description: A detailed description of what you're missing and why it should be added.
-    render: markdown
   validations:
     required: true
