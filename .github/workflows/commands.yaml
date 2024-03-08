@@ -9,8 +9,6 @@ jobs:
   rebuild:
     if: ${{ contains(github.event.comment.body, '/rebuild') }}
     runs-on: ubuntu-latest
-    permissions:
-      issues: write
     steps:
     - uses: actions-ecosystem/action-regex-match@v2
       with:

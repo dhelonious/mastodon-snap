@@ -1,0 +1,12 @@
+name: test
+run-name: Test installation
+inputs:
+  snap:
+    required: true
+    type: string
+runs:
+  - run: |
+      sudo snap install --dangerous ${{ snap }}
+      sudo snap set mastodon-server domain="localhost"
+      sudo snap set mastodon-server email="admin@local.host"
+      sudo mastodon-server.setup
