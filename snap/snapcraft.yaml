@@ -9,7 +9,7 @@ description: |
   implements ActivityPub!)
 
 base: core20
-version: 4.2.8snap1
+version: 4.2.8snap2
 grade: stable
 confinement: strict
 
@@ -166,6 +166,12 @@ apps:
       - removable-media
 
 parts:
+  license:
+    plugin: dump
+    source: .
+    stage:
+      - LICENSE
+
   base:
     plugin: dump
     source: src/snap/
@@ -473,8 +479,8 @@ parts:
 
   yarn:
     # NOTE: https://github.com/yarnpkg/yarn/releases/latest (latest classic version)
-    source: https://yarnpkg.com/downloads/1.22.21/yarn-v1.22.21.tar.gz
-    source-checksum: sha256/a55bb4e85405f5dfd6e7154a444e7e33ad305d7ca858bad8546e932a6688df08
+    source: https://yarnpkg.com/downloads/1.22.22/yarn-v1.22.22.tar.gz
+    source-checksum: sha256/88268464199d1611fcf73ce9c0a6c4d44c7d5363682720d8506f6508addf36a0
     plugin: dump
     build-environment:
       - PATH: $SNAPCRAFT_STAGE/yarn/bin:$PATH
@@ -574,8 +580,8 @@ parts:
 
   musl-libc:
     # NOTE: https://git.musl-libc.org/cgit/musl
-    source: https://musl.libc.org/releases/musl-1.2.4.tar.gz
-    source-checksum: sha256/7a35eae33d5372a7c0da1188de798726f68825513b7ae3ebe97aaaa52114f039
+    source: https://musl.libc.org/releases/musl-1.2.5.tar.gz
+    source-checksum: sha256/a9a118bbe84d8764da0ea0d28b3ab3fae8477fc7e4085d90102b8596fc7c75e4
     plugin: autotools
     override-build: |
       ./configure --prefix=$SNAPCRAFT_PART_INSTALL/musl-libc
@@ -603,8 +609,8 @@ parts:
     after:
       - imagemagick-customizations
     # NOTE: https://github.com/ImageMagick/ImageMagick/releases/latest
-    source: https://github.com/ImageMagick/ImageMagick/archive/refs/tags/7.1.1-28.tar.gz
-    source-checksum: sha256/691b6fe35aa39df351678fb626779bede8ba1b2f08ce1d95d421b9840a27a582
+    source: https://github.com/ImageMagick/ImageMagick/archive/refs/tags/7.1.1-29.tar.gz
+    source-checksum: sha256/27bd25f945efdd7e38f6f9845a7c0a391fdb732f652dda140b743769c5f106e8
     plugin: autotools
     build-packages:
       - build-essential
