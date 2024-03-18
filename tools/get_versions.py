@@ -1,15 +1,23 @@
 #!/bin/env python
 
+"""
+Get versions of dependencies
+"""
+
 import re
+import argparse
 import requests
-
-
-MASTODON_RELEASE = "v4.2.8"
 
 
 def print_table(name, version):
     print(f"{name:<12} {version}")
 
+
+parser = argparse.ArgumentParser(description="Get versions of dependencies")
+parser.add_argument("mastodon_version", type=str)
+args = parser.parse_args()
+
+MASTODON_RELEASE = f"v{ args.mastodon_version }"
 
 github_latest_urls = {
     "mastodon": {
