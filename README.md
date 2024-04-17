@@ -153,11 +153,12 @@ You may also be interested in enabling what is also known as *secure mode* via `
 Add the following lines to `/var/snap/mastodon-server/common/mastodon.conf`:
 
     SMTP_SERVER=smtp.example.com
-    SMTP_PORT=587
-    SMTP_LOGIN=root@example.com
+    SMTP_PORT=465
+    SMTP_LOGIN=mastodon@example.com
     SMTP_PASSWORD=********
     SMTP_AUTH_METHOD=plain
-    SMTP_OPENSSL_VERIFY_MODE=peer
+    SMTP_SSL=true
+    SMTP_OPENSSL_VERIFY_MODE=none
     SMTP_ENABLE_STARTTLS=always
     SMTP_FROM_ADDRESS="Mastodon <mastodon@example.com>"
 
