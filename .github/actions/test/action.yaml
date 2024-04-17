@@ -5,8 +5,11 @@ inputs:
     required: true
     type: string
 runs:
+  using: composite
+  steps:
   - run: |
-      sudo snap install --dangerous ${{ snap }}
+      sudo snap install --dangerous ${{ inputs.snap }}
       sudo snap set mastodon-server domain="localhost"
       sudo snap set mastodon-server email="admin@local.host"
       sudo mastodon-server.setup
+    shell: bash

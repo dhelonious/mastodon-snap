@@ -33,7 +33,3 @@ jobs:
     - uses: ./.github/actions/test
       with:
         snap: ${{ steps.build.outputs.snap }}
-    - uses: actions/upload-artifact@v4
-      with:
-        name: ${{ steps.build.outputs.snap }}
-        path: ${{ steps.build.outputs.snap }}

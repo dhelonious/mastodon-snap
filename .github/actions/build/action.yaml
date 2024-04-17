@@ -20,9 +20,11 @@ runs:
       name: ${{ steps.build.outputs.snap }}
       path: ${{ steps.build.outputs.snap }}
       retention-days: 1
+      overwrite: true
   - uses: actions/checkout@v4
     with:
       ref: ${{ github.ref }}
   - uses: actions/download-artifact@v4
     with:
       name: ${{ steps.build.outputs.snap }}
+      path: ${{ steps.build.outputs.snap }}
