@@ -9,6 +9,8 @@ fi
 
 mkdir -p "$PG_SOCK_DIR"
 
+sed -i -e "s|^include_if_exists = .*|include_if_exists = '$(config_dir postgres)/postgresql.conf'|" "$PG_DATA_DIR/postgresql.conf"
+
 postgres \
     -D "$PG_DATA_DIR" \
     -k "$PG_SOCK_DIR" \
