@@ -23,7 +23,12 @@ on:
         type: string
 jobs:
   rebuild-and-update-release:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.builder }}
+    strategy:
+      matrix:
+        include:
+          - builder: ubuntu-latest
+            platform: linux/amd64
     steps:
     - uses: actions/checkout@v4
     - uses: ./.github/actions/rebuild

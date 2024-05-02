@@ -8,7 +8,12 @@ on:
 jobs:
   rebuild:
     if: ${{ contains(github.event.comment.body, '/rebuild') }}
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.builder }}
+    strategy:
+      matrix:
+        include:
+          - builder: ubuntu-latest
+            platform: linux/amd64
     steps:
     - uses: actions-ecosystem/action-regex-match@v2
       with:

@@ -27,4 +27,3 @@ runs:
   - uses: actions/download-artifact@v4
     with:
       name: ${{ steps.build.outputs.snap }}
-      path: ${{ steps.build.outputs.snap }}
