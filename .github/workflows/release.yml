@@ -33,3 +33,10 @@ jobs:
         makeLatest: true
         skipIfReleaseExists: true
         artifactErrorsFailBuild: true
+    - uses: snapcore/action-publish@v1
+      env:
+        SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
+      with:
+        snap: ${{ steps.build.outputs.snap }}
+        release: latest/stable
+      if: ${{ env.SNAPCRAFT_STORE_CREDENTIALS != '' }}
