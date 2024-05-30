@@ -4,6 +4,15 @@ inputs:
   tag:
     required: true
     type: string
+  release:
+    required: false
+    type: string
+  publish:
+    required: false
+    type: boolean
+  SNAPCRAFT_STORE_CREDENTIALS:
+    required: false
+    type: string
 runs:
   using: composite
   steps:
@@ -23,3 +32,10 @@ runs:
       omitPrereleaseDuringUpdate: true
       omitDraftDuringUpdate: true
       artifactErrorsFailBuild: true
+  - uses: snapcore/action-publish@v1
+    if: ${{ inputs.publish == 'true' }}
+    env:
+      SNAPCRAFT_STORE_CREDENTIALS: ${{ inputs.SNAPCRAFT_STORE_CREDENTIALS }}
+    with:
+      snap: ${{ steps.build.outputs.snap }}
+      release: ${{ inputs.release || 'latest/edge' }}

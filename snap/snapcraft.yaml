@@ -9,7 +9,7 @@ description: |
   implements ActivityPub!)
 
 base: core20
-version: 4.2.8snap2
+version: 4.2.9snap2
 grade: stable
 confinement: strict
 
@@ -33,7 +33,7 @@ environment:
   RAILS_SERVE_STATIC_FILES: "true"
   MAGICK_CONFIGURE_PATH: $SNAP/mastodon/config/imagemagick:$SNAP/imagemagick/config
   MAGIC: $SNAP/usr/lib/file/magic.mgc
-  PG_VERSION: 16
+  PG_VERSION: 16 # NOTE: must be updated with postgres source
 
 apps:
   logrotate:
@@ -143,6 +143,9 @@ apps:
 
   console:
     command: bin/rails-console.wrapper
+    plugs:
+      - network
+      - network-bind
 
   generate-secret:
     command: bin/rake-secret.wrapper
@@ -272,8 +275,8 @@ parts:
     after:
       - openssl1
     # NOTE: https://github.com/curl/curl/releases/latest
-    source: https://curl.se/download/curl-8.6.0.tar.gz
-    source-checksum: sha256/9c6db808160015f30f3c656c0dec125feb9dc00753596bf858a272b5dd8dc398
+    source: https://curl.se/download/curl-8.8.0.tar.gz
+    source-checksum: sha256/77c0e1cd35ab5b45b659645a93b46d660224d0024f1185e8a95cdb27ae3d787d
     plugin: autotools
     build-environment:
       - PKG_CONFIG_PATH: $SNAPCRAFT_STAGE/openssl1/lib/pkgconfig
@@ -292,8 +295,8 @@ parts:
       - postgres-customizations
       - setpriv
     # NOTE: https://www.postgresql.org/ftp/latest
-    source: https://ftp.postgresql.org/pub/source/v16.2/postgresql-16.2.tar.gz
-    source-checksum: sha256/2b8201047ec81acd1bad29dba278d788e7891b9c3e8232eda16bb29dec8131c7
+    source: https://ftp.postgresql.org/pub/source/v16.3/postgresql-16.3.tar.gz
+    source-checksum: sha256/bd3798c399bc1b6d08b94340f9dd7a75a30a7fa076788ef2f4848be2be6a5fc5
     plugin: autotools
     build-packages:
       - gcc
@@ -353,8 +356,8 @@ parts:
     after:
       - nginx-customizations
     # NOTE: https://nginx.org/en/download.html (mainline version)
-    source: https://nginx.org/download/nginx-1.25.4.tar.gz
-    source-checksum: sha256/760729901acbaa517996e681ee6ea259032985e37c2768beef80df3a877deed9
+    source: https://nginx.org/download/nginx-1.27.0.tar.gz
+    source-checksum: sha256/b7230e3cf87eaa2d4b0bc56aadc920a960c7873b9991a1b66ffcc08fc650129c
     plugin: autotools
     build-environment:
       - PATH: $SNAPCRAFT_STAGE/nginx/bin:$PATH
@@ -396,8 +399,8 @@ parts:
     after:
       - redis-customizations
     # NOTE: https://github.com/redis/redis/releases/latest
-    source: https://download.redis.io/releases/redis-7.2.4.tar.gz
-    source-checksum: sha256/8d104c26a154b29fd67d6568b4f375212212ad41e0c2caa3d66480e78dbd3b59
+    source: https://download.redis.io/releases/redis-7.2.5.tar.gz
+    source-checksum: sha256/5981179706f8391f03be91d951acafaeda91af7fac56beffb2701963103e423d
     plugin: make
     override-build: |
       make -j"$(nproc)"
@@ -609,8 +612,8 @@ parts:
     after:
       - imagemagick-customizations
     # NOTE: https://github.com/ImageMagick/ImageMagick/releases/latest
-    source: https://github.com/ImageMagick/ImageMagick/archive/refs/tags/7.1.1-29.tar.gz
-    source-checksum: sha256/27bd25f945efdd7e38f6f9845a7c0a391fdb732f652dda140b743769c5f106e8
+    source: https://github.com/ImageMagick/ImageMagick/archive/refs/tags/7.1.1-33.tar.gz
+    source-checksum: sha256/3fe527ce04ee5485dc6f7726eccd05c962add5c5d91843c5abf6c608e4f55330
     plugin: autotools
     build-packages:
       - build-essential
@@ -714,14 +717,14 @@ parts:
       - openssl1
       - imagemagick
     # NOTE: https://github.com/mastodon/mastodon/releases/latest
-    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.2.8.tar.gz
-    source-checksum: sha256/ccecdfaab5f84cfaeb193eff2b7b795f7bdd08aa872e265dcb2625310f2c9478
+    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.2.9.tar.gz
+    source-checksum: sha256/97c85f40407df92af02c578dacbe3ea21a68dfe5f061ef2db7dbe269e0333e6b
     plugin: nil
     build-environment:
       - RUBY_BRANCH: "3.2" # NOTE: must be updated with ruby source
       - BUNDLER_VERSION: "2.4.13" # NOTE: see `Gemfile.lock`
       - BIRD_UI_VERSION: "1.8.5" # NOTE: https://github.com/ronilaukkarinen/mastodon-bird-ui/releases/latest
-      - TANGERINE_UI_VERSION: "1.9.4" # NOTE: https://github.com/nileane/TangerineUI-for-Mastodon/releases/latest
+      - TANGERINE_UI_VERSION: "1.9.5" # NOTE: https://github.com/nileane/TangerineUI-for-Mastodon/releases/latest
       - RAILS_ENV: production
       - NODE_ENV: production
       - OTP_SECRET: precompile_placeholder

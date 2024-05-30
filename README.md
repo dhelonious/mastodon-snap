@@ -72,6 +72,8 @@ If you have installed a snap file locally and still want to benefit from automat
 
     snap refresh --amend mastodon-server
 
+After the snap has updated itself, a new unpublished announcement will be created. You can review, publish or delete these announcements in *Preferences/Administration/Announcements*.
+
 
 # 🦣 Setup your instance
 
@@ -451,5 +453,4 @@ To allow Mastodon to access your private server IP, you can add it to the `ALLOW
 
 - [ ] Test on arm64
 - [ ] Use GitHub-hosted arm64 runner when available (https://github.com/orgs/community/discussions/19197)
-- [ ] Publish on snapcraft.io
 - [ ] Submit to Snapcrafters (see https://github.com/snapcrafters/fork-and-rename-me)

@@ -18,13 +18,21 @@ jobs:
     - uses: actions-ecosystem/action-regex-match@v2
       with:
         text: ${{ github.event.comment.body }}
-        regex: '^/rebuild\s*([\w\.]+?)$'
+        regex: '^/rebuild(\+[a-z]*)?\s*([\w\.]+)$'
       id: regex
     - uses: actions/checkout@v4
     - uses: ./.github/actions/rebuild
       with:
-        tag: ${{ steps.regex.outputs.group1 }}
-    - run: gh issue comment "${{ github.event.issue.number }}" --body "${{ steps.regex.outputs.group1 }} rebuild completed successfully"
+        tag: ${{ steps.regex.outputs.group2 }}
+        publish: ${{ steps.regex.outputs.group1 == '+publish' }}
+        release: latest/stable
+        SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
+    - run: gh issue comment "${{ github.event.issue.number }}" --body "${{ steps.regex.outputs.group2 }} rebuild completed successfully"
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GH_REPO: ${{ github.repository }}
+    - run: gh issue comment "${{ github.event.issue.number }}" --body "${{ steps.regex.outputs.group2 }} was published on snapcraft.io"
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GH_REPO: ${{ github.repository }}
+      if: ${{ steps.regex.outputs.group1 == '+publish' }}

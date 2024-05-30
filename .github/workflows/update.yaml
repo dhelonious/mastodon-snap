@@ -34,3 +34,6 @@ jobs:
     - uses: ./.github/actions/rebuild
       with:
         tag: ${{ inputs.tag }}
+        publish: true
+        release: latest/stable
+        SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
