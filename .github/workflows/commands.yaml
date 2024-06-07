@@ -18,12 +18,15 @@ jobs:
     - uses: actions-ecosystem/action-regex-match@v2
       with:
         text: ${{ github.event.comment.body }}
-        regex: '^/rebuild\s*([\w\.]+?)$'
+        regex: '^/rebuild(\+[a-z]*)?\s*([\w\.]+)$'
       id: regex
     - uses: actions/checkout@v4
     - uses: ./.github/actions/rebuild
       with:
-        tag: ${{ steps.regex.outputs.group1 }}
+        tag: ${{ steps.regex.outputs.group2 }}
+        publish: ${{ steps.regex.outputs.group1 == '+publish' }}
+        release: latest/stable
+        SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
     - run: gh issue comment "${{ github.event.issue.number }}" --body "${{ steps.regex.outputs.group1 }} rebuild completed successfully"
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
