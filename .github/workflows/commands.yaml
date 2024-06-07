@@ -31,3 +31,8 @@ jobs:
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GH_REPO: ${{ github.repository }}
+    - run: gh issue comment "${{ github.event.issue.number }}" --body "${{ steps.regex.outputs.group1 }} was published on snapcraft.io"
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GH_REPO: ${{ github.repository }}
+      if: ${{ steps.regex.outputs.group1 == '+publish' }}
