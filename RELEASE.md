@@ -20,3 +20,5 @@ This release contains:
 * musl-libc 1.2.5
 * mastodon-bird-ui 1.8.5
 * tangerine-ui 1.9.5
+
+The 4.2.9snap2 release also adds that an announcement is created every time the snap is updated.
