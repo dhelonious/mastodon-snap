@@ -72,6 +72,8 @@ If you have installed a snap file locally and still want to benefit from automat
 
     snap refresh --amend mastodon-server
 
+After the snap has updated itself, a new unpublished announcement will be created. You can review, publish or delete these announcements in *Preferences/Administration/Announcements*.
+
 
 # 🦣 Setup your instance
 
