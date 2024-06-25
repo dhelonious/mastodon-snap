@@ -33,7 +33,7 @@ environment:
   RAILS_SERVE_STATIC_FILES: "true"
   MAGICK_CONFIGURE_PATH: $SNAP/mastodon/config/imagemagick:$SNAP/imagemagick/config
   MAGIC: $SNAP/usr/lib/file/magic.mgc
-  PG_VERSION: 16
+  PG_VERSION: 16 # NOTE: must be updated with postgres source
 
 apps:
   logrotate:
@@ -143,6 +143,9 @@ apps:
 
   console:
     command: bin/rails-console.wrapper
+    plugs:
+      - network
+      - network-bind
 
   generate-secret:
     command: bin/rake-secret.wrapper
