@@ -79,7 +79,9 @@ After the snap has updated itself, a new unpublished announcement will be create
 
 An initial setup command is required to initialize the database and configuration files for Mastodon:
 
-    sudo mastodon:setup
+    sudo mastodon-server.setup
+
+> Note: Be patient if you have changed the `status.char-limit` or `status.char-counter`, as it takes some time to recompile the assets. Ideally, these values should be changed before setup.
 
 ## Create admin user
 
@@ -104,6 +106,10 @@ If you want to provide your own certificates, you will need to place the private
 * `/var/snap/mastodon-server/common/certs/<domain>_ecc/<domain>.key`
 * `/var/snap/mastodon-server/common/certs/<domain>_ecc/fullchain.cer`
 
+Restart the `nginx` service afterwards:
+
+    snap restart mastodon-server.nginx
+
 
 # ⚙️ Configuration
 
@@ -113,26 +119,34 @@ Basic settings can be configured using key-value pairs:
 
 The following settings are available:
 
-| Key                  | Values                        | Default value          | Description                                                           |
-|----------------------|-------------------------------|------------------------|-----------------------------------------------------------------------|
-| `domain`             | valid FQDN                    |                        | FQDN of the Mastodon instance                                         |
-| `email`              | valid e-mail                  |                        | E-mail address of the owner of the Mastodon instance                  |
-| `ports.http`         | 0 to 65353                    | 80                     | HTTP port                                                             |
-| `ports.https`        | 0 to 65353                    | 443                    | HTTPS port                                                            |
-| `acme.server`        | letsencrypt, zerossl          | letsencrypt            | CA used for acquiring an SSL certificate                              |
-| `update.backups`     | true, false                   | true                   | Create a backup in `/var/snap/mastodon-server/common/update/backups` before updating |
-| `media.dir`          | absolute path                 | `$SNAP_COMMON/media`   | Location of the media directory (*public/system*)                     |
-| `backup.dir`         | absolute path                 | `$SNAP_COMMON/backups` | Location of the backup directory                                      |
-| `backup.days`        | integer                       | 0                      | Create and keep backups for `backup.days` (enabled if > 0)            |
-| `cleanup.days`       | integer                       | 7                      | Cleanup media and statuses older than `cleanup.days` (enabled if > 0) |
-| `cleanup.media`      | true, false                   | true                   | Cleanup media files, see [tootctl media remove](https://docs.joinmastodon.org/admin/tootctl/#media-remove) |
-| `cleanup.previews`   | true, false                   | true                   | Cleanup preview cards, see [tootctl preview_cards remove](https://docs.joinmastodon.org/admin/tootctl/#preview_cards) |
-| `cleanup.statuses`   | true, false                   | true                   | Cleanup unreferenced statuses, see [tootctl statuses remove](https://docs.joinmastodon.org/admin/tootctl/#statuses-remove) |
-| `cleanup.orphans`    | true, false                   | false                  | Cleanup orphaned media files, see [tootctl media remove-orphans](https://docs.joinmastodon.org/admin/tootctl/#media-remove-orphans) |
-| `log.access.enabled` | true, false                   | false                  | Logging of http(s) accesses                                           |
-| `log.access.format`  | standard, anonymized, privacy | anonymized             | Use of real/anonymized/no IP addresses in the access log              |
+| Key                   | Values                        | Default value          | Description                                                                          |
+|-----------------------|-------------------------------|------------------------|--------------------------------------------------------------------------------------|
+| `domain`              | valid FQDN                    |                        | FQDN of the Mastodon instance                                                        |
+| `email`               | valid e-mail                  |                        | E-mail address of the owner of the Mastodon instance                                 |
+| `ports.http`          | 0 to 65353                    | 80                     | HTTP port                                                                            |
+| `ports.https`         | 0 to 65353                    | 443                    | HTTPS port                                                                           |
+| `acme.server`         | letsencrypt, zerossl          | letsencrypt            | CA used for acquiring an SSL certificate                                             |
+| `update.backups`      | true, false                   | true                   | Create a backup in `/var/snap/mastodon-server/common/update/backups` before updating |
+| `status.char-limit`   | integer                       | 500                    | Character limit of statuses (toots); changes require recompilation of assets, which takes some time |
+| `status.char-counter` | integer                       | 500                    | Character counter shown for statuses (toots); changes require recompilation of assets, which takes some time |
+| `media.dir`           | absolute path                 | `$SNAP_COMMON/media`   | Location of the media directory (*public/system*)                                    |
+| `backup.dir`          | absolute path                 | `$SNAP_COMMON/backups` | Location of the backup directory                                                     |
+| `backup.days`         | integer                       | 0                      | Create and keep backups for `backup.days` (enabled if > 0)                           |
+| `cleanup.days`        | integer                       | 7                      | Cleanup media and statuses older than `cleanup.days` (enabled if > 0)                |
+| `cleanup.media`       | true, false                   | true                   | Cleanup media files, see [tootctl media remove](https://docs.joinmastodon.org/admin/tootctl/#media-remove) |
+| `cleanup.previews`    | true, false                   | true                   | Cleanup preview cards, see [tootctl preview_cards remove](https://docs.joinmastodon.org/admin/tootctl/#preview_cards) |
+| `cleanup.statuses`    | true, false                   | true                   | Cleanup unreferenced statuses, see [tootctl statuses remove](https://docs.joinmastodon.org/admin/tootctl/#statuses-remove) |
+| `cleanup.orphans`     | true, false                   | false                  | Cleanup orphaned media files, see [tootctl media remove-orphans](https://docs.joinmastodon.org/admin/tootctl/#media-remove-orphans) |
+| `log.access.enabled`  | true, false                   | false                  | Logging of http(s) accesses                                                          |
+| `log.access.format`   | standard, anonymized, privacy | anonymized             | Use of real/anonymized/no IP addresses in the access log                             |
 
-Configuration files can be used for advanced customization.
+You can also set multiple values at once using
+
+    sudo snap set mastodon-server KEY1=VALUE1 KEY2=VALUE2
+
+> Note: This is particularly useful if you want to change both `status.char-limit` and `status.char-counter`, as the assets only need to be recompiled once.
+
+Configuration files can be used for further customization.
 
 ## Single user instances
 
@@ -380,7 +394,7 @@ If you are unable to solve the problem, or the problem cannot be solved due to t
 
 If reverting does not work or is not possible, try `snap remove` and reinstall the snap. You should also make a backup of the media in `/var/snap/mastodon-server/common/media/` if you have not already done so using `mastodon-server.export`. After installation, the postgres database should be initialized and working. Stop the snap with `snap stop mastodon-server` and replace the data dir, password file and media dir with your backups and change the permissions and ownership of the postgres data dir:
 
-    chown -R snap_daemon:snap_daemon /var/snap/mastodon-server/current/postgres/data/
+    chown -R snap_daemon:root /var/snap/mastodon-server/current/postgres/data/
     find /var/snap/mastodon-server/current/postgres/data/ -type f -exec chmod 600 {} \;
     find /var/snap/mastodon-server/current/postgres/data/ -type d -exec chmod 700 {} \;
 

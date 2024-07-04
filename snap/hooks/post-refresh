@@ -11,10 +11,15 @@ echo Update configs
 
 . "$SNAP/postgres.env"
 
+export CURRENT_PG_VERSION="$(get_postgres_version_file)"
+
 echo Update postgres config
 copy_postgres_config
 
-. "$SNAP/postgres.env"
+# NOTE: This is a fix for older versions and may be removed in the future
+echo Set permissions on postgres log
+set_postgres_log_permissions
+
 if [ "$PG_VERSION" != "$CURRENT_PG_VERSION" ]; then
     if [ -f "$SNAP_COMMON/database.sql" ]; then
         echo Update postgres data
@@ -26,6 +31,9 @@ if [ "$PG_VERSION" != "$CURRENT_PG_VERSION" ]; then
         psql.wrapper -f "$SNAP_COMMON/database.sql" template1 > /dev/null
         rm -f "$SNAP_COMMON/database.sql"
     fi
+else
+    enable_postgres_config
+    snapctl restart "$SNAP_NAME.postgres"
 fi
 
 # Redis
@@ -45,7 +53,6 @@ if [ "$SNAP_VERSION" != "$CURRENT_SNAP_VERSION" ]; then
         link_mastodon_config
 
         echo Update mastodon database
-        snapctl start "$SNAP_NAME.postgres"
         postgres_waitready
         mastodon_rails db:prepare
 
@@ -54,6 +61,8 @@ if [ "$SNAP_VERSION" != "$CURRENT_SNAP_VERSION" ]; then
     fi
 fi
 
+echo Add update announcement
+postgres_waitready
 mastodon_announcement "The mastodon-server snap has been updated to version $SNAP_VERSION"
 
 # Nginx
@@ -70,3 +79,4 @@ copy_config logrotate logrotate.conf
 
 update_bundle_path
 update_snap_version_file
+update_postgres_version_file

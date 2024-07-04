@@ -3,14 +3,14 @@
 . "$SNAP/snap.env"
 set_default_settings
 
-update_snap_version_file
-
 reset_restart_required redis
 reset_restart_required postgres
 reset_restart_required backend
 reset_restart_required sidekiq
 reset_restart_required streaming
 reset_restart_required nginx
+
+update_snap_version_file
 
 mkdir -p "$LOG_DIR" "$SECRET_DIR" "$CERT_DIR"
 mkdir -p "$UPDATE_DIR" "$UPDATE_BACKUP_DIR"
@@ -24,8 +24,11 @@ echo Install postgres
 export PG_PASSWORD=$(generate_secret postgres)
 
 create_postgres_dirs
+create_postgres_log
 copy_postgres_config
 setup_postgres_database
+
+update_postgres_version_file
 
 # Redis
 
@@ -42,6 +45,8 @@ copy_config redis redis.conf
 
 echo Install mastodon
 . "$SNAP/mastodon.env"
+
+reset_recompile_required
 
 update_mastodon_files
 setup_mastodon_database

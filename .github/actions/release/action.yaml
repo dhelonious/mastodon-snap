@@ -1,0 +1,35 @@
+name: update
+run-name: Rebuild snap and update release
+inputs:
+  tag:
+    required: false
+    type: string
+runs:
+  using: composite
+  steps:
+  - uses: actions/download-artifact@v4
+    with:
+      pattern: "*.snap"
+      merge-multiple: true
+  - name: create new release
+    if: ${{ inputs.tag.is_provided == 'false' }}
+    uses: ncipollo/release-action@v1
+    with:
+      bodyFile: RELEASE.md
+      artifacts: "${{ github.workspace }}/*.snap"
+      makeLatest: true
+      skipIfReleaseExists: true
+      artifactErrorsFailBuild: true
+  - name: update existing release
+    if: ${{ inputs.tag.is_provided == 'true' }}
+    uses: ncipollo/release-action@v1
+    with:
+      tag: ${{ inputs.tag }}
+      artifacts: "${{ github.workspace }}/*.snap"
+      allowUpdates: true
+      replacesArtifacts: true
+      omitNameDuringUpdate: true
+      omitBodyDuringUpdate: true
+      omitPrereleaseDuringUpdate: true
+      omitDraftDuringUpdate: true
+      artifactErrorsFailBuild: true

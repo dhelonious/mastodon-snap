@@ -3,11 +3,22 @@
 . "$SNAP/nginx.env"
 . "$SNAP/mastodon.env"
 
+export CURRENT_DOMAIN="$(mastodon_get_var LOCAL_DOMAIN)"
 export CURRENT_HTTP_PORT="$(nginx_get_http_port)"
 export CURRENT_HTTPS_PORT="$(nginx_get_https_port)"
 export CURRENT_NGINX_ACCESS_LOG="$(nginx_get_access_log)"
 export CURRENT_MEDIA_DIR="$(readlink -f $SNAP_DATA/mastodon/public/system)"
 export CURRENT_BACKUP_DIR="$(get_backup_dir_file)"
+export CURRENT_STATUS_MAX_CHARS="$(get_status_max_chars_file)"
+export CURRENT_STATUS_MAX_CHARS_COUNTER="$(get_status_max_chars_counter_file)"
+
+reset_restart_required redis
+reset_restart_required postgres
+reset_restart_required backend
+reset_restart_required sidekiq
+reset_restart_required streaming
+reset_restart_required nginx
+reset_recompile_required
 
 if [ "$NGINX_ACCESS_LOG" != "$CURRENT_NGINX_ACCESS_LOG" ]; then
     restart_required nginx
@@ -25,8 +36,6 @@ if [ "$MEDIA_DIR" != "$CURRENT_MEDIA_DIR" ]; then
     restart_required backend
     restart_required sidekiq
     restart_required streaming
-    restart_required redis
-    restart_required nginx
 fi
 
 if [ "$BACKUP_DIR" != "$CURRENT_BACKUP_DIR" ]; then
@@ -35,11 +44,34 @@ if [ "$BACKUP_DIR" != "$CURRENT_BACKUP_DIR" ]; then
 fi
 
 if $(mastodon_config_exists); then
-    export CURRENT_DOMAIN="$(mastodon_get_var LOCAL_DOMAIN)"
-
     if [ "$DOMAIN" != "$CURRENT_DOMAIN" ]; then
         echo_error "DOMAIN cannot be changed safely! Setup a new instance if you really want to change it."
-        exit 1
+        snapctl set domain=$CURRENT_DOMAIN
+        export DOMAIN="$CURRENT_DOMAIN"
+    fi
+
+    if [ "$STATUS_MAX_CHARS" != "$CURRENT_STATUS_MAX_CHARS" ]; then
+        if ! is_number "$STATUS_MAX_CHARS"; then
+            echo_error "STATUS.CHAR-LIMIT must be a number! Change the value of STATUS.CHAR-LIMIT to fix this."
+        else
+            echo Update status character limit
+            update_status_max_chars
+            recompile_required
+            restart_required backend
+            restart_required sidekiq
+        fi
+    fi
+
+    if [ "$STATUS_MAX_CHARS_COUNTER" != "$CURRENT_STATUS_MAX_CHARS_COUNTER" ]; then
+        if ! is_number "$STATUS_MAX_CHARS_COUNTER"; then
+            echo_error "STATUS.CHAR-COUNTER must be a number! Change the value of STATUS.CHAR-COUNTER to fix this."
+        else
+            echo Update status character counter
+            update_status_max_chars_counter
+            recompile_required
+            restart_required backend
+            restart_required sidekiq
+        fi
     fi
 fi
 

@@ -9,7 +9,7 @@ description: |
   implements ActivityPub!)
 
 base: core20
-version: 4.2.9snap2
+version: 4.2.10snap5
 grade: stable
 confinement: strict
 
@@ -100,7 +100,9 @@ apps:
     timer: 03:00
 
   backend:
-    command: bin/mastodon-backend
+    command: bin/backend
+    stop-command: bin/recompile
+    stop-timeout: 10m
     daemon: simple
     plugs:
       - network
@@ -110,7 +112,7 @@ apps:
       LD_LIBRARY_PATH: $LD_LIBRARY_PATH:$SNAP/usr/lib/x86_64-linux-gnu/pulseaudio:$SNAP/usr/lib/arm64-linux-gnu/pulseaudio
 
   sidekiq:
-    command: bin/mastodon-sidekiq
+    command: bin/sidekiq
     daemon: simple
     environment:
       DB_PORT: 5432
@@ -123,7 +125,7 @@ apps:
       - removable-media
 
   streaming:
-    command: bin/mastodon-streaming
+    command: bin/streaming
     daemon: simple
     plugs:
       - network
@@ -229,8 +231,8 @@ parts:
       - logrotate-customizations
       - ipv6loganon
     # NOTE: https://github.com/logrotate/logrotate/releases/latest
-    source: https://github.com/logrotate/logrotate/releases/download/3.21.0/logrotate-3.21.0.tar.gz
-    source-checksum: sha256/1680947a9431de1aaa629fedde358696ff49a808ae903feecf996682949e3cff
+    source: https://github.com/logrotate/logrotate/releases/download/3.22.0/logrotate-3.22.0.tar.gz
+    source-checksum: sha256/93154424e73094d923a54de0d358007457282df7e14ee999a7c10d153e2c347e
     plugin: autotools
     build-packages:
       - autoconf
@@ -275,8 +277,8 @@ parts:
     after:
       - openssl1
     # NOTE: https://github.com/curl/curl/releases/latest
-    source: https://curl.se/download/curl-8.8.0.tar.gz
-    source-checksum: sha256/77c0e1cd35ab5b45b659645a93b46d660224d0024f1185e8a95cdb27ae3d787d
+    source: https://curl.se/download/curl-8.9.1.tar.gz
+    source-checksum: sha256/291124a007ee5111997825940b3876b3048f7d31e73e9caa681b80fe48b2dcd5
     plugin: autotools
     build-environment:
       - PKG_CONFIG_PATH: $SNAPCRAFT_STAGE/openssl1/lib/pkgconfig
@@ -295,8 +297,8 @@ parts:
       - postgres-customizations
       - setpriv
     # NOTE: https://www.postgresql.org/ftp/latest
-    source: https://ftp.postgresql.org/pub/source/v16.3/postgresql-16.3.tar.gz
-    source-checksum: sha256/bd3798c399bc1b6d08b94340f9dd7a75a30a7fa076788ef2f4848be2be6a5fc5
+    source: https://ftp.postgresql.org/pub/source/v16.4/postgresql-16.4.tar.gz
+    source-checksum: sha256/2e17a90062403e15d6540480fdec50c8b005eb48729a91cb4989ffeb04df193c
     plugin: autotools
     build-packages:
       - gcc
@@ -399,13 +401,14 @@ parts:
     after:
       - redis-customizations
     # NOTE: https://github.com/redis/redis/releases/latest
-    source: https://download.redis.io/releases/redis-7.2.5.tar.gz
-    source-checksum: sha256/5981179706f8391f03be91d951acafaeda91af7fac56beffb2701963103e423d
+    source: https://download.redis.io/releases/redis-7.4.0.tar.gz
+    source-checksum: sha256/57b47c2c6682636d697dbf5d66d8d495b4e653afc9cd32b7adf9da3e433b8aaf
     plugin: make
     override-build: |
+      sed -ri "s,/sys/devices/system/clocksource/clocksource0/(current|available)_clocksource,/dev/null," $SNAPCRAFT_PART_BUILD/src/syscheck.c
       make -j"$(nproc)"
       make install PREFIX=$SNAPCRAFT_PART_INSTALL/redis
-      cp $SNAPCRAFT_PART_SRC/COPYING $SNAPCRAFT_PART_INSTALL/redis/
+      cp $SNAPCRAFT_PART_SRC/LICENSE.txt $SNAPCRAFT_PART_INSTALL/redis/
     stage:
       - -redis/share/doc
       - -redis/share/man
@@ -573,10 +576,10 @@ parts:
       cp $SNAPCRAFT_PART_SRC/LEGAL $SNAPCRAFT_PART_INSTALL/ruby/
     override-stage: |
       snapcraftctl stage
-      find $SNAPCRAFT_STAGE/ruby/bin -type f -exec grep -Iq . {} \; -and -exec sed -i -e "s|^#!//bin/ruby$|#!$SNAPCRAFT_STAGE/ruby/bin/ruby|" {} \;
+      find $SNAPCRAFT_STAGE/ruby/bin -type f -exec grep -Iq . {} \; -and -exec sed -ie "s|^#!//bin/ruby$|#!$SNAPCRAFT_STAGE/ruby/bin/ruby|" {} \;
     override-prime: |
       snapcraftctl prime
-      find $SNAPCRAFT_PRIME/ruby/bin -type f -exec grep -Iq . {} \; -and -exec sed -i -e "s|^#!$SNAPCRAFT_STAGE/ruby/bin/ruby$|#!/snap/mastodon-server/current/ruby/bin/ruby|" {} \;
+      find $SNAPCRAFT_PRIME/ruby/bin -type f -exec grep -Iq . {} \; -and -exec sed -ie "s|^#!$SNAPCRAFT_STAGE/ruby/bin/ruby$|#!/snap/mastodon-server/current/ruby/bin/ruby|" {} \;
     stage:
       - -ruby/share/doc
       - -ruby/share/man
@@ -612,8 +615,8 @@ parts:
     after:
       - imagemagick-customizations
     # NOTE: https://github.com/ImageMagick/ImageMagick/releases/latest
-    source: https://github.com/ImageMagick/ImageMagick/archive/refs/tags/7.1.1-33.tar.gz
-    source-checksum: sha256/3fe527ce04ee5485dc6f7726eccd05c962add5c5d91843c5abf6c608e4f55330
+    source: https://github.com/ImageMagick/ImageMagick/archive/refs/tags/7.1.1-36.tar.gz
+    source-checksum: sha256/cb2925aadf126177f13f670c8ac47ba9a90d012f075ed50f936d141d160e3e97
     plugin: autotools
     build-packages:
       - build-essential
@@ -717,8 +720,8 @@ parts:
       - openssl1
       - imagemagick
     # NOTE: https://github.com/mastodon/mastodon/releases/latest
-    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.2.9.tar.gz
-    source-checksum: sha256/97c85f40407df92af02c578dacbe3ea21a68dfe5f061ef2db7dbe269e0333e6b
+    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.2.10.tar.gz
+    source-checksum: sha256/11b5a61fb09c16b96932300f746678dbe5a52a53ba16ecdaa6a0f4e7ab1e134b
     plugin: nil
     build-environment:
       - RUBY_BRANCH: "3.2" # NOTE: must be updated with ruby source
@@ -737,6 +740,8 @@ parts:
       - BUNDLE_RAKEFILE: $SNAPCRAFT_PART_BUILD/Rakefile
       - GEM_HOME: $SNAPCRAFT_PART_BUILD/vendor/ruby
       - GEM_PATH: $GEM_HOME
+      - YARN_RC_FILENAME: $SNAPCRAFT_PART_BUILD/.yarnrc.yml
+      - YARN_CONFIG_DIR: $SNAPCRAFT_PART_BUILD
     override-build: |
       gem install bundler -v $BUNDLER_VERSION --no-document --install-dir $GEM_PATH
       bundle config deployment "true"
@@ -746,6 +751,7 @@ parts:
       bundle config build.openssl --with-openssl-dir=$SNAPCRAFT_STAGE/openssl1
       bundle config build.pg --with-pg-config=$SNAPCRAFT_STAGE/postgres/bin/pg_config
       bundle install -j"$(nproc)"
+      npx browserslist@latest --update-db --yes
       yarn install --pure-lockfile
       yarn cache clean
       bundle exec rails assets:precompile

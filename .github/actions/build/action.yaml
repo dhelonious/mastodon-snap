@@ -4,15 +4,6 @@ inputs:
   tag:
     required: false
     type: string
-  release:
-    required: false
-    type: string
-  publish:
-    required: false
-    type: boolean
-  SNAPCRAFT_STORE_CREDENTIALS:
-    required: false
-    type: string
 outputs:
   snap:
     value: ${{ steps.build.outputs.snap }}
@@ -30,16 +21,3 @@ runs:
       path: ${{ steps.build.outputs.snap }}
       retention-days: 1
       overwrite: true
-  - uses: actions/checkout@v4
-    with:
-      ref: ${{ github.ref }}
-  - uses: actions/download-artifact@v4
-    with:
-      name: ${{ steps.build.outputs.snap }}
-  - uses: snapcore/action-publish@v1
-    if: ${{ inputs.publish == 'true' }}
-    env:
-      SNAPCRAFT_STORE_CREDENTIALS: ${{ inputs.SNAPCRAFT_STORE_CREDENTIALS }}
-    with:
-      snap: ${{ steps.build.outputs.snap }}
-      release: ${{ inputs.release || 'latest/edge' }}

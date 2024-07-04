@@ -1,0 +1,24 @@
+name: rebuild
+run-name: Rebuild snap and update release
+inputs:
+  snap:
+    required: true
+    type: string
+  channel:
+    required: false
+    type: string
+  SNAPCRAFT_STORE_CREDENTIALS:
+    required: false
+    type: string
+runs:
+  using: composite
+  steps:
+  - uses: actions/download-artifact@v4
+    with:
+      name: ${{ inputs.snap }}
+  - uses: snapcore/action-publish@v1
+    env:
+      SNAPCRAFT_STORE_CREDENTIALS: ${{ inputs.SNAPCRAFT_STORE_CREDENTIALS }}
+    with:
+      snap: ${{ github.workspace }}/${{ inputs.snap }}
+      release: latest/${{ inputs.channel || 'stable' }}

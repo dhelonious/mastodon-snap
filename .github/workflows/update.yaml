@@ -4,36 +4,79 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: Tag of the release to update
+        description: Tag
         required: true
         type: string
-      logLevel:
-        description: Log level
+      channel:
+        description: Channel
         required: true
-        default: warning
         type: choice
+        default: stable
         options:
-        - info
-        - warning
-        - debug
+        - stable
+        - candidate
+        - beta
+        - edge
   workflow_call:
     inputs:
       tag:
         required: true
         type: string
 jobs:
-  rebuild-and-update-release:
+  build:
     runs-on: ${{ matrix.builder }}
     strategy:
       matrix:
         include:
           - builder: ubuntu-latest
-            platform: linux/amd64
+            arch: amd64
     steps:
-    - uses: actions/checkout@v4
-    - uses: ./.github/actions/rebuild
+    - uses: kaisugi/action-regex-match@v1.0.1
+      with:
+        text: ${{ github.ref_name }}
+        regex: '^[\d\.]+snap\d+(candidate|beta|edge|)\d*$'
+      id: regex
+    - uses: ./.github/actions/build
       with:
         tag: ${{ inputs.tag }}
-        publish: true
-        release: latest/stable
+      id: build
+    - run: echo "${{ matrix.arch }}=${{ steps.build.outputs.snap }}" >> $GITHUB_OUTPUT
+      id: snap
+    outputs:
+      amd64: ${{ steps.snap.outputs.amd64 }}
+  test:
+    needs: build
+    runs-on: ${{ matrix.builder }}
+    strategy:
+      matrix:
+        include:
+          - builder: ubuntu-latest
+            arch: amd64
+    steps:
+    - uses: ./.github/actions/test
+      with:
+        snap: ${{ needs.build.outputs[matrix.arch] }}
+  release:
+    needs:
+      - build
+      - test
+    steps:
+    - uses: ./.github/actions/release
+      with:
+        tag: ${{ inputs.tag }}
+  publish:
+    needs:
+      - build
+      - test
+    runs-on: ${{ matrix.builder }}
+    strategy:
+      matrix:
+        include:
+          - builder: ubuntu-latest
+            arch: amd64
+    steps:
+    - uses: ./.github/actions/publish
+      with:
+        snap: ${{ needs.build.outputs[matrix.arch] }}
+        channel: ${{ inputs.channel || steps.regex.outputs.group1 }}
         SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}

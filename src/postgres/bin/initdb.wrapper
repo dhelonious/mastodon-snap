@@ -5,5 +5,3 @@
 mkdir -p "$PG_DATA_DIR"
 
 exec initdb -D "$PG_DATA_DIR" -U postgres -A trust -E UTF8 --locale=C
-
-$SNAP/bin/append "include_if_exists = '$(config_dir postgres)/postgresql.conf'" "$PG_DATA_DIR/postgresql.conf"
