@@ -9,7 +9,7 @@ description: |
   implements ActivityPub!)
 
 base: core20
-version: 4.2.9snap2
+version: 4.2.10snap1
 grade: stable
 confinement: strict
 
@@ -229,8 +229,8 @@ parts:
       - logrotate-customizations
       - ipv6loganon
     # NOTE: https://github.com/logrotate/logrotate/releases/latest
-    source: https://github.com/logrotate/logrotate/releases/download/3.21.0/logrotate-3.21.0.tar.gz
-    source-checksum: sha256/1680947a9431de1aaa629fedde358696ff49a808ae903feecf996682949e3cff
+    source: https://github.com/logrotate/logrotate/releases/download/3.22.0/logrotate-3.22.0.tar.gz
+    source-checksum: sha256/93154424e73094d923a54de0d358007457282df7e14ee999a7c10d153e2c347e
     plugin: autotools
     build-packages:
       - autoconf
@@ -612,8 +612,8 @@ parts:
     after:
       - imagemagick-customizations
     # NOTE: https://github.com/ImageMagick/ImageMagick/releases/latest
-    source: https://github.com/ImageMagick/ImageMagick/archive/refs/tags/7.1.1-33.tar.gz
-    source-checksum: sha256/3fe527ce04ee5485dc6f7726eccd05c962add5c5d91843c5abf6c608e4f55330
+    source: https://github.com/ImageMagick/ImageMagick/archive/refs/tags/7.1.1-34.tar.gz
+    source-checksum: sha256/19f4303774b56be182c576b266c34bc824fcaef1d1d243192344d015adb0ec28
     plugin: autotools
     build-packages:
       - build-essential
@@ -717,8 +717,8 @@ parts:
       - openssl1
       - imagemagick
     # NOTE: https://github.com/mastodon/mastodon/releases/latest
-    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.2.9.tar.gz
-    source-checksum: sha256/97c85f40407df92af02c578dacbe3ea21a68dfe5f061ef2db7dbe269e0333e6b
+    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.2.10.tar.gz
+    source-checksum: sha256/11b5a61fb09c16b96932300f746678dbe5a52a53ba16ecdaa6a0f4e7ab1e134b
     plugin: nil
     build-environment:
       - RUBY_BRANCH: "3.2" # NOTE: must be updated with ruby source
