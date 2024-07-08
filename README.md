@@ -79,7 +79,7 @@ After the snap has updated itself, a new unpublished announcement will be create
 
 An initial setup command is required to initialize the database and configuration files for Mastodon:
 
-    sudo mastodon:setup
+    sudo mastodon-server.setup
 
 ## Create admin user
 
