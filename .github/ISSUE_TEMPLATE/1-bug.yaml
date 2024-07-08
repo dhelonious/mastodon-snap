@@ -1,6 +1,6 @@
 name: 🐞 Bug Report
 description: Use this to report bugs or general issues
-labels: ["bug", "help wanted"]
+labels: ["bug"]
 body:
 - type: checkboxes
   attributes:
