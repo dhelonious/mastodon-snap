@@ -380,7 +380,7 @@ If you are unable to solve the problem, or the problem cannot be solved due to t
 
 If reverting does not work or is not possible, try `snap remove` and reinstall the snap. You should also make a backup of the media in `/var/snap/mastodon-server/common/media/` if you have not already done so using `mastodon-server.export`. After installation, the postgres database should be initialized and working. Stop the snap with `snap stop mastodon-server` and replace the data dir, password file and media dir with your backups and change the permissions and ownership of the postgres data dir:
 
-    chown -R snap_daemon:snap_daemon /var/snap/mastodon-server/current/postgres/data/
+    chown -R snap_daemon:root /var/snap/mastodon-server/current/postgres/data/
     find /var/snap/mastodon-server/current/postgres/data/ -type f -exec chmod 600 {} \;
     find /var/snap/mastodon-server/current/postgres/data/ -type d -exec chmod 700 {} \;
 

@@ -14,7 +14,10 @@ echo Update configs
 echo Update postgres config
 copy_postgres_config
 
-. "$SNAP/postgres.env"
+# NOTE: This is a fix for older versions and may be removed in the future
+echo Set permissions on postgres log
+set_postgres_log_permissions
+
 if [ "$PG_VERSION" != "$CURRENT_PG_VERSION" ]; then
     if [ -f "$SNAP_COMMON/database.sql" ]; then
         echo Update postgres data

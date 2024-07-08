@@ -24,6 +24,7 @@ echo Install postgres
 export PG_PASSWORD=$(generate_secret postgres)
 
 create_postgres_dirs
+create_postgres_log
 copy_postgres_config
 setup_postgres_database
 
