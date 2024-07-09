@@ -48,7 +48,6 @@ if [ "$SNAP_VERSION" != "$CURRENT_SNAP_VERSION" ]; then
         link_mastodon_config
 
         echo Update mastodon database
-        snapctl start "$SNAP_NAME.postgres"
         postgres_waitready
         mastodon_rails db:prepare
 
@@ -57,6 +56,8 @@ if [ "$SNAP_VERSION" != "$CURRENT_SNAP_VERSION" ]; then
     fi
 fi
 
+echo Add update announcement
+postgres_waitready
 mastodon_announcement "The mastodon-server snap has been updated to version $SNAP_VERSION"
 
 # Nginx
