@@ -11,6 +11,8 @@ echo Update configs
 
 . "$SNAP/postgres.env"
 
+export CURRENT_PG_VERSION="$(get_postgres_version_file)"
+
 echo Update postgres config
 copy_postgres_config
 
@@ -29,6 +31,8 @@ if [ "$PG_VERSION" != "$CURRENT_PG_VERSION" ]; then
         psql.wrapper -f "$SNAP_COMMON/database.sql" template1 > /dev/null
         rm -f "$SNAP_COMMON/database.sql"
     fi
+else
+    snapctl restart "$SNAP_NAME.postgres"
 fi
 
 # Redis
@@ -74,3 +78,4 @@ copy_config logrotate logrotate.conf
 
 update_bundle_path
 update_snap_version_file
+update_postgres_version_file

@@ -23,3 +23,8 @@ This release contains:
 * musl-libc 1.2.5
 * mastodon-bird-ui 1.8.5
 * tangerine-ui 1.9.5
+
+Changelog for 4.2.10snap2:
+
+* The PostgreSQL log file now has permissions that allow it to be rotated by logrotate.
+* The snap now correctly detects and handles updates where the PostgreSQL major version changes.

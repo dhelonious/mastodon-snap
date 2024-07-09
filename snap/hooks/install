@@ -28,6 +28,8 @@ create_postgres_log
 copy_postgres_config
 setup_postgres_database
 
+update_postgres_version_file
+
 # Redis
 
 echo Install redis
