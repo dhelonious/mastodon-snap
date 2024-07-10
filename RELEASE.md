@@ -28,3 +28,4 @@ Changelog for 4.2.10snap2:
 
 * The PostgreSQL log file now has permissions that allow it to be rotated by logrotate.
 * The snap now correctly detects and handles updates where the PostgreSQL major version changes.
+* Remove create role commands from database backups to prevent confusing error messages during restore.
