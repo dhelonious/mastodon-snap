@@ -2,6 +2,8 @@ name: build
 run-name: Build snap
 on:
   push:
+    branches:
+    - development
     paths:
     - 'snap/**'
     - 'src/**'
