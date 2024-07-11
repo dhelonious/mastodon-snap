@@ -41,8 +41,18 @@ jobs:
       with:
         tag: ${{ inputs.tag }}
       id: rebuild
+    - run: echo "snap_${{ matrix.arch }}=${{ steps.rebuild.outputs.snap }}" >> $GITHUB_OUTPUT
+  publish:
+    needs: rebuild
+    runs-on: ${{ matrix.builder }}
+    strategy:
+      matrix:
+        include:
+          - builder: ubuntu-latest
+            arch: amd64
+    steps:
     - uses: ./.github/actions/publish
       with:
-        snap: ${{ steps.rebuild.outputs.snap }}
+        snap: ${{ needs.build.outputs[format('snap_{0}', matrix.arch)] }}
         channel: ${{ inputs.channel || steps.regex.outputs.group1 }}
         SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
