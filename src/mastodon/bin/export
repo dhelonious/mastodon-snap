@@ -24,10 +24,10 @@ cp "$SNAP_COMMON/mastodon.conf" "$export_dir/"
 
 echo Export database
 $SNAP/bin/pg_dumpall.wrapper -f "$export_dir/database.sql"
-sed -rie "s/^(CREATE ROLE postgres;)/-- \1/" "$export_dir/database.sql"
-sed -rie "s/^(CREATE ROLE $MASTODON_DBUSER;)/-- \1/" "$export_dir/database.sql"
+sed -ri "s/^(CREATE ROLE postgres;)/-- \1/" "$export_dir/database.sql"
+sed -ri "s/^(CREATE ROLE $MASTODON_DBUSER;)/-- \1/" "$export_dir/database.sql"
 
-if [ -z $SKIP_MEDIA_EXPORT ]; then
+if [ -z "$SKIP_MEDIA_EXPORT" ]; then
     if ! [ -z "$(ls -A $MEDIA_DIR)" ]; then
         echo Export media
         tar -czf "$export_dir/media.tar.gz" -C "$(dirname $MEDIA_DIR)" --exclude=*/cache "$(basename $MEDIA_DIR)"
