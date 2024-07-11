@@ -403,6 +403,7 @@ parts:
     source-checksum: sha256/5981179706f8391f03be91d951acafaeda91af7fac56beffb2701963103e423d
     plugin: make
     override-build: |
+      sed -ri "s,/sys/devices/system/clocksource/clocksource0/(current|available)_clocksource,/dev/null," $SNAPCRAFT_PART_BUILD/src/syscheck.c
       make -j"$(nproc)"
       make install PREFIX=$SNAPCRAFT_PART_INSTALL/redis
       cp $SNAPCRAFT_PART_SRC/COPYING $SNAPCRAFT_PART_INSTALL/redis/
@@ -573,10 +574,10 @@ parts:
       cp $SNAPCRAFT_PART_SRC/LEGAL $SNAPCRAFT_PART_INSTALL/ruby/
     override-stage: |
       snapcraftctl stage
-      find $SNAPCRAFT_STAGE/ruby/bin -type f -exec grep -Iq . {} \; -and -exec sed -i -e "s|^#!//bin/ruby$|#!$SNAPCRAFT_STAGE/ruby/bin/ruby|" {} \;
+      find $SNAPCRAFT_STAGE/ruby/bin -type f -exec grep -Iq . {} \; -and -exec sed -ie "s|^#!//bin/ruby$|#!$SNAPCRAFT_STAGE/ruby/bin/ruby|" {} \;
     override-prime: |
       snapcraftctl prime
-      find $SNAPCRAFT_PRIME/ruby/bin -type f -exec grep -Iq . {} \; -and -exec sed -i -e "s|^#!$SNAPCRAFT_STAGE/ruby/bin/ruby$|#!/snap/mastodon-server/current/ruby/bin/ruby|" {} \;
+      find $SNAPCRAFT_PRIME/ruby/bin -type f -exec grep -Iq . {} \; -and -exec sed -ie "s|^#!$SNAPCRAFT_STAGE/ruby/bin/ruby$|#!/snap/mastodon-server/current/ruby/bin/ruby|" {} \;
     stage:
       - -ruby/share/doc
       - -ruby/share/man
