@@ -17,9 +17,10 @@ runs:
   - uses: actions/download-artifact@v4
     with:
       name: ${{ inputs.snap }}
+    id: download
   - uses: snapcore/action-publish@v1
     env:
       SNAPCRAFT_STORE_CREDENTIALS: ${{ inputs.SNAPCRAFT_STORE_CREDENTIALS }}
     with:
-      snap: ${{ inputs.snap }}
+      snap: ${{ steps.download.outputs.path }}
       release: latest/${{ inputs.channel || 'stable' }}
