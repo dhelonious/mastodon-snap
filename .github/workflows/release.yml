@@ -2,25 +2,45 @@ name: release
 run-name: Build and release snap
 on:
   create:
-    branches: [main]
+    branches:
+    - main
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Tag
+        required: true
+        type: string
+      channel:
+        description: Channel
+        required: true
+        type: choice
+        default: edge
+        options:
+        - stable
+        - candidate
+        - beta
+        - edge
 jobs:
   build:
-    if: ${{ startsWith(github.ref, 'refs/tags/') }}
+    if: ${{ inputs.tag || startsWith(github.ref, 'refs/tags/') }}
     runs-on: ${{ matrix.builder }}
     strategy:
       matrix:
         include:
           - builder: ubuntu-latest
-            platform: linux/amd64
+            arch: amd64
     steps:
+    - uses: kaisugi/action-regex-match@v1.0.1
+      with:
+        text: ${{ github.ref_name }}
+        regex: '^[\d\.]+snap\d+(candidate|beta|edge|)\d*$'
+      id: regex
     - uses: actions/checkout@v4
     - uses: ./.github/actions/build
-      with:
-        publish: ${{ startsWith(github.ref, 'refs/tags/') }}
-        release: latest/stable
-        SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
+      id: build
+    - run: echo "snap_${{ matrix.arch }}=${{ steps.build.outputs.snap }}" >> $GITHUB_OUTPUT
   release:
-    if: ${{ startsWith(github.ref, 'refs/tags/') }}
+    if: ${{ inputs.tag || startsWith(github.ref, 'refs/tags/') }}
     needs: build
     runs-on: ubuntu-latest
     steps:
@@ -36,3 +56,19 @@ jobs:
         makeLatest: true
         skipIfReleaseExists: true
         artifactErrorsFailBuild: true
+  publish:
+    if: ${{ inputs.tag || startsWith(github.ref, 'refs/tags/') }}
+    needs: build
+    runs-on: ${{ matrix.builder }}
+    strategy:
+      matrix:
+        include:
+          - builder: ubuntu-latest
+            arch: amd64
+    steps:
+    - uses: actions/checkout@v4
+    - uses: ./.github/actions/publish
+      with:
+        snap: ${{ needs.build.outputs[format('snap_{0}', matrix.arch)] }}
+        channel: ${{ inputs.channel || steps.regex.outputs.group1 }}
+        SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}

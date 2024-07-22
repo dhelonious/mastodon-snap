@@ -13,26 +13,40 @@ jobs:
       matrix:
         include:
           - builder: ubuntu-latest
-            platform: linux/amd64
+            arch: amd64
     steps:
-    - uses: actions-ecosystem/action-regex-match@v2
+    - uses: kaisugi/action-regex-match@v1.0.1
       with:
         text: ${{ github.event.comment.body }}
         regex: '^/rebuild(\+[a-z]*)?\s*([\w\.]+)$'
       id: regex
+    - run: echo "command_suffix=${{ steps.regex.outputs.group1 }}" >> $GITHUB_OUTPUT
+    - run: echo "version=${{ steps.regex.outputs.group2 }}" >> $GITHUB_OUTPUT
     - uses: actions/checkout@v4
     - uses: ./.github/actions/rebuild
       with:
         tag: ${{ steps.regex.outputs.group2 }}
-        publish: ${{ steps.regex.outputs.group1 == '+publish' }}
-        release: latest/stable
-        SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
+      id: rebuild
+    - run: echo "snap_${{ matrix.arch }}=${{ steps.rebuild.outputs.snap }}" >> $GITHUB_OUTPUT
     - run: gh issue comment "${{ github.event.issue.number }}" --body "${{ steps.regex.outputs.group2 }} rebuild completed successfully"
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GH_REPO: ${{ github.repository }}
-    - run: gh issue comment "${{ github.event.issue.number }}" --body "${{ steps.regex.outputs.group2 }} was published on snapcraft.io"
+  publish:
+    if: ${{ needs.rebuild.outputs.command_suffix == '+publish' }}
+    needs: rebuild
+    runs-on: ${{ matrix.builder }}
+    strategy:
+      matrix:
+        include:
+          - builder: ubuntu-latest
+            arch: amd64
+    steps:
+    - uses: ./.github/actions/publish
+      with:
+        snap: ${{ needs.build.outputs[format('snap_{0}', matrix.arch)] }}
+        SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
+    - run: gh issue comment "${{ github.event.issue.number }}" --body "${{ needs.rebuild.outputs.version }} was published on snapcraft.io"
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GH_REPO: ${{ github.repository }}
-      if: ${{ steps.regex.outputs.group1 == '+publish' }}

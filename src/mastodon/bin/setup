@@ -21,7 +21,7 @@ copy_mastodon_config
 
 echo Setup database
 mastodon_rails db:setup
-$SNAP/bin/psql.wrapper -d "$MASTODON_DBNAME" -c "create extension pg_stat_statements;"
+$SNAP/bin/psql.wrapper -d "$MASTODON_DBNAME" -c "create extension pg_stat_statements;" > /dev/null
 
 echo Remove old logs and tempfiles
 mastodon_rails log:clear tmp:clear

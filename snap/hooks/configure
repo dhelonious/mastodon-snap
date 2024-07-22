@@ -25,8 +25,6 @@ if [ "$MEDIA_DIR" != "$CURRENT_MEDIA_DIR" ]; then
     restart_required backend
     restart_required sidekiq
     restart_required streaming
-    restart_required redis
-    restart_required nginx
 fi
 
 if [ "$BACKUP_DIR" != "$CURRENT_BACKUP_DIR" ]; then
