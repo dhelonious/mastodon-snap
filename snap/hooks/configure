@@ -3,11 +3,13 @@
 . "$SNAP/nginx.env"
 . "$SNAP/mastodon.env"
 
+export CURRENT_DOMAIN="$(mastodon_get_var LOCAL_DOMAIN)"
 export CURRENT_HTTP_PORT="$(nginx_get_http_port)"
 export CURRENT_HTTPS_PORT="$(nginx_get_https_port)"
 export CURRENT_NGINX_ACCESS_LOG="$(nginx_get_access_log)"
 export CURRENT_MEDIA_DIR="$(readlink -f $SNAP_DATA/mastodon/public/system)"
 export CURRENT_BACKUP_DIR="$(get_backup_dir_file)"
+export CURRENT_STATUS_MAX_CHARS="$(get_status_max_chars_file)"
 
 if [ "$NGINX_ACCESS_LOG" != "$CURRENT_NGINX_ACCESS_LOG" ]; then
     restart_required nginx
@@ -33,11 +35,18 @@ if [ "$BACKUP_DIR" != "$CURRENT_BACKUP_DIR" ]; then
 fi
 
 if $(mastodon_config_exists); then
-    export CURRENT_DOMAIN="$(mastodon_get_var LOCAL_DOMAIN)"
-
     if [ "$DOMAIN" != "$CURRENT_DOMAIN" ]; then
         echo_error "DOMAIN cannot be changed safely! Setup a new instance if you really want to change it."
         exit 1
+    fi
+
+    if [ "$STATUS_MAX_CHARS" != "$CURRENT_STATUS_MAX_CHARS" ]; then
+        echo Update status character limit
+        update_status_max_chars
+        recompile_assets
+
+        restart_required backend
+        restart_required sidekiq
     fi
 fi
 
