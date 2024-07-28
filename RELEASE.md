@@ -24,9 +24,7 @@ This release contains:
 * mastodon-bird-ui 1.8.5
 * tangerine-ui 1.9.5
 
-Changelog for 4.2.10snap2:
+Changelog for 4.2.10snap3:
 
-* The PostgreSQL log file now has permissions that allow it to be rotated by logrotate.
-* The snap now correctly detects and handles updates where the PostgreSQL major version changes.
-* Huge pages are disabled in PostgreSQL because it does not have access to mmap in snap.
-* Redis is prevented from trying to access the current_clocksource file on every restart, which is not possible in snap.
+* Adds an option to change the character limit of toots (`status.char-limit`).
+* Updates the browserlist DB for npm and yarn on build (see https://github.com/browserslist/update-db#readme)
