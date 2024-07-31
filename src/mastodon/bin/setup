@@ -26,6 +26,14 @@ $SNAP/bin/psql.wrapper -d "$MASTODON_DBNAME" -c "create extension pg_stat_statem
 echo Remove old logs and tempfiles
 mastodon_rails log:clear tmp:clear
 
+if [ "$STATUS_MAX_CHARS" != "$(get_status_max_chars_file)" ]; then
+    echo Update status character limit
+    update_status_max_chars
+    echo "Recompile assets (this takes some time)"
+    # TODO: Remove > /dev/null after update to Mastodon 4.3
+    recompile_assets > /dev/null
+fi
+
 echo Restart services
 snapctl restart "$SNAP_NAME.backend"
 snapctl restart "$SNAP_NAME.streaming"

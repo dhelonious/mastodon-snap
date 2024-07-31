@@ -9,7 +9,7 @@ description: |
   implements ActivityPub!)
 
 base: core20
-version: 4.2.10snap2
+version: 4.2.10snap3
 grade: stable
 confinement: strict
 
@@ -738,6 +738,8 @@ parts:
       - BUNDLE_RAKEFILE: $SNAPCRAFT_PART_BUILD/Rakefile
       - GEM_HOME: $SNAPCRAFT_PART_BUILD/vendor/ruby
       - GEM_PATH: $GEM_HOME
+      - YARN_RC_FILENAME: $SNAPCRAFT_PART_BUILD/.yarnrc.yml
+      - YARN_CONFIG_DIR: $SNAPCRAFT_PART_BUILD
     override-build: |
       gem install bundler -v $BUNDLER_VERSION --no-document --install-dir $GEM_PATH
       bundle config deployment "true"
@@ -747,6 +749,7 @@ parts:
       bundle config build.openssl --with-openssl-dir=$SNAPCRAFT_STAGE/openssl1
       bundle config build.pg --with-pg-config=$SNAPCRAFT_STAGE/postgres/bin/pg_config
       bundle install -j"$(nproc)"
+      npx browserslist@latest --update-db --yes
       yarn install --pure-lockfile
       yarn cache clean
       bundle exec rails assets:precompile

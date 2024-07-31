@@ -81,6 +81,8 @@ An initial setup command is required to initialize the database and configuratio
 
     sudo mastodon-server.setup
 
+> Note: Be patient if you have changed the `status.char-limit`, as it takes some time to recompile the assets.
+
 ## Create admin user
 
 Once the snap is set up, an administrator account with a randomly generated password can be created using the `tootctl` command:
@@ -113,24 +115,25 @@ Basic settings can be configured using key-value pairs:
 
 The following settings are available:
 
-| Key                  | Values                        | Default value          | Description                                                           |
-|----------------------|-------------------------------|------------------------|-----------------------------------------------------------------------|
-| `domain`             | valid FQDN                    |                        | FQDN of the Mastodon instance                                         |
-| `email`              | valid e-mail                  |                        | E-mail address of the owner of the Mastodon instance                  |
-| `ports.http`         | 0 to 65353                    | 80                     | HTTP port                                                             |
-| `ports.https`        | 0 to 65353                    | 443                    | HTTPS port                                                            |
-| `acme.server`        | letsencrypt, zerossl          | letsencrypt            | CA used for acquiring an SSL certificate                              |
+| Key                  | Values                        | Default value          | Description                                                                          |
+|----------------------|-------------------------------|------------------------|--------------------------------------------------------------------------------------|
+| `domain`             | valid FQDN                    |                        | FQDN of the Mastodon instance                                                        |
+| `email`              | valid e-mail                  |                        | E-mail address of the owner of the Mastodon instance                                 |
+| `status.char-limit`  | integer                       | 500                    | Character limit of statuses (toots); changes require recompilation of assets, which takes some time |
+| `ports.http`         | 0 to 65353                    | 80                     | HTTP port                                                                            |
+| `ports.https`        | 0 to 65353                    | 443                    | HTTPS port                                                                           |
+| `acme.server`        | letsencrypt, zerossl          | letsencrypt            | CA used for acquiring an SSL certificate                                             |
 | `update.backups`     | true, false                   | true                   | Create a backup in `/var/snap/mastodon-server/common/update/backups` before updating |
-| `media.dir`          | absolute path                 | `$SNAP_COMMON/media`   | Location of the media directory (*public/system*)                     |
-| `backup.dir`         | absolute path                 | `$SNAP_COMMON/backups` | Location of the backup directory                                      |
-| `backup.days`        | integer                       | 0                      | Create and keep backups for `backup.days` (enabled if > 0)            |
-| `cleanup.days`       | integer                       | 7                      | Cleanup media and statuses older than `cleanup.days` (enabled if > 0) |
+| `media.dir`          | absolute path                 | `$SNAP_COMMON/media`   | Location of the media directory (*public/system*)                                    |
+| `backup.dir`         | absolute path                 | `$SNAP_COMMON/backups` | Location of the backup directory                                                     |
+| `backup.days`        | integer                       | 0                      | Create and keep backups for `backup.days` (enabled if > 0)                           |
+| `cleanup.days`       | integer                       | 7                      | Cleanup media and statuses older than `cleanup.days` (enabled if > 0)                |
 | `cleanup.media`      | true, false                   | true                   | Cleanup media files, see [tootctl media remove](https://docs.joinmastodon.org/admin/tootctl/#media-remove) |
 | `cleanup.previews`   | true, false                   | true                   | Cleanup preview cards, see [tootctl preview_cards remove](https://docs.joinmastodon.org/admin/tootctl/#preview_cards) |
 | `cleanup.statuses`   | true, false                   | true                   | Cleanup unreferenced statuses, see [tootctl statuses remove](https://docs.joinmastodon.org/admin/tootctl/#statuses-remove) |
 | `cleanup.orphans`    | true, false                   | false                  | Cleanup orphaned media files, see [tootctl media remove-orphans](https://docs.joinmastodon.org/admin/tootctl/#media-remove-orphans) |
-| `log.access.enabled` | true, false                   | false                  | Logging of http(s) accesses                                           |
-| `log.access.format`  | standard, anonymized, privacy | anonymized             | Use of real/anonymized/no IP addresses in the access log              |
+| `log.access.enabled` | true, false                   | false                  | Logging of http(s) accesses                                                          |
+| `log.access.format`  | standard, anonymized, privacy | anonymized             | Use of real/anonymized/no IP addresses in the access log                             |
 
 Configuration files can be used for advanced customization.
 
