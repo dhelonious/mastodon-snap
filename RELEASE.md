@@ -24,7 +24,6 @@ This release contains:
 * mastodon-bird-ui 1.8.5
 * tangerine-ui 1.9.5
 
-Changelog for 4.2.10snap3:
+Changelog for 4.2.10snap4:
 
-* Adds an option to change the character limit of toots (`status.characters`).
-* Updates the browserlist DB for npm and yarn on build (see https://github.com/browserslist/update-db#readme)
+* Adds an option to change the character counter of toots (`status.chat-counter`).
