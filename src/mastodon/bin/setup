@@ -38,10 +38,8 @@ if [ "$STATUS_MAX_CHARS_COUNTER" != "$(get_status_max_chars_counter_file)" ]; th
     recompile_required
 fi
 
-recompile_assets_if_required
-
 echo Restart services
 snapctl restart "$SNAP_NAME.backend"
-snapctl restart "$SNAP_NAME.streaming"
 snapctl restart "$SNAP_NAME.sidekiq"
+snapctl restart "$SNAP_NAME.streaming"
 snapctl restart "$SNAP_NAME.nginx"

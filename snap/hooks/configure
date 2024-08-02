@@ -65,8 +65,6 @@ if $(mastodon_config_exists); then
             restart_required sidekiq
         fi
     fi
-
-    recompile_assets_if_required
 fi
 
 echo Restart services

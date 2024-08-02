@@ -100,7 +100,9 @@ apps:
     timer: 03:00
 
   backend:
-    command: bin/mastodon-backend
+    command: bin/backend
+    stop-command: bin/recompile
+    stop-timeout: 10m
     daemon: simple
     plugs:
       - network
@@ -110,7 +112,7 @@ apps:
       LD_LIBRARY_PATH: $LD_LIBRARY_PATH:$SNAP/usr/lib/x86_64-linux-gnu/pulseaudio:$SNAP/usr/lib/arm64-linux-gnu/pulseaudio
 
   sidekiq:
-    command: bin/mastodon-sidekiq
+    command: bin/sidekiq
     daemon: simple
     environment:
       DB_PORT: 5432
@@ -123,7 +125,7 @@ apps:
       - removable-media
 
   streaming:
-    command: bin/mastodon-streaming
+    command: bin/streaming
     daemon: simple
     plugs:
       - network

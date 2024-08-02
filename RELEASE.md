@@ -27,3 +27,4 @@ This release contains:
 Changelog for 4.2.10snap4:
 
 * Adds an option to change the character counter of toots (`status.chat-counter`).
+* Moves recompile step to post-stop-action of the Mastodon backend service.
