@@ -4,8 +4,6 @@
 . "$SNAP/postgres.env"
 . "$SNAP/nginx.env"
 
-export PATH="$SNAP/ruby/bin:$PATH"
-
 check_root
 
 if $(mastodon_config_exists); then
