@@ -38,6 +38,11 @@ if [ "$STATUS_MAX_CHARS_COUNTER" != "$(get_status_max_chars_counter_file)" ]; th
     recompile_required
 fi
 
+if [ "$(snapctl get recompile-required)" == true ]; then
+    echo "Recompile assets (this takes some time)"
+    $SNAP/bin/recompile
+fi
+
 echo Restart services
 snapctl restart "$SNAP_NAME.backend"
 snapctl restart "$SNAP_NAME.sidekiq"

@@ -3,8 +3,8 @@
 . "$SNAP/mastodon.env"
 
 if [ "$(snapctl get recompile-required)" == true ]; then
-    echo "Recompile assets (this takes some time)"
     mkdir -p "$YARN_CACHE_FOLDER"
-    mastodon_rails assets:precompile
+    # TODO: Remove > /dev/null after update to Mastodon 4.3
+    mastodon_rails assets:precompile > /dev/null
     reset_recompile_required
 fi
