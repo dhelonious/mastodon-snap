@@ -29,3 +29,4 @@ Changelog for 4.2.10snap4:
 * Adds an option to change the character counter of toots (`status.chat-counter`).
 * Moves recompile step to the stop-action of the Mastodon backend service.
 * Updates some dependencies.
+* Fixes some issues that occur when `XDG_CONFIG_HOME` is not accessible by the snap.
