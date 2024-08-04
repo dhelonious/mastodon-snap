@@ -13,18 +13,19 @@ This release contains:
 * Yarn 1.22.22
 * Nginx 1.27.0
 * PostgreSQL 16.3
-* Redis 7.2.5
+* Redis 7.4.0
 * Acme.sh 3.0.7
-* ImageMagick 7.1.1-34
+* ImageMagick 7.1.1-36
 * OpenSSL 1.1.1w
-* Curl 8.8.0
+* Curl 8.9.1
 * Logrotate 3.22.0
 * Jemalloc 5.3.0
 * musl-libc 1.2.5
 * mastodon-bird-ui 1.8.5
 * tangerine-ui 1.9.5
 
-Changelog for 4.2.10snap3:
+Changelog for 4.2.10snap4:
 
-* Adds an option to change the character limit of toots (`status.char-limit`).
-* Updates the browserlist DB for npm and yarn on build (see https://github.com/browserslist/update-db#readme)
+* Adds an option to change the character counter of toots (`status.chat-counter`).
+* Moves recompile step to the stop-action of the Mastodon backend service.
+* Updates some dependencies.

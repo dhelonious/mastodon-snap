@@ -9,7 +9,7 @@ description: |
   implements ActivityPub!)
 
 base: core20
-version: 4.2.10snap3
+version: 4.2.10snap4
 grade: stable
 confinement: strict
 
@@ -100,7 +100,9 @@ apps:
     timer: 03:00
 
   backend:
-    command: bin/mastodon-backend
+    command: bin/backend
+    stop-command: bin/recompile
+    stop-timeout: 10m
     daemon: simple
     plugs:
       - network
@@ -110,7 +112,7 @@ apps:
       LD_LIBRARY_PATH: $LD_LIBRARY_PATH:$SNAP/usr/lib/x86_64-linux-gnu/pulseaudio:$SNAP/usr/lib/arm64-linux-gnu/pulseaudio
 
   sidekiq:
-    command: bin/mastodon-sidekiq
+    command: bin/sidekiq
     daemon: simple
     environment:
       DB_PORT: 5432
@@ -123,7 +125,7 @@ apps:
       - removable-media
 
   streaming:
-    command: bin/mastodon-streaming
+    command: bin/streaming
     daemon: simple
     plugs:
       - network
@@ -275,8 +277,8 @@ parts:
     after:
       - openssl1
     # NOTE: https://github.com/curl/curl/releases/latest
-    source: https://curl.se/download/curl-8.8.0.tar.gz
-    source-checksum: sha256/77c0e1cd35ab5b45b659645a93b46d660224d0024f1185e8a95cdb27ae3d787d
+    source: https://curl.se/download/curl-8.9.1.tar.gz
+    source-checksum: sha256/291124a007ee5111997825940b3876b3048f7d31e73e9caa681b80fe48b2dcd5
     plugin: autotools
     build-environment:
       - PKG_CONFIG_PATH: $SNAPCRAFT_STAGE/openssl1/lib/pkgconfig
@@ -399,14 +401,14 @@ parts:
     after:
       - redis-customizations
     # NOTE: https://github.com/redis/redis/releases/latest
-    source: https://download.redis.io/releases/redis-7.2.5.tar.gz
-    source-checksum: sha256/5981179706f8391f03be91d951acafaeda91af7fac56beffb2701963103e423d
+    source: https://download.redis.io/releases/redis-7.4.0.tar.gz
+    source-checksum: sha256/57b47c2c6682636d697dbf5d66d8d495b4e653afc9cd32b7adf9da3e433b8aaf
     plugin: make
     override-build: |
       sed -ri "s,/sys/devices/system/clocksource/clocksource0/(current|available)_clocksource,/dev/null," $SNAPCRAFT_PART_BUILD/src/syscheck.c
       make -j"$(nproc)"
       make install PREFIX=$SNAPCRAFT_PART_INSTALL/redis
-      cp $SNAPCRAFT_PART_SRC/COPYING $SNAPCRAFT_PART_INSTALL/redis/
+      cp $SNAPCRAFT_PART_SRC/LICENSE.txt $SNAPCRAFT_PART_INSTALL/redis/
     stage:
       - -redis/share/doc
       - -redis/share/man
@@ -613,8 +615,8 @@ parts:
     after:
       - imagemagick-customizations
     # NOTE: https://github.com/ImageMagick/ImageMagick/releases/latest
-    source: https://github.com/ImageMagick/ImageMagick/archive/refs/tags/7.1.1-34.tar.gz
-    source-checksum: sha256/19f4303774b56be182c576b266c34bc824fcaef1d1d243192344d015adb0ec28
+    source: https://github.com/ImageMagick/ImageMagick/archive/refs/tags/7.1.1-36.tar.gz
+    source-checksum: sha256/cb2925aadf126177f13f670c8ac47ba9a90d012f075ed50f936d141d160e3e97
     plugin: autotools
     build-packages:
       - build-essential

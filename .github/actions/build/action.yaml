@@ -19,13 +19,13 @@ runs:
       ref: ${{ inputs.tag }}
   - uses: snapcore/action-build@v1
     id: build
-  - uses: ./.github/actions/test
-    if: ${{ inputs.test == 'true' }}
-    with:
-      snap: ${{ steps.build.outputs.snap }}
   - uses: actions/upload-artifact@v4
     with:
       name: ${{ steps.build.outputs.snap }}
       path: ${{ steps.build.outputs.snap }}
       retention-days: 1
       overwrite: true
+  - uses: ./.github/actions/test
+    if: ${{ inputs.test == 'true' }}
+    with:
+      snap: ${{ steps.build.outputs.snap }}
