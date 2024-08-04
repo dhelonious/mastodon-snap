@@ -33,4 +33,4 @@ jobs:
     - uses: actions/checkout@v4
     - uses: ./.github/actions/build
       with:
-        test: ${{ inputs.test }}
+        test: ${{ inputs.test || true }}
