@@ -7,9 +7,101 @@ inputs:
 runs:
   using: composite
   steps:
-  - run: |
+  - uses: actions/download-artifact@v4
+    with:
+      name: ${{ inputs.snap }}
+  - name: info
+    shell: bash
+    run: |
+      echo "Run tests for ${{ inputs.snap }}"
+  - name: setup
+    shell: bash
+    run: |
       sudo snap install --dangerous ${{ inputs.snap }}
       sudo snap set mastodon-server domain="local.host"
       sudo snap set mastodon-server email="admin@local.host"
       sudo mastodon-server.setup
+  - name: services
     shell: bash
+    run: |
+      check_service_status() {
+        STATUS=$(snap services mastodon-server | sed -rn "s/.*\.$1 +([a-z]+) +([a-z]+).*/\1,\2/p")
+        echo "$1 $STATUS"
+        if [ "$STATUS" != "enabled,active" ]; then exit 1; fi
+      }
+      check_service_status redis
+      check_service_status postgres
+      check_service_status backend
+      check_service_status sidekiq
+      check_service_status streaming
+      check_service_status nginx
+  - name: ssl
+    shell: bash
+    run: |
+      DOMAIN="local.host"
+      CERT_DIR="/var/snap/mastodon-server/common/certs/${DOMAIN}_ecc"
+      KEY_FILE="$CERT_DIR/$DOMAIN.key"
+      CERT_FILE="$CERT_DIR/fullchain.cer"
+      sudo mkdir -p $CERT_DIR
+      sudo openssl req -x509 -nodes -days 1 -newkey ec:<(openssl ecparam -name prime256v1) -keyout "$KEY_FILE" -out "$CERT_FILE" -subj "/CN=$DOMAIN"
+      chmod 600 "$KEY_FILE"
+      snap restart mastodon-server.nginx
+      sleep 10
+      if [ -f "/var/snap/mastodon-server/current/nginx/config/mastodon-http.conf" ]; then
+        echo nginx https config exists
+      else
+        echo nginx https config is missing
+        exit 1
+      fi
+  - name: https
+    shell: bash
+    run: |
+      HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:80)
+      if [ "$HTTP_STATUS" -eq 301 ]; then
+        echo "Mastodon is reachable via HTTP"
+      else
+        echo "Failed to reach Mastodon via HTTP"
+        exit 1
+      fi
+      HTTPS_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://localhost:443 --insecure)
+      if [ "$HTTPS_STATUS" -eq 200 ]; then
+        echo "Mastodon is reachable via HTTPS"
+      else
+        echo "Failed to reach Mastodon via HTTPS"
+        exit 1
+      fi
+  - name: backup
+    shell: bash
+    run: |
+      $EXPORT_INFO=$(mastodon-server.export)
+      $BACKUP=$(echo "$EXPORT_INFO" | sed -rn "s|^Export backup to .*/([0-9]+-[0-9]+)$|\1|p")
+      mastodon-server.restore "$BACKUP"
+  - name: recompile
+    shell: bash
+    run: |
+      COMPOSE_FORM_FILE="/var/snap/mastodon/current/mastodon/app/javascript/mastodon/features/compose/components/compose_form.jsx"
+      STATUS_LENGTH_VALIDATOR_FILE="/var/snap/mastodon/current/mastodon/app/validators/status_length_validator.rb"
+      LIMIT=600
+      COUNTER=400
+      snap set mastodon-server status.char-limit=$LIMIT status.char-counter=$COUNTER
+      MAX_CHARS=$(sed -rn "s/^.*MAX_CHARS = ([0-9]+).*$/\1/p" "$STATUS_LENGTH_VALIDATOR_FILE")
+      echo $MAX_CHARS
+      if [ "$MAX_CHARS" -ne "$LIMIT" ]; then exit 1; fi
+      LENGTH_FULLTEXT=$(sed -rn "s/^.*length\(fulltext\) > ([0-9]+)/\1/p" "$COMPOSE_FORM_FILE")
+      echo $LENGTH_FULLTEXT
+      if [ "$LENGTH_FULLTEXT" -ne "$LIMIT" ]; then exit 1; fi
+      CHARACTER_COUNTER=$(sed -rn "s/^.*CharacterCounter max=\{([0-9]+)\}.*$/\1/p" "$COMPOSE_FORM_FILE")
+      echo $CHARACTER_COUNTER
+      if [ "$CHARACTER_COUNTER" -ne "$COUNTER" ]; then exit 1; fi
+  - name: console
+    shell: bash
+    run: |
+      CONSOLE_OUTPUT=$(echo "exit" | mastodon-server.console --sandbox)
+      echo "$CONSOLE_OUTPUT"
+      if [ -z $(echo "$CONSOLE_OUTPUT" | grep "Loading production environment") ]; then exit 1; fi
+  - name: postgres dump
+    shell: bash
+    run: |
+      POSTGRES_DUMP=$(mastodon-server.postgres-dump)
+      echo "$POSTGRES_DUMP"
+      if [ -z $(echo "$POSTGRES_DUMP" | grep "CREATE DATABASE mastodon") ]; then exit 1; fi
