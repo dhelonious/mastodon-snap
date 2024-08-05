@@ -12,6 +12,14 @@ export CURRENT_BACKUP_DIR="$(get_backup_dir_file)"
 export CURRENT_STATUS_MAX_CHARS="$(get_status_max_chars_file)"
 export CURRENT_STATUS_MAX_CHARS_COUNTER="$(get_status_max_chars_counter_file)"
 
+reset_restart_required redis
+reset_restart_required postgres
+reset_restart_required backend
+reset_restart_required sidekiq
+reset_restart_required streaming
+reset_restart_required nginx
+reset_recompile_required
+
 if [ "$NGINX_ACCESS_LOG" != "$CURRENT_NGINX_ACCESS_LOG" ]; then
     restart_required nginx
 fi
