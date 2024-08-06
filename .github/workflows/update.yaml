@@ -23,7 +23,7 @@ on:
         required: true
         type: string
 jobs:
-  rebuild:
+  build:
     runs-on: ${{ matrix.builder }}
     strategy:
       matrix:
@@ -37,13 +37,39 @@ jobs:
         regex: '^[\d\.]+snap\d+(candidate|beta|edge|)\d*$'
       id: regex
     - uses: actions/checkout@v4
-    - uses: ./.github/actions/rebuild
+    - uses: ./.github/actions/build
       with:
         tag: ${{ inputs.tag }}
-      id: rebuild
-    - run: echo "snap_${{ matrix.arch }}=${{ steps.rebuild.outputs.snap }}" >> $GITHUB_OUTPUT
+      id: build
+    - run: echo "${{ matrix.arch }}=${{ steps.build.outputs.snap }}" >> $GITHUB_OUTPUT
+      id: snap
+    outputs:
+      amd64: ${{ steps.snap.outputs.amd64 }}
+  test:
+    needs: build
+    runs-on: ${{ matrix.builder }}
+    strategy:
+      matrix:
+        include:
+          - builder: ubuntu-latest
+            arch: amd64
+    steps:
+    - uses: actions/checkout@v4
+    - uses: ./.github/actions/test
+      with:
+        snap: ${{ needs.build.outputs[matrix.arch] }}
+  release:
+    needs:
+      - build
+      - test
+    steps:
+    - uses: ./.github/actions/release
+      with:
+        tag: ${{ inputs.tag }}
   publish:
-    needs: rebuild
+    needs:
+      - build
+      - test
     runs-on: ${{ matrix.builder }}
     strategy:
       matrix:
@@ -53,6 +79,6 @@ jobs:
     steps:
     - uses: ./.github/actions/publish
       with:
-        snap: ${{ needs.build.outputs[format('snap_{0}', matrix.arch)] }}
+        snap: ${{ needs.build.outputs[matrix.arch] }}
         channel: ${{ inputs.channel || steps.regex.outputs.group1 }}
         SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}

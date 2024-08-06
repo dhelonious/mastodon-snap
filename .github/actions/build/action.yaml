@@ -4,10 +4,6 @@ inputs:
   tag:
     required: false
     type: string
-  test:
-    required: false
-    type: boolean
-    default: 'true'
 outputs:
   snap:
     value: ${{ steps.build.outputs.snap }}
@@ -25,7 +21,3 @@ runs:
       path: ${{ steps.build.outputs.snap }}
       retention-days: 1
       overwrite: true
-  - uses: ./.github/actions/test
-    if: ${{ inputs.test == 'true' }}
-    with:
-      snap: ${{ steps.build.outputs.snap }}

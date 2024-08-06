@@ -38,27 +38,34 @@ jobs:
     - uses: actions/checkout@v4
     - uses: ./.github/actions/build
       id: build
-    - run: echo "snap_${{ matrix.arch }}=${{ steps.build.outputs.snap }}" >> $GITHUB_OUTPUT
-  release:
-    if: ${{ inputs.tag || startsWith(github.ref, 'refs/tags/') }}
+    - run: echo "${{ matrix.arch }}=${{ steps.build.outputs.snap }}" >> $GITHUB_OUTPUT
+      id: snap
+    outputs:
+      amd64: ${{ steps.snap.outputs.amd64 }}
+  test:
     needs: build
+    runs-on: ${{ matrix.builder }}
+    strategy:
+      matrix:
+        include:
+          - builder: ubuntu-latest
+            arch: amd64
+    steps:
+    - uses: actions/checkout@v4
+    - uses: ./.github/actions/test
+      with:
+        snap: ${{ needs.build.outputs[matrix.arch] }}
+  release:
+    needs:
+      - build
+      - test
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - uses: actions/download-artifact@v4
-      with:
-        pattern: "*.snap"
-        merge-multiple: true
-    - uses: ncipollo/release-action@v1
-      with:
-        bodyFile: RELEASE.md
-        artifacts: "${{ github.workspace }}/*.snap"
-        makeLatest: true
-        skipIfReleaseExists: true
-        artifactErrorsFailBuild: true
   publish:
-    if: ${{ inputs.tag || startsWith(github.ref, 'refs/tags/') }}
-    needs: build
+    needs:
+      - build
+      - test
     runs-on: ${{ matrix.builder }}
     strategy:
       matrix:
@@ -69,6 +76,6 @@ jobs:
     - uses: actions/checkout@v4
     - uses: ./.github/actions/publish
       with:
-        snap: ${{ needs.build.outputs[format('snap_{0}', matrix.arch)] }}
+        snap: ${{ needs.build.outputs[matrix.arch] }}
         channel: ${{ inputs.channel || steps.regex.outputs.group1 }}
         SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}

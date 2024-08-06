@@ -32,5 +32,21 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - uses: ./.github/actions/build
+      id: build
+    - run: echo "${{ matrix.arch }}=${{ steps.build.outputs.snap }}" >> $GITHUB_OUTPUT
+      id: snap
+    outputs:
+      amd64: ${{ steps.snap.outputs.amd64 }}
+  test:
+    needs: build
+    runs-on: ${{ matrix.builder }}
+    strategy:
+      matrix:
+        include:
+          - builder: ubuntu-latest
+            arch: amd64
+    steps:
+    - uses: actions/checkout@v4
+    - uses: ./.github/actions/test
       with:
-        test: ${{ inputs.test || true }}
+        snap: ${{ needs.build.outputs[matrix.arch] }}

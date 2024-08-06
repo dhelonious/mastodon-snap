@@ -6,7 +6,7 @@ on:
     - created
     - edited
 jobs:
-  rebuild:
+  build:
     if: ${{ contains(github.event.comment.body, '/rebuild') }}
     runs-on: ${{ matrix.builder }}
     strategy:
@@ -20,21 +20,51 @@ jobs:
         text: ${{ github.event.comment.body }}
         regex: '^/rebuild(\+[a-z]*)?\s*([\w\.]+)$'
       id: regex
-    - run: echo "command_suffix=${{ steps.regex.outputs.group1 }}" >> $GITHUB_OUTPUT
-    - run: echo "version=${{ steps.regex.outputs.group2 }}" >> $GITHUB_OUTPUT
     - uses: actions/checkout@v4
-    - uses: ./.github/actions/rebuild
+    - uses: ./.github/actions/build
       with:
         tag: ${{ steps.regex.outputs.group2 }}
-      id: rebuild
-    - run: echo "snap_${{ matrix.arch }}=${{ steps.rebuild.outputs.snap }}" >> $GITHUB_OUTPUT
-    - run: gh issue comment "${{ github.event.issue.number }}" --body "${{ steps.regex.outputs.group2 }} rebuild completed successfully"
+      id: build
+    - run: echo "${{ matrix.arch }}=${{ steps.build.outputs.snap }}" >> $GITHUB_OUTPUT
+      id: snap
+    - run: gh issue comment "${{ github.event.issue.number }}" --body "Rebuild completed successfully for ${{ steps.regex.outputs.group2 }}"
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GH_REPO: ${{ github.repository }}
+    outputs:
+      amd64: ${{ steps.snap.outputs.amd64 }}
+      command_suffix: ${{ steps.regex.outputs.group1 }}
+      tag: ${{ steps.regex.outputs.group2 }}
+  test:
+    needs: build
+    runs-on: ${{ matrix.builder }}
+    strategy:
+      matrix:
+        include:
+          - builder: ubuntu-latest
+            arch: amd64
+    steps:
+    - uses: actions/checkout@v4
+    - uses: ./.github/actions/test
+      with:
+        snap: ${{ needs.build.outputs[matrix.arch] }}
+  release:
+    needs:
+      - build
+      - test
+    steps:
+    - uses: ./.github/actions/release
+      with:
+        tag: ${{ needs.build.outputs.tag }}
+    - run: gh issue comment "${{ github.event.issue.number }}" --body "Release files were updated for ${{ needs.build.outputs.tag }}"
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GH_REPO: ${{ github.repository }}
   publish:
-    if: ${{ needs.rebuild.outputs.command_suffix == '+publish' }}
-    needs: rebuild
+    if: ${{ needs.build.outputs.command_suffix == '+publish' }}
+    needs:
+      - build
+      - test
     runs-on: ${{ matrix.builder }}
     strategy:
       matrix:
@@ -44,9 +74,21 @@ jobs:
     steps:
     - uses: ./.github/actions/publish
       with:
-        snap: ${{ needs.build.outputs[format('snap_{0}', matrix.arch)] }}
+        snap: ${{ needs.build.outputs[matrix.arch] }}
         SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
-    - run: gh issue comment "${{ github.event.issue.number }}" --body "${{ needs.rebuild.outputs.version }} was published on snapcraft.io"
+    - run: gh issue comment "${{ github.event.issue.number }}" --body "Version ${{ needs.build.outputs.tag }} was published on snapcraft.io"
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GH_REPO: ${{ github.repository }}
+  failure:
+    if: ${{ failure() || cancelled() }}
+    needs:
+      - build
+      - test
+      - release
+      - publish
+    steps:
+    - run: gh issue comment "${{ github.event.issue.number }}" --body "Rebuilding ${{ needs.build.outputs.tag }} failed (see logs)"
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GH_REPO: ${{ github.repository }}
