@@ -9,7 +9,7 @@ description: |
   implements ActivityPub!)
 
 base: core20
-version: 4.2.10snap4
+version: 4.2.10snap5
 grade: stable
 confinement: strict
 
@@ -297,8 +297,8 @@ parts:
       - postgres-customizations
       - setpriv
     # NOTE: https://www.postgresql.org/ftp/latest
-    source: https://ftp.postgresql.org/pub/source/v16.3/postgresql-16.3.tar.gz
-    source-checksum: sha256/bd3798c399bc1b6d08b94340f9dd7a75a30a7fa076788ef2f4848be2be6a5fc5
+    source: https://ftp.postgresql.org/pub/source/v16.4/postgresql-16.4.tar.gz
+    source-checksum: sha256/2e17a90062403e15d6540480fdec50c8b005eb48729a91cb4989ffeb04df193c
     plugin: autotools
     build-packages:
       - gcc

@@ -12,7 +12,7 @@ This release contains:
 * Bundle 2.4.13
 * Yarn 1.22.22
 * Nginx 1.27.0
-* PostgreSQL 16.3
+* PostgreSQL 16.4
 * Redis 7.4.0
 * Acme.sh 3.0.7
 * ImageMagick 7.1.1-36
@@ -24,9 +24,6 @@ This release contains:
 * mastodon-bird-ui 1.8.5
 * tangerine-ui 1.9.5
 
-Changelog for 4.2.10snap4:
+Changelog for 4.2.10snap5:
 
-* Adds an option to change the character counter of toots (`status.chat-counter`).
-* Moves recompile step to the stop-action of the Mastodon backend service.
-* Updates some dependencies.
-* Fixes some issues that occur when `XDG_CONFIG_HOME` is not accessible by the snap.
+* ⚠️ Upgrade to PostgreSQL 16.4 due to CVE-2024-7348 (see https://www.postgresql.org/support/security/CVE-2024-7348)
