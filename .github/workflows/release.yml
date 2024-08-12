@@ -35,7 +35,6 @@ jobs:
         text: ${{ github.ref_name }}
         regex: '^[\d\.]+snap\d+(candidate|beta|edge|)\d*$'
       id: regex
-    - uses: actions/checkout@v4
     - uses: ./.github/actions/build
       id: build
     - run: echo "${{ matrix.arch }}=${{ steps.build.outputs.snap }}" >> $GITHUB_OUTPUT
@@ -51,7 +50,6 @@ jobs:
           - builder: ubuntu-latest
             arch: amd64
     steps:
-    - uses: actions/checkout@v4
     - uses: ./.github/actions/test
       with:
         snap: ${{ needs.build.outputs[matrix.arch] }}
@@ -61,7 +59,7 @@ jobs:
       - test
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: ./.github/actions/release
   publish:
     needs:
       - build
@@ -73,7 +71,6 @@ jobs:
           - builder: ubuntu-latest
             arch: amd64
     steps:
-    - uses: actions/checkout@v4
     - uses: ./.github/actions/publish
       with:
         snap: ${{ needs.build.outputs[matrix.arch] }}
