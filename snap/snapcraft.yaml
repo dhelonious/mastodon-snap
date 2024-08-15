@@ -396,6 +396,7 @@ parts:
     source: src/nginx/
     organize:
       config/*: config/nginx/
+      dhparam.pem: nginx/conf/dhparam.pem
 
   redis:
     after:
