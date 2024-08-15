@@ -3,6 +3,7 @@
 . "$SNAP/mastodon.env"
 
 check_setup
+load_sidekiq_tuning_vars
 
-mastodon_sidekiq -c 25 \
+mastodon_sidekiq -c $DB_POOL \
     2>&1 | tee -a "$LOG_DIR/sidekiq.log"

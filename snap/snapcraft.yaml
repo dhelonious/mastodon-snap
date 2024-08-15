@@ -9,7 +9,7 @@ description: |
   implements ActivityPub!)
 
 base: core20
-version: 4.2.10snap5
+version: 4.2.10snap6
 grade: stable
 confinement: strict
 

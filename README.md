@@ -28,6 +28,15 @@ For more information, see the latest [release readme](RELEASE.md).
 Congratulations! You are now the owner of your very own Mastodon instance!
 
 
+# 🖥️ Requirements
+
+## Hardware
+
+Depending on the number of users that will be using your instance, the hardware requirements will vary. To start a personal instance, 2 CPU cores and at least 4 GB of RAM should be sufficient.
+
+The snap will detect the number of CPU cores and amount of RAM at installation time and attempt to set the parameters accordingly for optimal performance.
+
+
 # 📦 Installation
 
 [![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/mastodon-server)

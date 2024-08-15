@@ -24,6 +24,6 @@ This release contains:
 * mastodon-bird-ui 1.8.5
 * tangerine-ui 1.9.5
 
-Changelog for 4.2.10snap5:
+Changelog for 4.2.10snap6:
 
-* ⚠️ Upgrade to PostgreSQL 16.4 due to CVE-2024-7348 (see https://www.postgresql.org/support/security/CVE-2024-7348)
+* Add automatic performance tuning and scaling for PostgreSQL, Nginx and Mastodon based on the available RAM and number of CPUS
