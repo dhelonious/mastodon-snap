@@ -393,6 +393,12 @@ You can then remove the old media directory.
 
 # 🔥 Troubleshooting
 
+## Generate a debug report
+
+The snap has a `debug-report` command which will give you a list of all environment variables and an overview of the file structure in `/var/snap/mastodon-server/`. This can be helpful in determining the cause of some problems.
+
+> Tip: Use the redirect operator to save the debug report to a file, e.g. `mastodon-server.debug-report > debug-report.txt`.
+
 ## My postgres database has stopped working, how can I recover my data?
 
 If your postgres database has stopped working, for example due to a failed upgrade, first backup the postgres data dir `/var/snap/mastodon-server/current/postgres/data/` and the password file `/var/snap/mastodon-server/common/secrets/postgres`.

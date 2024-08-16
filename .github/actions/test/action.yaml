@@ -26,11 +26,30 @@ runs:
       echo "STATUS_LENGTH_VALIDATOR_FILE=/var/snap/mastodon-server/current/mastodon/app/validators/status_length_validator.rb" >> $GITHUB_OUTPUT
       echo "LIMIT=600" >> $GITHUB_OUTPUT
       echo "COUNTER=400" >> $GITHUB_OUTPUT
+  - name: install snap
+    shell: bash
+    run: |
+      echo -e "\033[1;33mInstall snap\033[0m"
+      if sudo snap install --dangerous ${{ inputs.snap }}; then
+        echo -e "\033[1;32mThe snap has been installed\033[0m"
+      else
+        echo -e "\033[1;31mThe snap installation failed\033[0m"
+        exit 1
+      fi
+  - name: debug report
+    shell: bash
+    run: |
+      echo -e "\033[1;33mDebug report\033[0m"
+      if sudo mastodon-server.debug-report; then
+        echo -e "\033[1;32mDebug report has been created\033[0m"
+      else
+        echo -e "\033[1;31mDebug report creation failed\033[0m"
+        exit 1
+      fi
   - name: test setup
     shell: bash
     run: |
       echo -e "\033[1;33mTest setup\033[0m"
-      sudo snap install --dangerous ${{ inputs.snap }}
       sudo snap set mastodon-server domain="${{ steps.env.outputs.domain }}"
       sudo snap set mastodon-server email="admin@${{ steps.env.outputs.domain }}"
       if sudo mastodon-server.setup; then
@@ -126,11 +145,10 @@ runs:
     shell: bash
     run: |
       echo -e "\033[1;33mTest export\033[0m"
-      if EXPORT_OUTPUT=$(sudo mastodon-server.export); then
+      if sudo mastodon-server.export; then
         echo -e "\033[1;32mExport command completed successfully\033[0m"
       else
         echo -e "\033[1;31mThere occured an error during export\033[0m"
-        echo -e "\033[1;33m$EXPORT_OUTPUT\033[0m"
         exit 1
       fi
       BACKUP_DIR=$(echo "$EXPORT_OUTPUT" | sed -rn "s|^Export backup to .*/([0-9]+-[0-9]+)$|\1|p")
@@ -140,11 +158,10 @@ runs:
     shell: bash
     run: |
       echo -e "\033[1;33mTest restore\033[0m"
-      if RESTORE_OUTPUT=$(sudo mastodon-server.restore ${{ steps.export.outputs.backup_dir }}); then
+      if sudo mastodon-server.restore ${{ steps.export.outputs.backup_dir }}; then
         echo -e "\033[1;32mRestore command completed successfully\033[0m"
       else
         echo -e "\033[1;31mThere occured an error during restore\033[0m"
-        echo -e "\033[1;33m$RESTORE_OUTPUT\033[0m"
         exit 1
       fi
   - name: trigger recompile
@@ -186,25 +203,23 @@ runs:
     shell: bash
     run: |
       echo -e "\033[1;33mTest rails console\033[0m"
-      if CONSOLE_OUTPUT=$(echo "exit" | sudo mastodon-server.console --sandbox); then
-        if [ -z $(echo "$CONSOLE_OUTPUT" | grep "Loading production environment") ]; then
-          echo -e "\033[1;31mRails console output does not look as expected\033[0m"
-          echo -e "\033[1;33m$CONSOLE_OUTPUT\033[0m"
-          exit 1
-        else
-          echo -e "\033[1;32mmastodon-server.console works as expected\033[0m"
-        fi
+      CONSOLE_OUTPUT=$(echo "exit" | sudo mastodon-server.console --sandbox)
+      if [ -z $(echo "$CONSOLE_OUTPUT" | grep "Loading production environment") ]; then
+        echo -e "\033[1;31mRails console output does not look as expected\033[0m"
+        echo -e "\033[1;33m$CONSOLE_OUTPUT\033[0m"
+        exit 1
+      else
+        echo -e "\033[1;32mmastodon-server.console works as expected\033[0m"
       fi
   - name: test postgres dump
     shell: bash
     run: |
       echo -e "\033[1;33mTest postgres dump\033[0m"
-      if POSTGRES_DUMP=$(sudo mastodon-server.postgres-dump); then
-        if [ -z $(echo "$POSTGRES_DUMP" | grep "CREATE DATABASE mastodon") ]; then
-          echo -e "\033[1;31mPostgres dump does not look as expected\033[0m"
-          echo -e "\033[1;33m$POSTGRES_DUMP\033[0m"
-          exit 1
-        else
-          echo -e "\033[1;32mmastodon-server.postgres-dump completed successfully\033[0m"
-        fi
+      POSTGRES_DUMP=$(sudo mastodon-server.postgres-dump)
+      if [ -z $(echo "$POSTGRES_DUMP" | grep "CREATE DATABASE mastodon") ]; then
+        echo -e "\033[1;31mPostgres dump does not look as expected\033[0m"
+        echo -e "\033[1;33m$POSTGRES_DUMP\033[0m"
+        exit 1
+      else
+        echo -e "\033[1;32mmastodon-server.postgres-dump completed successfully\033[0m"
       fi

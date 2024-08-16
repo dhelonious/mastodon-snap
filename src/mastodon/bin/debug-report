@@ -1,0 +1,31 @@
+#!/bin/bash -e
+
+source <(cat "$SNAP/*.env")
+
+echo
+echo System
+echo "######"
+echo
+
+echo CPUs: $(get_total_cpus)
+echo RAM: $(get_total_ram)
+
+echo
+echo Environment
+echo "###########"
+echo
+
+load_postgres_tuning_vars
+load_nginx_tuning_vars
+load_backend_tuning_vars
+load_sidekiq_tuning_vars
+load_streaming_tuning_vars
+
+printenv
+
+echo
+echo File structure
+echo "##############"
+echo
+
+find "/var/snap/$SNAP_NAME" -maxdepth 3 | sed -e "s|^/var/snap/$SNAP_NAME/||" -e '2,$s|[^/]*/|  |g'

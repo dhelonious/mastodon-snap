@@ -26,4 +26,5 @@ This release contains:
 
 Changelog for 4.2.10snap6:
 
-* Add automatic performance tuning and scaling for PostgreSQL, Nginx and Mastodon based on the available RAM and number of CPUS
+* Adds automatic performance tuning and scaling for PostgreSQL, Nginx and Mastodon based on the available RAM and number of CPUS
+* Adds the `debug-report` command
