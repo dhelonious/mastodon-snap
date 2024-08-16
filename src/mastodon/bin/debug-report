@@ -28,10 +28,10 @@ echo Environment
 echo "###########"
 echo
 
-load_postgres_tuning_vars
-load_nginx_tuning_vars
-load_backend_tuning_vars
-load_sidekiq_tuning_vars
-load_streaming_tuning_vars
+load_postgres_tuning_env
+load_nginx_tuning_env
+load_backend_tuning_env
+load_sidekiq_tuning_env
+load_streaming_tuning_env
 
 printenv

@@ -148,6 +148,9 @@ The following settings are available:
 | `cleanup.orphans`     | true, false                   | false                  | Cleanup orphaned media files, see [tootctl media remove-orphans](https://docs.joinmastodon.org/admin/tootctl/#media-remove-orphans) |
 | `log.access.enabled`  | true, false                   | false                  | Logging of http(s) accesses                                                          |
 | `log.access.format`   | standard, anonymized, privacy | anonymized             | Use of real/anonymized/no IP addresses in the access log                             |
+| `system.cpu`          | integer, auto                 | auto                   | Number of CPU cores available                                                        |
+| `system.ram`          | integer, auto                 | auto                   | Available RAM in GB                                                                  |
+| `system.ssd`          | true, false                   | true                   | Should be changed if the snap is installed on a slow disk                            |
 
 You can also set multiple values at once using
 
@@ -156,6 +159,17 @@ You can also set multiple values at once using
 > Note: This is particularly useful if you want to change both `status.char-limit` and `status.char-counter`, as the assets only need to be recompiled once.
 
 Configuration files can be used for further customization.
+
+## Tuning
+
+By default, snap tries to detect the hardware resources available and sets the parameters accordingly for optimal performance. These values are stored in the `system.cpu` and `system.ram` snap settings. You can change these values manually and then run `mastodon-server.tune` to update the configurations:
+
+    sudo snap set mastodon-server system.cpu=4 system.ram=8
+    sudo mastodon-server.tune
+
+> Tip: This can be used to limit the resource usage of the snap. This can be useful if you are running several different services on one machine.
+
+> Note: Be careful when changing these settings! If you set them too high, your system may become overloaded and mastodon-server may stop working.
 
 ## Single user instances
 

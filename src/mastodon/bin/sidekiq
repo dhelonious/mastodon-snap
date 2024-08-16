@@ -3,7 +3,7 @@
 . "$SNAP/mastodon.env"
 
 check_setup
-load_sidekiq_tuning_vars
+load_sidekiq_tuning_env
 
 export DB_POOL=${SIDEKIQ_DB_POOL:-25}
 
