@@ -63,7 +63,7 @@ fi
 
 echo Add update announcement
 postgres_waitready
-mastodon_announcement "The mastodon-server snap has been updated to version $SNAP_VERSION"
+mastodon_announcement "The $SNAP_NAME snap has been updated to version $SNAP_VERSION"
 
 # Nginx
 
