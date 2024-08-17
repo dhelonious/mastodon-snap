@@ -9,23 +9,22 @@
 . "$SNAP/redis.env"
 . "$SNAP/snap.env"
 
+border_text "=" "Debug report for snap version $(cat "$SNAP_COMMON/version")"
+
 echo
-echo Settings
-echo "########"
+underline_text "=" Settings
 echo
 
 snap get mastodon-server -d
 
 echo
-echo Files
-echo "#####"
+underline_text "=" Files
 echo
 
 find "/var/snap/$SNAP_NAME" -maxdepth 3 | sed -e "s|^/var/snap/$SNAP_NAME/||" -e '2,$s|[^/]*/|  |g'
 
 echo
-echo Environment
-echo "###########"
+underline_text "=" Environment
 echo
 
 load_postgres_tuning_env
