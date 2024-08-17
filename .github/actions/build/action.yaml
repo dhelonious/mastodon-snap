@@ -13,6 +13,9 @@ runs:
   - uses: actions/checkout@v4
     with:
       ref: ${{ inputs.tag }}
+  - name: make scripts executable
+    shell: bash
+    run: find src -type f -path "*/bin/*" -print0 | xargs -0 -n1 chmod +x
   - uses: snapcore/action-build@v1
     id: build
   - uses: actions/upload-artifact@v4

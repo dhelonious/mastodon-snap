@@ -12,8 +12,7 @@ runs:
       name: ${{ inputs.snap }}
   - name: print info
     shell: bash
-    run: |
-      echo "\033[1;32mRun tests for ${{ inputs.snap }}\033[0m"
+    run: echo "\033[1;32mRun tests for ${{ inputs.snap }}\033[0m"
   - name: set environment
     id: env
     shell: bash
