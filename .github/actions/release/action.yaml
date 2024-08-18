@@ -12,7 +12,7 @@ runs:
       pattern: "*.snap"
       merge-multiple: true
   - name: create new release
-    if: ${{ inputs.tag.is_provided == 'false' }}
+    if: ${{ inputs.tag == '' }}
     uses: ncipollo/release-action@v1
     with:
       bodyFile: RELEASE.md
@@ -21,7 +21,7 @@ runs:
       skipIfReleaseExists: true
       artifactErrorsFailBuild: true
   - name: update existing release
-    if: ${{ inputs.tag.is_provided == 'true' }}
+    if: ${{ inputs.tag != '' }}
     uses: ncipollo/release-action@v1
     with:
       tag: ${{ inputs.tag }}
