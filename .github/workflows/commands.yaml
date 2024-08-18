@@ -20,6 +20,7 @@ jobs:
         text: ${{ github.event.comment.body }}
         regex: '^/rebuild(\+[a-z]*)?\s*([\w\.]+)$'
       id: regex
+    - uses: actions/checkout@v4
     - uses: ./.github/actions/build
       with:
         tag: ${{ steps.regex.outputs.group2 }}
@@ -50,7 +51,9 @@ jobs:
     needs:
       - build
       - test
+    runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v4
     - uses: ./.github/actions/release
       with:
         tag: ${{ needs.build.outputs.tag }}
@@ -70,6 +73,7 @@ jobs:
           - builder: ubuntu-latest
             arch: amd64
     steps:
+    - uses: actions/checkout@v4
     - uses: ./.github/actions/publish
       with:
         snap: ${{ needs.build.outputs[matrix.arch] }}
