@@ -23,4 +23,5 @@ runs:
       name: ${{ steps.build.outputs.snap }}
       path: ${{ steps.build.outputs.snap }}
       retention-days: 1
+      compression-level: 0
       overwrite: true

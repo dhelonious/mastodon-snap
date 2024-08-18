@@ -1,6 +1,11 @@
 #!/bin/bash -e
 
 . "$SNAP/snap.env"
+
+if debug_file_exists; then
+    enable_debug_mode post-refresh
+fi
+
 set_default_settings
 
 export CURRENT_SNAP_VERSION="$(get_snap_version_file)"
@@ -80,3 +85,7 @@ copy_config logrotate logrotate.conf
 update_bundle_path
 update_snap_version_file
 update_postgres_version_file
+
+if debug_file_exists; then
+    disable_debug_mode
+fi

@@ -1,6 +1,11 @@
 #!/bin/bash -e
 
 . "$SNAP/snap.env"
+
+if debug_file_exists; then
+    enable_debug_mode install
+fi
+
 set_default_settings
 
 reset_restart_required redis
@@ -83,3 +88,9 @@ echo Install logrotate
 mkdir -p "$LOGROTATE_DATA_DIR"
 
 copy_config logrotate logrotate.conf
+
+# Post installation commands
+
+if debug_file_exists; then
+    disable_debug_mode
+fi

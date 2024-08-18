@@ -413,15 +413,19 @@ The snap has a `debug-report` command which will give you a list of all environm
 
 > Tip: Use the redirect operator to save the debug report to a file, e.g. `mastodon-server.debug-report > debug-report.txt`.
 
+## Debug file
+
+If the snap cannot be installed or updated successfully, a debug mode can be enabled to display additional information during snap hooks. To do this, create the file `~/snap/mastodon-server/common/debug`.
+
+> Note: Use `mkdir -p ~/snap/mastodon-server/common` to create the directory if it does not exist.
+
 ## My postgres database has stopped working, how can I recover my data?
 
 If your postgres database has stopped working, for example due to a failed upgrade, first backup the postgres data dir `/var/snap/mastodon-server/current/postgres/data/` and the password file `/var/snap/mastodon-server/common/secrets/postgres`.
 
 Check the log file at `/var/snap/mastodon-server/current/logs/postgres/postgres.log`. The log message may contain instructions on how to fix the problem.
 
-If you are unable to solve the problem, or the problem cannot be solved due to the read-only file system of the snap, try the `snap revert` command to revert to the previous revision.
-
-If reverting does not work or is not possible, try `snap remove` and reinstall the snap. You should also make a backup of the media in `/var/snap/mastodon-server/common/media/` if you have not already done so using `mastodon-server.export`. After installation, the postgres database should be initialized and working. Stop the snap with `snap stop mastodon-server` and replace the data dir, password file and media dir with your backups and change the permissions and ownership of the postgres data dir:
+If you are unable to solve the problem, or the problem cannot be solved due to the read-only file system of the snap, try the `snap revert` command to revert to the previous revision. If reverting does not work or is not possible, try `snap remove` and reinstall the snap. You should also make a backup of the media in `/var/snap/mastodon-server/common/media/` if you have not already done so using `mastodon-server.export`. After installation, the postgres database should be initialized and working. Stop the snap with `snap stop mastodon-server` and replace the data dir, password file and media dir with your backups and change the permissions and ownership of the postgres data dir:
 
     chown -R snap_daemon:root /var/snap/mastodon-server/current/postgres/data/
     find /var/snap/mastodon-server/current/postgres/data/ -type f -exec chmod 600 {} \;

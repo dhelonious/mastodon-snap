@@ -25,7 +25,15 @@ runs:
       echo "STATUS_LENGTH_VALIDATOR_FILE=/var/snap/mastodon-server/current/mastodon/app/validators/status_length_validator.rb" >> $GITHUB_OUTPUT
       echo "LIMIT=600" >> $GITHUB_OUTPUT
       echo "COUNTER=400" >> $GITHUB_OUTPUT
+  - name: Create debug file
+    shell: bash
+    run: |
+      echo -e "\033[1;33mCreate debug file\033[0m"
+      mkdir -p /home/runner/snap/mastodon-server/common
+      touch /home/runner/snap/mastodon-server/common/debug
   - name: install snap
+    id: install
+    continue-on-error: true
     shell: bash
     run: |
       echo -e "\033[1;33mInstall snap\033[0m"
@@ -35,6 +43,16 @@ runs:
         echo -e "\033[1;31mThe snap installation failed\033[0m"
         exit 1
       fi
+  - uses: actions/upload-artifact@v4
+    with:
+      name: logs
+      path: /home/runner/snap/mastodon-server/common/*.log
+      retention-days: 1
+  - name: stop if install failed
+    if: steps.install.outcome == 'failure'
+    run: |
+      echo -e "\033[1;33mStop if installation failed\033[0m"
+      exit 1
   - name: debug report
     shell: bash
     run: |
