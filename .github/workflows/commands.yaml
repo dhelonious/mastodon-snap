@@ -44,6 +44,7 @@ jobs:
           - builder: ubuntu-latest
             arch: amd64
     steps:
+    - uses: actions/checkout@v4
     - uses: ./.github/actions/test
       with:
         snap: ${{ needs.build.outputs[matrix.arch] }}
@@ -89,6 +90,7 @@ jobs:
       - test
       - release
       - publish
+    runs-on: ubuntu-latest
     steps:
     - run: gh issue comment "${{ github.event.issue.number }}" --body "Rebuilding ${{ needs.build.outputs.tag }} failed (see logs)"
       env:
