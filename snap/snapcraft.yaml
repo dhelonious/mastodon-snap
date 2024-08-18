@@ -9,7 +9,7 @@ description: |
   implements ActivityPub!)
 
 base: core20
-version: 4.2.10snap5
+version: 4.2.11snap1
 grade: stable
 confinement: strict
 
@@ -358,8 +358,8 @@ parts:
     after:
       - nginx-customizations
     # NOTE: https://nginx.org/en/download.html (mainline version)
-    source: https://nginx.org/download/nginx-1.27.0.tar.gz
-    source-checksum: sha256/b7230e3cf87eaa2d4b0bc56aadc920a960c7873b9991a1b66ffcc08fc650129c
+    source: https://nginx.org/download/nginx-1.27.1.tar.gz
+    source-checksum: sha256/bd7ba68a6ce1ea3768b771c7e2ab4955a59fb1b1ae8d554fedb6c2304104bdfc
     plugin: autotools
     build-environment:
       - PATH: $SNAPCRAFT_STAGE/nginx/bin:$PATH
@@ -720,8 +720,8 @@ parts:
       - openssl1
       - imagemagick
     # NOTE: https://github.com/mastodon/mastodon/releases/latest
-    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.2.10.tar.gz
-    source-checksum: sha256/11b5a61fb09c16b96932300f746678dbe5a52a53ba16ecdaa6a0f4e7ab1e134b
+    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.2.11.tar.gz
+    source-checksum: sha256/50c4dd072198d2c4068b04d9a3a5b4ee411c5831872a7e4f1d95ac01c46dbbb9
     plugin: nil
     build-environment:
       - RUBY_BRANCH: "3.2" # NOTE: must be updated with ruby source
