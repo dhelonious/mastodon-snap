@@ -20,6 +20,10 @@ on:
         required: true
         type: boolean
         default: true
+      tag:
+        description: Tag
+        required: false
+        type: string
 jobs:
   build:
     if: ${{ !startsWith(github.ref, 'refs/tags') }}
@@ -32,6 +36,8 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - uses: ./.github/actions/build
+      with:
+        tag: ${{ inputs.tag }}
       id: build
     - run: echo "${{ matrix.arch }}=${{ steps.build.outputs.snap }}" >> $GITHUB_OUTPUT
       id: snap
