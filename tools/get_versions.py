@@ -43,7 +43,7 @@ github_latest_urls = {
         "url": "https://github.com/acmesh-official/acme.sh/releases/latest",
     },
     "yarn": {
-        "url": "https://github.com/yarnpkg/yarn/releases/latest",
+        "url": "https://github.com/yarnpkg/berry/releases/latest",
         "lstrip": "v",
     },
     "jemalloc": {
@@ -71,8 +71,7 @@ openssl = {
 ruby_url = f"https://raw.githubusercontent.com/mastodon/mastodon/{ MASTODON_RELEASE }/.ruby-version"
 node = {
     "url": f"https://raw.githubusercontent.com/mastodon/mastodon/{ MASTODON_RELEASE }/Vagrantfile",
-    "regex": re.compile(r".*https://deb\.nodesource\.com/([A-Za-z0-9_\.]+).*"),
-    "lstrip": "setup_v",
+    "regex": re.compile(r".*NODE_MAJOR=([0-9]+).*"),
     "version_url": "https://nodejs.org/download/release/latest-v{}",
 }
 lib_musl = {
@@ -110,7 +109,7 @@ print_table("ruby", r.text.strip())
 
 # node
 r = requests.get(node["url"], timeout=10)
-node_version = node["regex"].findall(r.text)[0].lstrip(node["lstrip"])
+node_version = node["regex"].findall(r.text)[0]+".x"
 version_regex = re.compile(f"v({node_version.replace('x', '[0-9.]+')})")
 r = requests.get(node["version_url"].format(node_version), timeout=10)
 print_table("node", version_regex.findall(r.text)[0])

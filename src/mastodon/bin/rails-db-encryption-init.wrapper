@@ -1,0 +1,7 @@
+#!/bin/bash -e
+
+. "$SNAP/mastodon.env"
+
+check_root
+
+mastodon_rails db:encryption:init "$@"

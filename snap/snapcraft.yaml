@@ -9,7 +9,7 @@ description: |
   implements ActivityPub!)
 
 base: core20
-version: 4.2.12snap1
+version: 4.3.0-beta.1snap1
 grade: stable
 confinement: strict
 
@@ -27,7 +27,7 @@ environment:
   PATH: $SNAP/bin:$SNAP/usr/bin:$PATH
   LD_LIBRARY_PATH: $SNAP/jemalloc/lib:$SNAP/lib:$SNAP/lib/x86_64-linux-gnu:$SNAP/lib/arm64-linux-gnu:$SNAP/usr/lib:$SNAP/usr/lib/x86_64-linux-gnu:$SNAP/usr/lib/arm64-linux-gnu
   LD_PRELOAD: libjemalloc.so
-  RUBYLIB: $SNAP/ruby/lib/ruby/3.2.0:$SNAP/ruby/lib/ruby/3.2.0/$SNAP_ARCH
+  RUBYLIB: $SNAP/ruby/lib/ruby/3.3.0:$SNAP/ruby/lib/ruby/3.3.0/$SNAP_ARCH
   RAILS_ENV: production
   NODE_ENV: production
   RAILS_SERVE_STATIC_FILES: "true"
@@ -154,6 +154,9 @@ apps:
 
   generate-vapid-key:
     command: bin/rake-generate-vapid-key.wrapper
+
+  db-encryption-init:
+    command: bin/rails-db-encryption-init.wrapper
 
   get-certificate:
     command: bin/get-certificate
@@ -448,18 +451,18 @@ parts:
     build-environment:
       - PATH: $SNAPCRAFT_STAGE/node/bin:$SNAPCRAFT_STAGE/curl/bin:$PATH
       - LD_LIBRARY_PATH: $SNAPCRAFT_STAGE/node/lib:$SNAPCRAFT_STAGE/curl/lib:$LD_LIBRARY_PATH
-    # NOTE: source see `Vagrantfile`; see [#25787](https://github.com/mastodon/mastodon/discussions/25787#discussioncomment-6382898
+    # NOTE: source see `Vagrantfile`
     override-build: |
       snapcraftctl pull
       case "$SNAP_ARCH" in
       "amd64")
-        source="https://nodejs.org/download/release/latest-v16.x/node-v16.20.2-linux-x64.tar.gz"
-        checksum="c9193e6c414891694759febe846f4f023bf48410a6924a8b1520c46565859665"
+        source="https://nodejs.org/download/release/latest-v20.x/node-v20.17.0-linux-x64.tar.gz"
+        checksum="21e656f6f4e34080ddc5d75fbfe58ce8482fe6e70a76aeae14afdcdc1e23079d"
         arch="x64"
         ;;
       "arm64")
-        source="https://nodejs.org/download/release/latest-v16.x/node-v16.20.2-linux-arm64.tar.gz"
-        checksum="b6945fcc9ad220386bb814bfae7137189fd17297f2959a744105e1bee006035a"
+        source="https://nodejs.org/download/release/latest-v20.x/node-v20.17.0-linux-arm64.tar.gz"
+        checksum="18afbf2781edfcc9918343f4bf74a8c35d74d778b85d40a0c09b232adc0ea82c"
         arch="arm64"
         ;;
       *)
@@ -483,28 +486,6 @@ parts:
       - -node/share/man
       - -node/share/systemtap
 
-  yarn:
-    # NOTE: https://github.com/yarnpkg/yarn/releases/latest (latest classic version)
-    source: https://yarnpkg.com/downloads/1.22.22/yarn-v1.22.22.tar.gz
-    source-checksum: sha256/88268464199d1611fcf73ce9c0a6c4d44c7d5363682720d8506f6508addf36a0
-    plugin: dump
-    build-environment:
-      - PATH: $SNAPCRAFT_STAGE/yarn/bin:$PATH
-      - LD_LIBRARY_PATH: $SNAPCRAFT_STAGE/yarn/lib:$LD_LIBRARY_PATH
-    override-build: |
-      snapcraftctl build
-      chmod -R g-s $SNAPCRAFT_PART_INSTALL
-      sed -i "s/var stdio = spinner ? undefined : 'inherit';/var stdio = 'inherit';/" $SNAPCRAFT_PART_INSTALL/lib/cli.js
-      cp $SNAPCRAFT_PART_SRC/LICENSE $SNAPCRAFT_PART_INSTALL/
-    organize:
-      "*": yarn/
-    stage:
-      - -yarn/share/doc
-      - -yarn/share/man
-      - -yarn/README.md
-      - -yarn/preinstall.js
-      - -yarn/packagejson
-
   jemalloc:
     # NOTE: https://github.com/jemalloc/jemalloc/releases/latest
     source: https://github.com/jemalloc/jemalloc/archive/refs/tags/5.3.0.tar.gz
@@ -527,8 +508,8 @@ parts:
       - jemalloc
       - curl
     # NOTE: see `.ruby-version`
-    source: https://cache.ruby-lang.org/pub/ruby/3.2/ruby-3.2.3.tar.gz
-    source-checksum: sha256/af7f1757d9ddb630345988139211f1fd570ff5ba830def1cc7c468ae9b65c9ba
+    source: https://cache.ruby-lang.org/pub/ruby/3.3/ruby-3.3.4.tar.gz
+    source-checksum: sha256/fe6a30f97d54e029768f2ddf4923699c416cdbc3a6e96db3e2d5716c7db96a34
     plugin: autotools
     build-packages:
       - ruby
@@ -546,8 +527,8 @@ parts:
     stage-packages:
       - libgdbm6
     build-environment:
-      - RUBY_VERSION: "3.2.3" # NOTE: must be updated with ruby source
-      - RUBY_BRANCH: "3.2" # NOTE: must be updated with ruby source
+      - RUBY_VERSION: "3.3.4" # NOTE: must be updated with ruby source
+      - RUBY_BRANCH: "3.3" # NOTE: must be updated with ruby source
       - PATH: $SNAPCRAFT_STAGE/ruby/bin:$SNAPCRAFT_STAGE/jemalloc/bin:$PATH
       - LD_LIBRARY_PATH: $SNAPCRAFT_STAGE/ruby/lib:$SNAPCRAFT_STAGE/jemalloc/lib:$LD_LIBRARY_PATH
       - LDFLAGS: -L$SNAPCRAFT_STAGE/jemalloc/lib
@@ -611,12 +592,13 @@ parts:
       - -musl-libc/share/doc
       - -musl-libc/share/man
 
+  # NOTE: deprecated
   imagemagick:
     after:
       - imagemagick-customizations
     # NOTE: https://github.com/ImageMagick/ImageMagick/releases/latest
-    source: https://github.com/ImageMagick/ImageMagick/archive/refs/tags/7.1.1-36.tar.gz
-    source-checksum: sha256/cb2925aadf126177f13f670c8ac47ba9a90d012f075ed50f936d141d160e3e97
+    source: https://github.com/ImageMagick/ImageMagick/archive/refs/tags/7.1.1-37.tar.gz
+    source-checksum: sha256/7d294d20ce2b7bbcf39ee3b07a60bf2b45d659adaf3c1263df4a8b31bd9af443
     plugin: autotools
     build-packages:
       - build-essential
@@ -714,26 +696,26 @@ parts:
       - curl
       - ruby
       - node
-      - yarn
       - postgres
       - musl-libc
       - openssl1
       - imagemagick
     # NOTE: https://github.com/mastodon/mastodon/releases/latest
-    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.2.12.tar.gz
-    source-checksum: sha256/8fba0e4cc74233bee77752217673295ec4e32587abc2c9ae8967497147e691e5
+    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.3.0-beta.1.tar.gz
+    source-checksum: sha256/b543995836ed02b016262a1599e76cdbd30ae49bb5890b647c18a19589eba1e7
     plugin: nil
     build-environment:
-      - RUBY_BRANCH: "3.2" # NOTE: must be updated with ruby source
-      - BUNDLER_VERSION: "2.4.13" # NOTE: see `Gemfile.lock`
-      - BIRD_UI_VERSION: "1.8.5" # NOTE: https://github.com/ronilaukkarinen/mastodon-bird-ui/releases/latest
-      - TANGERINE_UI_VERSION: "1.9.5" # NOTE: https://github.com/nileane/TangerineUI-for-Mastodon/releases/latest
+      - YARN_VERSION: "4.4.1" # NOTE: https://github.com/yarnpkg/berry/releases/latest
+      - RUBY_BRANCH: "3.3" # NOTE: must be updated with ruby source
+      - BUNDLER_VERSION: "2.5.11" # NOTE: see `Gemfile.lock`
+      - BIRD_UI_VERSION: "2.0.0rc47" # NOTE: https://github.com/ronilaukkarinen/mastodon-bird-ui/releases/latest
+      - TANGERINE_UI_VERSION: "v2.0.0-prerelease6" # NOTE: https://github.com/nileane/TangerineUI-for-Mastodon/releases/latest
       - RAILS_ENV: production
       - NODE_ENV: production
       - OTP_SECRET: precompile_placeholder
       - SECRET_KEY_BASE: precompile_placeholder
-      - PATH: $SNAPCRAFT_STAGE/ruby/bin:$SNAPCRAFT_STAGE/node/bin:$SNAPCRAFT_STAGE/yarn/bin:$SNAPCRAFT_STAGE/jemalloc/bin:$SNAPCRAFT_STAGE/curl/bin:$PATH
-      - LD_LIBRARY_PATH: $SNAPCRAFT_STAGE/ruby/lib:$SNAPCRAFT_STAGE/node/lib:$SNAPCRAFT_STAGE/yarn/lib:$SNAPCRAFT_STAGE/jemalloc/lib:$SNAPCRAFT_STAGE/curl/lib:$LD_LIBRARY_PATH
+      - PATH: $SNAPCRAFT_STAGE/ruby/bin:$SNAPCRAFT_STAGE/node/bin:$SNAPCRAFT_STAGE/jemalloc/bin:$SNAPCRAFT_STAGE/curl/bin:$PATH
+      - LD_LIBRARY_PATH: $SNAPCRAFT_STAGE/ruby/lib:$SNAPCRAFT_STAGE/node/lib:$SNAPCRAFT_STAGE/jemalloc/lib:$SNAPCRAFT_STAGE/curl/lib:$LD_LIBRARY_PATH
       - RUBYLIB: $SNAPCRAFT_STAGE/ruby/lib/ruby/$RUBY_BRANCH.0:$SNAPCRAFT_STAGE/ruby/lib/ruby/$RUBY_BRANCH.0/$SNAP_ARCH
       - BUNDLE_PATH: $SNAPCRAFT_PART_BUILD/vendor/bundle
       - BUNDLE_GEMFILE: $SNAPCRAFT_PART_BUILD/Gemfile
@@ -752,7 +734,15 @@ parts:
       bundle config build.pg --with-pg-config=$SNAPCRAFT_STAGE/postgres/bin/pg_config
       bundle install -j"$(nproc)"
       npx browserslist@latest --update-db --yes
+      corepack enable
+      yarn init -2
+      yarn set version $YARN_VERSION
       yarn install --pure-lockfile
+      echo "###################################"
+      echo $PATH
+      echo $LD_LIBRARY_PATH
+      echo $(which yarn)
+      echo "###################################"
       yarn cache clean
       bundle exec rails assets:precompile
 
@@ -788,6 +778,8 @@ parts:
         sed -i "s/contrast: Mastodon (\(.*\))/&\n    mastodon-bird-ui-contrast: Mastodon Bird UI (\1)\n    mastodon-bird-ui-accessible: Mastodon Bird UI (\1++) ♿/" $locale
         sed -i "s/themes:$/&\n    tangerine-ui: Tangerine UI 🍊/" $locale
         sed -i "s/themes:$/&\n    tangerine-ui-purple: Tangerine UI 🪻/" $locale
+        sed -i "s/themes:$/&\n    tangerine-ui-cherry: Tangerine UI 🍒/" $locale
+        sed -i "s/themes:$/&\n    tangerine-ui-lagoon: Tangerine UI 🐠/" $locale
       done
 
       bundle exec rails assets:precompile
