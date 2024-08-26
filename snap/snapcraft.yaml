@@ -593,102 +593,149 @@ parts:
       - -musl-libc/share/man
 
   # NOTE: deprecated
-  imagemagick:
-    after:
-      - imagemagick-customizations
-    # NOTE: https://github.com/ImageMagick/ImageMagick/releases/latest
-    source: https://github.com/ImageMagick/ImageMagick/archive/refs/tags/7.1.1-37.tar.gz
-    source-checksum: sha256/7d294d20ce2b7bbcf39ee3b07a60bf2b45d659adaf3c1263df4a8b31bd9af443
-    plugin: autotools
-    build-packages:
-      - build-essential
-      - zlib1g-dev
-      - libxext-dev
-      - libjpeg-dev
-      - libpng-dev
-      - libheif-dev
-      - libraw-dev
-      - libtiff-dev
-      - libwebp-dev
-      - libopenjp2-7-dev
-      - libfreetype6-dev
-      - libopenexr-dev
-      - libltdl-dev
-    build-environment:
-      - LD_LIBRARY_PATH: $SNAPCRAFT_STAGE/libjxl/lib:$LD_LIBRARY_PATH
-    override-build: |
-      ./configure \
-        --prefix=$SNAPCRAFT_PART_INSTALL/imagemagick \
-        --disable-shared \
-        --with-modules \
-        --enable-file-type \
-        --with-quantum-depth=32 \
-        --with-jpeg=yes \
-        --with-png=yes \
-        --with-gif=yes \
-        --with-webp=yes \
-        --with-heic=yes \
-        --with-raw=yes \
-        --with-tiff=yes \
-        --with-openjp2 \
-        --with-freetype=yes \
-        --with-openexr=yes \
-        --with-gslib=yes
-      make -j"$(nproc)"
-      make install
-      cp $SNAPCRAFT_PART_SRC/LICENSE $SNAPCRAFT_PART_INSTALL/imagemagick/
-    stage-packages:
-      - libgomp1
-      - libicu66
-      - libxml2
-      - libjpeg62
-      - libjpeg-turbo-progs
-      - libpng16-16
-      - libtiff5
-      - libopenjp2-tools
-      - libltdl7
-      - libde265-0
-      - libfreetype6
-      - libheif1
-      - libilmbase24
-      - libnuma1
-      - libopenexr24
-      - libraw19
-      - libx11-6
-      - libx265-179
-      - libxau6
-      - libxcb1
-      - libxdmcp6
-      - libxext6
-      - libwebp6
-      - libwebpmux3
-      - libwebpdemux2
-    override-prime: |
-      snapcraftctl prime
-      case "$SNAP_ARCH" in
-      "amd64")
-        target="x86_64-linux-gnu"
-        ;;
-      "arm64")
-        target="aarch64-linux-gnu"
-        ;;
-      *)
-        echo "Unsupported architecture $SNAP_ARCH"
-        exit 1
-        ;;
-      esac
-      # ln -s libwebpmux.so.3 $SNAPCRAFT_PRIME/usr/lib/$target/libwebpmux.so.2
-    organize:
-      imagemagick/etc/ImageMagick-7: imagemagick/config
-    stage:
-      - -imagemagick/share
-      - -imagemagick/etc
+  # imagemagick:
+  #   after:
+  #     - imagemagick-customizations
+  #   # NOTE: https://github.com/ImageMagick/ImageMagick/releases/latest
+  #   source: https://github.com/ImageMagick/ImageMagick/archive/refs/tags/7.1.1-37.tar.gz
+  #   source-checksum: sha256/7d294d20ce2b7bbcf39ee3b07a60bf2b45d659adaf3c1263df4a8b31bd9af443
+  #   plugin: autotools
+  #   build-packages:
+  #     - build-essential
+  #     - zlib1g-dev
+  #     - libxext-dev
+  #     - libjpeg-dev
+  #     - libpng-dev
+  #     - libheif-dev
+  #     - libraw-dev
+  #     - libtiff-dev
+  #     - libwebp-dev
+  #     - libopenjp2-7-dev
+  #     - libfreetype6-dev
+  #     - libopenexr-dev
+  #     - libltdl-dev
+  #   build-environment:
+  #     - LD_LIBRARY_PATH: $SNAPCRAFT_STAGE/libjxl/lib:$LD_LIBRARY_PATH
+  #   override-build: |
+  #     ./configure \
+  #       --prefix=$SNAPCRAFT_PART_INSTALL/imagemagick \
+  #       --disable-shared \
+  #       --with-modules \
+  #       --enable-file-type \
+  #       --with-quantum-depth=32 \
+  #       --with-jpeg=yes \
+  #       --with-png=yes \
+  #       --with-gif=yes \
+  #       --with-webp=yes \
+  #       --with-heic=yes \
+  #       --with-raw=yes \
+  #       --with-tiff=yes \
+  #       --with-openjp2 \
+  #       --with-freetype=yes \
+  #       --with-openexr=yes \
+  #       --with-gslib=yes
+  #     make -j"$(nproc)"
+  #     make install
+  #     cp $SNAPCRAFT_PART_SRC/LICENSE $SNAPCRAFT_PART_INSTALL/imagemagick/
+  #   stage-packages:
+  #     - libgomp1
+  #     - libicu66
+  #     - libxml2
+  #     - libjpeg62
+  #     - libjpeg-turbo-progs
+  #     - libpng16-16
+  #     - libtiff5
+  #     - libopenjp2-tools
+  #     - libltdl7
+  #     - libde265-0
+  #     - libfreetype6
+  #     - libheif1
+  #     - libilmbase24
+  #     - libnuma1
+  #     - libopenexr24
+  #     - libraw19
+  #     - libx11-6
+  #     - libx265-179
+  #     - libxau6
+  #     - libxcb1
+  #     - libxdmcp6
+  #     - libxext6
+  #     - libwebp6
+  #     - libwebpmux3
+  #     - libwebpdemux2
+  #   override-prime: |
+  #     snapcraftctl prime
+  #     case "$SNAP_ARCH" in
+  #     "amd64")
+  #       target="x86_64-linux-gnu"
+  #       ;;
+  #     "arm64")
+  #       target="aarch64-linux-gnu"
+  #       ;;
+  #     *)
+  #       echo "Unsupported architecture $SNAP_ARCH"
+  #       exit 1
+  #       ;;
+  #     esac
+  #     # ln -s libwebpmux.so.3 $SNAPCRAFT_PRIME/usr/lib/$target/libwebpmux.so.2
+  #   organize:
+  #     imagemagick/etc/ImageMagick-7: imagemagick/config
+  #   stage:
+  #     - -imagemagick/share
+  #     - -imagemagick/etc
 
-  imagemagick-customizations:
-    plugin: dump
-    source: src/imagemagick/
-    organize:
-      config/*: config/imagemagick/
+  # imagemagick-customizations:
+  #   plugin: dump
+  #   source: src/imagemagick/
+  #   organize:
+  #     config/*: config/imagemagick/
+
+  meson:
+    plugin: python
+    source-type: git
+    source: https://github.com/mesonbuild/meson
+    override-pull: |
+      craftctl default
+      git checkout 1.5.1 # NOTE: https://github.com/mesonbuild/meson/releases/latest
+
+  ninja:
+    after:
+      - meson
+    plugin: python
+    source-type: git
+    source: https://github.com/ninja-build/ninja
+    override-pull: |
+      craftctl default
+      git checkout 1.12.1 # NOTE: https://github.com/ninja-build/ninja/releases/latest
+    build-environment:
+      - PATH: $SNAPCRAFT_STAGE/meson/bin:$PATH
+      - PYTHONPATH: $SNAPCRAFT_STAGE/meson/lib:$PYTHONPATH
+
+  libvips:
+    after:
+      - meson
+      - ninja
+    # NOTE: https://github.com/libvips/libvips/releases/latest
+    source: https://github.com/libvips/libvips/archive/refs/tags/v8.15.3.tar.gz
+    source-checksum: sha256/c23a820443241c35e62f1f1f0a1f6c199b37e07d98e3268a7fa9db43309fd67d
+    plugin: nil
+    build-environment:
+      - PATH: $SNAPCRAFT_STAGE/meson/bin:$SNAPCRAFT_STAGE/ninja/bin:$PATH
+      - PYTHONPATH: $SNAPCRAFT_STAGE/meson/lib:$SNAPCRAFT_STAGE/ninja/lib:$PYTHONPATH
+    override-build: |
+      meson setup build-dir --prefix=$SNAPCRAFT_PART_INSTALL/libvips
+      cd build-dir
+      ninja
+      ninja test
+      ninja install
+      cp $SNAPCRAFT_PART_SRC/LICENSE $SNAPCRAFT_PART_INSTALL/libvips
+      echo "###################################"
+      ls $SNAPCRAFT_PART_INSTALL/libvips
+      echo "###################################"
+    # TODO: stage files
+    # stage:
+    #   - -libvips/share/doc
+    #   - -libvips/share/man
 
   mastodon:
     after:
@@ -699,7 +746,7 @@ parts:
       - postgres
       - musl-libc
       - openssl1
-      - imagemagick
+      - libvips
     # NOTE: https://github.com/mastodon/mastodon/releases/latest
     source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.3.0-beta.1.tar.gz
     source-checksum: sha256/b543995836ed02b016262a1599e76cdbd30ae49bb5890b647c18a19589eba1e7
@@ -724,6 +771,7 @@ parts:
       - GEM_PATH: $GEM_HOME
       - YARN_RC_FILENAME: $SNAPCRAFT_PART_BUILD/.yarnrc.yml
       - YARN_CONFIG_DIR: $SNAPCRAFT_PART_BUILD
+      - MASTODON_USE_LIBVIPS: "true"
     override-build: |
       gem install bundler -v $BUNDLER_VERSION --no-document --install-dir $GEM_PATH
       bundle config deployment "true"
