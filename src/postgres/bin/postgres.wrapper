@@ -11,8 +11,6 @@ mkdir -p "$PG_SOCK_DIR"
 
 sed -ie "s|^include_if_exists = .*|include_if_exists = '$(config_dir postgres)/postgresql.conf'|" "$PG_DATA_DIR/postgresql.conf"
 
-chmod 660 "$PG_LOG_FILE"
-
 postgres \
     -D "$PG_DATA_DIR" \
     -k "$PG_SOCK_DIR" \

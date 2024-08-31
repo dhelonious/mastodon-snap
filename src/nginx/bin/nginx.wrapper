@@ -10,15 +10,15 @@ fi
 mkdir -p "$NGINX_CACHE_DIR"
 
 if $(certificate_exists); then
-    copy_config nginx mastodon-https.conf
-    remove_config nginx mastodon-http.conf
+    copy_config_as_daemon_user nginx mastodon-https.conf
+    remove_config_as_daemon_user nginx mastodon-http.conf
 else
-    copy_config nginx mastodon-http.conf
-    remove_config nginx mastodon-https.conf
+    copy_config_as_daemon_user nginx mastodon-http.conf
+    remove_config_as_daemon_user nginx mastodon-https.conf
 fi
 
 nginx \
     -c "$SNAP_DATA/nginx/config/nginx.conf" \
-    -p "$SNAP_DATA/nginx/data" \
-    -e "$LOG_DIR/nginx.log" \
+    -p "$NGINX_DATA_DIR" \
+    -e "$NGINX_LOG_FILE" \
     "$@"

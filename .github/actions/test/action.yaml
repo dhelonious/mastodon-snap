@@ -4,6 +4,10 @@ inputs:
   snap:
     required: true
     type: string
+  upgrade:
+    required: false
+    type: boolean
+    default: false
 runs:
   using: composite
   steps:
@@ -26,20 +30,46 @@ runs:
       echo "STATUS_LENGTH_VALIDATOR_FILE=/var/snap/mastodon-server/current/mastodon/app/validators/status_length_validator.rb" >> $GITHUB_OUTPUT
       echo "LIMIT=600" >> $GITHUB_OUTPUT
       echo "COUNTER=400" >> $GITHUB_OUTPUT
+  - name: set permissions on resolv.conf
+    shell: bash
+    run: sudo chmod 644 /etc/resolv.conf
+  - name: install and setup previous snap
+    if: ${{ inputs.upgrade == 'true' }}
+    shell: bash
+    run: |
+      echo -e "\033[1;33mInstall previous snap\033[0m"
+      sudo snap install mastodon-server
+      sleep 10
+      sudo snap set mastodon-server domain="${{ steps.env.outputs.domain }}"
+      sudo mastodon-server.setup
+      sleep 10
+  - name: install snap
+    shell: bash
+    run: |
+      echo -e "\033[1;33mInstall snap (upgrade=${{ inputs.upgrade }})\033[0m"
+      if INSTALL_OUTPUT=$(sudo snap install --dangerous ${{ inputs.snap }}); then
+        echo -e "\033[1;32mSnap installation completed successfully\033[0m"
+      else
+        echo -e "\033[1;31mSnap installation failed\033[0m"
+        echo -e "\033[1;33m$INSTALL_OUTPUT\033[0m"
+        exit 1
+      fi
+      sleep 10
   - name: test setup
+    if: ${{ inputs.upgrade == 'false' }}
     shell: bash
     run: |
       echo -e "\033[1;33mTest setup\033[0m"
-      sudo snap install --dangerous ${{ inputs.snap }}
       sudo snap set mastodon-server domain="${{ steps.env.outputs.domain }}"
-      sudo snap set mastodon-server email="admin@${{ steps.env.outputs.domain }}"
-      if SETUP_OUTPUT=$(sudo mastodon-server.setup); then
+      if sudo mastodon-server.setup; then
         echo -e "\033[1;32mMastodon setup completed successfully\033[0m"
       else
         echo -e "\033[1;31mMastodon setup failed\033[0m"
-        echo -e "\033[1;33m$SETUP_OUTPUT\033[0m"
+        echo -e "\033[1;33mSnap logs:\033[0m"
+        sudo snap logs mastodon-server
         exit 1
       fi
+      sleep 10
   - name: check services
     shell: bash
     run: |
@@ -50,6 +80,8 @@ runs:
           echo -e "\033[1;32m$1 $STATUS\033[0m"
         else
           echo -e "\033[1;31m$1 $STATUS\033[0m"
+          echo -e "\033[1;33mSnap logs:\033[0m"
+          sudo snap logs "mastodon-server.$1"
           exit 1
         fi
       }
@@ -59,17 +91,16 @@ runs:
       check_service_status sidekiq
       check_service_status streaming
       check_service_status nginx
-  - name: test http
+  - name: check reachability
     shell: bash
     run: |
-      echo -e "\033[1;33mTest HTTP\033[0m"
-      sleep 30
+      echo -e "\033[1;33mCheck reachability\033[0m"
       HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" --resolve ${{ steps.env.outputs.domain }}:80:127.0.0.1 http://${{ steps.env.outputs.domain }}:80)
       if [ "$HTTP_STATUS" -eq 200 ]; then
-        echo -e "\033[1;32mMastodon is reachable via HTTP\033[0m"
+        echo -e "\033[1;32mCheck passed\033[0m"
       else
-        echo -e "\033[1;31mFailed to reach Mastodon via HTTP\033[0m"
-        echo -e "\033[1;33m$HTTP_STATUS\033[0m"
+        echo -e "\033[1;31mCheck failed\033[0m"
+        echo -e "\033[1;33mHTTP_STATUS=$HTTP_STATUS\033[0m"
         exit 1
       fi
   - name: generate ssl certificates
@@ -82,15 +113,15 @@ runs:
       sudo openssl req -x509 -newkey rsa:2048 -sha256 -keyout "$CERT_DIR/${{ steps.env.outputs.domain }}.key" -days 1 -nodes -out "$CERT_DIR/fullchain.cer" -subj "/CN=${{ steps.env.outputs.domain }}"
       echo "Restart mastodon-server.nginx"
       sudo snap restart mastodon-server.nginx
+      sleep 10
   - name: check if https config is created
     shell: bash
     run: |
       echo -e "\033[1;33mCheck if HTTPS is enabled\033[0m"
-      sleep 10
       if sudo test -f "/var/snap/mastodon-server/current/nginx/config/mastodon-https.conf"; then
-        echo -e "\033[1;32mnginx https config exists\033[0m"
+        echo -e "\033[1;32mCheck passed\033[0m"
       else
-        echo -e "\033[1;31mnginx https config is missing\033[0m"
+        echo -e "\033[1;31mCheck failed\033[0m"
         exit 1
       fi
   - name: change http/https ports
@@ -98,17 +129,17 @@ runs:
     run: |
       echo -e "\033[1;33mChange HTTP/HTTPS ports\033[0m"
       sudo snap set mastodon-server ports.http=${{ steps.env.outputs.HTTP_PORT }} ports.https=${{ steps.env.outputs.HTTPS_PORT }}
+      sleep 10
   - name: check http port
     shell: bash
     run: |
       echo -e "\033[1;33mCheck HTTP port\033[0m"
-      sleep 30
       HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" --resolve "${{ steps.env.outputs.domain }}:${{ steps.env.outputs.HTTP_PORT }}:127.0.0.1" "http://${{ steps.env.outputs.domain }}:${{ steps.env.outputs.HTTP_PORT }}")
       if [ "$HTTP_STATUS" -eq 301 ]; then
-        echo -e "\033[1;32mHTTP to HTTPS forwarding is active\033[0m"
+        echo -e "\033[1;32mCheck passed\033[0m"
       else
-        echo -e "\033[1;31mHTTP to HTTPS forwarding is inactive\033[0m"
-        echo -e "\033[1;33m$HTTP_STATUS\033[0m"
+        echo -e "\033[1;31mCheck failed\033[0m"
+        echo -e "\033[1;33mHTTP_STATUS=$HTTP_STATUS\033[0m"
         exit 1
       fi
   - name: check https port
@@ -117,10 +148,10 @@ runs:
       echo -e "\033[1;33mCheck HTTPS port\033[0m"
       HTTPS_STATUS=$(curl -s -o /dev/null -w "%{http_code}" --resolve "${{ steps.env.outputs.domain }}:${{ steps.env.outputs.HTTPS_PORT }}:127.0.0.1" "https://${{ steps.env.outputs.domain }}:${{ steps.env.outputs.HTTPS_PORT }}" --insecure)
       if [ "$HTTPS_STATUS" -eq 200 ]; then
-        echo -e "\033[1;32mMastodon is reachable via HTTPS\033[0m"
+        echo -e "\033[1;32mCheck passed\033[0m"
       else
-        echo -e "\033[1;31mFailed to reach Mastodon via HTTPS\033[0m"
-        echo -e "\033[1;33m$HTTPS_STATUS\033[0m"
+        echo -e "\033[1;31mCheck failed\033[0m"
+        echo -e "\033[1;33mHTTPS_STATUS=$HTTPS_STATUS\033[0m"
         exit 1
       fi
   - name: test export
@@ -128,9 +159,9 @@ runs:
     run: |
       echo -e "\033[1;33mTest export\033[0m"
       if EXPORT_OUTPUT=$(sudo mastodon-server.export); then
-        echo -e "\033[1;32mExport command completed successfully\033[0m"
+        echo -e "\033[1;32mTest passed\033[0m"
       else
-        echo -e "\033[1;31mThere occured an error during export\033[0m"
+        echo -e "\033[1;31mTest failed\033[0m"
         echo -e "\033[1;33m$EXPORT_OUTPUT\033[0m"
         exit 1
       fi
@@ -142,9 +173,9 @@ runs:
     run: |
       echo -e "\033[1;33mTest restore\033[0m"
       if RESTORE_OUTPUT=$(sudo mastodon-server.restore ${{ steps.export.outputs.backup_dir }}); then
-        echo -e "\033[1;32mRestore command completed successfully\033[0m"
+        echo -e "\033[1;32mTest passed\033[0m"
       else
-        echo -e "\033[1;31mThere occured an error during restore\033[0m"
+        echo -e "\033[1;31mTest failed\033[0m"
         echo -e "\033[1;33m$RESTORE_OUTPUT\033[0m"
         exit 1
       fi
@@ -158,54 +189,71 @@ runs:
     run: |
       echo -e "\033[1;33mCheck 'MAX_CHARS' in ${{ steps.env.outputs.STATUS_LENGTH_VALIDATOR_FILE }}\033[0m"
       MAX_CHARS=$(sudo sed -rn "s/^.*MAX_CHARS = ([0-9]+).*$/\1/p" "${{ steps.env.outputs.STATUS_LENGTH_VALIDATOR_FILE }}")
-      if [ "$MAX_CHARS" -ne "${{ steps.env.outputs.LIMIT }}" ]; then
-        echo -e "\033[1;31m'MAX_CHARS' is not properly set in ${{ steps.env.outputs.STATUS_LENGTH_VALIDATOR_FILE }}\033[0m"
-        echo -e "\033[1;33m$MAX_CHARS\033[0m"
+      if [ "$MAX_CHARS" -eq "${{ steps.env.outputs.LIMIT }}" ]; then
+        echo -e "\033[1;32mCheck passed\033[0m"
+      else
+        echo -e "\033[1;31mCheck failed\033[0m"
+        echo -e "\033[1;33mMAX_CHARS=$MAX_CHARS\033[0m"
         exit 1
       fi
   - name: check length fulltext
     shell: bash
     run: |
       echo -e "\033[1;33mCheck 'length(fulltext)' in ${{ steps.env.outputs.COMPOSE_FORM_FILE }}\033[0m"
-      LENGTH_FULLTEXT=$(sudo sed -rn "s/^.*length\(fulltext\) > ([0-9]+)/\1/p" "${{ steps.env.outputs.COMPOSE_FORM_FILE }}")
-      if [ "$LENGTH_FULLTEXT" -ne "${{ steps.env.outputs.LIMIT }}" ]; then
-        echo -e "\033[1;31m'length(fulltext)' is not properly set in ${{ steps.env.outputs.COMPOSE_FORM_FILE }}\033[0m"
-        echo -e "\033[1;33m$LENGTH_FULLTEXT\033[0m"
+      LENGTH_FULLTEXT=$(sudo sed -rn "s/^.*length\(fulltext\) > ([0-9]+).*$/\1/p" "${{ steps.env.outputs.COMPOSE_FORM_FILE }}")
+      if [ "$LENGTH_FULLTEXT" -eq "${{ steps.env.outputs.LIMIT }}" ]; then
+        echo -e "\033[1;32mCheck passed\033[0m"
+      else
+        echo -e "\033[1;31mCheck failed\033[0m"
+        echo -e "\033[1;33mLENGTH_FULLTEXT=$LENGTH_FULLTEXT\033[0m"
         exit 1
       fi
   - name: check character counter max
     shell: bash
     run: |
       echo -e "\033[1;33mCheck 'CharacterCounter max' in ${{ steps.env.outputs.COMPOSE_FORM_FILE }}\033[0m"
-      CHARACTER_COUNTER_MAX=$(sed -rn "s/^.*CharacterCounter max=\{([0-9]+)\}.*$/\1/p" "${{ steps.env.outputs.COMPOSE_FORM_FILE }}")
-      if [ "$CHARACTER_COUNTER_MAX" -ne "${{ steps.env.outputs.COUNTER }}" ]; then
-        echo -e "\033[1;31m'CharacterCounter max' is not properly set in ${{ steps.env.outputs.COMPOSE_FORM_FILE }}\033[0m"
-        echo -e "\033[1;33m$CHARACTER_COUNTER_MAX\033[0m"
+      CHARACTER_COUNTER_MAX=$(sudo sed -rn "s/^.*CharacterCounter max=\{([0-9]+)\}.*$/\1/p" "${{ steps.env.outputs.COMPOSE_FORM_FILE }}")
+      if [ "$CHARACTER_COUNTER_MAX" -eq "${{ steps.env.outputs.COUNTER }}" ]; then
+        echo -e "\033[1;32mCheck passed\033[0m"
+      else
+        echo -e "\033[1;31mCheck failed\033[0m"
+        echo -e "\033[1;33mCHARACTER_COUNTER_MAX=$CHARACTER_COUNTER_MAX\033[0m"
         exit 1
       fi
   - name: test rails console
     shell: bash
     run: |
       echo -e "\033[1;33mTest rails console\033[0m"
-      if CONSOLE_OUTPUT=$(echo "exit" | sudo mastodon-server.console --sandbox); then
-        if [ -z $(echo "$CONSOLE_OUTPUT" | grep "Loading production environment") ]; then
-          echo -e "\033[1;31mRails console output does not look as expected\033[0m"
+      if CONSOLE_OUTPUT="$(echo "exit" | sudo mastodon-server.console --sandbox)"; then
+        if ! [ -z "$(echo "'"$CONSOLE_OUTPUT"'" | grep 'Loading production environment')" ]; then
+          echo -e "\033[1;32mTest passed\033[0m"
+        else
+          echo -e "\033[1;31mTest failed\033[0m"
           echo -e "\033[1;33m$CONSOLE_OUTPUT\033[0m"
           exit 1
-        else
-          echo -e "\033[1;32mmastodon-server.console works as expected\033[0m"
         fi
       fi
   - name: test postgres dump
     shell: bash
     run: |
       echo -e "\033[1;33mTest postgres dump\033[0m"
-      if POSTGRES_DUMP=$(sudo mastodon-server.postgres-dump); then
-        if [ -z $(echo "$POSTGRES_DUMP" | grep "CREATE DATABASE mastodon") ]; then
-          echo -e "\033[1;31mPostgres dump does not look as expected\033[0m"
+      if POSTGRES_DUMP="$(sudo mastodon-server.postgres-dump)"; then
+        if ! [ -z "$(echo "'"$POSTGRES_DUMP"'" | grep 'CREATE DATABASE mastodon')" ]; then
+          echo -e "\033[1;32mTest passed\033[0m"
+        else
+          echo -e "\033[1;31mTest failed\033[0m"
           echo -e "\033[1;33m$POSTGRES_DUMP\033[0m"
           exit 1
-        else
-          echo -e "\033[1;32mmastodon-server.postgres-dump completed successfully\033[0m"
         fi
+      fi
+  - name: remove snap
+    shell: bash
+    run: |
+      echo -e "\033[1;33mRemove snap\033[0m"
+      if REMOVE_OUTPUT=$(sudo snap remove --purge mastodon-server); then
+        echo -e "\033[1;32mSnap removal completed successfully\033[0m"
+      else
+        echo -e "\033[1;31mSnap removal failed\033[0m"
+        echo -e "\033[1;33m$REMOVE_OUTPUT\033[0m"
+        exit 1
       fi

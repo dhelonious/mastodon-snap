@@ -12,9 +12,10 @@ reset_restart_required nginx
 
 update_snap_version_file
 
-mkdir -p "$LOG_DIR" "$SECRET_DIR" "$CERT_DIR"
-mkdir -p "$UPDATE_DIR" "$UPDATE_BACKUP_DIR"
-mkdir -p "$DEFAULT_MEDIA_DIR" "$DEFAULT_BACKUP_DIR"
+mkdir -p "$SECRET_DIR"
+mkdir -p "$UPDATE_DIR" "$UPDATE_BACKUP_DIR" "$DEFAULT_BACKUP_DIR"
+mkdir_with_owner $DAEMON_USER:root "$CERT_DIR" "$DEFAULT_MEDIA_DIR"
+mkdir_with_permissions $DAEMON_USER:root 775 "$LOG_DIR"
 
 # Postgres
 
@@ -23,9 +24,9 @@ echo Install postgres
 
 export PG_PASSWORD=$(generate_secret postgres)
 
-create_postgres_dirs
-create_postgres_log
-copy_postgres_config
+mkdir_with_owner $DAEMON_USER:root "$SNAP_DATA/postgres"
+
+copy_config_as_daemon_user postgres postgresql.conf
 setup_postgres_database
 
 update_postgres_version_file
@@ -35,16 +36,18 @@ update_postgres_version_file
 echo Install redis
 . "$SNAP/redis.env"
 
+mkdir_with_owner $DAEMON_USER:root "$SNAP_DATA/redis"
+
 # export REDIS_PASSWORD=$(generate_secret redis)
 
-mkdir -p "$SNAP_DATA/redis/data"
-
-copy_config redis redis.conf
+copy_config_as_daemon_user redis redis.conf
 
 # Mastodon
 
 echo Install mastodon
 . "$SNAP/mastodon.env"
+
+mkdir_with_owner $DAEMON_USER:root "$SNAP_DATA/mastodon"
 
 reset_recompile_required
 
@@ -57,7 +60,9 @@ update_backup_dir_file
 echo Install nginx
 . "$SNAP/nginx.env"
 
-mkdir -p "$SNAP_DATA/nginx/data" "$SNAP_COMMON/.well-known"
+mkdir -p "$SNAP_DATA/nginx" "$NGINX_DATA_DIR"
+mkdir_with_owner $DAEMON_USER:root "$(config_dir nginx)"
+mkdir_with_owner $DAEMON_USER:root "$SNAP_COMMON/.well-known"
 
 copy_nginx_configs
 
@@ -66,11 +71,10 @@ copy_nginx_configs
 echo Install acme
 . "$SNAP/acme.env"
 
-mkdir -p "$SNAP_DATA/acme/config"
+mkdir_with_owner $DAEMON_USER:root "$SNAP_DATA/acme"
 
-cd $SNAP/acme && $SNAP/acme/acme.sh --install \
-    --nocron \
-    --noprofile \
+cd $SNAP/acme && run_as_daemon_user $SNAP/acme/acme.sh \
+    --install --nocron --noprofile \
     --home "$SNAP_DATA/acme" \
     --config-home "$SNAP_DATA/acme/config" \
     --cert-home "$CERT_DIR"
@@ -79,7 +83,5 @@ cd $SNAP/acme && $SNAP/acme/acme.sh --install \
 
 echo Install logrotate
 . "$SNAP/logrotate.env"
-
-mkdir -p "$LOGROTATE_DATA_DIR"
 
 copy_config logrotate logrotate.conf

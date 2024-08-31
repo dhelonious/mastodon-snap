@@ -8,6 +8,5 @@ acme.sh \
     --cert-home "$CERT_DIR" \
     --log "$LOG_DIR/acme.sh.log" \
     --server "$ACME_SERVER" \
-    --openssl-bin "$SNAP/openssl1/bin/openssl" \
     -w "$SNAP_COMMON" \
     "$@"

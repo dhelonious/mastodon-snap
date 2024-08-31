@@ -20,12 +20,17 @@ for setting in $SETTINGS; do
 done
 
 echo Export configuration
-cp "$SNAP_COMMON/mastodon.conf" "$export_dir/"
+rsync_clean "$SNAP_COMMON/mastodon.conf" "$export_dir/mastodon.conf"
 
 echo Export database
 $SNAP/bin/pg_dumpall.wrapper -f "$export_dir/database.sql"
-sed -ri "s/^(CREATE ROLE postgres;)/-- \1/" "$export_dir/database.sql"
-sed -ri "s/^(CREATE ROLE $MASTODON_DBUSER;)/-- \1/" "$export_dir/database.sql"
+$SNAP/bin/sed_inline "s/^(CREATE ROLE postgres;)/-- \1/" "$export_dir/database.sql"
+$SNAP/bin/sed_inline "s/^(CREATE ROLE $MASTODON_DBUSER;)/-- \1/" "$export_dir/database.sql"
+
+if [ -s "$SNAP_DATA/redis/data/dump.rdb" ]; then
+    echo Export redis database
+    rsync_clean "$SNAP_DATA/redis/data/dump.rdb" "$export_dir/redis.rdb"
+fi
 
 if [ -z "$SKIP_MEDIA_EXPORT" ]; then
     if ! [ -z "$(ls -A $MEDIA_DIR)" ]; then

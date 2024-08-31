@@ -1,0 +1,13 @@
+#!/bin/bash -e
+
+. "$SNAP/redis.env"
+
+count=${1:-10}
+
+while [ "$count" -gt 0 ]; do
+    if redis-cli -s "$SOCK_DIR/redis.sock" ping &> /dev/null; then
+        exit 0
+    fi
+    sleep 1
+    count=$((count-1))
+done

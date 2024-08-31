@@ -5,20 +5,25 @@ set_default_settings
 
 export CURRENT_SNAP_VERSION="$(get_snap_version_file)"
 
-echo Update configs
+# NOTE: This is a fix for older versions and may be removed in the future
+echo Set permissions on log dir
+fix_daemon_user "$LOG_DIR"
+run_as_daemon_user chmod 755 "$LOG_DIR"
 
 # Postgres
 
 . "$SNAP/postgres.env"
 
+# NOTE: This is a fix for older versions and may be removed in the future
+echo Set permissions on postgres files and dirs
+fix_daemon_user "$SNAP_DATA/postgres"
+fix_daemon_user "$PG_SOCK_DIR"
+fix_daemon_user "$PG_LOG_FILE"
+
 export CURRENT_PG_VERSION="$(get_postgres_version_file)"
 
 echo Update postgres config
-copy_postgres_config
-
-# NOTE: This is a fix for older versions and may be removed in the future
-echo Set permissions on postgres log
-set_postgres_log_permissions
+copy_config_as_daemon_user postgres postgresql.conf
 
 if [ "$PG_VERSION" != "$CURRENT_PG_VERSION" ]; then
     if [ -f "$SNAP_COMMON/database.sql" ]; then
@@ -38,39 +43,67 @@ fi
 
 # Redis
 
+# NOTE: This is a fix for older versions and may be removed in the future
+echo Set permissions on redis files and dirs
+fix_daemon_user "$SNAP_DATA/redis"
+fix_daemon_user "$SOCK_DIR/redis.sock"
+fix_daemon_user "$LOG_DIR/redis.log"
+
 echo Update redis config
-copy_config redis redis.conf
+copy_config_as_daemon_user redis redis.conf
 
 # Mastodon
 
 . "$SNAP/mastodon.env"
-if [ "$SNAP_VERSION" != "$CURRENT_SNAP_VERSION" ]; then
-    if $(mastodon_config_exists); then
-        load_mastodon_env
 
-        echo Update mastodon
-        update_mastodon_files
+# NOTE: This is a fix for older versions and may be removed in the future
+echo Set permissions on mastodon files and dirs
+fix_daemon_user "$SNAP_DATA/mastodon"
+fix_daemon_user "$SNAP_COMMON/mastodon.conf"
+fix_daemon_user "$MEDIA_DIR"
+fix_daemon_user "$LOG_DIR/backend.log"
+fix_daemon_user "$LOG_DIR/streaming.log"
+fix_daemon_user "$LOG_DIR/sidekiq.log"
+
+if [ "$SNAP_VERSION" != "$CURRENT_SNAP_VERSION" ]; then
+    echo Update mastodon
+    update_mastodon_files
+
+    if $(mastodon_config_exists); then
+        echo Update mastodon config
         link_mastodon_config
+        upgrade_mastodon_config
 
         echo Update mastodon database
-        postgres_waitready
-        mastodon_rails db:prepare
+        mastodon_migrate_db
 
-        echo Remove old logs and tempfiles
+        echo Remove logs and tempfiles
         mastodon_rails log:clear tmp:clear
     fi
 fi
 
 echo Add update announcement
-postgres_waitready
 mastodon_announcement "The mastodon-server snap has been updated to version $SNAP_VERSION"
 
 # Nginx
 
 . "$SNAP/nginx.env"
 
+# NOTE: This is a fix for older versions and may be removed in the future
+echo Set permissions on nginx files and dirs
+fix_daemon_user "$(config_dir nginx)"
+fix_daemon_user "$SNAP_COMMON/.well-known"
+fix_daemon_user "$NGINX_LOG_FILE"
+fix_daemon_user "$NGINX_ACCESS_LOG_FILE"
+
 echo Update nginx configs
 copy_nginx_configs
+
+# Acme
+
+# NOTE: This is a fix for older versions and may be removed in the future
+echo Set permissions on acme dir
+fix_daemon_user "$SNAP_DATA/acme"
 
 # Logrotate
 

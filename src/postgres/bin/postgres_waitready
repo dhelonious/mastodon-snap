@@ -1,0 +1,13 @@
+#!/bin/bash -e
+
+. "$SNAP/postgres.env"
+
+count=${1:-10}
+
+while [ "$count" -gt 0 ]; do
+    if pg_isready -h "$PG_SOCK_DIR" -U postgres > /dev/null; then
+        exit 0
+    fi
+    sleep 1
+    count=$((count-1))
+done

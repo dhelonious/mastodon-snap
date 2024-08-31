@@ -1,0 +1,5 @@
+#!/bin/bash -e
+
+. "$SNAP/snap.env"
+
+envsubst "$(get_env_vars)" <<< "$1" > "$2"

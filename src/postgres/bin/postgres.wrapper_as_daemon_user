@@ -1,5 +1,0 @@
-#!/bin/bash -e
-
-. "$SNAP/postgres.env"
-
-run_as_daemon_user $SNAP/bin/postgres.wrapper

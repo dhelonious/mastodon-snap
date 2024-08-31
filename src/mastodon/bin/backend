@@ -3,6 +3,8 @@
 . "$SNAP/mastodon.env"
 
 check_setup
+postgres_waitready
+redis_waitready
 
 mastodon_rails s -p 3000 \
     2>&1 | tee -a "$LOG_DIR/backend.log"

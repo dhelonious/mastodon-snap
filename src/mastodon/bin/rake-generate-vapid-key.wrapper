@@ -1,7 +1,0 @@
-#!/bin/bash -e
-
-. "$SNAP/mastodon.env"
-
-check_root
-
-mastodon_rake mastodon:webpush:generate_vapid_key "$@"

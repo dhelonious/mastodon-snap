@@ -2,6 +2,7 @@
 
 . "$SNAP/mastodon.env"
 . "$SNAP/postgres.env"
+. "$SNAP/redis.env"
 
 check_root
 
@@ -19,7 +20,7 @@ if [ "$BACKUP_VERSION" != "$SNAP_VERSION" ]; then
     echo "Snap version: $SNAP_VERSION"
     echo "Backup version: $BACKUP_VERSION"
     echo The backup may be incompatible or changes may be required.
-    read -r -p "Do you want to continue? [y/N] " response
+    read -rp "Do you want to continue? [y/N] " response
     if ! [[ "$response" =~ ^([yY])$ ]]; then
         exit 0
     fi
@@ -31,6 +32,7 @@ cat "$backup_dir/settings" | while read setting; do
 done
 
 echo Stop services
+snapctl stop "$SNAP_NAME.nginx"
 snapctl stop "$SNAP_NAME.backend"
 snapctl stop "$SNAP_NAME.sidekiq"
 
@@ -40,14 +42,26 @@ $SNAP/bin/psql.wrapper -c "drop database if exists $MASTODON_DBNAME;"
 # $SNAP/bin/psql.wrapper -c "drop role if exists $MASTODON_DBUSER;"
 
 echo Restore configuration
-cp "$backup_dir/mastodon.conf" "$SNAP_COMMON/"
-ln -sfn "$SNAP_COMMON/mastodon.conf" "$SNAP_DATA/mastodon/.env.production"
+rsync --ignore-times --no-owner --no-perms --chown root:$SNAP_DAEMON "$backup_dir/mastodon.conf" "$SNAP_COMMON/" \
+    && chmod 664 "$SNAP_COMMON/mastodon.conf"
+link_mastodon_config
 
 mastodon_set_var DB_PASS "$(get_secret postgres)"
 # mastodon_set_var REDIS_PASSWORD "$(get_secret redis)"
 
 echo Restore database
 $SNAP/bin/psql.wrapper -f "$backup_dir/database.sql" template1 > /dev/null
+if [ "$BACKUP_VERSION" != "$SNAP_VERSION" ]; then
+    echo Migrate database
+    mastodon_migrate_db > /dev/null
+fi
+
+if [ -f "$backup_dir/redis.rdb" ]; then
+    echo Restore redis database
+    snapctl stop "$SNAP_NAME.redis"
+    redis_restore_db "$backup_dir/redis.rdb"
+    snapctl start "$SNAP_NAME.redis"
+fi
 
 echo Clean up media references
 $SNAP/bin/tootctl.wrapper preview_cards remove --days 1
@@ -55,17 +69,18 @@ $SNAP/bin/tootctl.wrapper media remove --days 1
 
 if [ -f "$backup_dir/media.tar.gz" ]; then
     echo Restore uploads
-    tar -xzf "$backup_dir/media.tar.gz" -C "$MEDIA_DIR" --strip-components=1
+    tar -xzf "$backup_dir/media.tar.gz" -C "$MEDIA_DIR" --strip-components=1 --no-same-permissions --no-same-owner
 
     echo The following action may take a long time to complete
-
+    # TODO: make --concurrency N configurable (default 5)
     confirm "Refresh remote account avatars and headers?" && \
         $SNAP/bin/tootctl.wrapper accounts refresh --all --concurrency 5
-
-    # TODO: Make --concurrency N configurable (default 5)
 fi
 
-echo Restart mastodon services
+recompile_if_required
+
+echo Restart services
 snapctl start "$SNAP_NAME.backend"
 snapctl start "$SNAP_NAME.sidekiq"
+snapctl start "$SNAP_NAME.nginx"
 snapctl restart "$SNAP_NAME.streaming"

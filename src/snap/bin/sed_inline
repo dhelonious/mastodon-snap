@@ -1,0 +1,5 @@
+#!/bin/bash -e
+
+TMP=$(sed -r "$1" "$2")
+
+echo "$TMP" > "$2"

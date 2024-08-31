@@ -23,7 +23,7 @@ jobs:
     - uses: actions/checkout@v4
     - uses: ./.github/actions/build
       with:
-        tag: ${{ steps.regex.outputs.group2 }}
+        ref: ${{ steps.regex.outputs.group2 }}
       id: build
     - run: echo "${{ matrix.arch }}=${{ steps.build.outputs.snap }}" >> $GITHUB_OUTPUT
       id: snap

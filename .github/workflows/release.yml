@@ -4,6 +4,7 @@ on:
   create:
     branches:
     - main
+    - beta
   workflow_dispatch:
     inputs:
       tag:
@@ -34,7 +35,7 @@ jobs:
     - uses: kaisugi/action-regex-match@v1.0.1
       with:
         text: ${{ github.ref_name }}
-        regex: '^[\d\.]+snap\d+(candidate|beta|edge|)\d*$'
+        regex: '^[\d\.]+-?(beta|)([\d\.]+)?snap\d+$'
       id: regex
     - uses: ./.github/actions/build
       id: build

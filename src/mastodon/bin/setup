@@ -20,11 +20,8 @@ generate_mastodon_secrets
 copy_mastodon_config
 
 echo Setup database
-mastodon_rails db:setup
+mastodon_rails db:setup > /dev/null
 $SNAP/bin/psql.wrapper -d "$MASTODON_DBNAME" -c "create extension pg_stat_statements;" > /dev/null
-
-echo Remove old logs and tempfiles
-mastodon_rails log:clear tmp:clear
 
 if [ "$STATUS_MAX_CHARS" != "$(get_status_max_chars_file)" ]; then
     echo Update status character limit
@@ -38,10 +35,7 @@ if [ "$STATUS_MAX_CHARS_COUNTER" != "$(get_status_max_chars_counter_file)" ]; th
     recompile_required
 fi
 
-if [ "$(snapctl get recompile-required)" == true ]; then
-    echo "Recompile assets (this takes some time)"
-    $SNAP/bin/recompile
-fi
+recompile_if_required
 
 echo Restart services
 snapctl restart "$SNAP_NAME.backend"

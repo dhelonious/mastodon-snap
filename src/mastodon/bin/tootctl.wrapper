@@ -2,7 +2,6 @@
 
 . "$SNAP/mastodon.env"
 
-check_root
 check_setup
 
 load_mastodon_env

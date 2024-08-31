@@ -74,6 +74,8 @@ If you have installed a snap file locally and still want to benefit from automat
 
 After the snap has updated itself, a new unpublished announcement will be created. You can review, publish or delete these announcements in *Preferences/Administration/Announcements*.
 
+> Note: Be aware that there will always be a short downtime due to the way snaps are updated.
+
 
 # 🦣 Setup your instance
 
@@ -132,11 +134,13 @@ The following settings are available:
 | `media.dir`           | absolute path                 | `$SNAP_COMMON/media`   | Location of the media directory (*public/system*)                                    |
 | `backup.dir`          | absolute path                 | `$SNAP_COMMON/backups` | Location of the backup directory                                                     |
 | `backup.days`         | integer                       | 0                      | Create and keep backups for `backup.days` (enabled if > 0)                           |
-| `cleanup.days`        | integer                       | 7                      | Cleanup media and statuses older than `cleanup.days` (enabled if > 0)                |
+| `cleanup.days`        | integer                       | 3                      | Cleanup media and statuses older than `cleanup.days` (enabled if > 0)                |
 | `cleanup.media`       | true, false                   | true                   | Cleanup media files, see [tootctl media remove](https://docs.joinmastodon.org/admin/tootctl/#media-remove) |
+| `cleanup.headers`     | true, false                   | true                   | Cleanup headers, see [tootctl media remove](https://docs.joinmastodon.org/admin/tootctl/#media-remove) |
 | `cleanup.previews`    | true, false                   | true                   | Cleanup preview cards, see [tootctl preview_cards remove](https://docs.joinmastodon.org/admin/tootctl/#preview_cards) |
 | `cleanup.statuses`    | true, false                   | true                   | Cleanup unreferenced statuses, see [tootctl statuses remove](https://docs.joinmastodon.org/admin/tootctl/#statuses-remove) |
 | `cleanup.orphans`     | true, false                   | false                  | Cleanup orphaned media files, see [tootctl media remove-orphans](https://docs.joinmastodon.org/admin/tootctl/#media-remove-orphans) |
+| `cleanup.accounts`    | true, false                   | false                  | Cleanup user accounts, see [tootctl accounts delete](https://docs.joinmastodon.org/admin/tootctl/#accounts-delete) |
 | `log.access.enabled`  | true, false                   | false                  | Logging of http(s) accesses                                                          |
 | `log.access.format`   | standard, anonymized, privacy | anonymized             | Use of real/anonymized/no IP addresses in the access log                             |
 
@@ -365,6 +369,10 @@ A vapid key can be generated using:
 
     mastodon-server.generate-vapid-key
 
+The database encryption keys can be generated using:
+
+    mastodon-server.generate-db-encryption-keys
+
 ## External media storage
 
 The media directory can grow quickly, depending on how busy your server is. To move the media directory to an external volume mounted under `/media` or `/mnt`, you must first allow snap access to external media:
@@ -383,6 +391,14 @@ You can then remove the old media directory.
 
 
 # 🔥 Troubleshooting
+
+## Statistics show "0 active users"
+
+Statistics are compiled every night. So the number of users should be correct within 24 hours.
+
+## Server admin info not loading
+
+Go to *Preferences/Administration/Server settings/Branding* and add your *Contact username* and *Contact e-mail*.
 
 ## My postgres database has stopped working, how can I recover my data?
 

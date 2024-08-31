@@ -1,0 +1,9 @@
+#!/bin/bash -e
+
+. "$SNAP/snap.env"
+
+if [ "$(id -un)" = "$DAEMON_USER" ]; then
+    "$@"
+else
+    setpriv --clear-groups --reuid $DAEMON_USER --regid $DAEMON_USER -- "$@"
+fi

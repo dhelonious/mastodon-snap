@@ -19,6 +19,12 @@ if $CLEANUP_MEDIA; then
         2>&1 | tee -a "$LOG_DIR/cleanup.log"
 fi
 
+if $CLEANUP_HEADERS; then
+    echo_log "Cleanup headers older than $CLEANUP_DAYS days"
+    $SNAP/bin/tootctl.wrapper media remove --remove-headers --include-follows --days=$CLEANUP_DAYS \
+        2>&1 | tee -a "$LOG_DIR/cleanup.log"
+fi
+
 if $CLEANUP_PREVIEWS; then
     echo_log "Cleanup preview cards older than $CLEANUP_DAYS days"
     $SNAP/bin/tootctl.wrapper preview_cards remove --days=$CLEANUP_DAYS \
@@ -34,5 +40,11 @@ fi
 if $CLEANUP_ORPHANS; then
     echo_log "Cleanup orphaned media files"
     $SNAP/bin/tootctl.wrapper media remove-orphans \
+        2>&1 | tee -a "$LOG_DIR/cleanup.log"
+fi
+
+if $CLEANUP_ACCOUNTS; then
+    echo_log "Cleanup accounts that never interacted with a local user"
+    $SNAP/bin/tootctl.wrapper accounts prune \
         2>&1 | tee -a "$LOG_DIR/cleanup.log"
 fi

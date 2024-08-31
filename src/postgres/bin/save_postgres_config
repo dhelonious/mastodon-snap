@@ -1,7 +1,0 @@
-#!/bin/bash -e
-
-. "$SNAP/postgres.env"
-
-mkdir -p "$(config_dir postgres)"
-
-echo "$POSTGRESQL_CONF" | envsubst "$(env | cut -d= -f1 | sed -e 's/^/$/')" > "$(config_dir postgres)/postgresql.conf"

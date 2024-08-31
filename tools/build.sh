@@ -1,19 +1,20 @@
 #!/bin/bash
 
-find src -type f -path "*/bin/*" -print0 | xargs -0 -n1 chmod +x
+NAME=$(sed -rn "s/^name: (.+)$/\1/p" snap/snapcraft.yaml)
+VERSION=$(sed -rn "s/^version: (.+)$/\1/p" snap/snapcraft.yaml)
 
-while getopts "dt" OPTION; do
-  case "$OPTION" in
-    d)
-      snapcraft --debug | tee build.log
-      exit 0
-      ;;
-    t)
-      time unbuffer snapcraft try | tee build.log
-      exit 0
-      ;;
-  esac
-done
-shift "$(($OPTIND -1))"
+find src -type f -path "*/bin/*" -print0 | xargs -0 -n1 chmod +rx
 
-time unbuffer snapcraft | tee build.log
+time unbuffer snapcraft --verbosity=debug | tee build.log
+
+if ! [ -z "$(find . -name ${NAME}_${VERSION}_*.snap -type f -newermt '10 seconds ago')" ]; then
+  echo
+  echo Missing dependencies:
+  sed -rn "s/^[0-9-]+ [0-9:\.]+ - library: (.+ missing dependency '.+').*$/* \1/p" build.log
+  echo
+  echo Unused libraries:
+  sed -rn "s/^[0-9-]+ [0-9:\.]+ - library: (.+ unused library '.+').*$/* \1/p" build.log
+  echo
+  echo Files built:
+  du -h ${NAME}_${VERSION}_*.snap
+fi
