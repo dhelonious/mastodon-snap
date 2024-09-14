@@ -11,7 +11,7 @@ on:
         description: Channel
         required: true
         type: choice
-        default: stable
+        default: edge
         options:
         - stable
         - candidate
@@ -21,6 +21,9 @@ on:
     inputs:
       tag:
         required: true
+        type: string
+      channel:
+        required: false
         type: string
 jobs:
   build:
@@ -45,6 +48,7 @@ jobs:
       id: snap
     outputs:
       amd64: ${{ steps.snap.outputs.amd64 }}
+      channel: ${{ steps.channel_regex.outputs.group1 }}
   test:
     needs: build
     runs-on: ${{ matrix.builder }}
@@ -67,6 +71,7 @@ jobs:
     - uses: ./.github/actions/release
       with:
         tag: ${{ inputs.tag }}
+        channel: ${{ inputs.channel || needs.build.outputs.channel }}
   publish:
     needs:
       - build

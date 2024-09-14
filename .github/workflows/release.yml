@@ -43,6 +43,7 @@ jobs:
       id: snap
     outputs:
       amd64: ${{ steps.snap.outputs.amd64 }}
+      channel: ${{ steps.regex.outputs.group1 }}
   test:
     needs: build
     runs-on: ${{ matrix.builder }}
@@ -64,6 +65,8 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - uses: ./.github/actions/release
+      with:
+        channel: ${{ inputs.channel || needs.build.outputs.channel }}
   publish:
     needs:
       - build
@@ -79,5 +82,5 @@ jobs:
     - uses: ./.github/actions/publish
       with:
         snap: ${{ needs.build.outputs[matrix.arch] }}
-        channel: ${{ inputs.channel || steps.regex.outputs.group1 }}
+        channel: ${{ inputs.channel || needs.build.outputs.channel }}
         SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}

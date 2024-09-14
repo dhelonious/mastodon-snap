@@ -4,6 +4,9 @@ inputs:
   tag:
     required: false
     type: string
+  channel:
+    required: false
+    type: string
 runs:
   using: composite
   steps:
@@ -18,6 +21,7 @@ runs:
       bodyFile: RELEASE.md
       artifacts: "${{ github.workspace }}/*.snap"
       makeLatest: true
+      prerelease: ${{ inputs.channel != 'stable' }}
       skipIfReleaseExists: true
       artifactErrorsFailBuild: true
   - name: update existing release
