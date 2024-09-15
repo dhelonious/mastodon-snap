@@ -19,6 +19,9 @@ echo Set permissions on postgres files and dirs
 fix_daemon_user "$SNAP_DATA/postgres"
 fix_daemon_user "$PG_SOCK_DIR"
 fix_daemon_user "$PG_LOG_FILE"
+if [ -d "$PG_DATA_DIR" ]; then
+    run_as_daemon_user chmod 700 "$PG_DATA_DIR" -R
+fi
 
 export CURRENT_PG_VERSION="$(get_postgres_version_file)"
 
@@ -30,7 +33,7 @@ if [ "$PG_VERSION" != "$CURRENT_PG_VERSION" ]; then
         echo Update postgres data
         snapctl stop "$SNAP_NAME.postgres"
         run_as_daemon_user rm -rf "$SNAP_DATA/postgres/data"
-        run_as_daemon_user mkdir "$SNAP_DATA/postgres/data"
+        run_as_daemon_user mkdir -m 0700 "$SNAP_DATA/postgres/data"
         setup_postgres_database
         postgres_waitready
         psql.wrapper -f "$SNAP_COMMON/database.sql" template1 > /dev/null
@@ -38,7 +41,7 @@ if [ "$PG_VERSION" != "$CURRENT_PG_VERSION" ]; then
     fi
 else
     enable_postgres_config
-    snapctl restart "$SNAP_NAME.postgres"
+    snapctl start "$SNAP_NAME.postgres"
 fi
 
 # Redis
