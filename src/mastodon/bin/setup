@@ -6,7 +6,7 @@
 
 check_root
 
-if $(mastodon_config_exists); then
+if mastodon_config_exists; then
     echo_error "Mastodon is already set up"
     exit 0
 fi

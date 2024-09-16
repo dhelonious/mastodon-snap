@@ -62,17 +62,19 @@ copy_config_as_daemon_user redis redis.conf
 # NOTE: This is a fix for older versions and may be removed in the future
 echo Set permissions on mastodon files and dirs
 fix_daemon_user "$SNAP_DATA/mastodon"
-fix_daemon_user "$SNAP_COMMON/mastodon.conf"
 fix_daemon_user "$MEDIA_DIR"
 fix_daemon_user "$LOG_DIR/backend.log"
 fix_daemon_user "$LOG_DIR/streaming.log"
 fix_daemon_user "$LOG_DIR/sidekiq.log"
+if mastodon_config_exists; then
+    chmod 664 "$SNAP_COMMON/mastodon.conf"
+fi
 
 if [ "$SNAP_VERSION" != "$CURRENT_SNAP_VERSION" ]; then
     echo Update mastodon
     update_mastodon_files
 
-    if $(mastodon_config_exists); then
+    if mastodon_config_exists; then
         echo Update mastodon config
         link_mastodon_config
         upgrade_mastodon_config

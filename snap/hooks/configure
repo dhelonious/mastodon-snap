@@ -43,7 +43,7 @@ if [ "$BACKUP_DIR" != "$CURRENT_BACKUP_DIR" ]; then
     update_backup_dir_file
 fi
 
-if $(mastodon_config_exists); then
+if mastodon_config_exists; then
     # TODO: remove later, required for upgrade to Mastodon 4.3+
     if [ -z "$ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY" ] \
     || [ -z "$ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY" ] \
