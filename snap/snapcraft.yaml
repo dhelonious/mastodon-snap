@@ -49,6 +49,8 @@ apps:
 
   postgres:
     command: bin/run_as_daemon_user postgres.wrapper
+    stop-command: bin/migrate
+    stop-timeout: 30m
     daemon: simple
     plugs:
       - network

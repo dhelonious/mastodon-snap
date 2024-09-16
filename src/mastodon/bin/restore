@@ -53,7 +53,7 @@ echo Restore database
 $SNAP/bin/psql.wrapper -f "$backup_dir/database.sql" template1 > /dev/null
 if [ "$BACKUP_VERSION" != "$SNAP_VERSION" ]; then
     echo Migrate database
-    mastodon_migrate_db > /dev/null
+    $SNAP/bin/migrate > /dev/null
 fi
 
 if [ -f "$backup_dir/redis.rdb" ]; then

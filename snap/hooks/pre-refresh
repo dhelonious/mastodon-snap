@@ -13,3 +13,5 @@ if [ "$PG_VERSION" != "$CURRENT_PG_VERSION" ]; then
     echo Create postgres backup
     pg_dumpall.wrapper -f "$SNAP_COMMON/database.sql"
 fi
+
+pre_migration_required
