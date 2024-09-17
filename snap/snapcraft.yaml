@@ -80,6 +80,9 @@ apps:
 
   sidekiq:
     command: bin/run_as_daemon_user sidekiq
+    # NOTE: This is a fix for older versions and may be removed in the future
+    stop-command: bin/fix_daemon_user_media_dir
+    stop-timeout: 60m
     daemon: simple
     after:
       - postgres
@@ -124,6 +127,12 @@ apps:
 
   tootctl:
     command: bin/tootctl.wrapper
+    plugs:
+      - network
+      - removable-media
+
+  external-media-dir:
+    command: bin/external_media_dir
     plugs:
       - network
       - removable-media
@@ -450,8 +459,8 @@ parts:
       - acme-customizations
       - curl
     # NOTE: https://github.com/acmesh-official/acme.sh/releases/latest
-    source: https://github.com/acmesh-official/acme.sh/archive/refs/tags/3.0.7.tar.gz
-    source-checksum: sha256/abd446d6bd45d0b44dca1dcbd931348797a3f82d1ed6fb171472eaf851a8d849
+    source: https://github.com/acmesh-official/acme.sh/archive/refs/tags/3.0.8.tar.gz
+    source-checksum: sha256/51f4f9580e91b038a7dd0207631bf9b1be0aab6a0094d0a3cbb4b21cd86f71df
     plugin: dump
     organize:
       "*": acme/
@@ -515,8 +524,8 @@ parts:
       - curl
       - libjemalloc2
     # NOTE: see `.ruby-version`
-    source: https://cache.ruby-lang.org/pub/ruby/3.3/ruby-3.3.4.tar.gz
-    source-checksum: sha256/fe6a30f97d54e029768f2ddf4923699c416cdbc3a6e96db3e2d5716c7db96a34
+    source: https://cache.ruby-lang.org/pub/ruby/3.3/ruby-3.3.5.tar.gz
+    source-checksum: sha256/3781a3504222c2f26cb4b9eb9c1a12dbf4944d366ce24a9ff8cf99ecbce75196
     plugin: autotools
     build-packages:
       - clang
@@ -530,7 +539,7 @@ parts:
       - libdb-dev
       - libjemalloc-dev
     build-environment:
-      - RUBY_VERSION: "3.3.4" # NOTE: must be updated with ruby source
+      - RUBY_VERSION: "3.3.5" # NOTE: must be updated with ruby source
       - RUBY_BRANCH: "3.3" # NOTE: must be updated with ruby source
       - DEBIAN_DISABLE_RUBYGEMS_INTEGRATION: "true"
       - CC: clang
@@ -720,8 +729,8 @@ parts:
       - ffmpeg
       - rsync
     # NOTE: https://github.com/mastodon/mastodon/releases/latest
-    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.3.0-beta.1.tar.gz
-    source-checksum: sha256/b543995836ed02b016262a1599e76cdbd30ae49bb5890b647c18a19589eba1e7
+    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.3.0-beta.2.tar.gz
+    source-checksum: sha256/a0f4cf5272d9fe04287abb5c41acce3c1b59910a792963e74db1c65ebea22ad9
     plugin: nil
     build-packages:
       - git
@@ -738,10 +747,10 @@ parts:
       - libmagic-mgc
       - libssl3t64
     build-environment:
-      - YARN_VERSION: "4.4.1" # NOTE: https://github.com/yarnpkg/berry/releases/latest
+      - YARN_VERSION: "4.5.0" # NOTE: https://github.com/yarnpkg/berry/releases/latest
       - RUBY_BRANCH: "3.3" # NOTE: must be updated with ruby source
-      - BUNDLER_VERSION: "2.5.11" # NOTE: see `Gemfile.lock`
-      - BIRD_UI_TAG: "2.0.0rc47" # NOTE: https://github.com/ronilaukkarinen/mastodon-bird-ui/releases/latest
+      - BUNDLER_VERSION: "2.5.18" # NOTE: see `Gemfile.lock`
+      - BIRD_UI_TAG: "2.0.0rc49" # NOTE: https://github.com/ronilaukkarinen/mastodon-bird-ui/releases/latest
       - TANGERINE_UI_TAG: "2.0.0-pre6" # NOTE: https://github.com/nileane/TangerineUI-for-Mastodon/releases/latest
       - RAILS_ENV: production
       - NODE_ENV: production

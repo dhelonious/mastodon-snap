@@ -42,7 +42,7 @@ $SNAP/bin/psql.wrapper -c "drop database if exists $MASTODON_DBNAME;"
 # $SNAP/bin/psql.wrapper -c "drop role if exists $MASTODON_DBUSER;"
 
 echo Restore configuration
-rsync --ignore-times --no-owner --no-perms --chown root:$SNAP_DAEMON "$backup_dir/mastodon.conf" "$SNAP_COMMON/" \
+rsync --ignore-times --no-owner --no-perms --chown root:$DAEMON_USER "$backup_dir/mastodon.conf" "$SNAP_COMMON/" \
     && chmod 664 "$SNAP_COMMON/mastodon.conf"
 link_mastodon_config
 

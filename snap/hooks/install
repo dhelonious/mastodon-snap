@@ -14,7 +14,8 @@ update_snap_version_file
 
 mkdir -p "$SECRET_DIR"
 mkdir -p "$UPDATE_DIR" "$UPDATE_BACKUP_DIR" "$DEFAULT_BACKUP_DIR"
-mkdir_with_owner $DAEMON_USER:root "$CERT_DIR" "$DEFAULT_MEDIA_DIR"
+mkdir_with_owner $DAEMON_USER:root "$CERT_DIR"
+mkdir_with_owner $DAEMON_USER:root "$DEFAULT_MEDIA_DIR"
 mkdir_with_permissions $DAEMON_USER:root 775 "$LOG_DIR"
 
 # Postgres
@@ -60,8 +61,7 @@ update_backup_dir_file
 echo Install nginx
 . "$SNAP/nginx.env"
 
-mkdir -p "$SNAP_DATA/nginx" "$NGINX_DATA_DIR"
-mkdir_with_owner $DAEMON_USER:root "$(config_dir nginx)"
+mkdir_with_owner $DAEMON_USER:root "$SNAP_DATA/nginx"
 mkdir_with_owner $DAEMON_USER:root "$SNAP_COMMON/.well-known"
 
 copy_nginx_configs

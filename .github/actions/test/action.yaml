@@ -154,6 +154,23 @@ runs:
         echo -e "\033[1;33mHTTPS_STATUS=$HTTPS_STATUS\033[0m"
         exit 1
       fi
+  - name: connect removable-media
+    shell: bash
+    run: |
+      echo -e "\033[1;33mConnect removalbe-media\033[0m"
+      sudo snap connect mastodon-server:removable-media
+  - name: change media dir
+    shell: bash
+    run: |
+      echo -e "\033[1;33mChange media dir\033[0m"
+      sudo mkdir ~/media
+      if COMMAND_OUTPUT=$(sudo mastodon-server.external-media-dir ~/media); then
+        echo -e "\033[1;32mTest passed\033[0m"
+      else
+        echo -e "\033[1;31mTest failed\033[0m"
+        echo -e "\033[1;33m$COMMAND_OUTPUT\033[0m"
+        exit 1
+      fi
   - name: test export
     shell: bash
     run: |

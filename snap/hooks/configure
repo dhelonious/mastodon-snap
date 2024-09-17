@@ -31,19 +31,16 @@ then
 fi
 
 if [ "$MEDIA_DIR" != "$CURRENT_MEDIA_DIR" ]; then
-    echo "Link media dir to $MEDIA_DIR"
-    link_media_dir
-    restart_required backend
-    restart_required sidekiq
-    restart_required streaming
+    snapctl set media.dir="$CURRENT_MEDIA_DIR"
+    export MEDIA_DIR="$CURRENT_MEDIA_DIR"
 fi
 
 if [ "$BACKUP_DIR" != "$CURRENT_BACKUP_DIR" ]; then
-    echo "Update backup dir to $MEDIA_DIR"
+    echo "Update backup dir to $BACKUP_DIR"
     update_backup_dir_file
 fi
 
-if $(mastodon_config_exists); then
+if mastodon_config_exists; then
     # TODO: remove later, required for upgrade to Mastodon 4.3+
     if [ -z "$ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY" ] \
     || [ -z "$ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY" ] \

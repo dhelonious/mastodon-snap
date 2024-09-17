@@ -1,0 +1,23 @@
+#!/bin/bash -e
+
+. "$SNAP/mastodon.env"
+
+check_root
+check_removable_media
+
+if ! [ -d "$1" ]; then
+    echo_error "Directory $1 does not exist"
+    exit 0
+fi
+
+echo "Change owner of $1 to $DAEMON_USER"
+MEDIA_DIR="$1" chown_media_dir
+
+echo "Link media dir to $1"
+MEDIA_DIR="$1" link_media_dir
+snapctl set media.dir="$MEDIA_DIR"
+
+echo "Restart services"
+restart backend
+restart sidekiq
+restart streaming
