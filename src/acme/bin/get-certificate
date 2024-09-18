@@ -4,6 +4,7 @@
 . "$SNAP/nginx.env"
 
 check_root
+check_service nginx
 check_domain
 check_email
 

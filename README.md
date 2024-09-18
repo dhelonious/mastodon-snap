@@ -400,6 +400,12 @@ Statistics are compiled every night. So the number of users should be correct wi
 
 Go to *Preferences/Administration/Server settings/Branding* and add your *Contact username* and *Contact e-mail*.
 
+## Requests fail after upgrade
+
+If some requests fail after upgrading to a newer version, and there are log entries showing errors about missing columns and tables, the database has not been migrated properly. Use `mastodon-server.db-migrate` to start the migrations manually. Use `mastodon-server.db-rollback` to rollback the database migrations, which may be necessary when downgrading.
+
+See the [Mastodon troubleshooting page](https://docs.joinmastodon.org/admin/troubleshooting/#after-an-upgrade-to-a-newer-version-some-requests-fail-and-the-logs-show-error-messages-about-missing-columns-or-tables-why) for more information.
+
 ## My postgres database has stopped working, how can I recover my data?
 
 If your postgres database has stopped working, for example due to a failed upgrade, first backup the postgres data dir `/var/snap/mastodon-server/current/postgres/data/` and the password file `/var/snap/mastodon-server/common/secrets/postgres`.

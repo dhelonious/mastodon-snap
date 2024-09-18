@@ -33,5 +33,6 @@ Changelog for 4.3.0-beta.2snap1:
 * Add explicit builds for libvips and ffmpeg
 * Use non-root user for nginx, acme.sh, redis, and Mastodon (backend, streaming, sidekiq)
 * Add redis database to exports
+* Add `db-migrate` and `db-rollback` commands
 
 The result is a lighter and more secure snap file with a smaller file size.

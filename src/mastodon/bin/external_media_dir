@@ -11,7 +11,7 @@ if ! [ -d "$1" ]; then
 fi
 
 echo "Change owner of $1 to $DAEMON_USER"
-MEDIA_DIR="$1" chown_media_dir
+MEDIA_DIR="$1" fix_daemon_user_media_dir
 
 echo "Link media dir to $1"
 MEDIA_DIR="$1" link_media_dir

@@ -5,6 +5,7 @@
 . "$SNAP/redis.env"
 
 check_root
+check_service postgres
 
 if [ -z "$1" ]; then
     echo "No backup specified"
@@ -16,7 +17,7 @@ echo Restore backup from $backup_dir
 
 BACKUP_VERSION="$(cat $backup_dir/version)"
 if [ "$BACKUP_VERSION" != "$SNAP_VERSION" ]; then
-    echo ATTENTION: You are trying to restore a backup from a different version!
+    echo CAUTION: You are trying to restore a backup from another version!
     echo "Snap version: $SNAP_VERSION"
     echo "Backup version: $BACKUP_VERSION"
     echo The backup may be incompatible or changes may be required.
@@ -31,6 +32,11 @@ cat "$backup_dir/settings" | while read setting; do
     snapctl set $setting
 done
 
+if [ "$(snapctl get media.dir)" != "$(get_media_dir_link)" ]; then
+    echo Link media dir
+    link_media_dir
+fi
+
 echo Stop services
 snapctl stop "$SNAP_NAME.nginx"
 snapctl stop "$SNAP_NAME.backend"
@@ -42,7 +48,7 @@ $SNAP/bin/psql.wrapper -c "drop database if exists $MASTODON_DBNAME;"
 # $SNAP/bin/psql.wrapper -c "drop role if exists $MASTODON_DBUSER;"
 
 echo Restore configuration
-rsync --ignore-times --no-owner --no-perms --chown root:$DAEMON_USER "$backup_dir/mastodon.conf" "$SNAP_COMMON/" \
+rsync --ignore-times --no-owner --no-perms --chmod g+w --chown root:$DAEMON_USER "$backup_dir/mastodon.conf" "$SNAP_COMMON/" \
     && chmod 664 "$SNAP_COMMON/mastodon.conf"
 link_mastodon_config
 
@@ -53,8 +59,7 @@ echo Restore database
 $SNAP/bin/psql.wrapper -f "$backup_dir/database.sql" template1 > /dev/null
 if [ "$BACKUP_VERSION" != "$SNAP_VERSION" ]; then
     echo Migrate database
-    migration_required
-    $SNAP/bin/migrate > /dev/null
+    mastodon_db_migrate
 fi
 
 if [ -f "$backup_dir/redis.rdb" ]; then
@@ -78,7 +83,7 @@ if [ -f "$backup_dir/media.tar.gz" ]; then
         $SNAP/bin/tootctl.wrapper accounts refresh --all --concurrency 5
 fi
 
-recompile_if_required
+$SNAP/bin/recompile_if_required
 
 echo Restart services
 snapctl start "$SNAP_NAME.backend"

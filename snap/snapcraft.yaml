@@ -9,7 +9,7 @@ description: |
   implements ActivityPub!)
 
 base: core24
-version: 4.3.0-beta.1snap1
+version: 4.3.0-beta.2snap1
 grade: stable
 confinement: strict
 
@@ -49,9 +49,9 @@ apps:
 
   postgres:
     command: bin/run_as_daemon_user postgres.wrapper
-    stop-command: bin/migrate
-    stop-timeout: 30m
     daemon: simple
+    stop-command: bin/pre-migrate_if_required
+    stop-timeout: 30m
     plugs:
       - network
       - network-bind
@@ -65,14 +65,32 @@ apps:
       - network-bind
       - removable-media
 
+  recompile:
+    command: bin/recompile_if_required
+    daemon: oneshot
+    environment:
+      HOME: $SNAP_DATA/mastodon
+    plugs:
+      - network
+      - network-bind
+
+  migrate:
+    command: bin/migrate_if_required
+    daemon: oneshot
+    after:
+      - postgres
+    plugs:
+      - network
+      - network-bind
+
   backend:
     command: bin/run_as_daemon_user backend
-    stop-command: bin/recompile
-    stop-timeout: 10m
     daemon: simple
     after:
       - postgres
       - redis
+      - recompile
+      - migrate
     plugs:
       - network
       - network-bind
@@ -80,13 +98,12 @@ apps:
 
   sidekiq:
     command: bin/run_as_daemon_user sidekiq
-    # NOTE: This is a fix for older versions and may be removed in the future
-    stop-command: bin/fix_daemon_user_media_dir
-    stop-timeout: 60m
     daemon: simple
     after:
       - postgres
       - redis
+      - recompile
+      - migrate
     environment:
       MALLOC_ARENA_MAX: 2
     plugs:
@@ -99,6 +116,7 @@ apps:
     daemon: simple
     after:
       - redis
+      - recompile
     plugs:
       - network
       - network-bind
@@ -172,6 +190,16 @@ apps:
     plugs:
       - network
       - network-bind
+
+  db-migrate:
+    command: bin/db-migrate
+    plugs:
+      - network
+
+  db-rollback:
+    command: bin/db-rollback
+    plugs:
+      - network
 
   generate-secret:
     command: bin/rails-secret.wrapper
@@ -751,7 +779,7 @@ parts:
       - YARN_VERSION: "4.5.0" # NOTE: https://github.com/yarnpkg/berry/releases/latest
       - RUBY_BRANCH: "3.3" # NOTE: must be updated with ruby source
       - BUNDLER_VERSION: "2.5.18" # NOTE: see `Gemfile.lock`
-      - BIRD_UI_TAG: "2.0.0rc49" # NOTE: https://github.com/ronilaukkarinen/mastodon-bird-ui/releases/latest
+      - BIRD_UI_TAG: "2.0.0rc51" # NOTE: https://github.com/ronilaukkarinen/mastodon-bird-ui/releases/latest
       - TANGERINE_UI_TAG: "2.0.0-pre6" # NOTE: https://github.com/nileane/TangerineUI-for-Mastodon/releases/latest
       - RAILS_ENV: production
       - NODE_ENV: production
@@ -769,7 +797,8 @@ parts:
       - GEM_HOME: $CRAFT_PART_BUILD/vendor/ruby
       - GEM_PATH: $GEM_HOME
       - YARN_RC_FILENAME: $CRAFT_PART_BUILD/.yarnrc.yml
-      - YARN_CACHE_FOLDER: /tmp/yarn/cache
+      - YARN_CACHE_FOLDER: /tmp/yarn
+      - COREPACK_HOME: /tmp/corepack
       - MASTODON_USE_LIBVIPS: "true"
       # NOTE: workaround for current issue (see https://github.com/mastodon/mastodon/releases/tag/v4.3.0-beta.1)
       - BUNDLE_BUILD__CHARLOCK_HOLMES: "--with-cxxflags=-std=c++17"
@@ -783,11 +812,11 @@ parts:
       bundle config build.pg --with-pg-config=$CRAFT_STAGE/postgres/bin/pg_config
       bundle install -j"$(nproc)"
 
+      mkdir -p $COREPACK_HOME $YARN_CACHE_FOLDER
       corepack enable
       corepack prepare --activate
-      mkdir -p $YARN_CACHE_FOLDER
-      yarn set version $YARN_VERSION
-      yarn install --immutable
+      corepack yarn set version $YARN_VERSION
+      corepack yarn install --immutable
       npx update-browserslist-db@latest
       yarn cache clean
       npm cache clean --force
@@ -919,7 +948,8 @@ parts:
       - GEM_HOME: $CRAFT_STAGE/mastodon/vendor/ruby
       - GEM_PATH: $GEM_HOME
       - YARN_RC_FILENAME: $CRAFT_STAGE/mastodon/.yarnrc.yml
-      - YARN_CACHE_FOLDER: /tmp/yarn/cache
+      - YARN_CACHE_FOLDER: /tmp/yarn
+      - COREPACK_HOME: /tmp/corepack
       - OTP_SECRET: precompile_placeholder
       - SECRET_KEY_BASE: precompile_placeholder
       - ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY: precompile_placeholder
@@ -927,7 +957,6 @@ parts:
       - ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY: precompile_placeholder
     override-build: |
       set -eux
-      mkdir -p $YARN_CACHE_FOLDER
       cd $CRAFT_STAGE/mastodon
       bundle exec rails assets:precompile
       bundle exec rails log:clear tmp:clear

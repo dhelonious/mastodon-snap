@@ -48,3 +48,5 @@ if $CLEANUP_ACCOUNTS; then
     $SNAP/bin/tootctl.wrapper accounts prune \
         2>&1 | tee -a "$LOG_DIR/cleanup.log"
 fi
+
+mastodon_rails log:clear tmp:clear

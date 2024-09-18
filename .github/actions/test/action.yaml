@@ -163,7 +163,7 @@ runs:
     shell: bash
     run: |
       echo -e "\033[1;33mChange media dir\033[0m"
-      sudo mkdir ~/media
+      sudo mkdir -p ~/media
       if COMMAND_OUTPUT=$(sudo mastodon-server.external-media-dir ~/media); then
         echo -e "\033[1;32mTest passed\033[0m"
       else

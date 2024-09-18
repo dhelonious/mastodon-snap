@@ -1,7 +1,0 @@
-#!/bin/bash -e
-
-. "$SNAP/mastodon.env"
-
-if [ "$(get_owner $MEDIA_DIR)" != "$DAEMON_USER" ]; then
-    find "$MEDIA_DIR/" -not -user $DAEMON_USER -exec chown $DAEMON_USER -f {} || true \;
-fi

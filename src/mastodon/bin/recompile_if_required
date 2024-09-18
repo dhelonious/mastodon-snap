@@ -1,0 +1,8 @@
+#!/bin/bash -e
+
+. "$SNAP/mastodon.env"
+
+if [ "$(snapctl get recompile-required)" == true ]; then
+    $SNAP/bin/recompile
+    reset_recompile_required
+fi
