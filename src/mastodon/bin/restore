@@ -53,13 +53,14 @@ echo Restore database
 $SNAP/bin/psql.wrapper -f "$backup_dir/database.sql" template1 > /dev/null
 if [ "$BACKUP_VERSION" != "$SNAP_VERSION" ]; then
     echo Migrate database
+    migration_required
     $SNAP/bin/migrate > /dev/null
 fi
 
 if [ -f "$backup_dir/redis.rdb" ]; then
     echo Restore redis database
     snapctl stop "$SNAP_NAME.redis"
-    redis_restore_db "$backup_dir/redis.rdb"
+    run_as_daemon_user cp "$backup_dir/redis.rdb" "$SNAP_DATA/redis/data/dump.rdb"
     snapctl start "$SNAP_NAME.redis"
 fi
 

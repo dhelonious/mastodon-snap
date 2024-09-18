@@ -7,7 +7,7 @@ if ! $(config_exists nginx nginx.conf); then
     exit 0
 fi
 
-run_as_daemon_user mkdir -p "$NGINX_DATA_DIR" "$NGINX_CACHE_DIR"
+run_as_daemon_user mkdir -p "$NGINX_CACHE_DIR"
 
 if $(certificate_exists); then
     copy_config_as_daemon_user nginx mastodon-https.conf

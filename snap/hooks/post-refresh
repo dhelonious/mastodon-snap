@@ -8,7 +8,6 @@ export CURRENT_SNAP_VERSION="$(get_snap_version_file)"
 # NOTE: This is a fix for older versions and may be removed in the future
 echo Set permissions on log dir
 fix_daemon_user "$LOG_DIR"
-run_as_daemon_user chmod 755 "$LOG_DIR"
 
 # Postgres
 

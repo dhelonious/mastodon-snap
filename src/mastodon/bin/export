@@ -24,8 +24,8 @@ rsync_clean "$SNAP_COMMON/mastodon.conf" "$export_dir/mastodon.conf"
 
 echo Export database
 $SNAP/bin/pg_dumpall.wrapper -f "$export_dir/database.sql"
-$SNAP/bin/sed_inline "s/^(CREATE ROLE postgres;)/-- \1/" "$export_dir/database.sql"
-$SNAP/bin/sed_inline "s/^(CREATE ROLE $MASTODON_DBUSER;)/-- \1/" "$export_dir/database.sql"
+sed -ri "1,100s/^(CREATE ROLE postgres;)/-- \1/" "$export_dir/database.sql"
+sed -ri "1,100s/^(CREATE ROLE $MASTODON_DBUSER;)/-- \1/" "$export_dir/database.sql"
 
 if [ -s "$SNAP_DATA/redis/data/dump.rdb" ]; then
     echo Export redis database

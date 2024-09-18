@@ -3,7 +3,7 @@
 . "$SNAP/mastodon.env"
 
 if [ "$(snapctl get recompile-required)" == true ]; then
-    mkdir_with_owner $DAEMON_USER:root "$YARN_CACHE_FOLDER"
+    mkdir_as_daemon_user "$YARN_CACHE_FOLDER"
     cd "$MASTODON_DIR" && mastodon_rails assets:precompile && mastodon_rails log:clear tmp:clear
     reset_recompile_required
 fi

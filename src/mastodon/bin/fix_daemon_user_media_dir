@@ -3,5 +3,5 @@
 . "$SNAP/mastodon.env"
 
 if [ "$(get_owner $MEDIA_DIR)" != "$DAEMON_USER" ]; then
-    find "$MEDIA_DIR/" -not -user $DAEMON_USER -exec chmod g+w -f {} || true + -exec chown $DAEMON_USER -f {} || true +
+    find "$MEDIA_DIR/" -not -user $DAEMON_USER -exec chown $DAEMON_USER -f {} || true \;
 fi

@@ -171,6 +171,7 @@ apps:
     command: bin/rails-console.wrapper
     plugs:
       - network
+      - network-bind
 
   generate-secret:
     command: bin/rails-secret.wrapper
