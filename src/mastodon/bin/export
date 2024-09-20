@@ -2,6 +2,7 @@
 
 . "$SNAP/mastodon.env"
 . "$SNAP/postgres.env"
+. "$SNAP/redis.env"
 
 check_root
 check_setup
@@ -28,9 +29,9 @@ $SNAP/bin/pg_dumpall.wrapper -f "$export_dir/database.sql"
 sed -ri "1,100s/^(CREATE ROLE postgres;)/-- \1/" "$export_dir/database.sql"
 sed -ri "1,100s/^(CREATE ROLE $MASTODON_DBUSER;)/-- \1/" "$export_dir/database.sql"
 
-if [ -s "$SNAP_DATA/redis/data/dump.rdb" ]; then
+if [ -s "$REDIS_DATA/redis.rdb" ]; then
     echo Export redis database
-    rsync_clean "$SNAP_DATA/redis/data/dump.rdb" "$export_dir/redis.rdb"
+    rsync_clean "$REDIS_DATA/redis.rdb" "$export_dir/"
 fi
 
 if [ -z "$SKIP_MEDIA_EXPORT" ]; then

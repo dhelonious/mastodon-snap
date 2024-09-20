@@ -7,7 +7,7 @@ if ! $(config_exists nginx nginx.conf); then
     exit 0
 fi
 
-run_as_daemon_user mkdir -p "$NGINX_CACHE_DIR"
+run_as_daemon_user mkdir -p "$NGINX_CACHE"
 
 if $(certificate_exists); then
     copy_config_as_daemon_user nginx mastodon-https.conf
@@ -18,7 +18,7 @@ else
 fi
 
 nginx \
-    -c "$SNAP_DATA/nginx/config/nginx.conf" \
-    -p "$NGINX_DATA_DIR" \
+    -c "$NGINX_CONFIG/nginx.conf" \
+    -p "$NGINX_DATA" \
     -e "$NGINX_LOG_FILE" \
     "$@"

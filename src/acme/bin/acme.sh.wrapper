@@ -3,8 +3,8 @@
 . "$SNAP/acme.env"
 
 acme.sh \
-    --home "$SNAP_DATA/acme" \
-    --config-home "$SNAP_DATA/acme/config" \
+    --home "$ACME_HOME" \
+    --config-home "$ACME_CONFIG" \
     --cert-home "$CERT_DIR" \
     --log "$LOG_DIR/acme.sh.log" \
     --server "$ACME_SERVER" \

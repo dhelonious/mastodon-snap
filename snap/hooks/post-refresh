@@ -15,11 +15,11 @@ fix_daemon_user "$LOG_DIR"
 
 # NOTE: This is a fix for older versions and may be removed in the future
 echo Set permissions on postgres files and dirs
-fix_daemon_user "$SNAP_DATA/postgres"
+fix_daemon_user "$PG_HOME"
 fix_daemon_user "$PG_SOCK_DIR"
 fix_daemon_user "$PG_LOG_FILE"
-if [ -d "$PG_DATA_DIR" ]; then
-    run_as_daemon_user chmod 700 "$PG_DATA_DIR" -R
+if [ -d "$PG_DATA" ]; then
+    run_as_daemon_user chmod 700 "$PG_DATA" -R
 fi
 
 export CURRENT_PG_VERSION="$(get_postgres_version_file)"
@@ -31,8 +31,8 @@ if [ "$PG_VERSION" != "$CURRENT_PG_VERSION" ]; then
     if [ -f "$SNAP_COMMON/database.sql" ]; then
         echo Update postgres data
         snapctl stop "$SNAP_NAME.postgres"
-        run_as_daemon_user rm -rf "$SNAP_DATA/postgres/data"
-        run_as_daemon_user mkdir -pm 0700 "$SNAP_DATA/postgres/data"
+        run_as_daemon_user rm -rf "$PG_DATA"
+        run_as_daemon_user mkdir -pm 0700 "$PG_DATA"
         setup_postgres_database
         postgres_waitready
         psql.wrapper -f "$SNAP_COMMON/database.sql" template1 > /dev/null
@@ -45,9 +45,11 @@ fi
 
 # Redis
 
+. "$SNAP/redis.env"
+
 # NOTE: This is a fix for older versions and may be removed in the future
 echo Set permissions on redis files and dirs
-fix_daemon_user "$SNAP_DATA/redis"
+fix_daemon_user "$REDIS_HOME"
 fix_daemon_user "$SOCK_DIR/redis.sock"
 fix_daemon_user "$LOG_DIR/redis.log"
 
@@ -61,7 +63,7 @@ reset_migrations_required
 
 # NOTE: This is a fix for older versions and may be removed in the future
 echo Set permissions on mastodon files and dirs
-fix_daemon_user "$SNAP_DATA/mastodon"
+fix_daemon_user "$MASTODON_HOME"
 fix_daemon_user "$LOG_DIR/backend.log"
 fix_daemon_user "$LOG_DIR/streaming.log"
 fix_daemon_user "$LOG_DIR/sidekiq.log"
@@ -92,9 +94,9 @@ fi
 
 # NOTE: This is a fix for older versions and may be removed in the future
 echo Set permissions on nginx files and dirs
-fix_daemon_user "$SNAP_DATA/nginx"
+fix_daemon_user "$NGINX_HOME"
 fix_daemon_user "$SNAP_COMMON/.well-known"
-fix_daemon_user "$NGINX_CACHE_DIR"
+fix_daemon_user "$NGINX_CACHE"
 fix_daemon_user "$NGINX_LOG_FILE"
 fix_daemon_user "$NGINX_ACCESS_LOG_FILE"
 
@@ -105,7 +107,7 @@ copy_nginx_configs
 
 # NOTE: This is a fix for older versions and may be removed in the future
 echo Set permissions on acme dir
-fix_daemon_user "$SNAP_DATA/acme"
+fix_daemon_user "$ACME_HOME"
 
 # Logrotate
 

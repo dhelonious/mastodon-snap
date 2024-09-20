@@ -26,7 +26,7 @@ echo Install postgres
 
 export PG_PASSWORD=$(generate_secret postgres)
 
-mkdir_for_daemon_user "$SNAP_DATA/postgres"
+mkdir_for_daemon_user "$PG_HOME"
 
 copy_config_as_daemon_user postgres postgresql.conf
 setup_postgres_database
@@ -38,7 +38,7 @@ update_postgres_version_file
 echo Install redis
 . "$SNAP/redis.env"
 
-mkdir_for_daemon_user "$SNAP_DATA/redis"
+mkdir_for_daemon_user "$REDIS_HOME"
 
 # export REDIS_PASSWORD=$(generate_secret redis)
 
@@ -49,7 +49,7 @@ copy_config_as_daemon_user redis redis.conf
 echo Install mastodon
 . "$SNAP/mastodon.env"
 
-mkdir_for_daemon_user "$SNAP_DATA/mastodon"
+mkdir_for_daemon_user "$MASTODON_HOME"
 
 reset_recompile_required
 
@@ -62,7 +62,7 @@ update_backup_dir_file
 echo Install nginx
 . "$SNAP/nginx.env"
 
-mkdir_for_daemon_user "$SNAP_DATA/nginx" "$NGINX_DATA_DIR"
+mkdir_for_daemon_user "$NGINX_HOME" "$NGINX_DATA"
 mkdir_for_daemon_user "$SNAP_COMMON/.well-known"
 
 copy_nginx_configs
@@ -72,12 +72,12 @@ copy_nginx_configs
 echo Install acme
 . "$SNAP/acme.env"
 
-mkdir_for_daemon_user "$SNAP_DATA/acme"
+mkdir_for_daemon_user "$ACME_HOME"
 
 cd $SNAP/acme && run_as_daemon_user $SNAP/acme/acme.sh \
     --install --nocron --noprofile \
-    --home "$SNAP_DATA/acme" \
-    --config-home "$SNAP_DATA/acme/config" \
+    --home "$ACME_HOME" \
+    --config-home "$ACME_CONFIG" \
     --cert-home "$CERT_DIR"
 
 # Logrotate

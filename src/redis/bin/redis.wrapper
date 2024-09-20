@@ -7,6 +7,6 @@ if ! $(config_exists redis redis.conf); then
     exit 0
 fi
 
-mkdir -p "$SNAP_DATA/redis/data"
+mkdir -p "$REDIS_DATA"
 
-redis-server "$SNAP_DATA/redis/config/redis.conf"
+redis-server "$REDIS_CONFIG/redis.conf"

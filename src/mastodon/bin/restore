@@ -65,7 +65,7 @@ fi
 if [ -f "$backup_dir/redis.rdb" ]; then
     echo Restore redis database
     snapctl stop "$SNAP_NAME.redis"
-    run_as_daemon_user cp "$backup_dir/redis.rdb" "$SNAP_DATA/redis/data/dump.rdb"
+    run_as_daemon_user cp "$backup_dir/redis.rdb" "$REDIS_DATA/"
     snapctl start "$SNAP_NAME.redis"
 fi
 

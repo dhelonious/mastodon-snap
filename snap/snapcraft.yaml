@@ -68,8 +68,6 @@ apps:
   recompile:
     command: bin/recompile_if_required
     daemon: oneshot
-    environment:
-      HOME: $SNAP_DATA/mastodon
     plugs:
       - network
       - network-bind
@@ -779,8 +777,6 @@ parts:
       - YARN_VERSION: "4.5.0" # NOTE: https://github.com/yarnpkg/berry/releases/latest
       - RUBY_BRANCH: "3.3" # NOTE: must be updated with ruby source
       - BUNDLER_VERSION: "2.5.18" # NOTE: see `Gemfile.lock`
-      - BIRD_UI_TAG: "2.0.0rc51" # NOTE: https://github.com/ronilaukkarinen/mastodon-bird-ui/releases/latest
-      - TANGERINE_UI_TAG: "2.0.0-pre6" # NOTE: https://github.com/nileane/TangerineUI-for-Mastodon/releases/latest
       - RAILS_ENV: production
       - NODE_ENV: production
       - OTP_SECRET: precompile_placeholder
@@ -872,7 +868,7 @@ parts:
       - mastodon
     plugin: nil
     build-environment:
-      - BIRD_UI_TAG: "2.0.0rc47" # NOTE: https://github.com/ronilaukkarinen/mastodon-bird-ui/releases/latest
+      - BIRD_UI_TAG: "2.0.0rc51" # NOTE: https://github.com/ronilaukkarinen/mastodon-bird-ui/releases/latest
       - MASTODON_STYLES: $CRAFT_STAGE/mastodon/app/javascript/styles
     override-build: |
       set -eux

@@ -7,9 +7,9 @@ if ! $(config_exists logrotate logrotate.conf); then
     exit 0
 fi
 
-mkdir -p "$LOGROTATE_DATA_DIR"
+mkdir -p "$LOGROTATE_DATA"
 
-logrotate "$SNAP_DATA/logrotate/config/logrotate.conf" --state "$LOGROTATE_STATUS_FILE"
+logrotate "$LOGROTATE_CONFIG/logrotate.conf" --state "$LOGROTATE_STATUS_FILE"
 
 if [ $? -ne 0 ]; then
     rm -f "$LOGROTATE_STATUS_FILE"
