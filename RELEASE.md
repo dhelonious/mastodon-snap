@@ -4,35 +4,28 @@
 ⚠️ StatsD integration has been removed, replaced by OpenTelemetry integration
 ℹ️ The logging format of the streaming server has changed
 
-See also the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.3.0-beta.1
+See also the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.3.0-beta.2
 
-This release contains:
+This release also includes:
 
-* mastodon 4.3.0-beta.2
 * node 20.17.0
 * ruby 3.3.5
-* bundle 2.5.18
-* yarn 4.5.0
 * nginx 1.27.1
 * postgres 16.4
 * redis 7.4.0
-* acme.sh 3.0.8
-* logrotate 3.22.0
 * libvips 8.15.3
 * ffmpeg 7.0.2
-* mastodon-bird-ui 2.0.0rc49
-* tangerine-ui v2.0.0-prerelease6
 
 Changelog for 4.3.0-beta.2snap1:
 
 * Upgrade to core24
 * Add `cleanup.headers` and `cleanup.accounts` settings
-* Decrease default value of `cleanup.days` to 3
+* Reduce default value of `cleanup.days` to 3
 * Remove openssl1
 * Remove explicit builds for lib-musl, jemalloc, curl
 * Add explicit builds for libvips and ffmpeg
-* Use non-root user for nginx, acme.sh, redis, and Mastodon (backend, streaming, sidekiq)
+* Use non-root user for nginx, acme.sh, redis and Mastodon (backend, streaming, sidekiq)
 * Add redis database to exports
 * Add `db-migrate` and `db-rollback` commands
 
-The result is a lighter and more secure snap file with a smaller file size.
+The snap is now lighter and more secure with a smaller file size.
