@@ -804,8 +804,11 @@ parts:
       - MASTODON_USE_LIBVIPS: "true"
       # NOTE: workaround for current issue (see https://github.com/mastodon/mastodon/releases/tag/v4.3.0-beta.1)
       - BUNDLE_BUILD__CHARLOCK_HOLMES: "--with-cxxflags=-std=c++17"
+    # NOTE: fiddle is no longer included in ruby 3.5.0
     override-build: |
       set -eux
+      echo "gem 'fiddle'" >> Gemfile
+
       gem install bundler -v $BUNDLER_VERSION --no-document --install-dir $GEM_PATH
       bundle config deployment "true"
       bundle config without "development test"

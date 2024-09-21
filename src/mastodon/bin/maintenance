@@ -2,8 +2,7 @@
 
 . "$SNAP/mastodon.env"
 
-echo "Mastodon must be stopped to perform maintenance tasks."
-confirm "This can take a long time and may be destructive. Continue?" || exit 0
+echo "Mastodon must be stopped to perform maintenance tasks. Continue?" || exit 0
 
 echo Stop services
 snapctl stop "$SNAP_NAME.streaming"
