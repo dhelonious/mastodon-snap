@@ -18,7 +18,7 @@ reset_restart_required backend
 reset_restart_required sidekiq
 reset_restart_required streaming
 reset_restart_required nginx
-reset_recompile_required
+reset_compilation_required
 
 if [ "$NGINX_ACCESS_LOG" != "$CURRENT_NGINX_ACCESS_LOG" ]; then
     restart_required nginx
@@ -46,7 +46,7 @@ if [ "$STATUS_MAX_CHARS" != "$CURRENT_STATUS_MAX_CHARS" ]; then
     else
         echo Update status character limit
         update_status_max_chars
-        recompile_required
+        compilation_required
         restart_required backend
         restart_required sidekiq
     fi
@@ -58,7 +58,7 @@ if [ "$STATUS_MAX_CHARS_COUNTER" != "$CURRENT_STATUS_MAX_CHARS_COUNTER" ]; then
     else
         echo Update status character counter
         update_status_max_chars_counter
-        recompile_required
+        compilation_required
         restart_required backend
         restart_required sidekiq
     fi

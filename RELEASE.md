@@ -19,13 +19,13 @@ This release also includes:
 Changelog for 4.3.0-beta.2snap1:
 
 * Upgrade to core24
-* Add `cleanup.headers` and `cleanup.accounts` settings
-* Reduce default value of `cleanup.days` to 3
-* Remove openssl1
-* Remove explicit builds for lib-musl, jemalloc, curl
-* Add explicit builds for libvips and ffmpeg
-* Use non-root user for nginx, acme.sh, redis and Mastodon (backend, streaming, sidekiq)
-* Add redis database to exports
-* Add `db-migrate` and `db-rollback` commands
+* Adds `cleanup.headers` and `cleanup.accounts` settings
+* Reduces default value of `cleanup.days` to 3
+* Removes openssl1
+* Removes explicit builds for lib-musl, jemalloc, curl
+* Adds explicit builds for libvips and ffmpeg
+* Uses non-root user for nginx, acme.sh, redis and Mastodon (backend, streaming, sidekiq)
+* Adds redis database to exports
+* Adds `db-migrate`, `db-rollback` and `maintenance` commands
 
 The snap is now lighter and more secure with a smaller file size.

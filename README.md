@@ -400,6 +400,10 @@ Statistics are compiled every night. So the number of users should be correct wi
 
 Go to *Preferences/Administration/Server settings/Branding* and add your *Contact username* and *Contact e-mail*.
 
+## PgHero shows duplicate indexes
+
+This can happen after updates. Use `mastodon-server.maintenance fix-duplicates` to fix corrupted database indexes. See also the [tootctl maintenance fix-duplicates] documentation (https://docs.joinmastodon.org/admin/tootctl/#maintenance-fix-duplicates).
+
 ## Requests fail after upgrade
 
 If some requests fail after upgrading to a newer version, and there are log entries showing errors about missing columns and tables, the database has not been migrated properly. Use `mastodon-server.db-migrate` to start the migrations manually. Use `mastodon-server.db-rollback` to rollback the database migrations, which may be necessary when downgrading.

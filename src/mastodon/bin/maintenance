@@ -1,0 +1,18 @@
+#!/bin/bash -e
+
+. "$SNAP/mastodon.env"
+
+echo "Mastodon must be stopped to perform maintenance tasks."
+confirm "This can take a long time and may be destructive. Continue?" || exit 0
+
+echo Stop services
+snapctl stop "$SNAP_NAME.streaming"
+snapctl stop "$SNAP_NAME.sidekiq"
+snapctl stop "$SNAP_NAME.backend"
+
+$SNAP/bin/tootctl.wrapper maintenance "$@"
+
+echo Start services
+snapctl start "$SNAP_NAME.backend"
+snapctl start "$SNAP_NAME.sidekiq"
+snapctl start "$SNAP_NAME.streaming"

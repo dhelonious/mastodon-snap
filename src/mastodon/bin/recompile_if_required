@@ -4,5 +4,5 @@
 
 if [ "$(snapctl get recompile-required)" == true ]; then
     $SNAP/bin/recompile
-    reset_recompile_required
+    reset_compilation_required
 fi

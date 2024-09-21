@@ -26,13 +26,13 @@ $SNAP/bin/psql.wrapper -d "$MASTODON_DBNAME" -c "create extension pg_stat_statem
 if [ "$STATUS_MAX_CHARS" != "$(get_status_max_chars_file)" ]; then
     echo Update status character limit
     update_status_max_chars
-    recompile_required
+    compilation_required
 fi
 
 if [ "$STATUS_MAX_CHARS_COUNTER" != "$(get_status_max_chars_counter_file)" ]; then
     echo Update status character counter
     update_status_max_chars_counter
-    recompile_required
+    compilation_required
 fi
 
 $SNAP/bin/recompile_if_required

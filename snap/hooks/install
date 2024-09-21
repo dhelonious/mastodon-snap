@@ -51,7 +51,7 @@ echo Install mastodon
 
 mkdir_for_daemon_user "$MASTODON_HOME"
 
-reset_recompile_required
+reset_compilation_required
 
 update_mastodon_files
 setup_mastodon_database

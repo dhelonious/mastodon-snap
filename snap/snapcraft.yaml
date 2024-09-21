@@ -147,6 +147,12 @@ apps:
       - network
       - removable-media
 
+  maintenance:
+    command: bin/maintenance
+    plugs:
+      - network
+      - removable-media
+
   external-media-dir:
     command: bin/external_media_dir
     plugs:
