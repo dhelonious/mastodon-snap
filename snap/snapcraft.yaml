@@ -807,15 +807,16 @@ parts:
     # NOTE: fiddle is no longer included in ruby 3.5.0
     override-build: |
       set -eux
-      echo "gem 'fiddle'" >> Gemfile
-
       gem install bundler -v $BUNDLER_VERSION --no-document --install-dir $GEM_PATH
       bundle config deployment "true"
       bundle config without "development test"
       bundle config set --local path $BUNDLE_PATH
       bundle config set --local silence_root_warning true
       bundle config build.pg --with-pg-config=$CRAFT_STAGE/postgres/bin/pg_config
+      bundle config set frozen false
+      echo "gem 'fiddle', '~> 1.1.2'" >> Gemfile
       bundle install -j"$(nproc)"
+      bundle config set frozen true
 
       mkdir -p $COREPACK_HOME $YARN_CACHE_FOLDER
       corepack enable
