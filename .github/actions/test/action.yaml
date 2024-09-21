@@ -55,6 +55,19 @@ runs:
         exit 1
       fi
       sleep 10
+  - name: refresh snap
+    if: ${{ inputs.upgrade == 'false' }}
+    shell: bash
+    run: |
+      echo -e "\033[1;33mRefresh snap\033[0m"
+      if REFRESH_OUTPUT=$(sudo snap install --dangerous ${{ inputs.snap }}); then
+        echo -e "\033[1;32mSnap refresh completed successfully\033[0m"
+      else
+        echo -e "\033[1;31mSnap refresh failed\033[0m"
+        echo -e "\033[1;33m$REFRESH_OUTPUT\033[0m"
+        exit 1
+      fi
+      sleep 10
   - name: test setup
     if: ${{ inputs.upgrade == 'false' }}
     shell: bash
@@ -189,7 +202,7 @@ runs:
     shell: bash
     run: |
       echo -e "\033[1;33mTest restore\033[0m"
-      if RESTORE_OUTPUT=$(sudo mastodon-server.restore ${{ steps.export.outputs.backup_dir }}); then
+      if RESTORE_OUTPUT=$(bash -c "yes || true" | sudo mastodon-server.restore ${{ steps.export.outputs.backup_dir }}); then
         echo -e "\033[1;32mTest passed\033[0m"
       else
         echo -e "\033[1;31mTest failed\033[0m"

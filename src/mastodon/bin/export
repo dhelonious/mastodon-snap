@@ -22,7 +22,7 @@ for setting in $SETTINGS; do
 done
 
 echo Export configuration
-rsync_clean "$SNAP_COMMON/mastodon.conf" "$export_dir/mastodon.conf"
+rsync_clean "$SNAP_COMMON/mastodon.conf" "$export_dir/"
 
 echo Export database
 $SNAP/bin/pg_dumpall.wrapper -f "$export_dir/database.sql"

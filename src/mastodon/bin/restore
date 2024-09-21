@@ -58,8 +58,11 @@ mastodon_set_var DB_PASS "$(get_secret postgres)"
 echo Restore database
 $SNAP/bin/psql.wrapper -f "$backup_dir/database.sql" template1 > /dev/null
 if [ "$BACKUP_VERSION" != "$SNAP_VERSION" ]; then
-    echo Migrate database
-    mastodon_db_migrate
+    if confirm "Do you want to start a database migration?"; then
+        mastodon_db_migrate
+    elif confirm "Do you want to start a database rollback instead?"; then
+        mastodon_db_rollback
+    fi
 fi
 
 if [ -f "$backup_dir/redis.rdb" ]; then
@@ -75,7 +78,7 @@ $SNAP/bin/tootctl.wrapper media remove --days 1
 
 if [ -f "$backup_dir/media.tar.gz" ]; then
     echo Restore uploads
-    tar -xzf "$backup_dir/media.tar.gz" -C "$MEDIA_DIR" --strip-components=1 --no-same-permissions --no-same-owner
+    run_as_daemon_user tar -xzf "$backup_dir/media.tar.gz" -C "$MEDIA_DIR" --strip-components=1 --no-same-permissions --no-same-owner --skip-old-files
 
     echo The following action may take a long time to complete
     # TODO: make --concurrency N configurable (default 5)
