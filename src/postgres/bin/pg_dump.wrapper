@@ -5,4 +5,4 @@
 check_root
 check_service postgres
 
-exec pg_dumpall -h "$PG_SOCK_DIR" -U postgres -w "$@"
+exec pg_dump -h "$PG_SOCK_DIR" -U postgres -w "$@"

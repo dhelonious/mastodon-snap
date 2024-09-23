@@ -1,6 +1,0 @@
-#!/bin/bash -e
-
-. "$SNAP/postgres.env"
-
-sed -i "/^include_if_exists = .*/d" "$PG_DATA/postgresql.conf"
-$SNAP/bin/append "include_if_exists = '$(config_dir postgres)/postgresql.conf'" "$PG_DATA/postgresql.conf"

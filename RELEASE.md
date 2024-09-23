@@ -16,7 +16,7 @@ This release also includes:
 * libvips 8.15.3
 * ffmpeg 7.0.2
 
-Changelog for 4.3.0-beta.2snap1:
+Changelog for 4.3.0-beta.2snap2:
 
 * Upgrade to core24
 * Adds `cleanup.headers` and `cleanup.accounts` settings
@@ -27,5 +27,4 @@ Changelog for 4.3.0-beta.2snap1:
 * Uses non-root user for nginx, acme.sh, redis and Mastodon (backend, streaming, sidekiq)
 * Adds redis database to exports
 * Adds `db-migrate`, `db-rollback` and `maintenance` commands
-
-The snap is now lighter and more secure with a smaller file size.
+* Renames `mastodon-server.postgres-dump` to `mastodon-server.db-dump`, which uses `pg_dump` instead of `pg_dumpall`

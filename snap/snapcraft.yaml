@@ -9,7 +9,7 @@ description: |
   implements ActivityPub!)
 
 base: core24
-version: 4.3.0-beta.2snap1
+version: 4.3.0-beta.2snap2
 grade: stable
 confinement: strict
 
@@ -162,9 +162,6 @@ apps:
   psql:
     command: bin/psql.wrapper
 
-  postgres-dump:
-    command: bin/pg_dumpall.wrapper
-
   export:
     command: bin/export
     plugs:
@@ -202,6 +199,11 @@ apps:
 
   db-rollback:
     command: bin/db-rollback
+    plugs:
+      - network
+
+  db-dump:
+    command: bin/db-dump
     plugs:
       - network
 

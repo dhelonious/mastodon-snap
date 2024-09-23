@@ -331,7 +331,7 @@ To export the database and the configuration file into `/var/snap/mastodon-serve
 
 Note that exports do not include media cached from other servers. This means that media attachments in feeds received prior to export will be missing. This includes media attachments in boosted or favoured posts. However, missing media will be downloaded if you use the restore command described below.
 
-> If you just want to export the database, use the `postgres-dump` command.
+> If you just want to export the Mastodon database, use the `db-dump` command.
 
 > The backup dir can be changed using the `backup.dir` setting. If backups are to be stored on external storage the snap must be connected to the `removable-media` plug.
 
