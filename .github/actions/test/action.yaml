@@ -82,7 +82,7 @@ runs:
         sudo snap logs mastodon-server
         exit 1
       fi
-      sleep 10
+      sleep 30
   - name: check services
     shell: bash
     run: |
@@ -143,7 +143,7 @@ runs:
     run: |
       echo -e "\033[1;33mChange HTTP/HTTPS ports\033[0m"
       sudo snap set mastodon-server ports.http=${{ steps.env.outputs.HTTP_PORT }} ports.https=${{ steps.env.outputs.HTTPS_PORT }}
-      sleep 10
+      sleep 30
   - name: check http port
     shell: bash
     run: |
