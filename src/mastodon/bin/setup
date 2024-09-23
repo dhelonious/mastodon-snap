@@ -2,6 +2,7 @@
 
 . "$SNAP/mastodon.env"
 . "$SNAP/postgres.env"
+. "$SNAP/redis.env"
 . "$SNAP/nginx.env"
 
 check_root

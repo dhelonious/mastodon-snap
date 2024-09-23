@@ -65,14 +65,14 @@ apps:
       - network-bind
       - removable-media
 
-  recompile:
+  recompile-assets:
     command: bin/recompile_if_required
     daemon: oneshot
     plugs:
       - network
       - network-bind
 
-  migrate:
+  migrations:
     command: bin/migrate_if_required
     daemon: oneshot
     after:
@@ -87,8 +87,8 @@ apps:
     after:
       - postgres
       - redis
-      - recompile
-      - migrate
+      - migrations
+      - recompile-assets
     plugs:
       - network
       - network-bind
@@ -100,8 +100,8 @@ apps:
     after:
       - postgres
       - redis
-      - recompile
-      - migrate
+      - migrations
+      - recompile-assets
     environment:
       MALLOC_ARENA_MAX: 2
     plugs:
@@ -114,7 +114,7 @@ apps:
     daemon: simple
     after:
       - redis
-      - recompile
+      - recompile-assets
     plugs:
       - network
       - network-bind
