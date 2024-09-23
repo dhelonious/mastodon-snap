@@ -5,9 +5,7 @@
 count=${1:-10}
 
 while [ "$count" -gt 0 ]; do
-    if run_as_daemon_user test -f "$PG_SOCK_DIR/.s.PGSQL.5432" && \
-        pg_isready -h "$PG_SOCK_DIR" -U postgres > /dev/null
-    then
+    if pg_isready -h "$PG_SOCK_DIR" -U postgres > /dev/null; then
         exit 0
     fi
     sleep 1

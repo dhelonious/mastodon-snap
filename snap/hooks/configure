@@ -86,7 +86,6 @@ echo Restart services
 
 restart_service_if_required redis
 restart_service_if_required postgres
-postgres_waitready
 restart_service_if_required backend
 restart_service_if_required sidekiq
 restart_service_if_required streaming

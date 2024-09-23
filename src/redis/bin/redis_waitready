@@ -5,9 +5,7 @@
 count=${1:-10}
 
 while [ "$count" -gt 0 ]; do
-    if run_as_daemon_user test -f "$SOCK_DIR/redis.sock" && \
-        run_as_daemon_user redis-cli -s "$SOCK_DIR/redis.sock" ping &> /dev/null
-    then
+    if run_as_daemon_user redis-cli -p $REDIS_PORT ping &> /dev/null; then
         exit 0
     fi
     sleep 1
