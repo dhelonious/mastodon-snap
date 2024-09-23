@@ -392,6 +392,14 @@ You can then remove the old media directory.
 
 # 🔥 Troubleshooting
 
+If none of the answers below help you, you can always re-install the snap and restore a backup:
+
+    snap remove mastodon-server
+    snap install mastodon-server
+    mastodon-server.restore 20240312-123456
+
+Make sure you move the backups out of `/var/snap/mastodon-server/common/backups/` before removing the snap.
+
 ## Statistics show "0 active users"
 
 Statistics are compiled every night. So the number of users should be correct within 24 hours.

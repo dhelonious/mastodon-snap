@@ -34,8 +34,7 @@ if [ "$PG_VERSION" != "$CURRENT_PG_VERSION" ]; then
         run_as_daemon_user rm -rf "$PG_DATA"
         run_as_daemon_user mkdir -pm 0700 "$PG_DATA"
         setup_postgres_database
-        postgres_waitready
-        psql.wrapper -f "$SNAP_COMMON/database.sql" template1 > /dev/null
+        restore_mastodon_database "$SNAP_COMMON/database.sql"
         rm -f "$SNAP_COMMON/database.sql"
     fi
 else
