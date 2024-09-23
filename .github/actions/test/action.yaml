@@ -114,6 +114,7 @@ runs:
       else
         echo -e "\033[1;31mCheck failed\033[0m"
         echo -e "\033[1;33mHTTP_STATUS=$HTTP_STATUS\033[0m"
+        sudo snap logs "mastodon-server"
         exit 1
       fi
   - name: generate ssl certificates
@@ -153,6 +154,7 @@ runs:
       else
         echo -e "\033[1;31mCheck failed\033[0m"
         echo -e "\033[1;33mHTTP_STATUS=$HTTP_STATUS\033[0m"
+        sudo snap logs "mastodon-server"
         exit 1
       fi
   - name: check https port
@@ -165,6 +167,7 @@ runs:
       else
         echo -e "\033[1;31mCheck failed\033[0m"
         echo -e "\033[1;33mHTTPS_STATUS=$HTTPS_STATUS\033[0m"
+        sudo snap logs "mastodon-server"
         exit 1
       fi
   - name: connect removable-media
@@ -275,6 +278,27 @@ runs:
           echo -e "\033[1;33m$POSTGRES_DUMP\033[0m"
           exit 1
         fi
+      fi
+  - name: check logs for warnings
+    shell: bash
+    run: |
+      echo -e "\033[1;33mCheck logs for warnings\033[0m"
+      LOG_WARNINGS=$(sudo grep -i warning /var/snap/mastodon-server/current/logs/*)
+      if [ -z "$LOG_WARNINGS" ]; then
+        echo -e "\033[1;32mNo warnings\033[0m"
+      else
+        echo -e "\033[1;33m$LOG_WARNINGS\033[0m"
+      fi
+  - name: check logs for errors
+    shell: bash
+    run: |
+      echo -e "\033[1;33mCheck logs for errors\033[0m"
+      LOG_ERRORS=$(sudo grep -iE "error|failure|failed" /var/snap/mastodon-server/current/logs/*)
+      if [ -z "$LOG_ERRORS" ]; then
+        echo -e "\033[1;32mNo errors\033[0m"
+      else
+        echo -e "\033[1;31m$LOG_ERRORS\033[0m"
+        exit 1
       fi
   - name: remove snap
     shell: bash
