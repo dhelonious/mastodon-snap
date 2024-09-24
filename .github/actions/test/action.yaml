@@ -19,11 +19,11 @@ runs:
       YELLOW="\033[33m"
       RESET="\033[0m"
       SHEBANG="#!/bin/bash"
-      echo_color() { echo "while IFS= read -r line; do echo -e \"$1\$(\$line | tr -d '\0')$RESET\"; done <<< \"\$1\""; }
+      colorize() { echo "while IFS= read -r line; do echo -e \"$1\$line$RESET\"; done"; }
       mkdir -p ~/bin
-      echo -e "$SHEBANG\n$(echo_color $RED)" > ~/bin/echo_red
-      echo -e "$SHEBANG\n$(echo_color $GREEN)" > ~/bin/echo_green
-      echo -e "$SHEBANG\n$(echo_color $YELLOW)" > ~/bin/echo_yellow
+      echo -e "$SHEBANG\n$(colorize $RED)" > ~/bin/red
+      echo -e "$SHEBANG\n$(colorize $GREEN)" > ~/bin/green
+      echo -e "$SHEBANG\n$(colorize $YELLOW)" > ~/bin/yellow
       sudo chmod +x ~/bin/*
       echo "$HOME/bin" >> $GITHUB_PATH
   - name: set permissions on resolv.conf
@@ -38,12 +38,12 @@ runs:
   - name: print info
     shell: bash
     run: |
-      echo_yellow "Run tests for ${{ inputs.snap }}"
+      echo "Run tests for ${{ inputs.snap }}" | yellow
   - name: set environment
     id: env
     shell: bash
     run: |
-      echo_yellow "Set environment variables"
+      echo "Set environment variables" | yellow
       echo "DOMAIN=local.host" >> $GITHUB_OUTPUT
       echo "HTTP_PORT=81" >> $GITHUB_OUTPUT
       echo "HTTPS_PORT=444" >> $GITHUB_OUTPUT
@@ -55,7 +55,7 @@ runs:
     if: ${{ inputs.upgrade == 'true' }}
     shell: bash
     run: |
-      echo_yellow "Install previous snap"
+      echo "Install previous snap" | yellow
       sudo snap install mastodon-server
       sleep 10
       sudo snap set mastodon-server domain="${{ steps.env.outputs.domain }}"
@@ -64,12 +64,12 @@ runs:
   - name: install snap
     shell: bash
     run: |
-      echo_yellow "Install snap (upgrade=${{ inputs.upgrade }})"
+      echo "Install snap (upgrade=${{ inputs.upgrade }})" | yellow
       if INSTALL_OUTPUT=$(sudo snap install --dangerous ${{ inputs.snap }}); then
-        echo_green "Snap installation completed successfully"
+        echo "Snap installation completed successfully" | green
       else
-        echo_red "Snap installation failed"
-        echo_yellow "$INSTALL_OUTPUT"
+        echo "Snap installation failed" | red
+        echo "$INSTALL_OUTPUT" | yellow
         exit 1
       fi
       sleep 10
@@ -77,12 +77,12 @@ runs:
     if: ${{ inputs.upgrade == 'false' }}
     shell: bash
     run: |
-      echo_yellow "Refresh snap"
+      echo "Refresh snap" | yellow
       if REFRESH_OUTPUT=$(sudo snap install --dangerous ${{ inputs.snap }}); then
-        echo_green "Snap refresh completed successfully"
+        echo "Snap refresh completed successfully" | green
       else
-        echo_red "Snap refresh failed"
-        echo_yellow "$REFRESH_OUTPUT"
+        echo "Snap refresh failed" | red
+        echo "$REFRESH_OUTPUT" | yellow
         exit 1
       fi
       sleep 10
@@ -90,29 +90,36 @@ runs:
     if: ${{ inputs.upgrade == 'false' }}
     shell: bash
     run: |
-      echo_yellow "Test setup"
+      echo "Test setup" | yellow
       sudo snap set mastodon-server domain="${{ steps.env.outputs.domain }}"
       if sudo mastodon-server.setup; then
-        echo_green "Mastodon setup completed successfully"
+        echo "Mastodon setup completed successfully" | green
       else
-        echo_red "Mastodon setup failed"
-        echo_yellow "Snap logs:"
-        echo_yellow "$(sudo snap logs mastodon-server -n=all)"
+        echo "Mastodon setup failed" | red
+        echo "Snap logs:" | yellow
+        echo "$(sudo snap logs mastodon-server -n=all)" | yellow
         exit 1
       fi
       sleep 30
   - name: check services
     shell: bash
     run: |
-      echo_yellow "Check service statuses"
+      echo "Check service statuses" | yellow
       check_service_status() {
         STATUS=$(snap services mastodon-server | sed -rn "s/.*\.$1 +([a-z]+) +([a-z]+).*/\1,\2/p")
         if [ "$STATUS" = "enabled,active" ]; then
-          echo_green "$1 $STATUS"
+          echo "$1 $STATUS" | green
         else
-          echo_red "$1 $STATUS"
-          echo_yellow "Snap logs for $1:"
-          echo_yellow "$(sudo snap logs mastodon-server.$1 -n=all)"
+          echo "$1 $STATUS" | red
+          echo "$(snap services mastodon-server)" | yellow
+          echo
+          echo "Snap logs for $1:" | yellow
+          sudo snap logs mastodon-server.$1 -n=all | yellow
+          if sudo test -f "/var/snap/mastodon-server/current/logs/$1.log"; then
+            echo
+            echo "Log file for $1:" | yellow
+            sudo cat "/var/snap/mastodon-server/current/logs/$1.log" | yellow
+          fi
           exit 1
         fi
       }
@@ -125,20 +132,20 @@ runs:
   - name: check reachability
     shell: bash
     run: |
-      echo_yellow "Check reachability"
+      echo "Check reachability" | yellow
       HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" --resolve ${{ steps.env.outputs.domain }}:80:127.0.0.1 http://${{ steps.env.outputs.domain }}:80)
       if [ "$HTTP_STATUS" -eq 200 ]; then
-        echo_green "Check passed"
+        echo "Check passed" | green
       else
-        echo_red "Check failed"
-        echo_yellow "HTTP_STATUS=$HTTP_STATUS"
+        echo "Check failed" | red
+        echo "HTTP_STATUS=$HTTP_STATUS" | yellow
         sudo snap logs "mastodon-server"
         exit 1
       fi
   - name: generate ssl certificates
     shell: bash
     run: |
-      echo_yellow "Generate SSL certificate"
+      echo "Generate SSL certificate" | yellow
       CERT_DIR="/var/snap/mastodon-server/common/certs/${{ steps.env.outputs.domain }}_ecc"
       sudo mkdir -p "$CERT_DIR"
       echo "Create self signed certificate"
@@ -149,71 +156,71 @@ runs:
   - name: check if https config is created
     shell: bash
     run: |
-      echo_yellow "Check if HTTPS is enabled"
+      echo "Check if HTTPS is enabled" | yellow
       if sudo test -f "/var/snap/mastodon-server/current/nginx/config/mastodon-https.conf"; then
-        echo_green "Check passed"
+        echo "Check passed" | green
       else
-        echo_red "Check failed"
+        echo "Check failed" | red
         exit 1
       fi
   - name: change http/https ports
     shell: bash
     run: |
-      echo_yellow "Change HTTP/HTTPS ports"
+      echo "Change HTTP/HTTPS ports" | yellow
       sudo snap set mastodon-server ports.http=${{ steps.env.outputs.HTTP_PORT }} ports.https=${{ steps.env.outputs.HTTPS_PORT }}
       sleep 30
   - name: check http port
     shell: bash
     run: |
-      echo_yellow "Check HTTP port"
+      echo "Check HTTP port" | yellow
       HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" --resolve "${{ steps.env.outputs.domain }}:${{ steps.env.outputs.HTTP_PORT }}:127.0.0.1" "http://${{ steps.env.outputs.domain }}:${{ steps.env.outputs.HTTP_PORT }}")
       if [ "$HTTP_STATUS" -eq 301 ]; then
-        echo_green "Check passed"
+        echo "Check passed" | green
       else
-        echo_red "Check failed"
-        echo_yellow "HTTP_STATUS=$HTTP_STATUS"
+        echo "Check failed" | red
+        echo "HTTP_STATUS=$HTTP_STATUS" | yellow
         sudo snap logs "mastodon-server"
         exit 1
       fi
   - name: check https port
     shell: bash
     run: |
-      echo_yellow "Check HTTPS port"
+      echo "Check HTTPS port" | yellow
       HTTPS_STATUS=$(curl -s -o /dev/null -w "%{http_code}" --resolve "${{ steps.env.outputs.domain }}:${{ steps.env.outputs.HTTPS_PORT }}:127.0.0.1" "https://${{ steps.env.outputs.domain }}:${{ steps.env.outputs.HTTPS_PORT }}" --insecure)
       if [ "$HTTPS_STATUS" -eq 200 ]; then
-        echo_green "Check passed"
+        echo "Check passed" | green
       else
-        echo_red "Check failed"
-        echo_yellow "HTTPS_STATUS=$HTTPS_STATUS"
+        echo "Check failed" | red
+        echo "HTTPS_STATUS=$HTTPS_STATUS" | yellow
         sudo snap logs "mastodon-server"
         exit 1
       fi
   - name: connect removable-media
     shell: bash
     run: |
-      echo_yellow "Connect removalbe-media"
+      echo "Connect removalbe-media" | yellow
       sudo snap connect mastodon-server:removable-media
   - name: change media dir
     shell: bash
     run: |
-      echo_yellow "Change media dir"
+      echo "Change media dir" | yellow
       sudo mkdir -p ~/media
       if COMMAND_OUTPUT=$(sudo mastodon-server.external-media-dir ~/media); then
-        echo_green "Test passed"
+        echo "Test passed" | green
       else
-        echo_red "Test failed"
-        echo_yellow "$COMMAND_OUTPUT"
+        echo "Test failed" | red
+        echo "$COMMAND_OUTPUT" | yellow
         exit 1
       fi
   - name: test export
     shell: bash
     run: |
-      echo_yellow "Test export"
+      echo "Test export" | yellow
       if EXPORT_OUTPUT=$(sudo mastodon-server.export); then
-        echo_green "Test passed"
+        echo "Test passed" | green
       else
-        echo_red "Test failed"
-        echo_yellow "$EXPORT_OUTPUT"
+        echo "Test failed" | red
+        echo "$EXPORT_OUTPUT" | yellow
         exit 1
       fi
       BACKUP_DIR=$(echo "$EXPORT_OUTPUT" | sed -rn "s|^Export backup to .*/([0-9]+-[0-9]+)$|\1|p")
@@ -222,109 +229,109 @@ runs:
   - name: test restore
     shell: bash
     run: |
-      echo_yellow "Test restore"
+      echo "Test restore" | yellow
       if RESTORE_OUTPUT=$(bash -c "yes || true" | sudo mastodon-server.restore ${{ steps.export.outputs.backup_dir }}); then
-        echo_green "Test passed"
+        echo "Test passed" | green
       else
-        echo_red "Test failed"
-        echo_yellow "$RESTORE_OUTPUT"
+        echo "Test failed" | red
+        echo "$RESTORE_OUTPUT" | yellow
         exit 1
       fi
   - name: trigger recompile
     shell: bash
     run: |
-      echo_yellow "Trigger recompile"
+      echo "Trigger recompile" | yellow
       sudo snap set mastodon-server status.char-limit=${{ steps.env.outputs.LIMIT }} status.char-counter=${{ steps.env.outputs.COUNTER }}
   - name: check max chars
     shell: bash
     run: |
-      echo_yellow "Check 'MAX_CHARS' in ${{ steps.env.outputs.STATUS_LENGTH_VALIDATOR_FILE }}"
+      echo "Check 'MAX_CHARS' in ${{ steps.env.outputs.STATUS_LENGTH_VALIDATOR_FILE }}" | yellow
       MAX_CHARS=$(sudo sed -rn "s/^.*MAX_CHARS = ([0-9]+).*$/\1/p" "${{ steps.env.outputs.STATUS_LENGTH_VALIDATOR_FILE }}")
       if [ "$MAX_CHARS" -eq "${{ steps.env.outputs.LIMIT }}" ]; then
-        echo_green "Check passed"
+        echo "Check passed" | green
       else
-        echo_red "Check failed"
-        echo_yellow "MAX_CHARS=$MAX_CHARS"
+        echo "Check failed" | red
+        echo "MAX_CHARS=$MAX_CHARS" | yellow
         exit 1
       fi
   - name: check length fulltext
     shell: bash
     run: |
-      echo_yellow "Check 'length(fulltext)' in ${{ steps.env.outputs.COMPOSE_FORM_FILE }}"
+      echo "Check 'length(fulltext)' in ${{ steps.env.outputs.COMPOSE_FORM_FILE }}" | yellow
       LENGTH_FULLTEXT=$(sudo sed -rn "s/^.*length\(fulltext\) > ([0-9]+).*$/\1/p" "${{ steps.env.outputs.COMPOSE_FORM_FILE }}")
       if [ "$LENGTH_FULLTEXT" -eq "${{ steps.env.outputs.LIMIT }}" ]; then
-        echo_green "Check passed"
+        echo "Check passed" | green
       else
-        echo_red "Check failed"
-        echo_yellow "LENGTH_FULLTEXT=$LENGTH_FULLTEXT"
+        echo "Check failed" | red
+        echo "LENGTH_FULLTEXT=$LENGTH_FULLTEXT" | yellow
         exit 1
       fi
   - name: check character counter max
     shell: bash
     run: |
-      echo_yellow "Check 'CharacterCounter max' in ${{ steps.env.outputs.COMPOSE_FORM_FILE }}"
+      echo "Check 'CharacterCounter max' in ${{ steps.env.outputs.COMPOSE_FORM_FILE }}" | yellow
       CHARACTER_COUNTER_MAX=$(sudo sed -rn "s/^.*CharacterCounter max=\{([0-9]+)\}.*$/\1/p" "${{ steps.env.outputs.COMPOSE_FORM_FILE }}")
       if [ "$CHARACTER_COUNTER_MAX" -eq "${{ steps.env.outputs.COUNTER }}" ]; then
-        echo_green "Check passed"
+        echo "Check passed" | green
       else
-        echo_red "Check failed"
-        echo_yellow "CHARACTER_COUNTER_MAX=$CHARACTER_COUNTER_MAX"
+        echo "Check failed" | red
+        echo "CHARACTER_COUNTER_MAX=$CHARACTER_COUNTER_MAX" | yellow
         exit 1
       fi
   - name: test rails console
     shell: bash
     run: |
-      echo_yellow "Test rails console"
+      echo "Test rails console" | yellow
       if CONSOLE_OUTPUT="$(echo "exit" | sudo mastodon-server.console --sandbox)"; then
         if ! [ -z "$(echo "'"$CONSOLE_OUTPUT"'" | grep 'Loading production environment')" ]; then
-          echo_green "Test passed"
+          echo "Test passed" | green
         else
-          echo_red "Test failed"
-          echo_yellow "$CONSOLE_OUTPUT"
+          echo "Test failed" | red
+          echo "$CONSOLE_OUTPUT" | yellow
           exit 1
         fi
       fi
   - name: test postgres dump
     shell: bash
     run: |
-      echo_yellow "Test postgres dump"
+      echo "Test postgres dump" | yellow
       sudo mastodon-server.db-dump > ~/dump.sql
       if sudo grep -q "DROP DATABASE mastodon" ~/dump.sql; then
-        echo_green "Test passed"
+        echo "Test passed" | green
       else
-        echo_red "Test failed"
-        echo_yellow "$(sudo head ~/dump.sql)"
+        echo "Test failed" | red
+        sudo head ~/dump.sql 2>/dev/null | yellow
         exit 1
       fi
   - name: check logs for warnings
     shell: bash
     run: |
-      echo_yellow "Check logs for warnings"
-      LOG_WARNINGS=$(sudo grep -i warning /var/snap/mastodon-server/current/logs/*)
+      echo "Check logs for warnings" | yellow
+      LOG_WARNINGS=$(sudo grep -i warning /var/snap/mastodon-server/current/logs/* || true)
       if [ -z "$LOG_WARNINGS" ]; then
-        echo_green "No warnings"
+        echo "No warnings" | green
       else
-        echo_yellow "$LOG_WARNINGS"
+        echo "$LOG_WARNINGS" | yellow
       fi
   - name: check logs for errors
     shell: bash
     run: |
-      echo_yellow "Check logs for errors"
-      LOG_ERRORS=$(sudo grep -iE "error|failure|failed" /var/snap/mastodon-server/current/logs/*)
+      echo "Check logs for errors" | yellow
+      LOG_ERRORS=$(sudo grep -iE "error|failure|failed" /var/snap/mastodon-server/current/logs/* || true)
       if [ -z "$LOG_ERRORS" ]; then
-        echo_green "No errors"
+        echo "No errors" | green
       else
-        echo_red "$LOG_ERRORS"
+        echo "$LOG_ERRORS" | red
         exit 1
       fi
   - name: remove snap
     shell: bash
     run: |
-      echo_yellow "Remove snap"
+      echo "Remove snap" | yellow
       if REMOVE_OUTPUT=$(sudo snap remove --purge mastodon-server); then
-        echo_green "Snap removal completed successfully"
+        echo "Snap removal completed successfully" | green
       else
-        echo_red "Snap removal failed"
-        echo_yellow "$REMOVE_OUTPUT"
+        echo "Snap removal failed" | red
+        echo "$REMOVE_OUTPUT" | yellow
         exit 1
       fi

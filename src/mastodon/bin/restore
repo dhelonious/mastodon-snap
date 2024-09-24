@@ -41,6 +41,7 @@ echo Stop services
 snapctl stop "$SNAP_NAME.nginx"
 snapctl stop "$SNAP_NAME.backend"
 snapctl stop "$SNAP_NAME.sidekiq"
+snapctl stop "$SNAP_NAME.streaming"
 
 echo Drop old database
 $SNAP/bin/psql.wrapper -c "drop owned by $MASTODON_DBUSER cascade;"
@@ -91,5 +92,5 @@ $SNAP/bin/recompile_if_required
 echo Restart services
 snapctl start "$SNAP_NAME.backend"
 snapctl start "$SNAP_NAME.sidekiq"
+snapctl start "$SNAP_NAME.streaming"
 snapctl start "$SNAP_NAME.nginx"
-snapctl restart "$SNAP_NAME.streaming"

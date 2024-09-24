@@ -1,6 +1,0 @@
-#!/bin/bash -e
-
-. "$SNAP/mastodon.env"
-
-echo "Recompile assets (this takes some time)"
-mastodon_rails assets:precompile && mastodon_rails log:clear tmp:clear
