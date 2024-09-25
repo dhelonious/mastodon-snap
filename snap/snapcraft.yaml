@@ -50,6 +50,7 @@ apps:
   postgres:
     command: bin/run_as_daemon_user postgres.wrapper
     daemon: simple
+    # TODO: refresh-mode: endure
     stop-command: bin/pre-migrate_if_required
     stop-timeout: 30m
     plugs:
@@ -60,6 +61,7 @@ apps:
   redis:
     command: bin/run_as_daemon_user redis.wrapper
     daemon: simple
+    # TODO: refresh-mode: endure
     plugs:
       - network
       - network-bind
@@ -84,6 +86,7 @@ apps:
   backend:
     command: bin/run_as_daemon_user backend
     daemon: simple
+    # TODO: refresh-mode: endure
     after:
       - postgres
       - redis
@@ -97,6 +100,7 @@ apps:
   sidekiq:
     command: bin/run_as_daemon_user sidekiq
     daemon: simple
+    # TODO: refresh-mode: endure
     after:
       - postgres
       - redis
@@ -112,6 +116,7 @@ apps:
   streaming:
     command: bin/run_as_daemon_user streaming
     daemon: simple
+    # TODO: refresh-mode: endure
     after:
       - redis
       - recompile-assets
@@ -125,6 +130,7 @@ apps:
     stop-command: bin/nginx.wrapper -s quit
     reload-command: bin/nginx.wrapper -s reload
     daemon: simple
+    # TODO: refresh-mode: endure
     after:
       - backend
       - streaming
