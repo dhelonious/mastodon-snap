@@ -245,7 +245,7 @@ runs:
         echo "Test passed" | green
       else
         echo "Test failed" | red
-        snap logs mastodon-server.recompile-assets -n=all | yellow
+        sudo snap logs mastodon-server.recompile-assets -n=all | yellow
         exit 1
       fi
   - name: check max chars
