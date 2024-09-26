@@ -9,7 +9,7 @@ description: |
   implements ActivityPub!)
 
 base: core24
-version: 4.3.0-beta.2snap2
+version: 4.3.0-beta.2snap3
 grade: stable
 confinement: strict
 
@@ -34,7 +34,7 @@ environment:
   NODE_ENV: production
   RAILS_SERVE_STATIC_FILES: "true"
   MAGIC: $SNAP/lib/file/magic.mgc
-  PG_VERSION: 16 # NOTE: must be updated with postgres source
+  PG_VERSION: 17 # NOTE: must be updated with postgres source
 
 hooks:
   post-refresh:
@@ -391,8 +391,8 @@ parts:
       - setpriv
       - envsubst
     # NOTE: https://www.postgresql.org/ftp/latest
-    source: https://ftp.postgresql.org/pub/source/v16.4/postgresql-16.4.tar.gz
-    source-checksum: sha256/2e17a90062403e15d6540480fdec50c8b005eb48729a91cb4989ffeb04df193c
+    source: https://ftp.postgresql.org/pub/source/v17.0/postgresql-17.0.tar.gz
+    source-checksum: sha256/bf81c0c5161e456a886ede5f1f4133f43af000637e377156a02e7e83569081ad
     plugin: autotools
     build-packages:
       - clang
