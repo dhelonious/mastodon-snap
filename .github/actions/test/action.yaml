@@ -73,19 +73,6 @@ runs:
         exit 1
       fi
       sleep 10
-  - name: refresh snap
-    if: ${{ inputs.upgrade == 'false' }}
-    shell: bash
-    run: |
-      echo "Refresh snap" | yellow
-      if REFRESH_OUTPUT=$(sudo snap install --dangerous ${{ inputs.snap }}); then
-        echo "Snap refresh completed successfully" | green
-      else
-        echo "Snap refresh failed" | red
-        echo "$REFRESH_OUTPUT" | yellow
-        exit 1
-      fi
-      sleep 10
   - name: test setup
     if: ${{ inputs.upgrade == 'false' }}
     shell: bash
@@ -307,6 +294,18 @@ runs:
       else
         echo "Test failed" | red
         sudo head ~/dump.sql 2>/dev/null | yellow
+        exit 1
+      fi
+  - name: refresh snap
+    if: ${{ inputs.upgrade == 'false' }}
+    shell: bash
+    run: |
+      echo "Refresh snap" | yellow
+      if REFRESH_OUTPUT=$(sudo snap install --dangerous ${{ inputs.snap }}); then
+        echo "Snap refresh completed successfully" | green
+      else
+        echo "Snap refresh failed" | red
+        echo "$REFRESH_OUTPUT" | yellow
         exit 1
       fi
   - name: check logs for warnings
