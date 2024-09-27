@@ -26,6 +26,7 @@ export CURRENT_PG_VERSION="$(get_postgres_version_file)"
 
 echo Update postgres config
 copy_config_as_daemon_user postgres postgresql.conf
+enable_postgres_config
 
 if [ "$PG_VERSION" != "$CURRENT_PG_VERSION" ]; then
     if [ -f "$SNAP_COMMON/database.sql" ]; then
@@ -37,10 +38,9 @@ if [ "$PG_VERSION" != "$CURRENT_PG_VERSION" ]; then
         restore_mastodon_database "$SNAP_COMMON/database.sql"
         rm -f "$SNAP_COMMON/database.sql"
     fi
-else
-    enable_postgres_config
-    snapctl start "$SNAP_NAME.postgres"
 fi
+
+snapctl restart "$SNAP_NAME.postgres"
 
 # Redis
 
@@ -82,7 +82,7 @@ if [ "$SNAP_VERSION" != "$CURRENT_SNAP_VERSION" ]; then
         link_mastodon_config
         upgrade_mastodon_config
 
-        echo Start database migrations
+        echo Enable database migrations
         migrations_required
     fi
 fi
