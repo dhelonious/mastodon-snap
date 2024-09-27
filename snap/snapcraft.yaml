@@ -396,9 +396,14 @@ parts:
     plugin: autotools
     build-packages:
       - clang
+      - flex
+      - bison
       - libreadline-dev
       - zlib1g-dev
+      - libicu-dev
     stage-packages:
+      - libreadline8t64
+      - zlib1g
       - libicu74
     build-environment:
       - PATH: $CRAFT_STAGE/postgres/bin:$PATH
