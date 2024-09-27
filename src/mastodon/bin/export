@@ -25,7 +25,7 @@ echo Export configuration
 rsync_clean "$SNAP_COMMON/mastodon.conf" "$export_dir/"
 
 echo Export database
-$SNAP/bin/pg_dumpall.wrapper -f "$export_dir/database.sql"
+postgres_export_database "$export_dir/database.sql"
 sed -ri "1,100s/^(CREATE ROLE postgres;)/-- \1/" "$export_dir/database.sql"
 sed -ri "1,100s/^(CREATE ROLE $MASTODON_DBUSER;)/-- \1/" "$export_dir/database.sql"
 

@@ -29,18 +29,20 @@ copy_config_as_daemon_user postgres postgresql.conf
 enable_postgres_config
 
 if [ "$PG_VERSION" != "$CURRENT_PG_VERSION" ]; then
+    echo Update postgres data
+    snapctl stop "$SNAP_NAME.postgres"
+    run_as_daemon_user rm -rf "$PG_DATA"
+    run_as_daemon_user mkdir -pm 0700 "$PG_DATA"
+    setup_postgres_database
+    snapctl start "$SNAP_NAME.postgres"
     if [ -f "$SNAP_COMMON/database.sql" ]; then
-        echo Update postgres data
-        snapctl stop "$SNAP_NAME.postgres"
-        run_as_daemon_user rm -rf "$PG_DATA"
-        run_as_daemon_user mkdir -pm 0700 "$PG_DATA"
-        setup_postgres_database
-        restore_mastodon_database "$SNAP_COMMON/database.sql"
-        rm -f "$SNAP_COMMON/database.sql"
+        postgres_restore_database "$SNAP_COMMON/database.sql"
     fi
+else
+    snapctl restart "$SNAP_NAME.postgres"
 fi
 
-snapctl restart "$SNAP_NAME.postgres"
+rm -f "$SNAP_COMMON/database.sql"
 
 # Redis
 
