@@ -29,12 +29,13 @@ if [ "$PG_VERSION" != "$CURRENT_PG_VERSION" ]; then
         setup_postgres_database
         postgres_waitready
         psql.wrapper -f "$SNAP_COMMON/database.sql" template1 > /dev/null
-        rm -f "$SNAP_COMMON/database.sql"
     fi
 else
     enable_postgres_config
     snapctl restart "$SNAP_NAME.postgres"
 fi
+
+rm -f "$SNAP_COMMON/database.sql"
 
 # Redis
 

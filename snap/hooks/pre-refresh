@@ -3,13 +3,9 @@
 . "$SNAP/snap.env"
 . "$SNAP/postgres.env"
 
-export CURRENT_PG_VERSION="$(get_postgres_version_file)"
-
 if $UPDATE_BACKUPS; then
     SKIP_MEDIA_EXPORT=true $SNAP/bin/export "$UPDATE_BACKUP_DIR"
 fi
 
-if [ "$PG_VERSION" != "$CURRENT_PG_VERSION" ]; then
-    echo Create postgres backup
-    pg_dumpall.wrapper -f "$SNAP_COMMON/database.sql"
-fi
+echo Create postgres backup
+pg_dumpall.wrapper -f "$SNAP_COMMON/database.sql"

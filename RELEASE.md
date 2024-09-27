@@ -14,12 +14,16 @@ This release contains:
 * Nginx 1.27.1
 * PostgreSQL 16.4
 * Redis 7.4.0
-* Acme.sh 3.0.7
-* ImageMagick 7.1.1-36
+* Acme.sh 3.0.9
+* ImageMagick 7.1.1-38
 * OpenSSL 1.1.1w
-* Curl 8.9.1
+* Curl 8.10.1
 * Logrotate 3.22.0
 * Jemalloc 5.3.0
 * musl-libc 1.2.5
 * mastodon-bird-ui 1.8.5
 * tangerine-ui 1.9.5
+
+Changelog for 4.2.12snap2:
+
+* Exports the database always before a refresh

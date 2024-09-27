@@ -9,7 +9,7 @@ description: |
   implements ActivityPub!)
 
 base: core20
-version: 4.2.12snap1
+version: 4.2.12snap2
 grade: stable
 confinement: strict
 
@@ -277,8 +277,8 @@ parts:
     after:
       - openssl1
     # NOTE: https://github.com/curl/curl/releases/latest
-    source: https://curl.se/download/curl-8.9.1.tar.gz
-    source-checksum: sha256/291124a007ee5111997825940b3876b3048f7d31e73e9caa681b80fe48b2dcd5
+    source: https://curl.se/download/curl-8.10.1.tar.gz
+    source-checksum: sha256/d15ebab765d793e2e96db090f0e172d127859d78ca6f6391d7eafecfd894bbc0
     plugin: autotools
     build-environment:
       - PKG_CONFIG_PATH: $SNAPCRAFT_STAGE/openssl1/lib/pkgconfig
@@ -425,8 +425,8 @@ parts:
       - curl
       - openssl1
     # NOTE: https://github.com/acmesh-official/acme.sh/releases/latest
-    source: https://github.com/acmesh-official/acme.sh/archive/refs/tags/3.0.7.tar.gz
-    source-checksum: sha256/abd446d6bd45d0b44dca1dcbd931348797a3f82d1ed6fb171472eaf851a8d849
+    source: https://github.com/acmesh-official/acme.sh/archive/refs/tags/3.0.9.tar.gz
+    source-checksum: sha256/a599e8373cd327fb611362bec6f1bfb0bf65c97b3401c440cfea9304a0f0cb41
     plugin: dump
     organize:
       "*": acme/
@@ -615,8 +615,8 @@ parts:
     after:
       - imagemagick-customizations
     # NOTE: https://github.com/ImageMagick/ImageMagick/releases/latest
-    source: https://github.com/ImageMagick/ImageMagick/archive/refs/tags/7.1.1-36.tar.gz
-    source-checksum: sha256/cb2925aadf126177f13f670c8ac47ba9a90d012f075ed50f936d141d160e3e97
+    source: https://github.com/ImageMagick/ImageMagick/archive/refs/tags/7.1.1-38.tar.gz
+    source-checksum: sha256/5e449530ccec8b85ae2bfd1ad773184fb7a4737d40fd9439db8a5d4beee4403e
     plugin: autotools
     build-packages:
       - build-essential
