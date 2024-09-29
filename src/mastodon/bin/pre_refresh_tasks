@@ -1,0 +1,23 @@
+#!/bin/bash -e
+
+. "$SNAP/postgres.env"
+. "$SNAP/mastodon.env"
+
+if ! is_pre_refresh_tasks_required; then
+    exit 0
+fi
+
+check_setup
+postgres_waitready
+
+echo Start pre-deployment db migrations
+SKIP_POST_DEPLOYMENT_MIGRATIONS=true mastodon_db_migrate
+
+echo Create database backup
+postgres_export_database "$SNAP_COMMON/database.sql"
+
+if $UPDATE_BACKUPS; then
+    SKIP_MEDIA_EXPORT=true $SNAP/bin/export "$UPDATE_BACKUP_DIR"
+fi
+
+reset_pre_refresh_tasks_required

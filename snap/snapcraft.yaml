@@ -9,7 +9,7 @@ description: |
   implements ActivityPub!)
 
 base: core24
-version: 4.3.0-beta.2snap3
+version: 4.3.0-beta.2snap4
 grade: stable
 confinement: strict
 
@@ -34,7 +34,6 @@ environment:
   NODE_ENV: production
   RAILS_SERVE_STATIC_FILES: "true"
   MAGIC: $SNAP/lib/file/magic.mgc
-  PG_VERSION: 17 # NOTE: must be updated with postgres source
 
 hooks:
   post-refresh:
@@ -47,12 +46,22 @@ apps:
     daemon: simple
     timer: 00:00
 
+  postgres-upgrade:
+    command: bin/postgres-upgrade
+    daemon: simple
+    plugs:
+      - network
+      - network-bind
+      - removable-media
+
   postgres:
     command: bin/run_as_daemon_user postgres.wrapper
     daemon: simple
     # TODO: refresh-mode: endure
-    stop-command: bin/pre-migrate_if_required
+    stop-command: bin/pre_refresh_tasks
     stop-timeout: 30m
+    after:
+      - postgres-upgrade
     plugs:
       - network
       - network-bind
@@ -75,7 +84,7 @@ apps:
       - network-bind
 
   migrations:
-    command: bin/migrate_if_required
+    command: bin/post_refresh_tasks
     daemon: oneshot
     after:
       - postgres
@@ -891,7 +900,7 @@ parts:
       - mastodon
     plugin: nil
     build-environment:
-      - BIRD_UI_TAG: "2.0.0rc51" # NOTE: https://github.com/ronilaukkarinen/mastodon-bird-ui/releases/latest
+      - BIRD_UI_TAG: "2.0.0rc54" # NOTE: https://github.com/ronilaukkarinen/mastodon-bird-ui/releases/latest
       - MASTODON_STYLES: $CRAFT_STAGE/mastodon/app/javascript/styles
     override-build: |
       set -eux

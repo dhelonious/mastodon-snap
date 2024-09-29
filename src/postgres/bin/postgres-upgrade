@@ -1,0 +1,13 @@
+#!/bin/bash -e
+
+. "$SNAP/postgres.env"
+
+if pg_version_changed; then
+    echo Update postgres data
+    snapctl stop "$SNAP_NAME.postgres"
+    run_as_daemon_user rm -rf "$PG_DATA"
+    run_as_daemon_user mkdir -pm 0700 "$PG_DATA"
+    run_as_daemon_user initdb.wrapper
+    enable_postgres_config
+    snapctl start "$SNAP_NAME.postgres"
+fi

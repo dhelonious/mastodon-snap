@@ -4,12 +4,6 @@
 . "$SNAP/postgres.env"
 . "$SNAP/mastodon.env"
 
-if $UPDATE_BACKUPS; then
-    SKIP_MEDIA_EXPORT=true $SNAP/bin/export "$UPDATE_BACKUP_DIR"
-fi
+update_postgres_version_file
 
-echo Create postgres backup
-postgres_export_database "$SNAP_COMMON/database.sql"
-
-echo Enable database pre-migrations
-pre_migrations_required
+pre_refresh_tasks_required

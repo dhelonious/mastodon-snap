@@ -1,0 +1,32 @@
+#!/bin/bash -e
+
+. "$SNAP/postgres.env"
+. "$SNAP/mastodon.env"
+
+if ! is_post_refresh_tasks_required; then
+    exit 0
+fi
+
+check_setup
+postgres_waitready
+
+if pg_version_changed; then
+    if [ -f "$SNAP_COMMON/database.sql" ]; then
+        echo Restore mastodon db
+        postgres_restore_database "$SNAP_COMMON/database.sql"
+        rm -f "$SNAP_COMMON/database.sql"
+    fi
+
+    update_postgres_version_file
+fi
+
+if is_migrations_required; then
+    echo Start db migrations
+    mastodon_db_migrate
+    reset_migrations_required
+fi
+
+echo Add update announcement
+mastodon_announcement "The mastodon-server snap has been updated to version $SNAP_VERSION"
+
+reset_post_refresh_tasks_required

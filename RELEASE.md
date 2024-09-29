@@ -16,6 +16,7 @@ This release also includes:
 * libvips 8.15.3
 * ffmpeg 7.0.2
 
-Changelog for 4.3.0-beta.2snap3:
+Changelog for 4.3.0-beta.2snap4:
 
-* Upgrade postgres to latest major release
+* Moves time-consuming pre-refresh and post-refresh tasks to service commands.
+* Updates bird-ui to latest version.

@@ -2,7 +2,7 @@
 
 . "$SNAP/mastodon.env"
 
-if [ "$(snapctl get compilation-required)" == true ]; then
+if [ "$(snapctl get system.compilation-required)" == true ]; then
     mastodon_recompile_assets
     reset_compilation_required
 fi

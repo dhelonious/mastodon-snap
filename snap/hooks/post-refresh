@@ -22,27 +22,11 @@ if [ -d "$PG_DATA" ]; then
     run_as_daemon_user chmod 700 "$PG_DATA" -R
 fi
 
-export CURRENT_PG_VERSION="$(get_postgres_version_file)"
-
 echo Update postgres config
 copy_config_as_daemon_user postgres postgresql.conf
 enable_postgres_config
 
-if [ "$PG_VERSION" != "$CURRENT_PG_VERSION" ]; then
-    echo Update postgres data
-    snapctl stop "$SNAP_NAME.postgres"
-    run_as_daemon_user rm -rf "$PG_DATA"
-    run_as_daemon_user mkdir -pm 0700 "$PG_DATA"
-    setup_postgres_database
-    snapctl start "$SNAP_NAME.postgres"
-    if [ -f "$SNAP_COMMON/database.sql" ]; then
-        postgres_restore_database "$SNAP_COMMON/database.sql"
-    fi
-else
-    snapctl restart "$SNAP_NAME.postgres"
-fi
-
-rm -f "$SNAP_COMMON/database.sql"
+snapctl start "$SNAP_NAME.postgres"
 
 # Redis
 
@@ -115,13 +99,11 @@ fix_daemon_user "$ACME_HOME"
 echo Update logrotate config
 copy_config logrotate logrotate.conf
 
-update_bundle_path
-update_snap_version_file
-update_postgres_version_file
-
-echo Add update announcement
-mastodon_announcement "The mastodon-server snap has been updated to version $SNAP_VERSION"
-
 # Clean update backups
 find "$UPDATE_BACKUP_DIR" -mindepth 1 -maxdepth 1 -type d -printf "%T@ %p\n" \
     | sort -g | head -n -1 | cut -d " " -f2 | xargs -r rm -rf
+
+update_bundle_path
+update_snap_version_file
+
+post_refresh_tasks_required
