@@ -19,12 +19,15 @@ mkdir_for_daemon_user "$CERT_DIR"
 mkdir_for_daemon_user "$DEFAULT_MEDIA_DIR"
 mkdir_for_daemon_user "$LOG_DIR"
 
+# Secrets
+
+export PG_PASSWORD=$(generate_secret postgres)
+# export REDIS_PASSWORD=$(generate_secret redis)
+
 # Postgres
 
 echo Install postgres
 . "$SNAP/postgres.env"
-
-export PG_PASSWORD=$(generate_secret postgres)
 
 mkdir_for_daemon_user "$PG_HOME"
 
@@ -39,8 +42,6 @@ echo Install redis
 . "$SNAP/redis.env"
 
 mkdir_for_daemon_user "$REDIS_HOME"
-
-# export REDIS_PASSWORD=$(generate_secret redis)
 
 copy_config_as_daemon_user redis redis.conf
 
