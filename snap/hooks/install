@@ -55,7 +55,6 @@ mkdir_for_daemon_user "$MASTODON_HOME"
 reset_compilation_required
 
 update_mastodon_files
-setup_mastodon_database
 update_backup_dir_file
 
 # Nginx

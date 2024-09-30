@@ -21,6 +21,7 @@ generate_mastodon_secrets
 copy_mastodon_config
 
 echo Setup database
+create_mastodon_database
 mastodon_rails db:setup > /dev/null
 $SNAP/bin/psql.wrapper -d "$MASTODON_DBNAME" -c "create extension pg_stat_statements;" > /dev/null
 
