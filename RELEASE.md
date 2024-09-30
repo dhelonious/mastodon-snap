@@ -1,12 +1,10 @@
-# Unofficial snap for Mastodon 4.2.12
+# Unofficial snap for Mastodon 4.2.13
 
-⚠️ This is a hotfix release for an issue introduced in 4.2.11.
-
-See also the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.2.12
+See also the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.2.13
 
 This release contains:
 
-* Mastodon 4.2.12
+* Mastodon 4.2.13
 * Node 16.20.2 (see [#25787](https://github.com/mastodon/mastodon/discussions/25787#discussioncomment-6382898))
 * Ruby 3.2.3
 * Bundle 2.4.13
@@ -23,7 +21,3 @@ This release contains:
 * musl-libc 1.2.5
 * mastodon-bird-ui 1.8.5
 * tangerine-ui 1.9.5
-
-Changelog for 4.2.12snap2:
-
-* Exports the database always before a refresh

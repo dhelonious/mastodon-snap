@@ -9,7 +9,7 @@ description: |
   implements ActivityPub!)
 
 base: core20
-version: 4.2.12snap2
+version: 4.2.13snap1
 grade: stable
 confinement: strict
 
@@ -720,8 +720,8 @@ parts:
       - openssl1
       - imagemagick
     # NOTE: https://github.com/mastodon/mastodon/releases/latest
-    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.2.12.tar.gz
-    source-checksum: sha256/8fba0e4cc74233bee77752217673295ec4e32587abc2c9ae8967497147e691e5
+    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.2.13.tar.gz
+    source-checksum: sha256/a8f2576ac97bc8ab39e952408f5fcdb11aa8b15f0b988dab6147a8e5aa8b112d
     plugin: nil
     build-environment:
       - RUBY_BRANCH: "3.2" # NOTE: must be updated with ruby source
