@@ -40,7 +40,7 @@ jobs:
       amd64: ${{ steps.snap.outputs.amd64 }}
       command_suffix: ${{ steps.command_regex.outputs.group1 }}
       tag: ${{ steps.command_regex.outputs.group2 }}
-      channel: ${{ steps.tag_regex.outputs.group1 == 'rc' ? 'candidate' : steps.tag_regex.outputs.group1 }}
+      channel: ${{ steps.tag_regex.outputs.group1 }}
   test:
     needs: build
     runs-on: ${{ matrix.builder }}

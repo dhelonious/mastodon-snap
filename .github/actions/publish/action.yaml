@@ -13,6 +13,18 @@ inputs:
 runs:
   using: composite
   steps:
+  - name: use stable channel (default)
+    if: ${{ inputs.channel == 'stable' || inputs.channel == '' }}
+    run: echo "channel=stable" >> $GITHUB_ENV
+  - name: use candidate channel
+    if: ${{ inputs.channel == 'candidate' || inputs.channel == 'rc' }}
+    run: echo "channel=candidate" >> $GITHUB_ENV
+  - name: use beta channel
+    if: ${{ inputs.channel == 'beta' }}
+    run: echo "channel=beta" >> $GITHUB_ENV
+  - name: use edge channel
+    if: ${{ inputs.channel == 'edge' || inputs.channel == 'alpha' }}
+    run: echo "channel=edge" >> $GITHUB_ENV
   - uses: actions/download-artifact@v4
     with:
       name: ${{ inputs.snap }}
@@ -21,4 +33,4 @@ runs:
       SNAPCRAFT_STORE_CREDENTIALS: ${{ inputs.SNAPCRAFT_STORE_CREDENTIALS }}
     with:
       snap: ${{ github.workspace }}/${{ inputs.snap }}
-      release: latest/${{ inputs.channel || 'stable' }}
+      release: latest/${{ env.channel }}

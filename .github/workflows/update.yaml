@@ -48,7 +48,7 @@ jobs:
       id: snap
     outputs:
       amd64: ${{ steps.snap.outputs.amd64 }}
-      channel: ${{ steps.channel_regex.outputs.group1 == 'rc' ? 'candidate' : steps.channel_regex.outputs.group1 }}
+      channel: ${{ steps.channel_regex.outputs.group1 }}
   test:
     needs: build
     runs-on: ${{ matrix.builder }}
