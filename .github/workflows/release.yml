@@ -35,7 +35,7 @@ jobs:
     - uses: kaisugi/action-regex-match@v1.0.1
       with:
         text: ${{ github.ref_name }}
-        regex: '^[\d\.]+-?(beta|)([\d\.]+)?snap\d+$'
+        regex: '^[\d\.]+-?(beta|rc)([\d\.]+)?snap\d+$'
       id: regex
     - uses: ./.github/actions/build
       id: build
@@ -43,7 +43,7 @@ jobs:
       id: snap
     outputs:
       amd64: ${{ steps.snap.outputs.amd64 }}
-      channel: ${{ steps.regex.outputs.group1 }}
+      channel: ${{ steps.regex.outputs.group1 == 'rc' ? 'candidate' : steps.regex.outputs.group1 }}
   test:
     needs: build
     runs-on: ${{ matrix.builder }}

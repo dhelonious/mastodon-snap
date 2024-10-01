@@ -8,6 +8,10 @@ while [ "$count" -gt 0 ]; do
     if run_as_daemon_user redis-cli -p $REDIS_PORT ping &> /dev/null; then
         exit 0
     fi
+    echo Waiting for redis...
     sleep 1
     count=$((count-1))
 done
+
+echo_error Redis is not running
+exit 1
