@@ -309,6 +309,7 @@ runs:
         exit 1
       fi
   - name: check logs for warnings
+    if: ${{ success() || failure() }}
     shell: bash
     run: |
       echo "Check logs for warnings" | yellow
@@ -319,6 +320,7 @@ runs:
         echo "$LOG_WARNINGS" | yellow
       fi
   - name: check logs for errors
+    if: ${{ success() || failure() }}
     shell: bash
     run: |
       echo "Check logs for errors" | yellow

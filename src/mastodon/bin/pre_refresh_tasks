@@ -17,6 +17,7 @@ echo Create database backup
 postgres_export_database "$SNAP_COMMON/database.sql"
 
 if $UPDATE_BACKUPS; then
+    echo Create update backup
     SKIP_MEDIA_EXPORT=true $SNAP/bin/export "$UPDATE_BACKUP_DIR"
 fi
 
