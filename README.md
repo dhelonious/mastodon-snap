@@ -434,7 +434,7 @@ If reverting does not work or is not possible, try `snap remove` and reinstall t
 
 Then change the permissions of the password file:
 
-    chmod 600 /var/snap/mastodon-server/common/secrets/postgres
+    chmod 640 /var/snap/mastodon-server/common/secrets/postgres
 
 Use `snap start` to restart the snap. Wait for postgres to start and use the `mastodon-server.export` command to create a proper backup. If postgres still does not work, repeat the above steps with a previous version of snap (e.g. if your postgres data dir was created by an older major version of postgres).
 
