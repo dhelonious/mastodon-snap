@@ -70,6 +70,14 @@ if [ "$SNAP_VERSION" != "$CURRENT_SNAP_VERSION" ]; then
     echo Update mastodon
     update_mastodon_files
 
+    # TODO: remove later, required for upgrade to Mastodon 4.3+
+    if [ -z "$ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY" ] || [ "$ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY" == "precompile_placeholder" ] || \
+        [ -z "$ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY" ] || [ "$ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY" == "precompile_placeholder" ] || \
+        [ -z "$ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT" ] || [ "$ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT" == "precompile_placeholder" ]
+    then
+        generate_mastodon_db_encryption_secrets
+    fi
+
     if mastodon_config_exists; then
         echo Update mastodon config
         link_mastodon_config
@@ -110,7 +118,6 @@ copy_config logrotate logrotate.conf
 find "$UPDATE_BACKUP_DIR" -mindepth 1 -maxdepth 1 -type d -printf "%T@ %p\n" \
     | sort -g | head -n -1 | cut -d " " -f2 | xargs -r rm -rf
 
-update_bundle_path
 update_snap_version_file
 
 post_refresh_tasks_required
