@@ -543,12 +543,12 @@ parts:
       set -eux
       case "$SNAP_ARCH" in
       "amd64")
-        source="https://nodejs.org/download/release/latest-v20.x/node-v20.17.0-linux-x64.tar.gz"
+        source="https://nodejs.org/download/release/v20.17.0/node-v20.17.0-linux-x64.tar.gz"
         checksum="21e656f6f4e34080ddc5d75fbfe58ce8482fe6e70a76aeae14afdcdc1e23079d"
         arch="x64"
         ;;
       "arm64")
-        source="https://nodejs.org/download/release/latest-v20.x/node-v20.17.0-linux-arm64.tar.gz"
+        source="https://nodejs.org/download/release/v20.17.0/node-v20.17.0-linux-arm64.tar.gz"
         checksum="18afbf2781edfcc9918343f4bf74a8c35d74d778b85d40a0c09b232adc0ea82c"
         arch="arm64"
         ;;
