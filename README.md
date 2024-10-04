@@ -129,8 +129,8 @@ The following settings are available:
 | `ports.https`         | 0 to 65353                    | 443                    | HTTPS port                                                                           |
 | `acme.server`         | letsencrypt, zerossl          | letsencrypt            | CA used for acquiring an SSL certificate                                             |
 | `update.backups`      | true, false                   | true                   | Create a backup in `/var/snap/mastodon-server/common/update/backups` before updating |
-| `status.char-limit`   | integer                       | 500                    | Character limit of statuses (toots); changes require recompilation of assets, which takes some time |
-| `status.char-counter` | integer                       | 500                    | Character counter shown for statuses (toots); changes require recompilation of assets, which takes some time |
+| `status.char-limit`   | integer                       | 500                    | Character limit of statuses (toots); changes require recompilation of assets, which takes some time [1] |
+| `status.char-counter` | integer                       | 500                    | Character counter shown for statuses (toots); changes require recompilation of assets, which takes some time [1] |
 | `media.dir`           | absolute path                 | `$SNAP_COMMON/media`   | Location of the media directory (*public/system*)                                    |
 | `backup.dir`          | absolute path                 | `$SNAP_COMMON/backups` | Location of the backup directory                                                     |
 | `backup.days`         | integer                       | 0                      | Create and keep backups for `backup.days` (enabled if > 0)                           |
@@ -143,6 +143,8 @@ The following settings are available:
 | `cleanup.accounts`    | true, false                   | false                  | Cleanup user accounts, see [tootctl accounts delete](https://docs.joinmastodon.org/admin/tootctl/#accounts-delete) |
 | `log.access.enabled`  | true, false                   | false                  | Logging of http(s) accesses                                                          |
 | `log.access.format`   | standard, anonymized, privacy | anonymized             | Use of real/anonymized/no IP addresses in the access log                             |
+
+[1] Setting this value will increase the time it takes for snapcraft to update this snap. This will increase the downtime of your instance.
 
 You can also set multiple values at once using
 
