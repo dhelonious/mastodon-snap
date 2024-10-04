@@ -12,8 +12,8 @@ This release also includes:
 
 * node 20.17.0
 * ruby 3.3.5
-* nginx 1.27.1
+* nginx 1.27.2
 * postgres 17.0
-* redis 7.4.0
+* redis 7.4.1
 * libvips 8.15.3
-* ffmpeg 7.0.2
+* ffmpeg 7.1
