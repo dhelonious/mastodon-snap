@@ -115,19 +115,18 @@ def sha256_checksum(url):
 
     return sha256.hexdigest()
 
+def major(version):
+    return ".".join(version.split(".")[0])
+
+def minor(version):
+    return ".".join(version.split(".")[0:1])
+
 
 print_table_header()
 
 for name, settings in dependencies.items():
     r = requests.get(settings["url"], timeout=10)
     version = None
-    local_source = re.findall(settings["local_regex"], snapcraft_yaml)[0]
-    if isinstance(local_source, str):
-        local_version = local_source
-        checksum = ""
-    else:
-        local_version = local_source[1]
-        checksum = sha256_checksum(local_source[0])
 
     if settings["url"].endswith("latest"):
         version = r.url.rstrip("/").split("/")[-1]
@@ -151,5 +150,17 @@ for name, settings in dependencies.items():
         version = version.lstrip(settings["lstrip"])
     if "replace" in settings:
         version = version.replace(*settings["replace"])
+
+    local_source = re.findall(settings["local_regex"], snapcraft_yaml)[0]
+    if isinstance(local_source, str):
+        local_version = local_source
+        checksum = ""
+    else:
+        local_version = local_source[1]
+        url = local_source[0]
+        url = url.replace(local_version, version)
+        url = url.replace(minor(local_version), minor(version))
+        url = url.replace(major(local_version), major(version))
+        checksum = sha256_checksum(url)
 
     print_table(name, local_version, version, checksum)
