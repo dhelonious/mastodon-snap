@@ -6,7 +6,6 @@ if pg_version_changed; then
     if is_active postgres; then
         echo Postgres is running, trying to stop it
         snapctl stop "$SNAP_NAME.postgres"
-        restart_required postgres
     fi
 
     echo Update postgres data
@@ -15,5 +14,6 @@ if pg_version_changed; then
     run_as_daemon_user initdb.wrapper
     enable_postgres_config
 
-    restart_service_if_required postgres
+    echo Restart postgres
+    snapctl restart "$SNAP_NAME.postgres"
 fi
