@@ -3,7 +3,7 @@
 . "$SNAP/postgres.env"
 
 if pg_version_changed; then
-    if is_active postgres; then
+    if pg_isready -h "$PG_SOCK_DIR" -U postgres > /dev/null; then
         echo Postgres is running, trying to stop it
         snapctl stop "$SNAP_NAME.postgres"
         restart_required postgres
