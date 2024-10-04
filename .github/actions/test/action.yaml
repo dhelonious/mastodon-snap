@@ -332,6 +332,48 @@ runs:
         # TODO: Include after 4.3 is the latest/stable channel
         # exit 1
       fi
+  - name: show postgres log
+    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
+    shell: bash
+    run: |
+      echo "::group::postgres.log:"
+      cat /var/snap/mastodon-server/current/logs/postgres.log
+      echo "::endgroup::"
+  - name: show nginx log
+    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
+    shell: bash
+    run: |
+      echo "::group::nginx.log:"
+      cat /var/snap/mastodon-server/current/logs/nginx.log
+      echo "::endgroup::"
+  - name: show redis log
+    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
+    shell: bash
+    run: |
+      echo "::group::redis.log:"
+      cat /var/snap/mastodon-server/current/logs/redis.log
+      echo "::endgroup::"
+  - name: show backend log
+    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
+    shell: bash
+    run: |
+      echo "::group::backend.log:"
+      cat /var/snap/mastodon-server/current/logs/backend.log
+      echo "::endgroup::"
+  - name: show streaming log
+    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
+    shell: bash
+    run: |
+      echo "::group::streaming.log:"
+      cat /var/snap/mastodon-server/current/logs/streaming.log
+      echo "::endgroup::"
+  - name: show sidekiq log
+    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
+    shell: bash
+    run: |
+      echo "::group::sidekiq.log:"
+      cat /var/snap/mastodon-server/current/logs/sidekiq.log
+      echo "::endgroup::"
   - name: remove snap
     shell: bash
     run: |
@@ -353,13 +395,6 @@ runs:
       echo "::group::journalctl postgres:"
       sudo journalctl -xu snap.mastodon-server.postgres.service --all
       echo "::endgroup::"
-  - name: show postgres log
-    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
-    shell: bash
-    run: |
-      echo "::group::postgres.log:"
-      cat /var/snap/mastodon-server/current/logs/postgres.log
-      echo "::endgroup::"
   - name: show postgres-upgrade journalctl
     if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
     shell: bash
@@ -374,26 +409,12 @@ runs:
       echo "::group::journalctl nginx:"
       sudo journalctl -xu snap.mastodon-server.nginx.service --all
       echo "::endgroup::"
-  - name: show nginx log
-    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
-    shell: bash
-    run: |
-      echo "::group::nginx.log:"
-      cat /var/snap/mastodon-server/current/logs/nginx.log
-      echo "::endgroup::"
   - name: show redis journalctl
     if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
     shell: bash
     run: |
       echo "::group::journalctl redis:"
       sudo journalctl -xu snap.mastodon-server.redis.service --all
-      echo "::endgroup::"
-  - name: show redis log
-    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
-    shell: bash
-    run: |
-      echo "::group::redis.log:"
-      cat /var/snap/mastodon-server/current/logs/redis.log
       echo "::endgroup::"
   - name: show backend journalctl
     if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
@@ -402,13 +423,6 @@ runs:
       echo "::group::journalctl backend:"
       sudo journalctl -xu snap.mastodon-server.backend.service --all
       echo "::endgroup::"
-  - name: show backend log
-    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
-    shell: bash
-    run: |
-      echo "::group::backend.log:"
-      cat /var/snap/mastodon-server/current/logs/backend.log
-      echo "::endgroup::"
   - name: show streaming journalctl
     if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
     shell: bash
@@ -416,26 +430,12 @@ runs:
       echo "::group::journalctl streaming:"
       sudo journalctl -xu snap.mastodon-server.streaming.service --all
       echo "::endgroup::"
-  - name: show streaming log
-    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
-    shell: bash
-    run: |
-      echo "::group::streaming.log:"
-      cat /var/snap/mastodon-server/current/logs/streaming.log
-      echo "::endgroup::"
   - name: show sidekiq journalctl
     if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
     shell: bash
     run: |
       echo "::group::journalctl sidekiq:"
       sudo journalctl -xu snap.mastodon-server.sidekiq.service --all
-      echo "::endgroup::"
-  - name: show sidekiq log
-    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
-    shell: bash
-    run: |
-      echo "::group::sidekiq.log:"
-      cat /var/snap/mastodon-server/current/logs/sidekiq.log
       echo "::endgroup::"
   - name: show migrations journalctl
     if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
