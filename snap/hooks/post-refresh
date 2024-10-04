@@ -12,7 +12,8 @@ fix_daemon_user "$LOG_DIR"
 # NOTE: This is a fix for older versions and may be removed in the future
 echo Set permissions on secret dir
 if [ -d "$SECRET_DIR" ]; then
-    chmod -fR 640 "$SECRET_DIR" || true
+    chmod -f 750 "$SECRET_DIR" || true
+    chmod -fR 640 $SECRET_DIR/* || true
     chown -fR root:$DAEMON_USER --no-dereference "$SECRET_DIR" || true
 fi
 
