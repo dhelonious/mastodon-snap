@@ -15,15 +15,19 @@ runs:
   steps:
   - name: use stable channel (default)
     if: ${{ inputs.channel == 'stable' || inputs.channel == '' }}
+    shell: bash
     run: echo "channel=stable" >> $GITHUB_ENV
   - name: use candidate channel
     if: ${{ inputs.channel == 'candidate' || inputs.channel == 'rc' }}
+    shell: bash
     run: echo "channel=candidate" >> $GITHUB_ENV
   - name: use beta channel
     if: ${{ inputs.channel == 'beta' }}
+    shell: bash
     run: echo "channel=beta" >> $GITHUB_ENV
   - name: use edge channel
     if: ${{ inputs.channel == 'edge' || inputs.channel == 'alpha' }}
+    shell: bash
     run: echo "channel=edge" >> $GITHUB_ENV
   - uses: actions/download-artifact@v4
     with:
