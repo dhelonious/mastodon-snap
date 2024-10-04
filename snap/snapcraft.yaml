@@ -706,7 +706,7 @@ parts:
 
   ffmpeg:
     source: https://ffmpeg.org/releases/ffmpeg-7.1.tar.bz2 # NOTE: https://ffmpeg.org/releases
-    source-checksum: sha256/1ed250407ea8f955cca2f1139da3229fbc13032a0802e4b744be195865ff1541
+    source-checksum: sha256/fd59e6160476095082e94150ada5a6032d7dcc282fe38ce682a00c18e7820528
     plugin: autotools
     build-packages:
       - clang
