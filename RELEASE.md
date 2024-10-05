@@ -17,3 +17,7 @@ This release also includes:
 * redis 7.4.1
 * libvips 8.15.3
 * ffmpeg 7.1
+
+Changelog for 4.3.0-rc.1snap2:
+
+* Upgrades bird-ui to [2.0.0rc55](https://github.com/ronilaukkarinen/mastodon-bird-ui/releases/tag/2.0.0rc55)
