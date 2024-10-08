@@ -901,7 +901,7 @@ parts:
       - mastodon
     plugin: nil
     build-environment:
-      - BIRD_UI_TAG: "2.0.0rc55" # NOTE: https://github.com/ronilaukkarinen/mastodon-bird-ui/releases/latest
+      - BIRD_UI_TAG: 2.0.0rc55 # NOTE: https://github.com/ronilaukkarinen/mastodon-bird-ui/releases/latest
       - MASTODON_STYLES: $CRAFT_STAGE/mastodon/app/javascript/styles
     override-build: |
       set -eux
@@ -935,7 +935,7 @@ parts:
       - mastodon
     plugin: nil
     build-environment:
-      - TANGERINE_UI_TAG: "2.0.0-pre6" # NOTE: https://github.com/nileane/TangerineUI-for-Mastodon/releases/latest
+      - TANGERINE_UI_TAG: 2.0 # NOTE: https://github.com/nileane/TangerineUI-for-Mastodon/releases/latest
       - MASTODON_STYLES: $CRAFT_STAGE/mastodon/app/javascript/styles
     override-build: |
       set -eux
@@ -945,7 +945,7 @@ parts:
       curl https://raw.githubusercontent.com/nileane/TangerineUI-for-Mastodon/v$TANGERINE_UI_TAG/mastodon/app/javascript/styles/tangerineui/tangerineui.scss -o $MASTODON_STYLES/tangerine-ui/style.scss
       echo -e "@import 'application';\n@import 'tangerine-ui/style.scss';" > $MASTODON_STYLES/tangerine-ui.scss
       echo -e "tangerine-ui: styles/tangerine-ui.scss" >> $CRAFT_STAGE/mastodon/config/themes.yml
-      for variant in purple cherry; do
+      for variant in purple cherry lagoon; do
         curl https://raw.githubusercontent.com/nileane/TangerineUI-for-Mastodon/v$TANGERINE_UI_TAG/mastodon/app/javascript/styles/tangerineui-$variant/tangerineui-$variant.scss -o $MASTODON_STYLES/tangerine-ui/style-$variant.scss
         echo -e "@import 'application';\n@import 'tangerine-ui/style-$variant.scss';" > $MASTODON_STYLES/tangerine-ui-$variant.scss
         echo -e "tangerine-ui-$variant: styles/tangerine-ui-$variant.scss" >> $CRAFT_STAGE/mastodon/config/themes.yml

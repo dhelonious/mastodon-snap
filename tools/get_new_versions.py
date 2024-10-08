@@ -28,13 +28,13 @@ dependencies = {
     "bird-ui": {
         "url": "https://github.com/ronilaukkarinen/mastodon-bird-ui/releases/latest",
         # NOTE: tag -> "url": "https://api.github.com/repos/ronilaukkarinen/mastodon-bird-ui/tags",
-        "local_regex": r"BIRD_UI_TAG: \"([0-9a-z-\.]+)\"",
+        "local_regex": r"BIRD_UI_TAG: ([0-9a-z-\.]+)",
     },
     "tangerine-ui": {
         "url": "https://github.com/nileane/TangerineUI-for-Mastodon/releases/latest",
         # NOTE: tag -> "url": "https://api.github.com/repos/nileane/TangerineUI-for-Mastodon/tags",
         "lstrip": "v",
-        "local_regex": r"TANGERINE_UI_TAG: \"([0-9a-z-\.]+)\"",
+        "local_regex": r"TANGERINE_UI_TAG: ([0-9a-z-\.]+)",
     },
     "node": {
         "url": "https://nodejs.org/download/release/latest-v{}.x".format(NODE_MAJOR),
