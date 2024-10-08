@@ -250,6 +250,7 @@ apps:
     daemon: simple
     timer: 00:00
     plugs:
+      - network
       - removable-media
 
 parts:
