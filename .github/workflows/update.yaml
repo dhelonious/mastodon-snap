@@ -37,7 +37,7 @@ jobs:
     - uses: kaisugi/action-regex-match@v1.0.1
       with:
         text: ${{ github.ref_name }}
-        regex: '^[\d\.]+snap\d+(candidate|beta|edge|)\d*$'
+        regex: '^[\d\.]+-?(beta|rc)?([\d\.]+)?snap\d+$'
       id: regex
     - uses: actions/checkout@v4
     - uses: ./.github/actions/build
