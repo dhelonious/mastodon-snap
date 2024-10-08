@@ -196,6 +196,8 @@ Add the following lines to `/var/snap/mastodon-server/common/mastodon.conf`:
     SMTP_ENABLE_STARTTLS=always
     SMTP_FROM_ADDRESS="Mastodon <mastodon@example.com>"
 
+> Note that SMTP is not necessarily required for a single user instance. However, the use of an SMTP service is highly recommended when running a server.
+
 ## Elasticsearch
 
 Elasticsearch provides some advanced search features and is required for the posts to be searchable at all. Due to its size, Elasticsearch is not included in this snap. An [external installation](https://www.elastic.co/guide/en/elasticsearch/reference/current/deb.html) can be used by adding the following lines to `/var/snap/mastodon-server/common/mastodon.conf`:
