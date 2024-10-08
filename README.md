@@ -23,9 +23,12 @@ For more information, see the latest [release readme](RELEASE.md).
     sudo mastodon-server.setup
     sudo mastodon-server.get-certificate
 
-    mastodon-server.tootctl accounts create administrator --email admin@example.com --role Owner --confirmed
+    mastodon-server.tootctl accounts create USERNAME --email admin@example.com --role Owner --confirmed
+    mastodon-server.tootctl approve USERNAME
 
 Congratulations! You are now the owner of your very own Mastodon instance!
+
+> Note that some usernames such as `admin` and `administrator` are reserved by Mastodon. See below for a complete list.
 
 
 # 📦 Installation
@@ -87,7 +90,18 @@ An initial setup command is required to initialize the database and configuratio
 
 Once the snap is set up, an administrator account with a randomly generated password can be created using the `tootctl` command:
 
-    sudo mastodon-server.tootctl accounts create administrator --email admin@example.com --role Owner --confirmed
+    sudo mastodon-server.tootctl accounts create USERNAME --email admin@example.com --role Owner --confirmed
+
+Your `USERNAME` must not be one of the following names reserved by Mastodon:
+
+* admin
+* support
+* help
+* root
+* webmaster
+* administrator
+* mod
+* moderator
 
 > Note: Be patient, the creation of an account takes some time.
 
