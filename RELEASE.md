@@ -1,10 +1,6 @@
-# Unofficial snap for Mastodon 4.3.0
+# Unofficial snap for Mastodon 4.3.1
 
-⚠️ Requires rebuilding Elasticsearch accounts index: `mastodon-server.tootctl search deploy --only=accounts`
-⚠️ StatsD integration has been removed, replaced by OpenTelemetry integration
-ℹ️ The logging format of the streaming server has changed
-
-See also the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.3.0
+See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.3.1
 
 This release also includes:
 
@@ -13,9 +9,10 @@ This release also includes:
 * nginx 1.27.2
 * postgres 17.0
 * redis 7.4.1
-* libvips 8.15.3
+* libvips 8.15.5
 * ffmpeg 7.1
 
-Changelog for 4.3.0snap1:
+Changelog for 4.3.1snap1:
 
-* Upgrade to bird-ui 2.0.1
+* Upgrade to bird-ui 2.0.4
+* Upgrade to tangerine-ui 2.2

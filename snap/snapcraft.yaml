@@ -9,7 +9,7 @@ description: |
   implements ActivityPub!)
 
 base: core24
-version: 4.3.0snap2
+version: 4.3.1snap1
 grade: stable
 confinement: strict
 
@@ -645,8 +645,8 @@ parts:
 
   libvips:
     # NOTE: https://github.com/libvips/libvips/releases/latest
-    source: https://github.com/libvips/libvips/archive/refs/tags/v8.15.3.tar.gz
-    source-checksum: sha256/c23a820443241c35e62f1f1f0a1f6c199b37e07d98e3268a7fa9db43309fd67d
+    source: https://github.com/libvips/libvips/archive/refs/tags/v8.15.5.tar.gz
+    source-checksum: sha256/bf11abb23da9152241ba52621efe418995c7f315fd0baf2e125323d28efd8780
     plugin: nil
     build-packages:
       - meson
@@ -785,8 +785,8 @@ parts:
       - ffmpeg
       - rsync
     # NOTE: https://github.com/mastodon/mastodon/releases/latest
-    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.3.0.tar.gz
-    source-checksum: sha256/3f36a14bc2c77ed3b6c821a1919ea7ddc962c69010a49d95e98b444b053b46b8
+    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.3.1.tar.gz
+    source-checksum: sha256/93c0de5ad404dfbf88308f5076b0b67a57cbbeb833bc18e671c14fd5ce38fc19
     plugin: nil
     build-packages:
       - git
@@ -803,7 +803,7 @@ parts:
       - libmagic-mgc
       - libssl3t64
     build-environment:
-      - YARN_VERSION: "4.5.0" # NOTE: https://github.com/yarnpkg/berry/releases/latest
+      - YARN_VERSION: "4.5.1" # NOTE: https://github.com/yarnpkg/berry/releases/latest
       - RUBY_BRANCH: "3.3" # NOTE: must be updated with ruby source
       - BUNDLER_VERSION: "2.5.18" # NOTE: see `Gemfile.lock`
       - RAILS_ENV: production
@@ -901,7 +901,7 @@ parts:
       - mastodon
     plugin: nil
     build-environment:
-      - BIRD_UI_TAG: 2.0.1 # NOTE: https://github.com/ronilaukkarinen/mastodon-bird-ui/releases/latest
+      - BIRD_UI_TAG: 2.0.4 # NOTE: https://github.com/ronilaukkarinen/mastodon-bird-ui/releases/latest
       - MASTODON_STYLES: $CRAFT_STAGE/mastodon/app/javascript/styles
     override-build: |
       set -eux
@@ -935,7 +935,7 @@ parts:
       - mastodon
     plugin: nil
     build-environment:
-      - TANGERINE_UI_TAG: 2.0 # NOTE: https://github.com/nileane/TangerineUI-for-Mastodon/releases/latest
+      - TANGERINE_UI_TAG: 2.2 # NOTE: https://github.com/nileane/TangerineUI-for-Mastodon/releases/latest
       - MASTODON_STYLES: $CRAFT_STAGE/mastodon/app/javascript/styles
     override-build: |
       set -eux
