@@ -27,6 +27,6 @@ if is_migrations_required; then
 fi
 
 echo Add update announcement
-mastodon_announcement "The mastodon-server snap has been updated to version $SNAP_VERSION"
+mastodon_announcement "The $SNAP_NAME snap has been updated to version $SNAP_VERSION"
 
 reset_post_refresh_tasks_required
