@@ -5,6 +5,7 @@
 check_setup
 postgres_waitready
 redis_waitready
+load_backend_tuning_env
 
 mastodon_rails s -p 3000 \
     2>&1 | tee -a "$LOG_DIR/backend.log"

@@ -16,3 +16,8 @@ Changelog for 4.3.1snap2:
 
 * Improve security of nginx
 * Add debug mode and `mastodon-server.debug-report` command
+* Add automatic performance tuning and scaling for PostgreSQL, Nginx and Mastodon based on the available RAM and number of CPUS
+* Adds automatic performance tuning and scaling for PostgreSQL, Nginx and Mastodon based on available RAM and number of CPUS.
+* Adds the `system.cpu`, `system.ram` and `system.ssd` settings.
+* Adds the `mastodon-server.tune` command to update configurations after tuning
+* Adds the `mastodon-server.debug-report` command.

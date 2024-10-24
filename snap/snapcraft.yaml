@@ -156,6 +156,9 @@ apps:
       - network
       - removable-media
 
+  tune:
+    command: bin/tune
+
   tootctl:
     command: bin/tootctl.wrapper
     plugs:

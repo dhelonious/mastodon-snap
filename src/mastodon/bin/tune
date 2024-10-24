@@ -1,0 +1,26 @@
+#!/bin/bash -e
+
+. "$SNAP/snap.env"
+
+check_system_cpu
+check_system_ram
+check_system_ssd
+
+. "$SNAP/postgres.env"
+. "$SNAP/nginx.env"
+. "$SNAP/mastodon.env"
+
+echo Update postgres config
+load_postgres_tuning_env
+copy_config_as_daemon_user postgres postgresql.conf
+
+echo Update nginx configs
+copy_nginx_configs
+
+echo Restart services
+snapctl restart "$SNAP_NAME.postgres"
+postgres_waitready
+snapctl restart "$SNAP_NAME.backend"
+snapctl restart "$SNAP_NAME.streaming"
+snapctl restart "$SNAP_NAME.sidekiq"
+snapctl restart "$SNAP_NAME.nginx"
