@@ -7,6 +7,10 @@ inputs:
   channel:
     required: false
     type: string
+  update:
+    required: false
+    type: boolean
+    default: false
 runs:
   using: composite
   steps:
@@ -15,17 +19,18 @@ runs:
       pattern: "*.snap"
       merge-multiple: true
   - name: create new release
-    if: ${{ inputs.tag == '' }}
+    if: ${{ inputs.update == 'false' }}
     uses: ncipollo/release-action@v1
     with:
+      tag: ${{ inputs.tag }}
       bodyFile: RELEASE.md
       artifacts: "${{ github.workspace }}/*.snap"
-      makeLatest: true
       prerelease: ${{ inputs.channel != 'stable' }}
+      makeLatest: true
       skipIfReleaseExists: true
       artifactErrorsFailBuild: true
   - name: update existing release
-    if: ${{ inputs.tag != '' }}
+    if: ${{ inputs.update == 'true' }}
     uses: ncipollo/release-action@v1
     with:
       tag: ${{ inputs.tag }}

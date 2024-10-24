@@ -73,6 +73,7 @@ jobs:
       with:
         tag: ${{ inputs.tag }}
         channel: ${{ inputs.channel || needs.build.outputs.channel }}
+        update: true
   publish:
     if: ${{ inputs.channel != 'none' }}
     needs:
