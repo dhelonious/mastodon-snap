@@ -952,10 +952,10 @@ parts:
       done
 
       for locale in $CRAFT_STAGE/mastodon/config/locales/*.yml; do
-        sed -i "s/themes:$/&\n    tangerine-ui: Tangerine UI 🍊/" $locale
-        sed -i "s/themes:$/&\n    tangerine-ui-purple: Tangerine UI 🪻/" $locale
-        sed -i "s/themes:$/&\n    tangerine-ui-cherry: Tangerine UI 🍒/" $locale
-        sed -i "s/themes:$/&\n    tangerine-ui-lagoon: Tangerine UI 🐠/" $locale
+        sed -i "s/themes:$/&\n    tangerine-ui: Tangerine UI 🍊 Tangerine/" $locale
+        sed -i "s/themes:$/&\n    tangerine-ui-purple: Tangerine UI 🪻 Purple/" $locale
+        sed -i "s/themes:$/&\n    tangerine-ui-cherry: Tangerine UI 🍒 Cherry/" $locale
+        sed -i "s/themes:$/&\n    tangerine-ui-lagoon: Tangerine UI 🐠 Lagoon/" $locale
       done
 
   mastodon-precompile:
