@@ -253,6 +253,9 @@ apps:
       - network
       - removable-media
 
+  debug-report:
+    command: bin/debug-report
+
 parts:
   license:
     plugin: dump

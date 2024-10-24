@@ -1,5 +1,11 @@
 #!/bin/bash -e
 
+. "$SNAP/snap.env"
+
+if debug_file_exists; then
+    enable_debug_mode configure
+fi
+
 . "$SNAP/nginx.env"
 . "$SNAP/mastodon.env"
 
@@ -83,3 +89,7 @@ restart_service_if_required backend
 restart_service_if_required sidekiq
 restart_service_if_required streaming
 restart_service_if_required nginx
+
+if debug_file_exists; then
+    disable_debug_mode
+fi

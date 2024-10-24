@@ -1,9 +1,18 @@
 #!/bin/bash -e
 
 . "$SNAP/snap.env"
+
+if debug_file_exists; then
+    enable_debug_mode pre-refresh
+fi
+
 . "$SNAP/postgres.env"
 . "$SNAP/mastodon.env"
 
 update_postgres_version_file
 
 pre_refresh_tasks_required
+
+if debug_file_exists; then
+    disable_debug_mode
+fi

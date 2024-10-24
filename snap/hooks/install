@@ -1,6 +1,11 @@
 #!/bin/bash -e
 
 . "$SNAP/snap.env"
+
+if debug_file_exists; then
+    enable_debug_mode install
+fi
+
 set_default_settings
 
 reset_restart_required redis
@@ -32,6 +37,7 @@ echo Install postgres
 
 mkdir_for_daemon_user "$PG_HOME"
 
+load_postgres_tuning_env
 copy_config_as_daemon_user postgres postgresql.conf
 setup_postgres_database
 
@@ -87,3 +93,9 @@ echo Install logrotate
 . "$SNAP/logrotate.env"
 
 copy_config logrotate logrotate.conf
+
+# Post installation commands
+
+if debug_file_exists; then
+    disable_debug_mode
+fi

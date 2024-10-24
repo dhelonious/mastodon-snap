@@ -1,0 +1,36 @@
+#!/bin/bash -e
+
+. "$SNAP/acme.env"
+. "$SNAP/imagemagick.env"
+. "$SNAP/logrotate.env"
+. "$SNAP/mastodon.env"
+. "$SNAP/nginx.env"
+. "$SNAP/postgres.env"
+. "$SNAP/redis.env"
+. "$SNAP/snap.env"
+
+echo_border "=" "Debug report for snap version $(cat "$SNAP_COMMON/version")"
+
+echo
+echo_underline "=" Settings
+echo
+
+snap get mastodon-server -d
+
+echo
+echo_underline "=" Files
+echo
+
+find "/var/snap/$SNAP_NAME" -maxdepth 3 | sed -e "s|^/var/snap/$SNAP_NAME/||" -e '2,$s|[^/]*/|  |g'
+
+echo
+echo_underline "=" Environment
+echo
+
+load_postgres_tuning_env
+load_nginx_tuning_env
+load_backend_tuning_env
+load_sidekiq_tuning_env
+load_streaming_tuning_env
+
+printenv

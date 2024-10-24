@@ -1,6 +1,11 @@
 #!/bin/bash -e
 
 . "$SNAP/snap.env"
+
+if debug_file_exists; then
+    enable_debug_mode post-refresh
+fi
+
 set_default_settings
 
 export CURRENT_SNAP_VERSION="$(get_snap_version_file)"
@@ -31,6 +36,7 @@ if [ -d "$PG_DATA" ]; then
 fi
 
 echo Update postgres config
+load_postgres_tuning_env
 copy_config_as_daemon_user postgres postgresql.conf
 enable_postgres_config
 
@@ -122,3 +128,7 @@ find "$UPDATE_BACKUP_DIR" -mindepth 1 -maxdepth 1 -type d -printf "%T@ %p\n" \
 update_snap_version_file
 
 post_refresh_tasks_required
+
+if debug_file_exists; then
+    disable_debug_mode
+fi

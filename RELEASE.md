@@ -15,3 +15,4 @@ This release also includes:
 Changelog for 4.3.1snap2:
 
 * Improve security of nginx
+* Add debug mode and `mastodon-server.debug-report` command
