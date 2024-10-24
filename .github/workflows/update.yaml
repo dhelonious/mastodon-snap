@@ -17,6 +17,7 @@ on:
         - candidate
         - beta
         - edge
+        - none
   workflow_call:
     inputs:
       tag:
@@ -73,6 +74,7 @@ jobs:
         tag: ${{ inputs.tag }}
         channel: ${{ inputs.channel || needs.build.outputs.channel }}
   publish:
+    if: ${{ inputs.channel != 'none' }}
     needs:
       - build
       - test

@@ -492,7 +492,7 @@ It may also be necessary to clean up the `encrypted_otp_secret` in the Mastodon 
 
 Find user `id`:
 
-    select id from users where email='me@example.com';
+    select id from users where email="me@example.com";
 
 For example, if your user `id` is `1`, you can delete the `encrypted_otp_secret` as follows:
 

@@ -21,6 +21,7 @@ on:
         - candidate
         - beta
         - edge
+        - none
 jobs:
   build:
     if: ${{ inputs.tag || startsWith(github.ref, 'refs/tags/') }}
@@ -68,6 +69,7 @@ jobs:
       with:
         channel: ${{ inputs.channel || needs.build.outputs.channel }}
   publish:
+    if: ${{ inputs.channel != 'none' }}
     needs:
       - build
       - test
