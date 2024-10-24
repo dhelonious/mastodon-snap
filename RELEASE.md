@@ -12,7 +12,6 @@ This release also includes:
 * libvips 8.15.5
 * ffmpeg 7.1
 
-Changelog for 4.3.1snap1:
+Changelog for 4.3.1snap2:
 
-* Upgrade to bird-ui 2.0.4
-* Upgrade to tangerine-ui 2.2
+* Improve security of nginx

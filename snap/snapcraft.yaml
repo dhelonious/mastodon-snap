@@ -9,7 +9,7 @@ description: |
   implements ActivityPub!)
 
 base: core24
-version: 4.3.1snap1
+version: 4.3.1snap2
 grade: stable
 confinement: strict
 
@@ -489,6 +489,7 @@ parts:
     source: src/nginx/
     organize:
       config/*: config/nginx/
+      dhparam.pem: nginx/conf/dhparam.pem
 
   redis:
     after:
