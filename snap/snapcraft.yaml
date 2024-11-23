@@ -559,7 +559,7 @@ parts:
         ;;
       esac
       echo Download source
-      curl $source --output $CRAFT_PART_SRC/source.tar.gz
+      curl $source -L -o $CRAFT_PART_SRC/source.tar.gz
       source_checksum=$(sha256sum $CRAFT_PART_SRC/source.tar.gz | cut -d " " -f 1)
       if [ "$source_checksum" != "$checksum" ]; then
         echo "$(tput setaf 1)Expected the digest for source to be $checksum, but it was $source_checksum$(tput sgr0)"
