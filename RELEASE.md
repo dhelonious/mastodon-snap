@@ -4,15 +4,14 @@ See the release notes for Mastodon: https://github.com/mastodon/mastodon/release
 
 This release also includes:
 
-* node 20.17.0
+* node 20.18.1
 * ruby 3.3.5
 * nginx 1.27.2
-* postgres 17.0
+* postgres 17.2
 * redis 7.4.1
-* libvips 8.15.5
+* libvips 8.16.0
 * ffmpeg 7.1
 
-Changelog for 4.3.1snap1:
+Changelog for 4.3.1snap2:
 
-* Upgrade to bird-ui 2.0.4
-* Upgrade to tangerine-ui 2.2
+* Upgrade to bird-ui 2.0.5
