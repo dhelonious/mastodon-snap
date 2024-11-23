@@ -401,7 +401,7 @@ parts:
       - setpriv
       - envsubst
     # NOTE: https://www.postgresql.org/ftp/latest
-    source: https://ftp.postgresql.org/pub/source/v17.0/postgresql-17.2.tar.gz
+    source: https://ftp.postgresql.org/pub/source/v17.2/postgresql-17.2.tar.gz
     source-checksum: sha256/51d8cdd6a5220fa8c0a3b12f2d0eeb50fcf5e0bdb7b37904a9cdff5cf1e61c36
     plugin: autotools
     build-packages:
