@@ -12,6 +12,6 @@ This release also includes:
 * libvips 8.16.0
 * ffmpeg 7.1
 
-Changelog for 4.3.1snap2:
+Changelog for 4.3.1snap3:
 
-* Upgrade to bird-ui 2.0.5
+* Hotfix to increase the node heap limit
