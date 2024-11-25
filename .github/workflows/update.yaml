@@ -72,7 +72,7 @@ jobs:
     - uses: ./.github/actions/release
       with:
         tag: ${{ inputs.tag }}
-        channel: ${{ inputs.channel || needs.build.outputs.channel }}
+        channel: ${{ inputs.channel || needs.build.outputs.channel || 'stable' }}
         update: true
   publish:
     if: ${{ inputs.channel != 'none' }}
@@ -90,5 +90,5 @@ jobs:
     - uses: ./.github/actions/publish
       with:
         snap: ${{ needs.build.outputs[matrix.arch] }}
-        channel: ${{ inputs.channel || steps.regex.outputs.group1 }}
+        channel: ${{ inputs.channel || needs.build.outputs.channel || 'stable' }}
         SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}

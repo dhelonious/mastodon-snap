@@ -63,7 +63,7 @@ jobs:
     - uses: ./.github/actions/release
       with:
         tag: ${{ needs.build.outputs.tag }}
-        channel: ${{ needs.build.outputs.channel }}
+        channel: ${{ needs.build.outputs.channel || 'stable' }}
         update: true
     - run: gh issue comment "${{ github.event.issue.number }}" --body "Release files were updated for ${{ needs.build.outputs.tag }}"
       env:
@@ -85,7 +85,7 @@ jobs:
     - uses: ./.github/actions/publish
       with:
         snap: ${{ needs.build.outputs[matrix.arch] }}
-        channel: ${{ needs.build.outputs.channel }}
+        channel: ${{ needs.build.outputs.channel || 'stable' }}
         SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
     - run: gh issue comment "${{ github.event.issue.number }}" --body "Version ${{ needs.build.outputs.tag }} was published on snapcraft.io"
       env:
