@@ -5,6 +5,7 @@
 . "$SNAP/redis.env"
 
 check_root
+check_setup
 check_service postgres
 
 if [ -z "$1" ]; then
