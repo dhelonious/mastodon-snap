@@ -25,9 +25,12 @@ For more information, see the latest [release readme](RELEASE.md).
 
     mastodon-server.tootctl accounts create USERNAME --email admin@example.com --role Owner --confirmed --approve
 
-Congratulations! You are now the owner of your very own Mastodon instance!
+Congratulations! You now have your very own Mastodon instance!
 
 > Note that some usernames such as `admin` and `administrator` are reserved by Mastodon. See below for a complete list.
+
+> Note that `mastodon-server.tootctl` replaces the `sudo -u mastodon RAILS_ENV=production bin/tootctl` command often found in guides and documentation.
+
 
 # 📦 Installation
 
