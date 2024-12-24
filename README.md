@@ -411,6 +411,13 @@ Change the `media.dir` settings to your external directory:
 You can then remove the old media directory.
 
 
+# 🐣 Easter eggs
+
+## Let it snow
+
+Around Christmas, winter will come to your Mastodon instance as snowflakes start to appear at the top of the website! This wonderful addon has been created by [Roni Laukkarinen] (https://github.com/ronilaukkarinen).
+
+
 # 🔥 Troubleshooting
 
 If none of the answers below help you, you can always re-install the snap and restore a backup:
