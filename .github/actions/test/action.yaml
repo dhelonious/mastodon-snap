@@ -45,6 +45,8 @@ runs:
     run: |
       echo "Set environment variables" | yellow
       echo "DOMAIN=local.host" >> $GITHUB_OUTPUT
+      echo "USERNAME=test_admin" >> $GITHUB_OUTPUT
+      echo "EMAIL=admin@local.host" >> $GITHUB_OUTPUT
       echo "HTTP_PORT=81" >> $GITHUB_OUTPUT
       echo "HTTPS_PORT=444" >> $GITHUB_OUTPUT
       echo "COMPOSE_FORM_FILE=/var/snap/mastodon-server/current/mastodon/app/javascript/mastodon/features/compose/components/compose_form.jsx" >> $GITHUB_OUTPUT
@@ -58,8 +60,9 @@ runs:
       echo "Install previous snap" | yellow
       sudo snap install mastodon-server
       sleep 10
-      sudo snap set mastodon-server domain="${{ steps.env.outputs.domain }}"
-      sudo mastodon-server.setup
+      sudo snap set mastodon-server domain="${{ steps.env.outputs.DOMAIN }}"
+      sudo snap set mastodon-server email="${{ steps.env.outputs.EMAIL }}"
+      echo ${{ steps.env.outputs.USERNAME }} | sudo mastodon-server.setup
       sleep 10
   - name: install snap
     shell: bash
@@ -78,8 +81,9 @@ runs:
     shell: bash
     run: |
       echo "Test setup" | yellow
-      sudo snap set mastodon-server domain="${{ steps.env.outputs.domain }}"
-      if sudo mastodon-server.setup; then
+      sudo snap set mastodon-server domain="${{ steps.env.outputs.DOMAIN }}"
+      export USERNAME=${{ steps.env.outputs.USERNAME }}
+      if (echo ${{ steps.env.outputs.USERNAME }} | sudo mastodon-server.setup); then
         echo "Mastodon setup completed successfully" | green
       else
         echo "Mastodon setup failed" | red
@@ -120,7 +124,7 @@ runs:
     shell: bash
     run: |
       echo "Check reachability" | yellow
-      HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" --resolve ${{ steps.env.outputs.domain }}:80:127.0.0.1 http://${{ steps.env.outputs.domain }}:80)
+      HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" --resolve ${{ steps.env.outputs.DOMAIN }}:80:127.0.0.1 http://${{ steps.env.outputs.DOMAIN }}:80)
       if [ "$HTTP_STATUS" -eq 200 ]; then
         echo "Check passed" | green
       else
@@ -133,10 +137,10 @@ runs:
     shell: bash
     run: |
       echo "Generate SSL certificate" | yellow
-      CERT_DIR="/var/snap/mastodon-server/common/certs/${{ steps.env.outputs.domain }}_ecc"
+      CERT_DIR="/var/snap/mastodon-server/common/certs/${{ steps.env.outputs.DOMAIN }}_ecc"
       sudo mkdir -p "$CERT_DIR"
       echo "Create self signed certificate"
-      sudo openssl req -x509 -newkey rsa:2048 -sha256 -keyout "$CERT_DIR/${{ steps.env.outputs.domain }}.key" -days 1 -nodes -out "$CERT_DIR/fullchain.cer" -subj "/CN=${{ steps.env.outputs.domain }}"
+      sudo openssl req -x509 -newkey rsa:2048 -sha256 -keyout "$CERT_DIR/${{ steps.env.outputs.DOMAIN }}.key" -days 1 -nodes -out "$CERT_DIR/fullchain.cer" -subj "/CN=${{ steps.env.outputs.DOMAIN }}"
       echo "Restart mastodon-server.nginx"
       sudo snap restart mastodon-server.nginx
       sleep 10
@@ -160,7 +164,7 @@ runs:
     shell: bash
     run: |
       echo "Check HTTP port" | yellow
-      HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" --resolve "${{ steps.env.outputs.domain }}:${{ steps.env.outputs.HTTP_PORT }}:127.0.0.1" "http://${{ steps.env.outputs.domain }}:${{ steps.env.outputs.HTTP_PORT }}")
+      HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" --resolve "${{ steps.env.outputs.DOMAIN }}:${{ steps.env.outputs.HTTP_PORT }}:127.0.0.1" "http://${{ steps.env.outputs.DOMAIN }}:${{ steps.env.outputs.HTTP_PORT }}")
       if [ "$HTTP_STATUS" -eq 301 ]; then
         echo "Check passed" | green
       else
@@ -173,7 +177,7 @@ runs:
     shell: bash
     run: |
       echo "Check HTTPS port" | yellow
-      HTTPS_STATUS=$(curl -s -o /dev/null -w "%{http_code}" --resolve "${{ steps.env.outputs.domain }}:${{ steps.env.outputs.HTTPS_PORT }}:127.0.0.1" "https://${{ steps.env.outputs.domain }}:${{ steps.env.outputs.HTTPS_PORT }}" --insecure)
+      HTTPS_STATUS=$(curl -s -o /dev/null -w "%{http_code}" --resolve "${{ steps.env.outputs.DOMAIN }}:${{ steps.env.outputs.HTTPS_PORT }}:127.0.0.1" "https://${{ steps.env.outputs.DOMAIN }}:${{ steps.env.outputs.HTTPS_PORT }}" --insecure)
       if [ "$HTTPS_STATUS" -eq 200 ]; then
         echo "Check passed" | green
       else

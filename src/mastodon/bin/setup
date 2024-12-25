@@ -13,6 +13,7 @@ if mastodon_config_exists; then
 fi
 
 check_domain
+check_email
 check_status_max_chars
 check_status_max_chars_counter
 
@@ -36,6 +37,10 @@ if [ "$STATUS_MAX_CHARS_COUNTER" != "$(get_status_max_chars_counter_file)" ]; th
     update_status_max_chars_counter
     compilation_required
 fi
+
+echo Create admin account
+get_username
+$SNAP/bin/tootctl.wrapper accounts create "$USERNAME" --email "$EMAIL" --role Owner --confirmed --approve
 
 $SNAP/bin/recompile_if_required
 
