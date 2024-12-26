@@ -62,7 +62,7 @@ runs:
       sleep 10
       sudo snap set mastodon-server domain="${{ steps.env.outputs.DOMAIN }}"
       sudo snap set mastodon-server email="${{ steps.env.outputs.EMAIL }}"
-      echo ${{ steps.env.outputs.USERNAME }} | sudo mastodon-server.setup
+      sudo mastodon-server.setup -u ${{ steps.env.outputs.USERNAME }}
       sleep 10
   - name: install snap
     shell: bash
@@ -82,8 +82,9 @@ runs:
     run: |
       echo "Test setup" | yellow
       sudo snap set mastodon-server domain="${{ steps.env.outputs.DOMAIN }}"
+      sudo snap set mastodon-server email="${{ steps.env.outputs.EMAIL }}"
       export USERNAME=${{ steps.env.outputs.USERNAME }}
-      if (echo ${{ steps.env.outputs.USERNAME }} | sudo mastodon-server.setup); then
+      if sudo mastodon-server.setup -u ${{ steps.env.outputs.USERNAME }}; then
         echo "Mastodon setup completed successfully" | green
       else
         echo "Mastodon setup failed" | red

@@ -12,6 +12,35 @@ if mastodon_config_exists; then
     exit 0
 fi
 
+while getopts "dmu:" OPTION; do
+    case "$OPTION" in
+    d)
+        if is_domain "$OPTARG"; do
+            snapctl set domain="$OPTARG"
+            export DOMAIN="$OPTARG"
+        else
+            echo "Invalid domain '$OPTARG'"
+        fi
+        ;;
+    m)
+        if is_email "$OPTARG"; do
+            snapctl set email="$OPTARG"
+            export EMAIL="$OPTARG"
+        else
+            echo "Invalid email '$OPTARG'"
+        fi
+        ;;
+    u)
+        if is_username "$OPTARG"; do
+            export USERNAME="$OPTARG"
+        else
+            echo "Invalid username '$OPTARG'"
+        fi
+        ;;
+    esac
+done
+shift "$(($OPTIND -1))"
+
 check_domain
 check_email
 check_status_max_chars
