@@ -12,7 +12,6 @@ This release also includes:
 * libvips 8.16.0
 * ffmpeg 7.1
 
-Changelog for 4.3.2snap2:
+Changelog for 4.3.2snap3:
 
-* Upgrades bird-ui to 2.0.5
-* Upgrades tangerine-ui to 2.3
+* Create admin account during `mastodon-server.setup`

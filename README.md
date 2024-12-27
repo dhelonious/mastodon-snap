@@ -23,13 +23,9 @@ For more information, see the latest [release readme](RELEASE.md).
     sudo mastodon-server.setup
     sudo mastodon-server.get-certificate
 
-    mastodon-server.tootctl accounts create USERNAME --email admin@example.com --role Owner --confirmed --approve
-
 Congratulations! You now have your very own Mastodon instance!
 
 > Note that some usernames such as `admin` and `administrator` are reserved by Mastodon. See below for a complete list.
-
-> Note that `mastodon-server.tootctl` replaces the `sudo -u mastodon RAILS_ENV=production bin/tootctl` command often found in guides and documentation.
 
 
 # 📦 Installation
@@ -89,22 +85,18 @@ An initial setup command is required to initialize the database and configuratio
 
 > Note: Be patient if you have changed the `status.char-limit` or `status.char-counter`, as it takes some time to recompile the assets. Ideally, these values should be changed before setup.
 
-## Create an admin user
+## User names
 
-Once the snap is set up, an administrator account with a randomly generated password can be created using the `tootctl` command:
+During setup, an administrator account is created with a randomly generated password. The username you enter must not be one of the following names reserved by Mastodon
 
-    sudo mastodon-server.tootctl accounts create USERNAME --email admin@example.com --role Owner --confirmed
-
-Your USERNAME must not be one of the following names reserved by Mastodon:
-
-* admin
-* support
-* help
 * root
-* webmaster
+* admin
 * administrator
 * mod
 * moderator
+* support
+* help
+* webmaster
 
 > Note: Be patient, the creation of an account takes some time.
 
@@ -327,6 +319,10 @@ Here is a sample configuration for an nginx reverse proxy:
 Coming from ~~Twitter~~ X and wanting a familiar look? Then the included [Mastodon Bird UI](https://github.com/ronilaukkarinen/mastodon-bird-ui) and [Tangerine UI](https://github.com/nileane/TangerineUI-for-Mastodon) themes might be for you. While *Mastodon Bird UI* retains the separation between dark, light and high contrast variants, *Tangerine UI* automatically switches to a light or dark variant depending on what your browser requests. You can change the theme in *Preferences/Appearance*.
 
 > Important: If you have a severe visual impairment, an [accessible version of the Bird UI theme](https://github.com/ronilaukkarinen/mastodon-bird-ui#how-to-install-an-accessible-version-built-for-people-with-serious-vision-impairment) is included by default. This theme is indicated by the phrase ***High contrast++***, which contains ***two plus signs*** and is translated into your selected language. In addition, this theme is marked with the ♿ ***emoji representing a person in a wheelchair*** as the [International Symbol of Access](https://en.wikipedia.org/wiki/International_Symbol_of_Access).
+
+## Tootctl
+
+The command `mastodon-server.tootctl` replaces the `sudo -u mastodon RAILS_ENV=production bin/tootctl` command often found in guides and documentation.
 
 ## Database shell
 
