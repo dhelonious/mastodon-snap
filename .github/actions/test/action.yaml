@@ -83,7 +83,6 @@ runs:
       echo "Test setup" | yellow
       sudo snap set mastodon-server domain="${{ steps.env.outputs.DOMAIN }}"
       sudo snap set mastodon-server email="${{ steps.env.outputs.EMAIL }}"
-      export USERNAME=${{ steps.env.outputs.USERNAME }}
       if sudo mastodon-server.setup -u ${{ steps.env.outputs.USERNAME }}; then
         echo "Mastodon setup completed successfully" | green
       else
