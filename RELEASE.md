@@ -12,8 +12,9 @@ This release also includes:
 * libvips 8.16.0
 * ffmpeg 7.1
 
-Changelog for 4.3.2snap3:
+Changelog for 4.3.2snap3: Let it snow! ❄️
 
-* Create admin account during setup
-* Additional improvements to the `mastodon-server.setup` script
-* Add snow to the Mastodon UI between Christmas and New Year! Thanks to [Roni Laukkarinen](https://github.com/ronilaukkarinen)!
+* Adds snow to the Mastodon UI between Christmas and New Year! (Thanks to [Roni Laukkarinen](https://github.com/ronilaukkarinen)!)
+* Admin account is created during setup
+* Additional improvements were added to the `mastodon-server.setup` script
+* Mastodon Bird UI has been updated to 2.1.1

@@ -11,10 +11,17 @@ import requests
 
 
 parser = argparse.ArgumentParser(description="Get versions of dependencies")
-parser.add_argument("mastodon_version", type=str)
+parser.add_argument("mastodon_version", nargs="?")
 args = parser.parse_args()
 
-MASTODON_RELEASE = f"v{ args.mastodon_version }"
+if args.mastodon_version:
+    MASTODON_RELEASE = f"v{ args.mastodon_version }"
+    print(f"Use Mastodon release: {MASTODON_RELEASE}")
+else:
+    with requests.get("https://github.com/mastodon/mastodon/releases/latest", timeout=10) as r:
+        MASTODON_RELEASE = r.url.rstrip("/").split("/")[-1]
+    print(f"Use latest Mastodon release: {MASTODON_RELEASE}")
+
 with requests.get(f"https://raw.githubusercontent.com/mastodon/mastodon/{ MASTODON_RELEASE }/Vagrantfile", timeout=10) as r:
     NODE_MAJOR = re.findall(r".*NODE_MAJOR=([0-9]+).*", r.text)[0]
 
