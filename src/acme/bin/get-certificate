@@ -5,8 +5,8 @@
 
 check_root
 check_service nginx
-check_domain
-check_email
+get_domain
+get_email
 
 acme.sh.wrapper --issue -d "$DOMAIN" --accountemail "$EMAIL"
 

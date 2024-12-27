@@ -89,14 +89,14 @@ An initial setup command is required to initialize the database and configuratio
 
 During setup, an administrator account is created with a randomly generated password. The username you enter must not be one of the following names reserved by Mastodon
 
-* admin
-* support
-* help
 * root
-* webmaster
+* admin
 * administrator
 * mod
 * moderator
+* support
+* help
+* webmaster
 
 > Note: Be patient, the creation of an account takes some time.
 
