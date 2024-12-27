@@ -53,6 +53,11 @@ runs:
       echo "STATUS_LENGTH_VALIDATOR_FILE=/var/snap/mastodon-server/current/mastodon/app/validators/status_length_validator.rb" >> $GITHUB_OUTPUT
       echo "LIMIT=600" >> $GITHUB_OUTPUT
       echo "COUNTER=400" >> $GITHUB_OUTPUT
+  - name: setup host
+    shell: bash
+    run: |
+      echo "Setup host system" | yellow
+      echo "127.0.0.1 ${{ steps.env.outputs.DOMAIN }}" >> /etc/hosts
   - name: install and setup previous snap
     if: ${{ inputs.upgrade == 'true' }}
     shell: bash
