@@ -825,6 +825,7 @@ parts:
       - YARN_CACHE_FOLDER: /tmp/yarn
       - COREPACK_HOME: /tmp/corepack
       - MASTODON_USE_LIBVIPS: "true"
+      - MASTODON_STATUS_LENGTH: 1000
       # NOTE: workaround for current issue (see https://github.com/mastodon/mastodon/releases/tag/v4.3.0-beta.1)
       - BUNDLE_BUILD__CHARLOCK_HOLMES: "--with-cxxflags=-std=c++17"
     # NOTE: fiddle is no longer included in ruby 3.5.0
@@ -850,9 +851,9 @@ parts:
       yarn cache clean
       npm cache clean --force
 
-      sed -ri "s/length\(fulltext\) > maxChars/length(fulltext) > 500/" app/javascript/mastodon/features/compose/components/compose_form.jsx
-      sed -ri "s/length\(fulltext\) > maxChars/length(fulltext) > 500/" app/javascript/mastodon/features/compose/components/compose_form.jsx
-      sed -ri "s/CharacterCounter max=\{maxChars\}/CharacterCounter max={500}/" app/javascript/mastodon/features/compose/components/compose_form.jsx
+      sed -ri "s/length\(fulltext\) > maxChars/length(fulltext) > $MASTODON_STATUS_LENGTH/" app/javascript/mastodon/features/compose/components/compose_form.jsx
+      sed -ri "s/CharacterCounter max=\{maxChars\}/CharacterCounter max={$MASTODON_STATUS_LENGTH}/" app/javascript/mastodon/features/compose/components/compose_form.jsx
+      sed -ri "s/MAX_CHARS = 500/MAX_CHARS = $MASTODON_STATUS_LENGTH/" /app/validators/status_length_validator.rb
       cp -rf $CRAFT_PART_BUILD $CRAFT_PART_INSTALL/mastodon
     stage:
       - -mastodon/dist

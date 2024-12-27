@@ -51,8 +51,7 @@ runs:
       echo "HTTPS_PORT=444" >> $GITHUB_OUTPUT
       echo "COMPOSE_FORM_FILE=/var/snap/mastodon-server/current/mastodon/app/javascript/mastodon/features/compose/components/compose_form.jsx" >> $GITHUB_OUTPUT
       echo "STATUS_LENGTH_VALIDATOR_FILE=/var/snap/mastodon-server/current/mastodon/app/validators/status_length_validator.rb" >> $GITHUB_OUTPUT
-      echo "LIMIT=600" >> $GITHUB_OUTPUT
-      echo "COUNTER=400" >> $GITHUB_OUTPUT
+      echo "STATUS_LENGTH=500" >> $GITHUB_OUTPUT
   - name: setup host
     shell: bash
     run: |
@@ -237,7 +236,7 @@ runs:
     shell: bash
     run: |
       echo "Trigger recompile" | yellow
-      if sudo snap set mastodon-server status.char-limit=${{ steps.env.outputs.LIMIT }} status.char-counter=${{ steps.env.outputs.COUNTER }}; then
+      if sudo snap set mastodon-server status.length=${{ steps.env.outputs.STATUS_LENGTH }}; then
         echo "Test passed" | green
       else
         echo "Test failed" | red
@@ -249,14 +248,14 @@ runs:
     run: |
       echo "Check 'MAX_CHARS' in ${{ steps.env.outputs.STATUS_LENGTH_VALIDATOR_FILE }}" | yellow
       MAX_CHARS=$(sudo sed -rn "s/^.*MAX_CHARS = ([0-9]+).*$/\1/p" "${{ steps.env.outputs.STATUS_LENGTH_VALIDATOR_FILE }}")
-      if [ "$MAX_CHARS" -eq "${{ steps.env.outputs.LIMIT }}" ]; then
+      if [ "$MAX_CHARS" -eq "${{ steps.env.outputs.STATUS_LENGTH }}" ]; then
         echo "Check passed" | green
       else
         echo "Check failed" | red
         echo "MAX_CHARS=$MAX_CHARS" | yellow
         exit 1
       fi
-  - name: check length fulltext
+  - name: check fulltext length
     shell: bash
     run: |
       echo "Check 'length(fulltext)' in ${{ steps.env.outputs.COMPOSE_FORM_FILE }}" | yellow
@@ -268,12 +267,12 @@ runs:
         echo "LENGTH_FULLTEXT=$LENGTH_FULLTEXT" | yellow
         exit 1
       fi
-  - name: check character counter max
+  - name: check character counter
     shell: bash
     run: |
       echo "Check 'CharacterCounter max' in ${{ steps.env.outputs.COMPOSE_FORM_FILE }}" | yellow
       CHARACTER_COUNTER_MAX=$(sudo sed -rn "s/^.*CharacterCounter max=\{([0-9]+)\}.*$/\1/p" "${{ steps.env.outputs.COMPOSE_FORM_FILE }}")
-      if [ "$CHARACTER_COUNTER_MAX" -eq "${{ steps.env.outputs.COUNTER }}" ]; then
+      if [ "$CHARACTER_COUNTER_MAX" -eq "${{ steps.env.outputs.STATUS_LENGTH }}" ]; then
         echo "Check passed" | green
       else
         echo "Check failed" | red

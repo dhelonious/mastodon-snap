@@ -48,8 +48,7 @@ shift "$(($OPTIND -1))"
 get_domain
 get_username
 get_email
-get_status_max_chars
-get_status_max_chars_counter
+get_status_length
 
 echo Create config
 generate_mastodon_secrets
@@ -60,15 +59,9 @@ create_mastodon_database
 mastodon_rails db:setup > /dev/null
 $SNAP/bin/psql.wrapper -d "$MASTODON_DBNAME" -c "create extension pg_stat_statements;" > /dev/null
 
-if [ "$STATUS_MAX_CHARS" != "$(get_status_max_chars_file)" ]; then
+if [ "$STATUS_LENGTH" != "$(get_status_length_file)" ]; then
     echo Update status character limit
-    update_status_max_chars
-    compilation_required
-fi
-
-if [ "$STATUS_MAX_CHARS_COUNTER" != "$(get_status_max_chars_counter_file)" ]; then
-    echo Update status character counter
-    update_status_max_chars_counter
+    update_status_length
     compilation_required
 fi
 

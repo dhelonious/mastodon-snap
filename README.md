@@ -83,7 +83,7 @@ An initial setup command is required to initialize the database and configuratio
 
     sudo mastodon-server.setup
 
-> Note: Be patient if you have changed the `status.char-limit` or `status.char-counter`, as it takes some time to recompile the assets. Ideally, these values should be changed before setup.
+> Note: Be patient if you have changed the `status.length`, as it takes some time to recompile the assets. Ideally, these values should be changed before setup.
 
 ## User names
 
@@ -136,8 +136,7 @@ The following settings are available:
 | `ports.https`         | 0 to 65353                    | 443                    | HTTPS port                                                                           |
 | `acme.server`         | letsencrypt, zerossl          | letsencrypt            | CA used for acquiring an SSL certificate                                             |
 | `update.backups`      | true, false                   | true                   | Create a backup in `/var/snap/mastodon-server/common/update/backups` before updating |
-| `status.char-limit`   | integer                       | 500                    | Character limit of statuses (toots); changes require recompilation of assets, which takes some time [1] |
-| `status.char-counter` | integer                       | 500                    | Character counter shown for statuses (toots); changes require recompilation of assets, which takes some time [1] |
+| `status.length`       | integer                       | 1000                   | Character limit of statuses (toots); changes require recompilation of assets [1]     |
 | `media.dir`           | absolute path                 | `$SNAP_COMMON/media`   | Location of the media directory (*public/system*)                                    |
 | `backup.dir`          | absolute path                 | `$SNAP_COMMON/backups` | Location of the backup directory                                                     |
 | `backup.days`         | integer                       | 0                      | Create and keep backups for `backup.days` (enabled if > 0)                           |
@@ -151,13 +150,11 @@ The following settings are available:
 | `log.access.enabled`  | true, false                   | false                  | Logging of http(s) accesses                                                          |
 | `log.access.format`   | standard, anonymized, privacy | anonymized             | Use of real/anonymized/no IP addresses in the access log                             |
 
-[1] Setting this value will increase the time it takes for snapcraft to update this snap. This will increase the downtime of your instance.
+[1] Changing this value will increase the time it takes for snapcraft to update this snap. This will increase the downtime of your instance by about 5 minutes.
 
 You can also set multiple values at once using
 
     sudo snap set mastodon-server KEY1=VALUE1 KEY2=VALUE2
-
-> Note: This is particularly useful if you want to change both `status.char-limit` and `status.char-counter`, as the assets only need to be recompiled once.
 
 Configuration files can be used for further customization.
 
