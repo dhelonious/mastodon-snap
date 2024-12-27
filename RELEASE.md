@@ -14,4 +14,6 @@ This release also includes:
 
 Changelog for 4.3.2snap3:
 
-* Create admin account during `mastodon-server.setup`
+* Create admin account during setup
+* Additional improvements to the `mastodon-server.setup` script
+* Add snow to the Mastodon UI between Christmas and New Year! Thanks to [Roni Laukkarinen](https://github.com/ronilaukkarinen)!
