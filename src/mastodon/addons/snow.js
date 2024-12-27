@@ -1,6 +1,8 @@
 // By Roni Laukkarinen
 // https://github.com/ronilaukkarinen/mastodon/commit/9bf1563
 
+import { reduceMotion } from 'mastodon/initial_state';
+
 function animate(ctx, snowflakes, canvas, maxFlakes) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   // Add new snowflake if we haven't reached the maximum
@@ -41,7 +43,7 @@ function animate(ctx, snowflakes, canvas, maxFlakes) {
 
 document.addEventListener('DOMContentLoaded', () => {
   // Check if reduced motion is enabled
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  if reduceMotion {
     return; // Don't create snow effect if reduced motion is preferred
   }
   if (new Date().getMonth() === 11 && new Date().getDate() >= 23 && new Date().getDate() <= 31) {
