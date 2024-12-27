@@ -57,7 +57,7 @@ runs:
     shell: bash
     run: |
       echo "Setup host system" | yellow
-      echo "127.0.0.1 ${{ steps.env.outputs.DOMAIN }}" >> /etc/hosts
+      sudo sh -c "echo '127.0.0.1 ${{ steps.env.outputs.DOMAIN }}' >> /etc/hosts"
   - name: install and setup previous snap
     if: ${{ inputs.upgrade == 'true' }}
     shell: bash
