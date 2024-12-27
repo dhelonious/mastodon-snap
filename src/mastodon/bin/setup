@@ -12,30 +12,34 @@ if mastodon_config_exists; then
     exit 0
 fi
 
-while getopts "dmu:" OPTION; do
+while getopts "d:u:m:h" OPTION; do
     case "$OPTION" in
     d)
-        if is_domain "$OPTARG"; do
+        if is_domain "$OPTARG"; then
             snapctl set domain="$OPTARG"
             export DOMAIN="$OPTARG"
         else
             echo "Invalid domain '$OPTARG'"
         fi
         ;;
+    u)
+        if is_username "$OPTARG"; then
+            export USERNAME="$OPTARG"
+        else
+            echo "Invalid username '$OPTARG'"
+        fi
+        ;;
     m)
-        if is_email "$OPTARG"; do
+        if is_email "$OPTARG"; then
             snapctl set email="$OPTARG"
             export EMAIL="$OPTARG"
         else
             echo "Invalid email '$OPTARG'"
         fi
         ;;
-    u)
-        if is_username "$OPTARG"; do
-            export USERNAME="$OPTARG"
-        else
-            echo "Invalid username '$OPTARG'"
-        fi
+    h)
+        echo "Usage: $SNAP_NAME.setup -d DOMAIN -u USERNAME -m EMAIL"
+        exit 0
         ;;
     esac
 done
