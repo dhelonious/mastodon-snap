@@ -411,11 +411,11 @@ You can then remove the old media directory.
 
 ## Let it snow
 
-Around Christmas, winter will come to your Mastodon instance as snowflakes start to appear at the top of the website! This wonderful addon has been created by [Roni Laukkarinen](https://github.com/ronilaukkarinen).
+![Example of snow at the top of the Mastodon web interface.](doc/mastodon_snow.gif)
+
+Around Christmas, winter will come to your Mastodon instance as snowflakes start to appear at the top of the website! This wonderful addon was created by [Roni Laukkarinen](https://github.com/ronilaukkarinen).
 
 > Note: This addon respects the accessibility settings. It won't be there if you enable the setting *Preferences/Appearance/Reduce motion in animations*.
-
-![Example of snow at the top of the Mastodon web interface.](doc/mastodon_snow.gif)
 
 
 # 🔥 Troubleshooting
