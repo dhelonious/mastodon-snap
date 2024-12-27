@@ -853,7 +853,7 @@ parts:
 
       sed -ri "s/length\(fulltext\) > maxChars/length(fulltext) > $MASTODON_STATUS_LENGTH/" app/javascript/mastodon/features/compose/components/compose_form.jsx
       sed -ri "s/CharacterCounter max=\{maxChars\}/CharacterCounter max={$MASTODON_STATUS_LENGTH}/" app/javascript/mastodon/features/compose/components/compose_form.jsx
-      sed -ri "s/MAX_CHARS = 500/MAX_CHARS = $MASTODON_STATUS_LENGTH/" /app/validators/status_length_validator.rb
+      sed -ri "s/MAX_CHARS = 500/MAX_CHARS = $MASTODON_STATUS_LENGTH/" app/validators/status_length_validator.rb
       cp -rf $CRAFT_PART_BUILD $CRAFT_PART_INSTALL/mastodon
     stage:
       - -mastodon/dist
