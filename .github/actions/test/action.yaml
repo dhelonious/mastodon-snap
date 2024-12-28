@@ -252,31 +252,31 @@ runs:
         echo "Check passed" | green
       else
         echo "Check failed" | red
-        echo "MAX_CHARS=$MAX_CHARS" | yellow
+        echo "MAX_CHARS = $MAX_CHARS" | yellow
         exit 1
       fi
   - name: check fulltext length
     shell: bash
     run: |
       echo "Check 'length(fulltext)' in ${{ steps.env.outputs.COMPOSE_FORM_FILE }}" | yellow
-      LENGTH_FULLTEXT=$(sudo sed -rn "s/^.*length\(fulltext\) > ([0-9]+).*$/\1/p" "${{ steps.env.outputs.COMPOSE_FORM_FILE }}")
-      if [ "$LENGTH_FULLTEXT" -eq "${{ steps.env.outputs.LIMIT }}" ]; then
+      FULLTEXT_LENGTH=$(sudo sed -rn "s/^.*length\(fulltext\) > ([0-9]+).*$/\1/p" "${{ steps.env.outputs.COMPOSE_FORM_FILE }}")
+      if [ "$FULLTEXT_LENGTH" -eq "${{ steps.env.outputs.STATUS_LENGTH }}" ]; then
         echo "Check passed" | green
       else
         echo "Check failed" | red
-        echo "LENGTH_FULLTEXT=$LENGTH_FULLTEXT" | yellow
+        echo "length(fulltext) > $FULLTEXT_LENGTH" | yellow
         exit 1
       fi
   - name: check character counter
     shell: bash
     run: |
       echo "Check 'CharacterCounter max' in ${{ steps.env.outputs.COMPOSE_FORM_FILE }}" | yellow
-      CHARACTER_COUNTER_MAX=$(sudo sed -rn "s/^.*CharacterCounter max=\{([0-9]+)\}.*$/\1/p" "${{ steps.env.outputs.COMPOSE_FORM_FILE }}")
-      if [ "$CHARACTER_COUNTER_MAX" -eq "${{ steps.env.outputs.STATUS_LENGTH }}" ]; then
+      MAX_CHARACTER_COUNTER=$(sudo sed -rn "s/^.*CharacterCounter max=\{([0-9]+)\}.*$/\1/p" "${{ steps.env.outputs.COMPOSE_FORM_FILE }}")
+      if [ "$MAX_CHARACTER_COUNTER" -eq "${{ steps.env.outputs.STATUS_LENGTH }}" ]; then
         echo "Check passed" | green
       else
         echo "Check failed" | red
-        echo "CHARACTER_COUNTER_MAX=$CHARACTER_COUNTER_MAX" | yellow
+        echo "CharacterCounter max={$MAX_CHARACTER_COUNTER}" | yellow
         exit 1
       fi
   - name: test rails console
