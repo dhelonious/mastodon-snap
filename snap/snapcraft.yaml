@@ -1004,7 +1004,7 @@ parts:
     override-build: |
       set -eux
       cd $CRAFT_STAGE/mastodon
-      bundle exec rails assets:precompile
+      bundle exec rails assets:precompile --trace
       bundle exec rails log:clear tmp:clear
 
   cleanup:
