@@ -43,7 +43,7 @@ function animate(ctx, snowflakes, canvas, maxFlakes) {
 
 document.addEventListener('DOMContentLoaded', () => {
   // Check if reduced motion is enabled
-  if reduceMotion {
+  if (reduceMotion) {
     return; // Don't create snow effect if reduced motion is preferred
   }
   if (new Date().getMonth() === 11 && new Date().getDate() >= 23 && new Date().getDate() <= 31) {
