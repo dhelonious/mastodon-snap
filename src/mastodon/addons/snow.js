@@ -12,7 +12,7 @@ function animate(ctx, snowflakes, canvas, maxFlakes) {
       y: 0,  // Start from top
       radius: Math.random() * 7 + 3,
       speed: Math.random() * 0.5 + 0.3,
-      opacity: Math.random() * 0.6 + 0.4
+      opacity: Math.random() * 0.4 + 0.6
     });
   }
   snowflakes.forEach(flake => {
@@ -26,7 +26,7 @@ function animate(ctx, snowflakes, canvas, maxFlakes) {
         flake.y + Math.sin(Math.PI * 2 * i / 6) * flake.radius
       );
     }
-    ctx.strokeStyle = `rgba(255, 255, 255, ${flake.opacity})`;
+    ctx.strokeStyle = `rgba(208, 228, 242, ${flake.opacity})`;
     ctx.lineWidth = 1.5;
     ctx.stroke();
     ctx.restore();
