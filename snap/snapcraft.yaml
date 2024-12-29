@@ -906,10 +906,12 @@ parts:
       set -eux
       mkdir -p $MASTODON_JS/mastodon/addons
       cp $CRAFT_STAGE/addons/*.js $MASTODON_JS/mastodon/addons/
-      for filename in $MASTODON_JS/mastodon/addons/*.js; do
-        name="$(basename $filename .js)"
-        sed -i "1s|^|import * as $name from 'mastodon/addons/$name';\n|" $MASTODON_JS/mastodon/common.js
-      done
+      sed -i "1s|^|import * as birthday from 'mastodon/addons/birthday';\n|" $MASTODON_JS/mastodon/common.js
+# TODO: Include after testing
+#       for filename in $MASTODON_JS/mastodon/addons/*.js; do
+#         name="$(basename $filename .js)"
+#         sed -i "1s|^|import * as $name from 'mastodon/addons/$name';\n|" $MASTODON_JS/mastodon/common.js
+#       done
 
   bird-ui:
     after:
