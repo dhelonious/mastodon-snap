@@ -3,6 +3,14 @@
 . "$SNAP/mastodon.env"
 
 if [ "$(snapctl get system.compilation-required)" == true ]; then
-    mastodon_recompile_assets
+    echo "Recompiling assets (this takes some time)"
+    mastodon_rails assets:precompile
+    mastodon_rails log:clear tmp:clear
+
+    echo "Restart services"
+    snapctl restart "$SNAP_NAME.backend"
+    snapctl restart "$SNAP_NAME.sidekiq"
+    snapctl restart "$SNAP_NAME.streaming"
+
     reset_compilation_required
 fi
