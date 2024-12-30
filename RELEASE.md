@@ -16,10 +16,10 @@ This release also includes:
 
 * Let it snow: Around Christmas, snow will start falling in your Mastodon instance! ❄️
 * Adds snow to the Mastodon UI between Christmas and New Year! (Thanks to [Roni Laukkarinen](https://github.com/ronilaukkarinen)!)
-* Admin account is created during setup
-* Remove the `status.char-counter` option and rename `status.char-limit` to `status.length`
-* Additional improvements were added to the `mastodon-server.setup` and `mastodon-server.get-certificate` scripts
-* Mastodon Bird UI has been updated to 2.1.1
+* Admin account created during setup
+* Removed the `status.char-counter` option and renamed `status.char-limit` to `status.length
+* Additional improvements have been made to the `mastodon-server.setup` and `mastodon-server.get-certificate` scripts
+* Mastodon Bird UI updated to 2.1.1
 
 ## Upgrade notes
 

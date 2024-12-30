@@ -404,9 +404,9 @@ Change the `media.dir` settings to your external directory:
 You can then remove the old media directory.
 
 
-# 🐣 Easter eggs
+# 🐣 Addons
 
-## Let it snow
+## ❄️ Let it snow
 
 ![Example of snow at the top of the Mastodon web interface.](doc/mastodon_snow.gif)
 
