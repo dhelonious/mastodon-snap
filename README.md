@@ -406,13 +406,25 @@ You can then remove the old media directory.
 
 # 🐣 Addons
 
+## 🎊 It's your Fediday!
+
+![Example of your Fediday celebration in the Mastodon web interface in dark mode](doc/snow_dark.gif)
+
+![Example of your Fediday celebration in the Mastodon web interface in light mode](doc/snow_light.gif)
+
+The day you joined the Fediverse will be celebrated by your instance with a rain of confetti! The confetti will only be visible to you when you're logged in.
+
+> Note: This addon respects accessibility settings. It won't be used if you enable the setting *Preferences/Appearance/Reduce motion in animations*.
+
 ## ❄️ Let it snow
 
-![Example of snow at the top of the Mastodon web interface.](doc/mastodon_snow.gif)
+![Example of snow in the Mastodon web interface with Bird UI (dark)](doc/snow_dark.gif)
 
-Around Christmas, winter will come to your Mastodon instance as snowflakes start to appear at the top of the website! This wonderful addon was created by [Roni Laukkarinen](https://github.com/ronilaukkarinen).
+![Example of snow in the Mastodon web interface with Bird UI (light)](doc/snow_light.gif)
 
-> Note: This addon respects the accessibility settings. It won't be there if you enable the setting *Preferences/Appearance/Reduce motion in animations*.
+Around Christmas, winter comes to your Mastodon instance as snowflakes appear at the top of the website! This wonderful addon has been created by [Roni Laukkarinen](https://github.com/ronilaukkarinen).
+
+> Note: This addon respects accessibility settings. It won't be used if you enable the setting *Preferences/Appearance/Reduce motion in animations*.
 
 
 # 🔥 Troubleshooting

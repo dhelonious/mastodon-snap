@@ -12,14 +12,16 @@ This release also includes:
 * libvips 8.16.0
 * ffmpeg 7.1
 
-## Changelog for 4.3.2snap3:
+## Changelog for 4.3.2snap4:
 
-* Let it snow: Around Christmas, snow will start falling in your Mastodon instance! ❄️
-* Adds snow to the Mastodon UI between Christmas and New Year! (Thanks to [Roni Laukkarinen](https://github.com/ronilaukkarinen)!)
-* Admin account created during setup
-* Removed the `status.char-counter` option and renamed `status.char-limit` to `status.length
-* Additional improvements have been made to the `mastodon-server.setup` and `mastodon-server.get-certificate` scripts
-* Mastodon Bird UI updated to 2.1.1
+* It's your Fediday: The day you joined the Fediverse will be celebrated by your instance with a confetti rain! 🎊
+* Yarn updated to 4.6.0
+* Let it snow: Around Christmas, snow will start falling in your Mastodon instance! ❄️ [4.3.2snap3]
+* Adds snow to the Mastodon UI between Christmas and New Year! (Thanks to [Roni Laukkarinen](https://github.com/ronilaukkarinen)!) [4.3.2snap3]
+* Admin account created during setup [4.3.2snap3]
+* Removed the `status.char-counter` option and renamed `status.char-limit` to `status.length [4.3.2snap3]
+* Additional improvements have been made to the `mastodon-server.setup` and `mastodon-server.get-certificate` scripts [4.3.2snap3]
+* Mastodon Bird UI updated to 2.1.1 [4.3.2snap3]
 
 ## Upgrade notes
 

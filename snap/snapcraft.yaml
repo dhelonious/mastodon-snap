@@ -9,7 +9,7 @@ description: |
   implements ActivityPub!)
 
 base: core24
-version: 4.3.2snap3
+version: 4.3.2snap4
 grade: stable
 confinement: strict
 
@@ -803,7 +803,7 @@ parts:
       - libmagic-mgc
       - libssl3t64
     build-environment:
-      - YARN_VERSION: "4.5.3" # NOTE: https://github.com/yarnpkg/berry/releases/latest
+      - YARN_VERSION: "4.6.0" # NOTE: https://github.com/yarnpkg/berry/releases/latest
       - RUBY_BRANCH: "3.3" # NOTE: must be updated with ruby source
       - BUNDLER_VERSION: "2.5.18" # NOTE: see `Gemfile.lock`
       - RAILS_ENV: production

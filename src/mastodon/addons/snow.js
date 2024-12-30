@@ -42,11 +42,18 @@ function animate(ctx, snowflakes, canvas, maxFlakes) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Check if it's fediday
+  if (window.fediday) {
+    return; // Don't create snow effect if confetti effect occurs
+  }
   // Check if reduced motion is enabled
   if (reduceMotion) {
     return; // Don't create snow effect if reduced motion is preferred
   }
   if (new Date().getMonth() === 11 && new Date().getDate() >= 23 && new Date().getDate() <= 31) {
+    const width = window.innerWidth * 2;
+    const height = 160;
+    const fadeLength = '35px';
     const wrapper = document.createElement('div');
     wrapper.classList.add('snow');
     wrapper.style.position = 'fixed';
@@ -56,14 +63,14 @@ document.addEventListener('DOMContentLoaded', () => {
     wrapper.style.height = '80px';
     wrapper.style.pointerEvents = 'none';
     wrapper.style.zIndex = '9999';
-    wrapper.style.maskImage = 'linear-gradient(to top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1) 35px)';
-    wrapper.style.webkitMaskImage = 'linear-gradient(to top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1) 35px)';
+    wrapper.style.maskImage = `linear-gradient(to top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1) ${fadeLength})`;
+    wrapper.style.webkitMaskImage = `linear-gradient(to top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1) ${fadeLength})`;
     wrapper.style.transition = 'opacity 0.3s ease-in-out';
     const canvas = document.createElement('canvas');
     canvas.style.width = '100%';
     canvas.style.height = '100%';
-    canvas.width = window.innerWidth * 2;
-    canvas.height = 160;
+    canvas.width = width;
+    canvas.height = height;
     wrapper.appendChild(canvas);
     document.body.appendChild(wrapper);
     const ctx = canvas.getContext('2d');
@@ -76,8 +83,8 @@ document.addEventListener('DOMContentLoaded', () => {
     animate(ctx, snowflakes, canvas, maxFlakes);
     // Update maxFlakes on resize
     window.addEventListener('resize', () => {
-      canvas.width = window.innerWidth * 2;
-      canvas.height = 160;
+      canvas.width = width;
+      canvas.height = height;
       maxFlakes = getMaxFlakes();
       // Remove excess snowflakes if viewport becomes smaller
       if (snowflakes.length > maxFlakes) {
