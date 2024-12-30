@@ -1,12 +1,10 @@
 // Based on snow addon by Roni Laukkarinen
 // https://github.com/ronilaukkarinen/mastodon/commit/9bf1563
 
-import { reduceMotion } from 'mastodon/initial_state';
-import ImmutablePropTypes from 'react-immutable-proptypes';
+import { me, reduceMotion } from 'mastodon/initial_state';
+import { store } from 'mastodon/store';
 
-const account = ImmutablePropTypes.record;
-const created_at = account.get('created_at');
-const colors = [
+const confetti_colors = [
   {r: 228, g: 3, b: 3}, // red
   {r: 255, g: 140, b: 0}, // orange
   {r: 255, g: 237, b: 0}, // yellow
@@ -25,7 +23,7 @@ function animate(ctx, confetti, canvas, maxItems) {
       width: Math.random() * 3 + 3,
       angle: Math.random() * 60 - 30,
       speed: Math.random() * 0.5 + 0.3,
-      // opacity: Math.random() * 0.6 + 0.4
+      opacity: Math.random() * 0.6 + 0.4
     });
   }
   confetti.forEach(confetto => {
@@ -33,10 +31,10 @@ function animate(ctx, confetti, canvas, maxItems) {
     ctx.save();
     ctx.fillRect(-confetto.width / 2, -confetto.width, confetto.width, confetto.width * 2);
     ctx.translate(confetto.x, confetto.y);
-    ctx.rotate(angle / 180 * Math.PI);
+    ctx.rotate(confetto.angle / 180 * Math.PI);
     // Chose random color
-    const randomColor = colors[Math.floor(Math.random() * colors.length)];
-    ctx.fillStyle = `rgba(${randomColor.r}, ${randomColor.g}, ${randomColor.b}, 1)`;
+    const randomColor = confetti_colors[Math.floor(Math.random() * confetti_colors.length)];
+    ctx.fillStyle = `rgba(${randomColor.r}, ${randomColor.g}, ${randomColor.b}, ${confetto.opacity})`;
     ctx.restore();
     // Update position with gentler movement
     confetto.x += Math.sin(confetto.y / 50) * 0.3;
@@ -51,10 +49,14 @@ function animate(ctx, confetti, canvas, maxItems) {
 
 document.addEventListener('DOMContentLoaded', () => {
   // Check if reduced motion is enabled
-  if (reduceMotion) {
-    return; // Don't create confetti effect if reduced motion is preferred
+  if (!me || reduceMotion) {
+    return; // Don't create confetti effect if not logged in or reduced motion is preferred
   }
-  if (new Date().getDate() === created_at.getDate() && new Date().getMonth() === created_at.getMonth()) {
+  const account_birthday = new Date(store.getState().getIn(['accounts', me, 'created_at']));
+  console.log('Day:', new Date().getDate(), account_birthday.getDate());
+  console.log('Month:', new Date().getMonth(), account_birthday.getMonth());
+  if (new Date().getDate() === account_birthday.getDate() && new Date().getMonth() === account_birthday.getMonth()) {
+    console.log('its your birthday');
     const wrapper = document.createElement('div');
     wrapper.classList.add('confetti');
     wrapper.style.position = 'fixed';
@@ -76,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.appendChild(wrapper);
     const ctx = canvas.getContext('2d');
     const confetti = [];  // Start with empty array
-    // Adjust max flakes based on viewport width
+    // Adjust max confettos based on viewport width
     const getMaxFlakes = () => {
       return window.innerWidth <= 800 ? 25 : 50;
     };
