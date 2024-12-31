@@ -4,6 +4,10 @@
 import { reduceMotion } from 'mastodon/initial_state';
 
 function animate(ctx, snowflakes, canvas, maxFlakes) {
+  // Check for other effects
+  if (window.fediday) {
+    return; // Don't show snow if confetti effect is there
+  }
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   // Add new snowflake if we haven't reached the maximum
   if (snowflakes.length < maxFlakes && Math.random() < 0.05) {  // 5% chance each frame to add a new flake
@@ -42,10 +46,6 @@ function animate(ctx, snowflakes, canvas, maxFlakes) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Check if it's fediday
-  if (window.fediday) {
-    return; // Don't create snow effect if confetti effect is there
-  }
   // Check if reduced motion is enabled
   if (reduceMotion) {
     return; // Don't create snow effect if reduced motion is preferred
