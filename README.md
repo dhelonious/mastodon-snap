@@ -408,9 +408,9 @@ You can then remove the old media directory.
 
 ## 🎊 It's your Fediday!
 
-![Example of your Fediday celebration in the Mastodon web interface in dark mode](doc/snow_dark.gif)
+![Example of your Fediday celebration in the Mastodon web interface in dark mode](doc/fediday_dark.gif)
 
-![Example of your Fediday celebration in the Mastodon web interface in light mode](doc/snow_light.gif)
+![Example of your Fediday celebration in the Mastodon web interface in light mode](doc/fediday_light.gif)
 
 The day you joined the Fediverse will be celebrated by your instance with a rain of confetti! The confetti will only be visible to you when you're logged in.
 
