@@ -57,9 +57,8 @@ document.addEventListener('DOMContentLoaded', () => {
   if (new Date().getDate() === account_fediday.getDate() && new Date().getMonth() === account_fediday.getMonth()) {
     // Set property for other addons to check
     window.fediday = true;
-    const width = window.innerWidth * 2;
-    const height = 140;
-    const fadeDistance = '40px';
+    const height = '70px';
+    const fadeLength = '30px';
     const wrapper = document.createElement('div');
     wrapper.classList.add('confetti');
     wrapper.style.position = 'fixed';
@@ -69,14 +68,14 @@ document.addEventListener('DOMContentLoaded', () => {
     wrapper.style.height = '80px';
     wrapper.style.pointerEvents = 'none';
     wrapper.style.zIndex = '9999';
-    wrapper.style.maskImage = `linear-gradient(to top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1) ${fadeDistance})`;
-    wrapper.style.webkitMaskImage = `linear-gradient(to top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1) ${fadeDistance})`;
+    wrapper.style.maskImage = `linear-gradient(to top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1) ${fadeLength})`;
+    wrapper.style.webkitMaskImage = `linear-gradient(to top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1) ${fadeLength})`;
     wrapper.style.transition = 'opacity 0.3s ease-in-out';
     const canvas = document.createElement('canvas');
     canvas.style.width = '100%';
     canvas.style.height = '100%';
-    canvas.width = width;
-    canvas.height = height;
+    canvas.width = window.innerWidth * 2;
+    canvas.height = parseInt(height, 10) * 2;
     wrapper.appendChild(canvas);
     document.body.appendChild(wrapper);
     const ctx = canvas.getContext('2d');
@@ -89,8 +88,8 @@ document.addEventListener('DOMContentLoaded', () => {
     animate(ctx, confetti, canvas, maxConfetti);
     // Update maxConfetti on resize
     window.addEventListener('resize', () => {
-      canvas.width = width;
-      canvas.height = height;
+      canvas.width = window.innerWidth * 2;
+      canvas.height = parseInt(height, 10) * 2;
       maxConfetti = getMaxConfetti();
       // Remove excess confetti if viewport becomes smaller
       if (confetti.length > maxConfetti) {

@@ -44,16 +44,15 @@ function animate(ctx, snowflakes, canvas, maxFlakes) {
 document.addEventListener('DOMContentLoaded', () => {
   // Check if it's fediday
   if (window.fediday) {
-    return; // Don't create snow effect if confetti effect occurs
+    return; // Don't create snow effect if confetti effect is there
   }
   // Check if reduced motion is enabled
   if (reduceMotion) {
     return; // Don't create snow effect if reduced motion is preferred
   }
   if (new Date().getMonth() === 11 && new Date().getDate() >= 23 && new Date().getDate() <= 31) {
-    const width = window.innerWidth * 2;
-    const height = 160;
-    const fadeLength = '35px';
+    const height = '80px';
+    const fadeLength = '40px';
     const wrapper = document.createElement('div');
     wrapper.classList.add('snow');
     wrapper.style.position = 'fixed';
@@ -69,8 +68,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.createElement('canvas');
     canvas.style.width = '100%';
     canvas.style.height = '100%';
-    canvas.width = width;
-    canvas.height = height;
+    canvas.width = window.innerWidth * 2;
+    canvas.height = parseInt(height, 10) * 2;
     wrapper.appendChild(canvas);
     document.body.appendChild(wrapper);
     const ctx = canvas.getContext('2d');
@@ -83,8 +82,8 @@ document.addEventListener('DOMContentLoaded', () => {
     animate(ctx, snowflakes, canvas, maxFlakes);
     // Update maxFlakes on resize
     window.addEventListener('resize', () => {
-      canvas.width = width;
-      canvas.height = height;
+      canvas.width = window.innerWidth * 2;
+      canvas.height = parseInt(height, 10) * 2;
       maxFlakes = getMaxFlakes();
       // Remove excess snowflakes if viewport becomes smaller
       if (snowflakes.length > maxFlakes) {
