@@ -18,9 +18,12 @@ For more information, see the latest [release readme](RELEASE.md).
 
 # 🚀 Quickstart
 
+If you're not running Ubuntu, start by [installing the snap daemon](https://snapcraft.io/docs/installing-snapd#without-snap). Then run these commands:
+
     sudo snap install mastodon-server
 
     sudo mastodon-server.setup
+
     sudo mastodon-server.get-certificate
 
 Congratulations! You now have your very own Mastodon instance!
