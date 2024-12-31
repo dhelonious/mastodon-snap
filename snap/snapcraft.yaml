@@ -521,8 +521,8 @@ parts:
     organize:
       "*": acme/
     stage:
-      - -acme/Dockerfile
-      - -acme/README.md
+      - acme/acme.sh
+      - acme/LICENSE.md
 
   acme-customizations:
     after:

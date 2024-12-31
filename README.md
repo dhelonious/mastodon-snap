@@ -102,7 +102,7 @@ During setup, an administrator account is created with a randomly generated pass
 
 ## SSL
 
-SSL certificates can be obtained via ACME from either [Let's Encrypt](https://letsencrypt.org/) or [ZeroSSL](https://zerossl.com/) (see the `acme.server` setting below):
+SSL certificates can be obtained via ACME from either [Let's Encrypt](https://letsencrypt.org/), [ZeroSSL](https://zerossl.com/) or [BuyPass](https://buypass.com) (see the `acme.server` setting below):
 
     mastodon-server.get-certificate
 
@@ -134,7 +134,7 @@ The following settings are available:
 | `email`               | valid e-mail                  |                        | E-mail address of the owner of the Mastodon instance                                 |
 | `ports.http`          | 0 to 65353                    | 80                     | HTTP port                                                                            |
 | `ports.https`         | 0 to 65353                    | 443                    | HTTPS port                                                                           |
-| `acme.server`         | letsencrypt, zerossl          | letsencrypt            | CA used for acquiring an SSL certificate                                             |
+| `acme.server`         | letsencrypt, zerossl, buypass | letsencrypt            | CA used for acquiring an SSL certificate, see [acme.sh server](https://github.com/acmesh-official/acme.sh/wiki/Server) |
 | `update.backups`      | true, false                   | true                   | Create a backup in `/var/snap/mastodon-server/common/update/backups` before updating |
 | `status.length`       | integer                       | 1000                   | Character limit of statuses (toots); changes require recompilation of assets [1]     |
 | `media.dir`           | absolute path                 | `$SNAP_COMMON/media`   | Location of the media directory (*public/system*)                                    |
