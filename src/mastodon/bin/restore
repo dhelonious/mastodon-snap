@@ -52,7 +52,6 @@ $SNAP/bin/psql.wrapper -c "drop database if exists $MASTODON_DBNAME;"
 echo Restore configuration
 rsync --ignore-times --no-owner --no-perms --chmod g+w --chown root:$DAEMON_USER "$backup_dir/mastodon.conf" "$SNAP_COMMON/" \
     && chmod 664 "$SNAP_COMMON/mastodon.conf"
-link_mastodon_config
 
 mastodon_set_var DB_PASS "$(get_secret postgres)"
 # mastodon_set_var REDIS_PASSWORD "$(get_secret redis)"
