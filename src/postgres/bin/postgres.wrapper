@@ -11,6 +11,8 @@ while is_active postgres-upgrade; do
     sleep 1
 done
 
+mkdir_pid
+mkdir_sock
 mkdir -p "$PG_SOCK_DIR"
 
 sed -ie "s|^include_if_exists = .*|include_if_exists = '$(config_dir postgres)/postgresql.conf'|" "$PG_DATA/postgresql.conf"
