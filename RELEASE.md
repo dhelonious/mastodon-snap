@@ -12,11 +12,12 @@ This release also includes:
 * libvips 8.16.0
 * ffmpeg 7.1
 
-## Changelog for 4.3.2snap4:
+## Changelog for 4.3.2snap5:
 
-* It's your Fediday: The day you joined the Fediverse will be celebrated by your instance with a confetti rain! 🎊
-* Support [BuyPass](https://buypass.com) SSL CA
-* Yarn updated to 4.6.0
+* Hotfix for `mastodon-server.get-certificate` `acme.server` check
+* It's your Fediday: The day you joined the Fediverse will be celebrated by your instance with a confetti rain! 🎊 [4.3.2snap4]
+* Support [BuyPass](https://buypass.com) SSL CA [4.3.2snap4]
+* Yarn updated to 4.6.0 [4.3.2snap4]
 * Let it snow: Around Christmas, snow will start falling in your Mastodon instance! ❄️ [4.3.2snap3]
 * Adds snow to the Mastodon UI between Christmas and New Year! (Thanks to [Roni Laukkarinen](https://github.com/ronilaukkarinen)!) [4.3.2snap3]
 * Admin account created during setup [4.3.2snap3]

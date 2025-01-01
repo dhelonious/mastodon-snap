@@ -6,7 +6,7 @@
 check_root
 check_service nginx
 
-while getopts "d:m:sh" OPTION; do
+while getopts "d:m:s:h" OPTION; do
     case "$OPTION" in
     d)
         if is_domain "$OPTARG"; then
