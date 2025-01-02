@@ -12,9 +12,10 @@ This release also includes:
 * libvips 8.16.0
 * ffmpeg 7.1
 
-## Changelog for 4.3.2snap5:
+## Changelog for 4.3.2snap6:
 
-* Hotfix for `mastodon-server.get-certificate` `acme.server` check
+* Improve confetti animation
+* Hotfix for `mastodon-server.get-certificate` `acme.server` check [4.3.2snap4]
 * It's your Fediday: The day you joined the Fediverse will be celebrated by your instance with a confetti rain! 🎊 [4.3.2snap4]
 * Support [BuyPass](https://buypass.com) SSL CA [4.3.2snap4]
 * Yarn updated to 4.6.0 [4.3.2snap4]

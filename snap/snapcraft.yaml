@@ -9,7 +9,7 @@ description: |
   implements ActivityPub!)
 
 base: core24
-version: 4.3.2snap5
+version: 4.3.2snap6
 grade: stable
 confinement: strict
 
@@ -906,8 +906,7 @@ parts:
       set -eux
       mkdir -p $MASTODON_JS/mastodon/addons
       cp $CRAFT_STAGE/addons/*.js $MASTODON_JS/mastodon/addons/
-      for filename in $MASTODON_JS/mastodon/addons/*.js; do
-        name="$(basename $filename .js)"
+      for name in snow fediday; do
         sed -i "1s|^|import * as $name from 'mastodon/addons/$name';\n|" $MASTODON_JS/mastodon/common.js
       done
 
