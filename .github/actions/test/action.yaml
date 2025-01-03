@@ -96,6 +96,17 @@ runs:
         exit 1
       fi
       sleep 30
+  - name: print snap settings
+    shell: bash
+    run: |
+      echo "Print snap settings" | yellow
+      if SETTINGS=$(sudo snap get mastodon-server -d); then
+        echo "$SETTINGS" | green
+      else
+        echo "Snap settings could not be retrieved" | red
+        echo "$SETTINGS" | red
+        exit 1
+      fi
   - name: check services
     shell: bash
     run: |
