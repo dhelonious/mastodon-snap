@@ -30,8 +30,8 @@ then
 fi
 
 if [ "$MEDIA_DIR" != "$CURRENT_MEDIA_DIR" ]; then
-    snapctl set media.dir="$CURRENT_MEDIA_DIR"
-    export MEDIA_DIR="$CURRENT_MEDIA_DIR"
+    snapctl set media.dir="$MEDIA_DIR"
+    export MEDIA_DIR="$MEDIA_DIR"
 fi
 
 if [ "$BACKUP_DIR" != "$CURRENT_BACKUP_DIR" ]; then
