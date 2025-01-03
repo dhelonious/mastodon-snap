@@ -3,7 +3,7 @@
 
 import { me, reduceMotion } from 'mastodon/initial_state';
 import { store } from 'mastodon/store';
-import { topEffect } from 'mastodon/addons/effects';
+import { topEffect } from './effects';
 
 const confetti_colors = [
   `rgb(228, 3, 3)`, // red
@@ -14,7 +14,7 @@ const confetti_colors = [
   `rgb(115, 41, 130)`, // violet
 ];
 
-function animateConfetti(ctx, canvas, particles, maxParticles) {
+function animateConfetti(ctx, canvas, confetti, maxConfetti) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   // Add new confetto if we haven't reached the maximum
   if (confetti.length < maxConfetti && Math.random() < 0.05) {  // 5% chance each frame to add a new confetto
@@ -30,8 +30,8 @@ function animateConfetti(ctx, canvas, particles, maxParticles) {
   }
 
   confetti.forEach(confetto => {
-    const confettoPhase = confetto.rotationSpeed / Math.abs(confetto.rotationSpeed) * (confetto.y % (confetto.speed * 100)) / (confetto.speed * 100);
-    const confettoWidth = Math.pow(Math.cos(confettoPhase * Math.PI), 2) * confetto.length / 2;
+    const confettoPhase = 2 * Math.PI * confetto.rotationSpeed / Math.abs(confetto.rotationSpeed) * (confetto.y % (confetto.speed * 100)) / (confetto.speed * 100);
+    const confettoWidth = Math.pow(Math.cos(confettoPhase / 2), 2) * confetto.length / 2 * 0.9 + 0.1;
 
     // Draw confetto
     ctx.save();
@@ -42,7 +42,7 @@ function animateConfetti(ctx, canvas, particles, maxParticles) {
     ctx.restore();
 
     // Update position
-    confetto.x += Math.sin(confettoPhase * 2 * Math.PI) * 0.5;
+    confetto.x += Math.sin(confettoPhase) * 0.5;
     confetto.y += confetto.speed * 0.5;
     confetto.angle += confetto.rotationSpeed * 0.5;
     if (confetto.y > canvas.height) {
@@ -51,7 +51,7 @@ function animateConfetti(ctx, canvas, particles, maxParticles) {
     }
   });
 
-  requestAnimationFrame(() => animate(ctx, confetti, canvas, maxConfetti));
+  requestAnimationFrame(() => animateConfetti(ctx, canvas, confetti, maxConfetti));
 }
 
 document.addEventListener('DOMContentLoaded', () => {

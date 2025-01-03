@@ -48,6 +48,7 @@ if [ "$STATUS_LENGTH" != "$CURRENT_STATUS_LENGTH" ]; then
         compilation_required
         restart_required backend
         restart_required sidekiq
+        restart_required streaming
     fi
 fi
 

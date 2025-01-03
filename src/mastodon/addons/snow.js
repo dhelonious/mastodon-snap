@@ -2,9 +2,9 @@
 // https://github.com/ronilaukkarinen/mastodon/commit/9bf1563
 
 import { reduceMotion } from 'mastodon/initial_state';
-import { topEffect } from 'mastodon/addons/effects';
+import { topEffect } from './effects';
 
-function animateSnow(ctx, canvas, particles, maxParticles) {
+function animateSnow(ctx, canvas, snowflakes, maxFlakes) {
   // Check for other effects
   if (window.fediday) {
     return; // Don't show snow if confetti effect is there
@@ -47,7 +47,7 @@ function animateSnow(ctx, canvas, particles, maxParticles) {
     }
   });
 
-  requestAnimationFrame(() => animate(ctx, snowflakes, canvas, maxFlakes));
+  requestAnimationFrame(() => animateSnow(ctx, canvas, snowflakes, maxFlakes));
 }
 
 document.addEventListener('DOMContentLoaded', () => {

@@ -86,7 +86,7 @@ An initial setup command is required to initialize the database and configuratio
 
     sudo mastodon-server.setup
 
-> Note: Be patient if you have changed the `status.length`, as it takes some time to recompile the assets. Ideally, these values should be changed before setup.
+> Note: Be patient if you have changed the `status.length` as it takes some time to recompile the assets, especially if there is a small amount of RAM available. Ideally these values should be changed before setup.
 
 ## User names
 
