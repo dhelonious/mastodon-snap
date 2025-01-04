@@ -22,16 +22,16 @@ function animateConfetti(ctx, canvas, confetti, maxConfetti) {
       x: Math.random() * canvas.width,
       y: 0,
       length: Math.random() * 4 + 10,
-      angle: Math.random() * 60 - 30,
-      speed: Math.random() * 1 + 1,
-      rotationSpeed: Math.random() * 1.6 - 0.8,
+      angle: Math.random() * 90 - 45,
+      speed: Math.random() + 1,
+      rotationSpeed: Math.random() * 2 - 1,
       color: confetti_colors[Math.floor(Math.random() * confetti_colors.length)],
     });
   }
 
   confetti.forEach(confetto => {
-    const confettoPhase = 2 * Math.PI * confetto.rotationSpeed / Math.abs(confetto.rotationSpeed) * (confetto.y % (confetto.speed * 100)) / (confetto.speed * 100);
-    const confettoWidth = Math.pow(Math.cos(confettoPhase / 2), 2) * confetto.length / 2 * 0.9 + 0.1;
+    const confettoPhase = Math.PI * confetto.y / canvas.height * confetto.rotationSpeed * confetto.speed;
+    const confettoWidth = Math.pow(Math.cos(confettoPhase), 2) * confetto.length / 3 + 0.3;
 
     // Draw confetto
     ctx.save();
@@ -42,12 +42,13 @@ function animateConfetti(ctx, canvas, confetti, maxConfetti) {
     ctx.restore();
 
     // Update position
-    confetto.x += Math.sin(confettoPhase) * 0.5;
-    confetto.y += confetto.speed * 0.5;
-    confetto.angle += confetto.rotationSpeed * 0.5;
+    confetto.x += Math.sin(2 * confettoPhase) / 2;
+    confetto.y += confetto.speed / 2;
+    confetto.angle += confetto.rotationSpeed / 2;
     if (confetto.y > canvas.height) {
       confetto.y = 0;
       confetto.x = Math.random() * canvas.width;
+      confetto.angle = Math.random() * 90 - 45;
     }
   });
 
