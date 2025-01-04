@@ -57,6 +57,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (new Date().getMonth() === 11 && new Date().getDate() >= 23 && new Date().getDate() <= 31) {
-    topEffect(animateSnow, height='80px', fadeLength=`40px`);
+    topEffect(animateSnow, fadeLength=`40px`);
   }
 });

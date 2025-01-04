@@ -14,7 +14,8 @@ This release also includes:
 
 ## Changelog for 4.3.2snap6:
 
-* Improve confetti animation
+* Hotfix for `media.dir` setting being empty on install
+* Add spinning to confetti animation
 * Hotfix for `mastodon-server.get-certificate` `acme.server` check [4.3.2snap4]
 * It's your Fediday: The day you joined the Fediverse will be celebrated by your instance with a confetti rain! 🎊 [4.3.2snap4]
 * Support [BuyPass](https://buypass.com) SSL CA [4.3.2snap4]

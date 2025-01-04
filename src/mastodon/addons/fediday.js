@@ -66,6 +66,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Set property for other addons to check
     window.fediday = true;
 
-    topEffect(animateConfetti);
+    topEffect(animateConfetti, maxParticlesSmall=35, maxParticlesLarge=70);
   }
 });
