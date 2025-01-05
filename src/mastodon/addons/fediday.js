@@ -14,24 +14,29 @@ const confetti_colors = [
   `rgb(115, 41, 130)`, // violet
 ];
 
+function initConfetto(canvas, confetto={}) {
+  confetto.x = Math.random() * canvas.width;
+  confetto.y = 0;
+  confetto.length = Math.random() * 4 + 10;
+  confetto.angle = Math.random() * 90 - 45;
+  confetto.phase = Math.PI / 2 * Math.random();
+  confetto.speed = Math.random() + 1;
+  confetto.rotationSpeed = Math.random() - 0.5;
+  confetto.phaseSpeed = 2 * Math.PI * Math.random() / canvas.height;
+  confetto.color = confetti_colors[Math.floor(Math.random() * confetti_colors.length)];
+  return confetto;
+}
+
 function animateConfetti(ctx, canvas, confetti, maxConfetti) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  // Add new confetto if we haven't reached the maximum
-  if (confetti.length < maxConfetti && Math.random() < 0.05) {  // 5% chance each frame to add a new confetto
-    confetti.push({
-      x: Math.random() * canvas.width,
-      y: 0,
-      length: Math.random() * 4 + 10,
-      angle: Math.random() * 90 - 45,
-      speed: Math.random() + 1,
-      rotationSpeed: Math.random() * 2 - 1,
-      color: confetti_colors[Math.floor(Math.random() * confetti_colors.length)],
-    });
+
+  // Add new confetto
+  if (confetti.length < maxConfetti && Math.random() < 0.05) { // 5% chance each frame to add a new confetto
+    confetti.push(initConfetto(canvas));
   }
 
   confetti.forEach(confetto => {
-    const confettoPhase = Math.PI * confetto.y / canvas.height * confetto.rotationSpeed * confetto.speed;
-    const confettoWidth = Math.pow(Math.cos(confettoPhase), 2) * confetto.length / 3 + 0.3;
+    const confettoWidth = Math.pow(Math.cos(confetto.phase), 2) * confetto.length / 3 + 0.3;
 
     // Draw confetto
     ctx.save();
@@ -41,14 +46,14 @@ function animateConfetti(ctx, canvas, confetti, maxConfetti) {
     ctx.fillRect(-confettoWidth / 2, -confetto.length / 2, confettoWidth, confetto.length);
     ctx.restore();
 
-    // Update position
-    confetto.x += Math.sin(2 * confettoPhase) / 2;
-    confetto.y += confetto.speed / 2;
-    confetto.angle += confetto.rotationSpeed / 2;
+    // Update position and orientation
     if (confetto.y > canvas.height) {
-      confetto.y = 0;
-      confetto.x = Math.random() * canvas.width;
-      confetto.angle = Math.random() * 90 - 45;
+      confetto = initConfetto(canvas, confetto);
+    } else {
+      confetto.x += Math.sin(2 * Math.PI * confetto.speed * confetto.y / canvas.height) / 2;
+      confetto.y += confetto.speed / 2;
+      confetto.angle += confetto.rotationSpeed;
+      confetto.phase += confetto.phaseSpeed;
     }
   });
 

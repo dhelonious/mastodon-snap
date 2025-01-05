@@ -4,6 +4,15 @@
 import { reduceMotion } from 'mastodon/initial_state';
 import { topEffect } from './effects';
 
+function initFlake(canvas, flake={}) {
+  flake.x = Math.random() * canvas.width;
+  flake.y = 0;
+  flake.radius = Math.random() * 7 + 3;
+  flake.speed = Math.random() * 0.5 + 0.3;
+  flake.opacity = Math.random() * 0.4 + 0.6;
+  return flake;
+}
+
 function animateSnow(ctx, canvas, snowflakes, maxFlakes) {
   // Check for other effects
   if (window.fediday) {
@@ -11,15 +20,9 @@ function animateSnow(ctx, canvas, snowflakes, maxFlakes) {
   }
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Add new snowflake if we haven't reached the maximum
-  if (snowflakes.length < maxFlakes && Math.random() < 0.05) {  // 5% chance each frame to add a new flake
-    snowflakes.push({
-      x: Math.random() * canvas.width,
-      y: 0,  // Start from top
-      radius: Math.random() * 7 + 3,
-      speed: Math.random() * 0.5 + 0.3,
-      opacity: Math.random() * 0.4 + 0.6
-    });
+  // Add new snowflake
+  if (snowflakes.length < maxFlakes && Math.random() < 0.05) { // 5% chance each frame to add a new flake
+    snowflakes.push(initFlake(canvas));
   }
 
   snowflakes.forEach(flake => {
@@ -39,11 +42,11 @@ function animateSnow(ctx, canvas, snowflakes, maxFlakes) {
     ctx.restore();
 
     // Update position
-    flake.x += Math.sin(flake.y / 50) * 0.3;
-    flake.y += flake.speed * 0.5;
     if (flake.y > canvas.height) {
-      flake.y = 0;
-      flake.x = Math.random() * canvas.width;
+      flake = initFlake(canvas, flake);
+    } else {
+      flake.x += Math.sin(flake.y / 50) * 0.3;
+      flake.y += flake.speed * 0.5;
     }
   });
 
