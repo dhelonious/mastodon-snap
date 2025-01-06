@@ -22,7 +22,7 @@ function initConfetto(canvas, confetto={}) {
   confetto.phase = Math.PI / 2 * Math.random();
   confetto.speed = Math.random() + 1;
   confetto.rotationSpeed = Math.random() - 0.5;
-  confetto.phaseSpeed = 2 * Math.PI * Math.random() / canvas.height;
+  confetto.phaseSpeed = Math.PI * Math.random() / canvas.height;
   confetto.color = confetti_colors[Math.floor(Math.random() * confetti_colors.length)];
   return confetto;
 }
@@ -50,7 +50,7 @@ function animateConfetti(ctx, canvas, confetti, maxConfetti) {
     if (confetto.y > canvas.height) {
       confetto = initConfetto(canvas, confetto);
     } else {
-      confetto.x += Math.sin(2 * Math.PI * confetto.speed * confetto.y / canvas.height) / 2;
+      confetto.x += Math.sin(2 * Math.PI * confetto.speed * confetto.y / canvas.height) / confetto.speed;
       confetto.y += confetto.speed / 2;
       confetto.angle += confetto.rotationSpeed;
       confetto.phase += confetto.phaseSpeed;
@@ -71,6 +71,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Set property for other addons to check
     window.fediday = true;
 
-    topEffect(animateConfetti, maxParticlesSmall=35, maxParticlesLarge=70);
+    topEffect(animateConfetti, {maxParticlesSmall: 35, maxParticlesLarge: 70});
   }
 });

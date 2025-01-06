@@ -1,6 +1,6 @@
 // Based on snow addon by Roni Laukkarinen
 // https://github.com/ronilaukkarinen/mastodon/commit/9bf1563
-export function topEffect(animate, height='80px', fadeLength='30px', maxParticlesSmall=25, maxParticlesLarge=50) {
+export function topEffect(animate, {height='80px', fadeLength='30px', maxParticlesSmall=25, maxParticlesLarge=50}={}) {
     const wrapper = document.createElement('div');
     wrapper.classList.add('particles');
     wrapper.style.position = 'fixed';
