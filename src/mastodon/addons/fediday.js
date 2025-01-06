@@ -19,10 +19,10 @@ function initConfetto(canvas, confetto={}) {
   confetto.y = 0;
   confetto.length = Math.random() * 4 + 10;
   confetto.angle = Math.random() * 90 - 45;
-  confetto.phase = Math.PI / 2 * Math.random();
-  confetto.speed = Math.random() + 1;
+  confetto.phase = Math.PI / 4 * Math.random();
+  confetto.speed = 1.3 * Math.random() + 0.9;
   confetto.rotationSpeed = Math.random() - 0.5;
-  confetto.phaseSpeed = Math.PI * Math.random() / canvas.height;
+  confetto.phaseSpeed = (2 * Math.PI * (Math.random() - 0.5) + 0.3) / canvas.height;
   confetto.color = confetti_colors[Math.floor(Math.random() * confetti_colors.length)];
   return confetto;
 }
@@ -36,7 +36,7 @@ function animateConfetti(ctx, canvas, confetti, maxConfetti) {
   }
 
   confetti.forEach(confetto => {
-    const confettoWidth = Math.pow(Math.cos(confetto.phase), 2) * confetto.length / 3 + 0.3;
+    const confettoWidth = Math.pow(Math.cos(confetto.phase * confetto.speed), 2) * (confetto.length / 1.6 - 1) + 1;
 
     // Draw confetto
     ctx.save();
