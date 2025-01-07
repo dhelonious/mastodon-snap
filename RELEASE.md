@@ -8,7 +8,7 @@ This release also includes:
 * ruby 3.3.5
 * nginx 1.27.3
 * postgres 17.2
-* redis 7.4.1
+* redis 7.4.2
 * libvips 8.16.0
 * ffmpeg 7.1
 
@@ -16,6 +16,7 @@ This release also includes:
 
 * Hotfix for `media.dir` setting being empty on install
 * Add spinning to confetti animation
+* Upgrade to redis 7.4.2
 * Hotfix for `mastodon-server.get-certificate` `acme.server` check [4.3.2snap4]
 * It's your Fediday: The day you joined the Fediverse will be celebrated by your instance with a confetti rain! 🎊 [4.3.2snap4]
 * Support [BuyPass](https://buypass.com) SSL CA [4.3.2snap4]

@@ -494,8 +494,8 @@ parts:
     after:
       - redis-customizations
     # NOTE: https://github.com/redis/redis/releases/latest
-    source: https://download.redis.io/releases/redis-7.4.1.tar.gz
-    source-checksum: sha256/bc34b878eb89421bbfca6fa78752343bf37af312a09eb0fae47c9575977dfaa2
+    source: https://download.redis.io/releases/redis-7.4.2.tar.gz
+    source-checksum: sha256/4ddebbf09061cbb589011786febdb34f29767dd7f89dbe712d2b68e808af6a1f
     plugin: make
     override-build: |
       set -eux

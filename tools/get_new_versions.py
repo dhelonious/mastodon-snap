@@ -12,6 +12,7 @@ import requests
 
 parser = argparse.ArgumentParser(description="Get versions of dependencies")
 parser.add_argument("mastodon_version", nargs="?")
+parser.add_argument("-a", "--all", help="Show all versions, even if they are not out of date", action="store_true")
 args = parser.parse_args()
 
 if args.mastodon_version:
@@ -109,7 +110,9 @@ def print_table_header():
     print(f"{'Name':<15} {'Local version':<15} {'New version':<15} SHA256 Checksum")
 
 def print_table(name, local_version, new_version, checksum=""):
-    if version != local_version:
+    if version != local_version or args.all:
+        if version != local_version and args.all:
+            name += "*"
         print(f"{name:<15} {local_version:<15} {new_version:<15} {checksum}")
 
 def sha256_checksum(url):
