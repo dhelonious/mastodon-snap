@@ -18,14 +18,15 @@ For more information, see the latest [release readme](RELEASE.md).
 
 # 🚀 Quickstart
 
+If you're not running Ubuntu, start by [installing the snap daemon](https://snapcraft.io/docs/installing-snapd#without-snap). Then run these commands:
+
     sudo snap install mastodon-server
 
     sudo mastodon-server.setup
+
     sudo mastodon-server.get-certificate
 
-    mastodon-server.tootctl accounts create USERNAME --email admin@example.com --role Owner --confirmed --approve
-
-Congratulations! You are now the owner of your very own Mastodon instance!
+Congratulations! You now have your very own Mastodon instance!
 
 > Note that some usernames such as `admin` and `administrator` are reserved by Mastodon. See below for a complete list.
 
@@ -93,30 +94,26 @@ An initial setup command is required to initialize the database and configuratio
 
     sudo mastodon-server.setup
 
-> Note: Be patient if you have changed the `status.char-limit` or `status.char-counter`, as it takes some time to recompile the assets. Ideally, these values should be changed before setup.
+> Note: Be patient if you have changed the `status.length` as it takes some time to recompile the assets, especially if there is a small amount of RAM available. Ideally these values should be changed before setup. Otherwise you may want to [increase swap space](https://www.baeldung.com/linux/increase-swap-space).
 
-## Create an admin user
+## User names
 
-Once the snap is set up, an administrator account with a randomly generated password can be created using the `tootctl` command:
+During setup, an administrator account is created with a randomly generated password. The username you enter must not be one of the following names reserved by Mastodon
 
-    sudo mastodon-server.tootctl accounts create USERNAME --email admin@example.com --role Owner --confirmed
-
-Your USERNAME must not be one of the following names reserved by Mastodon:
-
-* admin
-* support
-* help
 * root
-* webmaster
+* admin
 * administrator
 * mod
 * moderator
+* support
+* help
+* webmaster
 
 > Note: Be patient, the creation of an account takes some time.
 
 ## SSL
 
-SSL certificates can be obtained via ACME from either [Let's Encrypt](https://letsencrypt.org/) or [ZeroSSL](https://zerossl.com/) (see the `acme.server` setting below):
+SSL certificates can be obtained via ACME from either [Let's Encrypt](https://letsencrypt.org/), [ZeroSSL](https://zerossl.com/) or [BuyPass](https://buypass.com) (see the `acme.server` setting below):
 
     mastodon-server.get-certificate
 
@@ -148,10 +145,9 @@ The following settings are available:
 | `email`               | valid e-mail                  |                        | E-mail address of the owner of the Mastodon instance                                 |
 | `ports.http`          | 0 to 65353                    | 80                     | HTTP port                                                                            |
 | `ports.https`         | 0 to 65353                    | 443                    | HTTPS port                                                                           |
-| `acme.server`         | letsencrypt, zerossl          | letsencrypt            | CA used for acquiring an SSL certificate                                             |
+| `acme.server`         | letsencrypt, zerossl, buypass | letsencrypt            | CA used for acquiring an SSL certificate, see [acme.sh server](https://github.com/acmesh-official/acme.sh/wiki/Server) |
 | `update.backups`      | true, false                   | true                   | Create a backup in `/var/snap/mastodon-server/common/update/backups` before updating |
-| `status.char-limit`   | integer                       | 500                    | Character limit of statuses (toots); changes require recompilation of assets, which takes some time [1] |
-| `status.char-counter` | integer                       | 500                    | Character counter shown for statuses (toots); changes require recompilation of assets, which takes some time [1] |
+| `status.length`       | integer                       | 1000                   | Character limit of statuses (toots); changes require recompilation of assets [1]     |
 | `media.dir`           | absolute path                 | `$SNAP_COMMON/media`   | Location of the media directory (*public/system*)                                    |
 | `backup.dir`          | absolute path                 | `$SNAP_COMMON/backups` | Location of the backup directory                                                     |
 | `backup.days`         | integer                       | 0                      | Create and keep backups for `backup.days` (enabled if > 0)                           |
@@ -168,13 +164,11 @@ The following settings are available:
 | `system.ram`          | integer, auto                 | auto                   | Available RAM in GB                                                                  |
 | `system.ssd`          | true, false                   | true                   | Should be changed if the snap is installed on a slow disk                            |
 
-[1] Setting this value will increase the time it takes for snapcraft to update this snap. This will increase the downtime of your instance.
+[1] Changing this value will increase the time it takes for snapcraft to update this snap. This will increase the downtime of your instance by about 5 minutes.
 
 You can also set multiple values at once using
 
     sudo snap set mastodon-server KEY1=VALUE1 KEY2=VALUE2
-
-> Note: This is particularly useful if you want to change both `status.char-limit` and `status.char-counter`, as the assets only need to be recompiled once.
 
 Configuration files can be used for further customization.
 
@@ -348,6 +342,10 @@ Coming from ~~Twitter~~ X and wanting a familiar look? Then the included [Mastod
 
 > Important: If you have a severe visual impairment, an [accessible version of the Bird UI theme](https://github.com/ronilaukkarinen/mastodon-bird-ui#how-to-install-an-accessible-version-built-for-people-with-serious-vision-impairment) is included by default. This theme is indicated by the phrase ***High contrast++***, which contains ***two plus signs*** and is translated into your selected language. In addition, this theme is marked with the ♿ ***emoji representing a person in a wheelchair*** as the [International Symbol of Access](https://en.wikipedia.org/wiki/International_Symbol_of_Access).
 
+## Tootctl
+
+The command `mastodon-server.tootctl` replaces the `sudo -u mastodon RAILS_ENV=production bin/tootctl` command often found in guides and documentation.
+
 ## Database shell
 
 To access the postgres database shell, use:
@@ -380,13 +378,15 @@ A backup can be restored using the `mastodon-server.restore` command, e. g:
 
     sudo mastodon-server.restore 20230201-010203
 
-> Note: This command has bash completion if your shell supports it.
+If you wish to restore a backup to a fresh installation, you must first run the `mastodon-server.setup` command. The admin account created during setup will be replaced with the backed up account.
 
 > Note: The error messages indicating that some roles already exist can be safely ignored.
 
 If the media cache is lost between export and restore, the [tootctl media refresh command](https://docs.joinmastodon.org/admin/tootctl/#media-refresh) can be used with `--force` to manually restore media files. In general, `--account` is used to restore media attachments from a specific external user. Experts can also use `--status` and restore specific images after retrieving their IDs from the database. Using `--days` a larger amount of media can be restored.
 
 > Note: Changes to `mastodon.conf` may be required when restoring from an older version. Check the changelog and compare the configuration files.
+
+This command has bash completion if your shell supports it.
 
 ## Cleanup media and statuses
 
@@ -427,6 +427,29 @@ Change the `media.dir` settings to your external directory:
     sudo set mastodon-server media.dir=/media/mastodon
 
 You can then remove the old media directory.
+
+
+# 🐣 Addons
+
+## 🎊 It's your Fediday!
+
+![Example of your Fediday celebration in the Mastodon web interface in dark mode](doc/fediday_dark.gif)
+
+![Example of your Fediday celebration in the Mastodon web interface in light mode](doc/fediday_light.gif)
+
+The day you joined the Fediverse will be celebrated by your instance with a rain of confetti! The confetti will only be visible to you when you're logged in.
+
+> Note: This addon respects accessibility settings. It won't be used if you enable the setting *Preferences/Appearance/Reduce motion in animations*.
+
+## ❄️ Let it snow
+
+![Example of snow in the Mastodon web interface with Bird UI (dark)](doc/snow_dark.gif)
+
+![Example of snow in the Mastodon web interface with Bird UI (light)](doc/snow_light.gif)
+
+Around Christmas, winter comes to your Mastodon instance as snowflakes appear at the top of the website! This wonderful addon has been created by [Roni Laukkarinen](https://github.com/ronilaukkarinen).
+
+> Note: This addon respects accessibility settings. It won't be used if you enable the setting *Preferences/Appearance/Reduce motion in animations*.
 
 
 # 🔥 Troubleshooting

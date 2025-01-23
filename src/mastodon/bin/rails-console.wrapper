@@ -5,6 +5,5 @@
 check_root
 check_setup
 
-load_mastodon_env
 echo Waiting for console to start...
 mastodon_rails console "$@"

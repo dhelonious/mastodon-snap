@@ -67,7 +67,8 @@ jobs:
     - uses: actions/checkout@v4
     - uses: ./.github/actions/release
       with:
-        channel: ${{ inputs.channel || needs.build.outputs.channel }}
+        tag: ${{ inputs.tag }}
+        channel: ${{ inputs.channel || needs.build.outputs.channel || 'stable' }}
   publish:
     if: ${{ inputs.channel != 'none' }}
     needs:
@@ -84,5 +85,5 @@ jobs:
     - uses: ./.github/actions/publish
       with:
         snap: ${{ needs.build.outputs[matrix.arch] }}
-        channel: ${{ inputs.channel || needs.build.outputs.channel }}
+        channel: ${{ inputs.channel || needs.build.outputs.channel || 'stable' }}
         SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}

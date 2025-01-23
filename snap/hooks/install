@@ -19,7 +19,6 @@ update_snap_version_file
 
 mkdir -pm 0750 "$SECRET_DIR"
 chown root:$DAEMON_USER "$SECRET_DIR"
-mkdir -pm 0777 "$PID_DIR" "$SOCK_DIR"
 mkdir -p "$UPDATE_DIR" "$UPDATE_BACKUP_DIR" "$DEFAULT_BACKUP_DIR"
 mkdir_for_daemon_user "$CERT_DIR"
 mkdir_for_daemon_user "$DEFAULT_MEDIA_DIR"

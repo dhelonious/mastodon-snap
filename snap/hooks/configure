@@ -15,8 +15,7 @@ export CURRENT_HTTPS_PORT="$(nginx_get_https_port)"
 export CURRENT_NGINX_ACCESS_LOG="$(nginx_get_access_log)"
 export CURRENT_MEDIA_DIR="$(get_media_dir_link)"
 export CURRENT_BACKUP_DIR="$(get_backup_dir_file)"
-export CURRENT_STATUS_MAX_CHARS="$(get_status_max_chars_file)"
-export CURRENT_STATUS_MAX_CHARS_COUNTER="$(get_status_max_chars_counter_file)"
+export CURRENT_STATUS_LENGTH="$(get_status_length_file)"
 
 reset_restart_required redis
 reset_restart_required postgres
@@ -37,8 +36,8 @@ then
 fi
 
 if [ "$MEDIA_DIR" != "$CURRENT_MEDIA_DIR" ]; then
-    snapctl set media.dir="$CURRENT_MEDIA_DIR"
-    export MEDIA_DIR="$CURRENT_MEDIA_DIR"
+    snapctl set media.dir="$MEDIA_DIR"
+    export MEDIA_DIR="$MEDIA_DIR"
 fi
 
 if [ "$BACKUP_DIR" != "$CURRENT_BACKUP_DIR" ]; then
@@ -46,27 +45,16 @@ if [ "$BACKUP_DIR" != "$CURRENT_BACKUP_DIR" ]; then
     update_backup_dir_file
 fi
 
-if [ "$STATUS_MAX_CHARS" != "$CURRENT_STATUS_MAX_CHARS" ]; then
-    if ! is_number "$STATUS_MAX_CHARS"; then
-        echo_error "STATUS.CHAR-LIMIT must be a number! Change the value of STATUS.CHAR-LIMIT to fix this."
+if [ "$STATUS_LENGTH" != "$CURRENT_STATUS_LENGTH" ]; then
+    if ! is_number "$STATUS_LENGTH"; then
+        echo_error "STATUS.LENGTH must be a number! Change the value of STATUS.LENGTH to fix this."
     else
-        echo Update status character limit
-        update_status_max_chars
+        echo Update status length
+        update_status_length
         compilation_required
         restart_required backend
         restart_required sidekiq
-    fi
-fi
-
-if [ "$STATUS_MAX_CHARS_COUNTER" != "$CURRENT_STATUS_MAX_CHARS_COUNTER" ]; then
-    if ! is_number "$STATUS_MAX_CHARS_COUNTER"; then
-        echo_error "STATUS.CHAR-COUNTER must be a number! Change the value of STATUS.CHAR-COUNTER to fix this."
-    else
-        echo Update status character counter
-        update_status_max_chars_counter
-        compilation_required
-        restart_required backend
-        restart_required sidekiq
+        restart_required streaming
     fi
 fi
 

@@ -87,7 +87,6 @@ if [ "$SNAP_VERSION" != "$CURRENT_SNAP_VERSION" ]; then
 
     if mastodon_config_exists; then
         echo Update mastodon config
-        link_mastodon_config
         upgrade_mastodon_config
 
         echo Enable database migrations

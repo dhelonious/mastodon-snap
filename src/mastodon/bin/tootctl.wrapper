@@ -4,5 +4,4 @@
 
 check_setup
 
-load_mastodon_env
 mastodon_tootctl "$@"

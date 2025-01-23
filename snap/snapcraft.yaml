@@ -9,7 +9,7 @@ description: |
   implements ActivityPub!)
 
 base: core24
-version: 4.3.1snap2
+version: 4.3.3snap1
 grade: stable
 confinement: strict
 
@@ -407,8 +407,8 @@ parts:
       - setpriv
       - envsubst
     # NOTE: https://www.postgresql.org/ftp/latest
-    source: https://ftp.postgresql.org/pub/source/v17.0/postgresql-17.0.tar.gz
-    source-checksum: sha256/bf81c0c5161e456a886ede5f1f4133f43af000637e377156a02e7e83569081ad
+    source: https://ftp.postgresql.org/pub/source/v17.2/postgresql-17.2.tar.gz
+    source-checksum: sha256/51d8cdd6a5220fa8c0a3b12f2d0eeb50fcf5e0bdb7b37904a9cdff5cf1e61c36
     plugin: autotools
     build-packages:
       - clang
@@ -455,8 +455,8 @@ parts:
       - nginx-customizations
       - wraplib
     # NOTE: https://nginx.org/en/download.html (mainline version)
-    source: https://nginx.org/download/nginx-1.27.2.tar.gz
-    source-checksum: sha256/a91ecfc3a0b3a2c1413afca627bd886d76e0414b81cad0fb7872a9655a1b25fa
+    source: https://nginx.org/download/nginx-1.27.3.tar.gz
+    source-checksum: sha256/ba23a9568f442036b61cd0e29bd66a47b90634efa91e0b2cf2d719057a9b7903
     plugin: autotools
     build-environment:
       - PATH: $CRAFT_STAGE/nginx/bin:$PATH
@@ -501,8 +501,8 @@ parts:
     after:
       - redis-customizations
     # NOTE: https://github.com/redis/redis/releases/latest
-    source: https://download.redis.io/releases/redis-7.4.1.tar.gz
-    source-checksum: sha256/bc34b878eb89421bbfca6fa78752343bf37af312a09eb0fae47c9575977dfaa2
+    source: https://download.redis.io/releases/redis-7.4.2.tar.gz
+    source-checksum: sha256/4ddebbf09061cbb589011786febdb34f29767dd7f89dbe712d2b68e808af6a1f
     plugin: make
     override-build: |
       set -eux
@@ -522,14 +522,14 @@ parts:
       - acme-customizations
       - curl
     # NOTE: https://github.com/acmesh-official/acme.sh/releases/latest
-    source: https://github.com/acmesh-official/acme.sh/archive/refs/tags/3.0.9.tar.gz
-    source-checksum: sha256/a599e8373cd327fb611362bec6f1bfb0bf65c97b3401c440cfea9304a0f0cb41
+    source: https://github.com/acmesh-official/acme.sh/archive/refs/tags/3.1.0.tar.gz
+    source-checksum: sha256/5bc8a72095e16a1a177d1a516728bbd3436abf8060232d5d36b462fce74447aa
     plugin: dump
     organize:
       "*": acme/
     stage:
-      - -acme/Dockerfile
-      - -acme/README.md
+      - acme/acme.sh
+      - acme/LICENSE.md
 
   acme-customizations:
     after:
@@ -551,13 +551,13 @@ parts:
       set -eux
       case "$SNAP_ARCH" in
       "amd64")
-        source="https://nodejs.org/download/release/latest-v20.x/node-v20.18.0-linux-x64.tar.gz"
-        checksum="24a5d58a1d4c2903478f4b7c3cfd2eeb5cea2cae3baee11a4dc6a1fed25fec6c"
+        source="https://nodejs.org/download/release/latest-v20.x/node-v20.18.1-linux-x64.tar.gz"
+        checksum="259e5a8bf2e15ecece65bd2a47153262eda71c0b2c9700d5e703ce4951572784"
         arch="x64"
         ;;
       "arm64")
-        source="https://nodejs.org/download/release/latest-v20.x/node-v20.18.0-linux-arm64.tar.gz"
-        checksum="38bccb35c06ee4edbcd00c77976e3fad1d69d2e57c3c0c363d1700a2a2493278"
+        source="https://nodejs.org/download/release/latest-v20.x/node-v20.18.1-linux-arm64.tar.gz"
+        checksum="73cd297378572e0bc9dfc187c5ec8cca8d43aee6a596c10ebea1ed5f9ec682b6"
         arch="arm64"
         ;;
       *)
@@ -566,7 +566,7 @@ parts:
         ;;
       esac
       echo Download source
-      curl $source --output $CRAFT_PART_SRC/source.tar.gz
+      curl $source -L -o $CRAFT_PART_SRC/source.tar.gz
       source_checksum=$(sha256sum $CRAFT_PART_SRC/source.tar.gz | cut -d " " -f 1)
       if [ "$source_checksum" != "$checksum" ]; then
         echo "$(tput setaf 1)Expected the digest for source to be $checksum, but it was $source_checksum$(tput sgr0)"
@@ -652,8 +652,8 @@ parts:
 
   libvips:
     # NOTE: https://github.com/libvips/libvips/releases/latest
-    source: https://github.com/libvips/libvips/archive/refs/tags/v8.15.5.tar.gz
-    source-checksum: sha256/bf11abb23da9152241ba52621efe418995c7f315fd0baf2e125323d28efd8780
+    source: https://github.com/libvips/libvips/archive/refs/tags/v8.16.0.tar.gz
+    source-checksum: sha256/d28d7bf7e3f8fa17390c255ace4a05a1c56459e1f6015319f4847ea0733593b3
     plugin: nil
     build-packages:
       - meson
@@ -792,8 +792,8 @@ parts:
       - ffmpeg
       - rsync
     # NOTE: https://github.com/mastodon/mastodon/releases/latest
-    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.3.1.tar.gz
-    source-checksum: sha256/93c0de5ad404dfbf88308f5076b0b67a57cbbeb833bc18e671c14fd5ce38fc19
+    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.3.3.tar.gz
+    source-checksum: sha256/d8c68d2bce5826fa4fbb52b598ad8a95354baaf517cb972eeb4e8600d94de33b
     plugin: nil
     build-packages:
       - git
@@ -810,7 +810,7 @@ parts:
       - libmagic-mgc
       - libssl3t64
     build-environment:
-      - YARN_VERSION: "4.5.1" # NOTE: https://github.com/yarnpkg/berry/releases/latest
+      - YARN_VERSION: "4.6.0" # NOTE: https://github.com/yarnpkg/berry/releases/latest
       - RUBY_BRANCH: "3.3" # NOTE: must be updated with ruby source
       - BUNDLER_VERSION: "2.5.18" # NOTE: see `Gemfile.lock`
       - RAILS_ENV: production
@@ -832,6 +832,7 @@ parts:
       - YARN_CACHE_FOLDER: /tmp/yarn
       - COREPACK_HOME: /tmp/corepack
       - MASTODON_USE_LIBVIPS: "true"
+      - MASTODON_STATUS_LENGTH: 1000
       # NOTE: workaround for current issue (see https://github.com/mastodon/mastodon/releases/tag/v4.3.0-beta.1)
       - BUNDLE_BUILD__CHARLOCK_HOLMES: "--with-cxxflags=-std=c++17"
     # NOTE: fiddle is no longer included in ruby 3.5.0
@@ -857,9 +858,9 @@ parts:
       yarn cache clean
       npm cache clean --force
 
-      sed -ri "s/length\(fulltext\) > maxChars/length(fulltext) > 500/" app/javascript/mastodon/features/compose/components/compose_form.jsx
-      sed -ri "s/length\(fulltext\) > maxChars/length(fulltext) > 500/" app/javascript/mastodon/features/compose/components/compose_form.jsx
-      sed -ri "s/CharacterCounter max=\{maxChars\}/CharacterCounter max={500}/" app/javascript/mastodon/features/compose/components/compose_form.jsx
+      sed -ri "s/length\(fulltext\) > maxChars/length(fulltext) > $MASTODON_STATUS_LENGTH/" app/javascript/mastodon/features/compose/components/compose_form.jsx
+      sed -ri "s/CharacterCounter max=\{maxChars\}/CharacterCounter max={$MASTODON_STATUS_LENGTH}/" app/javascript/mastodon/features/compose/components/compose_form.jsx
+      sed -ri "s/MAX_CHARS = 500/MAX_CHARS = $MASTODON_STATUS_LENGTH/" app/validators/status_length_validator.rb
       cp -rf $CRAFT_PART_BUILD $CRAFT_PART_INSTALL/mastodon
     stage:
       - -mastodon/dist
@@ -902,13 +903,27 @@ parts:
     organize:
       config/*: config/mastodon/
 
+  mastodon-addons:
+    after:
+      - mastodon
+    plugin: nil
+    build-environment:
+      - MASTODON_JS: $CRAFT_STAGE/mastodon/app/javascript
+    override-build: |
+      set -eux
+      mkdir -p $MASTODON_JS/mastodon/addons
+      cp $CRAFT_STAGE/addons/*.js $MASTODON_JS/mastodon/addons/
+      for name in snow fediday; do
+        sed -i "1s|^|import * as $name from 'mastodon/addons/$name';\n|" $MASTODON_JS/mastodon/common.js
+      done
+
   bird-ui:
     after:
       - curl
       - mastodon
     plugin: nil
     build-environment:
-      - BIRD_UI_TAG: 2.0.4 # NOTE: https://github.com/ronilaukkarinen/mastodon-bird-ui/releases/latest
+      - BIRD_UI_TAG: 2.1.1 # NOTE: https://github.com/ronilaukkarinen/mastodon-bird-ui/releases/latest
       - MASTODON_STYLES: $CRAFT_STAGE/mastodon/app/javascript/styles
     override-build: |
       set -eux
@@ -942,7 +957,7 @@ parts:
       - mastodon
     plugin: nil
     build-environment:
-      - TANGERINE_UI_TAG: 2.2 # NOTE: https://github.com/nileane/TangerineUI-for-Mastodon/releases/latest
+      - TANGERINE_UI_TAG: 2.3 # NOTE: https://github.com/nileane/TangerineUI-for-Mastodon/releases/latest
       - MASTODON_STYLES: $CRAFT_STAGE/mastodon/app/javascript/styles
     override-build: |
       set -eux
@@ -968,6 +983,7 @@ parts:
   mastodon-precompile:
     after:
       - mastodon
+      - mastodon-addons
       - bird-ui
       - tangerine-ui
     plugin: nil
@@ -994,7 +1010,7 @@ parts:
     override-build: |
       set -eux
       cd $CRAFT_STAGE/mastodon
-      bundle exec rails assets:precompile
+      bundle exec rails assets:precompile --trace
       bundle exec rails log:clear tmp:clear
 
   cleanup:
