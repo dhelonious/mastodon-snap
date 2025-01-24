@@ -4,7 +4,7 @@ See the release notes for Mastodon: https://github.com/mastodon/mastodon/release
 
 This release also includes:
 
-* node 20.18.1
+* node 20.18.2
 * ruby 3.3.5
 * nginx 1.27.3
 * postgres 17.2
@@ -12,7 +12,7 @@ This release also includes:
 * libvips 8.16.0
 * ffmpeg 7.1
 
-Changelog for 4.3.3snap2:
+Changelog for 4.3.3snap3:
 
 * Improve security of nginx
 * Add debug mode and `mastodon-server.debug-report` command
