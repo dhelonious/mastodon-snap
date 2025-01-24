@@ -160,8 +160,8 @@ The following settings are available:
 | `cleanup.accounts`    | true, false                   | false                  | Cleanup user accounts, see [tootctl accounts delete](https://docs.joinmastodon.org/admin/tootctl/#accounts-delete) |
 | `log.access.enabled`  | true, false                   | false                  | Logging of http(s) accesses                                                          |
 | `log.access.format`   | standard, anonymized, privacy | anonymized             | Use of real/anonymized/no IP addresses in the access log                             |
-| `system.cpu`          | integer, auto                 | auto                   | Number of CPU cores available                                                        |
-| `system.ram`          | integer, auto                 | auto                   | Available RAM in GB                                                                  |
+| `system.cpu`          | integer, auto                 | 4                      | Number of CPU cores available (`auto` will try to determine the number of CPU cores) |
+| `system.ram`          | integer, auto                 | 4                      | Available RAM in GB (`auto` will try to determine the amount of RAM)                 |
 | `system.ssd`          | true, false                   | true                   | Should be changed if the snap is installed on a slow disk                            |
 
 [1] Changing this value will increase the time it takes for snapcraft to update this snap. This will increase the downtime of your instance by about 5 minutes.
