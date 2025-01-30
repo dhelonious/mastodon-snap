@@ -145,7 +145,7 @@ def minor(version):
 
 table = []
 for name, settings in dependencies.items():
-    print(f"Cecking {name}...")
+    print(f"Checking {name}...")
 
     r = requests.get(settings["url"], timeout=10)
     print_verbose(f"{settings['url']} -> {r.status_code}")
