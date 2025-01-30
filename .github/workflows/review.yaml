@@ -59,10 +59,10 @@ jobs:
           existing_issue=$(gh search issues --match title "$title" --json number,title --jq ".[] | select(.title == \"$title\")")
           if [ -z "$existing_issue" ]; then
             echo -e "\033[33mCreating new GitHub issue\033[0m"
-            gh issue create --title "$title" --body "$body" --label security
+            gh issue create --title "$title" --body "$(echo -e "$body")" --label security
           else
             issue_number=$(echo "$existing_issue" | jq -r ".number")
             echo -e "\033[33mAdd comment to existing GitHub issue $issue_number\033[0m"
-            gh issue comment "$issue_number" --body "$body"
+            gh issue comment "$issue_number" --body "$(echo -e "$body")"
           fi
         fi
