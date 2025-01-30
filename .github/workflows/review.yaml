@@ -2,7 +2,7 @@ name: review
 run-name: Review snap
 on:
   schedule:
-    - cron: "@daily"
+    - cron: "0 0 * * *"
   workflow_dispatch:
     inputs:
       tag:
