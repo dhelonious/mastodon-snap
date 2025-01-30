@@ -12,6 +12,6 @@ This release also includes:
 * libvips 8.16.0
 * ffmpeg 7.1
 
-Changelog for 4.3.3snap2:
+Changelog for 4.3.3snap3:
 
-* Upgrade to node 20.18.2
+* Use bird-ui-accessible-plus theme with increased font size.
