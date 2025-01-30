@@ -1,0 +1,54 @@
+name: review
+run-name: Review snap
+on:
+  schedule:
+    - cron: "@daily"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Tag
+        required: false
+        type: string
+jobs:
+  review:
+    runs-on: ${{ matrix.builder }}
+    strategy:
+      matrix:
+        include:
+          - builder: ubuntu-latest
+            arch: amd64
+    steps:
+    - name: install dependencies
+      shell: bash
+      run: |
+        sudo apt install jq -y
+        sudo snap install review-tools
+    - name: download snap
+      uses: robinraju/release-downloader@v1
+      with:
+        latest: true
+        tag: ${{ inputs.ref }}
+        fileName: "mastodon-server_*_amd64.snap"
+    - name: check notices
+      shell: bash
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GH_REPO: ${{ github.repository }}
+      run: |
+        review_results=$(review-tools.check-notices ./mastodon-server_*_amd64.snap)
+        version=$(echo "$json_output" | jq -r '.["mastodon-server"] | keys[0]')
+        packages=$(echo "$json_output" | jq -r ".\"mastodon-server\".\"$version\"")
+        body=""
+        if [ "$packages" != "{}" ]; then
+          for package in $(echo "$packages" | jq -r 'keys[]'); do
+            body="$body**$package**:\n"
+            usns=$(echo "$packages" | jq -r ".\"$package\"[]")
+            for usn in $usns; do
+              body="$body- http://ubuntu.com/security/notices/$usn\n"
+            done
+          done
+          title="Vulnerabilities found for release $version"
+          if [ -z "$(gh search issues --match title "$title")" ]; then
+            gh issue create --title "$title" --body "$body" --label security
+          fi
+        fi
