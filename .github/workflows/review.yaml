@@ -50,7 +50,7 @@ jobs:
         if [ "$packages" != "{}" ]; then
           echo -e "\033[31m$title\033[0m"
           for package in $(echo "$packages" | jq -r 'keys[]'); do
-            body="$body### $package**\n"
+            body="$body### $package\n"
             usns=$(echo "$packages" | jq -r ".\"$package\"[]")
             for usn in $usns; do
               body="$body- http://ubuntu.com/security/notices/$usn\n"
