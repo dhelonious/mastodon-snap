@@ -151,7 +151,7 @@ The following settings are available:
 | `cleanup.orphans`     | true, false                   | false                  | Cleanup orphaned media files, see [tootctl media remove-orphans](https://docs.joinmastodon.org/admin/tootctl/#media-remove-orphans) |
 | `cleanup.accounts`    | true, false                   | false                  | Cleanup user accounts, see [tootctl accounts delete](https://docs.joinmastodon.org/admin/tootctl/#accounts-delete) |
 | `log.access.enabled`  | true, false                   | false                  | Logging of http(s) accesses                                                          |
-| `log.access.format`   | standard, anonymized, privacy | anonymized             | Use of real/anonymized/no IP addresses in the access log                             |
+| `log.access.format`   | standard, network, private    | network                | Use of real/network/no IP addresses in the access log                                |
 
 [1] Changing this value will increase the time it takes for snapcraft to update this snap. This will increase the downtime of your instance by about 5 minutes.
 
