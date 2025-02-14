@@ -1,4 +1,5 @@
 #!/bin/bash
+# Build snap locally with improved output
 
 NAME=$(sed -rn "s/^name: (.+)$/\1/p" snap/snapcraft.yaml)
 VERSION=$(sed -rn "s/^version: (.+)$/\1/p" snap/snapcraft.yaml)
