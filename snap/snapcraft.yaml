@@ -27,7 +27,7 @@ system-usernames:
 
 environment:
   PATH: $SNAP/bin:$SNAP/usr/bin:$PATH
-  LD_LIBRARY_PATH: $SNAP/lib:$LD_LIBRARY_PATH
+  LD_LIBRARY_PATH: $SNAP/lib
   LD_PRELOAD: libjemalloc.so.2
   RUBYLIB: $SNAP/ruby/lib/ruby/3.3.0:$SNAP/ruby/lib/ruby/3.3.0/$SNAP_ARCH
   RAILS_ENV: production
@@ -417,7 +417,7 @@ parts:
       - libicu74
     build-environment:
       - PATH: $CRAFT_STAGE/postgres/bin:$PATH
-      - LD_LIBRARY_PATH: $CRAFT_STAGE/postgres/lib:$LD_LIBRARY_PATH
+      - LD_LIBRARY_PATH: $CRAFT_STAGE/postgres/lib
       - CC: clang
       - CXX: clang++
     override-build: |
@@ -454,7 +454,7 @@ parts:
     plugin: autotools
     build-environment:
       - PATH: $CRAFT_STAGE/nginx/bin:$PATH
-      - LD_LIBRARY_PATH: $CRAFT_STAGE/nginx/lib:$LD_LIBRARY_PATH
+      - LD_LIBRARY_PATH: $CRAFT_STAGE/nginx/lib
     build-packages:
       - build-essential
       - libpcre3-dev
@@ -537,7 +537,7 @@ parts:
     plugin: nil
     build-environment:
       - PATH: $CRAFT_STAGE/node/bin:$PATH
-      - LD_LIBRARY_PATH: $CRAFT_STAGE/node/lib:$LD_LIBRARY_PATH
+      - LD_LIBRARY_PATH: $CRAFT_STAGE/node/lib
     # NOTE: source see `Vagrantfile`
     override-build: |
       craftctl default
@@ -814,7 +814,7 @@ parts:
       - ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT: precompile_placeholder
       - ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY: precompile_placeholder
       - PATH: $CRAFT_STAGE/ruby/bin:$CRAFT_STAGE/node/bin:$CRAFT_STAGE/libvips/bin:$PATH
-      - LD_LIBRARY_PATH: $CRAFT_STAGE/ruby/lib:$CRAFT_STAGE/node/lib:$CRAFT_STAGE/libvips/lib:$LD_LIBRARY_PATH
+      - LD_LIBRARY_PATH: $CRAFT_STAGE/ruby/lib:$CRAFT_STAGE/node/lib:$CRAFT_STAGE/libvips/lib
       - RUBYLIB: $CRAFT_STAGE/ruby/lib/ruby/$RUBY_BRANCH.0:$CRAFT_STAGE/ruby/lib/ruby/$RUBY_BRANCH.0/$SNAP_ARCH
       - BUNDLE_PATH: $CRAFT_PART_BUILD/vendor/bundle
       - BUNDLE_GEMFILE: $CRAFT_PART_BUILD/Gemfile
@@ -887,7 +887,7 @@ parts:
       set -eux
       rm -rf $CRAFT_STAGE/mastodon/tmp
       rm -rf $CRAFT_STAGE/mastodon/node_modules/.cache
-      LD_LIBRARY_PATH=$CRAFT_STAGE/lib:$LD_LIBRARY_PATH \
+      LD_LIBRARY_PATH=$CRAFT_STAGE/lib \
         rsync -ac $CRAFT_STAGE/mastodon $CRAFT_PRIME
 
   mastodon-customizations:
@@ -984,7 +984,7 @@ parts:
       - RUBY_BRANCH: "3.3" # NOTE: must be updated with ruby source
       - RUBYLIB: $CRAFT_STAGE/ruby/lib/ruby/$RUBY_BRANCH.0:$CRAFT_STAGE/ruby/lib/ruby/$RUBY_BRANCH.0/$SNAP_ARCH
       - PATH: $CRAFT_STAGE/mastodon/bin:$CRAFT_STAGE/ruby/bin:$CRAFT_STAGE/node/bin:$PATH
-      - LD_LIBRARY_PATH: $CRAFT_STAGE/mastodon/lib:$CRAFT_STAGE/ruby/lib:$CRAFT_STAGE/node/lib:$LD_LIBRARY_PATH
+      - LD_LIBRARY_PATH: $CRAFT_STAGE/mastodon/lib:$CRAFT_STAGE/ruby/lib:$CRAFT_STAGE/node/lib
       - RAILS_ENV: production
       - NODE_ENV: production
       - BUNDLE_PATH: $CRAFT_STAGE/mastodon/vendor/bundle
