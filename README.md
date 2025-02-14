@@ -13,7 +13,7 @@ Supported architectures:
 
 * amd64
 
-For more information, see the latest [release readme](RELEASE.md) and [docs/faq.md](docs/faq.md).
+For more information, see the latest [release readme](RELEASE.md) or the [FAQ](docs/faq.md).
 
 
 # 🚀 Quickstart
@@ -39,17 +39,15 @@ If you prefer, you can also install the snap directly from the command line:
 
     sudo snap install mastodon-server
 
-A common criticism of snaps is their dependence on Canonical. However, it is possible to install snaps offline and also build them directly from source.
+A common criticism of snaps is their dependence on Canonical. However, it is possible to install snaps offline and also build them locally directly from source. See the [build instructions](docs/build.md) for how to do this.
 
 ## Install from a snap file
 
-Download a snap file of the desired `VERSION` (e.g. `4.2.4snap1`) and `ARCH` (e.g. `amd64`). It can be installed using:
+Download a snap file from the [releases page](https://github.com/dhelonious/mastodon-snap/releases) and install it using:
 
     sudo snap install mastodon-server_VERSION_ARCH.snap --dangerous
 
-> Note: In this context *dangerous* means that the local snap file is unsigned.
-
-See [docs/build.md](docs/build.md) for instructions on how to build the snap file yourself locally.
+> Note: In this context *dangerous* means that the snap file is not signed. This is normal for snaps built and distributed outside the snap store.
 
 ## Updates
 
@@ -95,17 +93,17 @@ SSL certificates can be obtained via ACME from either [Let's Encrypt](https://le
 
     mastodon-server.get-certificate
 
-Use the `acme.server` setting to chose the CA (see [docs/configuration.md](docs/configuration.md)).
+Use the `acme.server` setting to select the CA (see the [configuration docs](docs/configuration.md)).
 
 > Note: `get-certificate` will automatically enable HTTPS on port `ports.https`.
 
 > Note: HTTP is no longer supported in production. Mastodon will always serve https:// links.
 
-See [docs/certificates.md](docs/certificates.md) for advanced certificate topics.
+See the [certificates docs](docs/certificates.md) for advanced certificate topics.
 
 ## Backups
 
-See [docs/backups.md](docs/backups.md).
+Read the [backups guide](docs/backups.md) to learn how to export and restore your Mastodon server.
 
 ## Themes
 
@@ -116,12 +114,18 @@ Coming from ~~Twitter~~ X and wanting a familiar look? Then the included [Mastod
 
 # ⚙️ Configuration
 
-See [docs/configuration.md](docs/configuration.md).
+The command
+
+    mastodon-server.tootctl
+
+replaces the `sudo -u mastodon RAILS_ENV=production bin/tootctl` command often found in guides and documentations.
+
+See the [configuration docs](docs/configuration.md) for a complete overview of the configuration variables and other commands.
 
 
-# 🛠️ Usage
+# 🚧 Maintenance
 
-See [docs/usage.md](docs/usage.md).
+Read the [maintenance guide](docs/maintenance.md) to learn how to access the database shell and perform other maintenance tasks on your instance.
 
 
 # 🐣 Addons
@@ -149,7 +153,7 @@ Around Christmas, winter comes to your Mastodon instance as snowflakes appear at
 
 # 🔥 Troubleshooting
 
-See [docs/troubleshooting.md](docs/troubleshooting.md).
+If you encounter a problem, check if it has already been solved in the [troubleshooting guide](docs/troubleshooting.md). Otherwise, open a new [issue on GitHub](https://github.com/dhelonious/mastodon-snap/issues).
 
 
 # 🔗 Resources

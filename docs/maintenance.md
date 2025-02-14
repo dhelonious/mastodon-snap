@@ -1,8 +1,4 @@
-# 🛠️ Usage
-
-## Tootctl
-
-The command `mastodon-server.tootctl` replaces the `sudo -u mastodon RAILS_ENV=production bin/tootctl` command often found in guides and documentation.
+# 🚧 Maintenance
 
 ## Database shell
 
@@ -41,19 +37,3 @@ A vapid key can be generated using:
 The database encryption keys can be generated using:
 
     mastodon-server.generate-db-encryption-keys
-
-## External media storage
-
-The media directory can grow quickly, depending on how busy your server is. To move the media directory to an external volume mounted under `/media` or `/mnt`, you must first allow snap access to external media:
-
-    sudo snap connect mastodon-server:removable-media
-
-If the default media dir `/var/snap/mastodon-server/common/media` already contains files, you can transfer them to your external directory:
-
-    sudo rsync -a /var/snap/mastodon-server/common/media /media/mastodon
-
-Change the `media.dir` settings to your external directory:
-
-    sudo set mastodon-server media.dir=/media/mastodon
-
-You can then remove the old media directory.

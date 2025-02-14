@@ -30,4 +30,4 @@ This command has bash completion if your shell supports it.
 
 ## Automatic backups
 
-To enable automatic backups on a daily basis, you need to set the `backup.days` variable (see [configuration.md](configuration.md)).
+To enable automatic backups on a daily basis, you need to set the `backup.days` variable (see the [configuration docs](configuration.md)).

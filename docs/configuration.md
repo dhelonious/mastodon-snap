@@ -185,3 +185,19 @@ Here is a sample configuration for an nginx reverse proxy:
             proxy_set_header Connection "Upgrade";
         }
     }
+
+## External media storage
+
+The media directory can grow quickly, depending on how busy your server is. To move the media directory to an external volume mounted under `/media` or `/mnt`, you must first allow snap access to external media:
+
+    sudo snap connect mastodon-server:removable-media
+
+If the default media dir `/var/snap/mastodon-server/common/media` already contains files, you can transfer them to your external directory:
+
+    sudo rsync -a /var/snap/mastodon-server/common/media /media/mastodon
+
+Change the `media.dir` settings to your external directory:
+
+    sudo set mastodon-server media.dir=/media/mastodon
+
+You can then remove the old media directory.
