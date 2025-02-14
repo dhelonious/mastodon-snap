@@ -9,7 +9,7 @@ description: |
   implements ActivityPub!)
 
 base: core24
-version: 4.3.3snap2
+version: 4.3.3snap3
 grade: stable
 confinement: strict
 
@@ -401,8 +401,8 @@ parts:
       - setpriv
       - envsubst
     # NOTE: https://www.postgresql.org/ftp/latest
-    source: https://ftp.postgresql.org/pub/source/v17.2/postgresql-17.2.tar.gz
-    source-checksum: sha256/51d8cdd6a5220fa8c0a3b12f2d0eeb50fcf5e0bdb7b37904a9cdff5cf1e61c36
+    source: https://ftp.postgresql.org/pub/source/v17.3/postgresql-17.3.tar.gz
+    source-checksum: sha256/0229bb3352126771b89a4abee5930b5dc881870cf23ff0fc8c6cc901cb9d5e56
     plugin: autotools
     build-packages:
       - clang
@@ -449,8 +449,8 @@ parts:
       - nginx-customizations
       - wraplib
     # NOTE: https://nginx.org/en/download.html (mainline version)
-    source: https://nginx.org/download/nginx-1.27.3.tar.gz
-    source-checksum: sha256/ba23a9568f442036b61cd0e29bd66a47b90634efa91e0b2cf2d719057a9b7903
+    source: https://nginx.org/download/nginx-1.27.4.tar.gz
+    source-checksum: sha256/294816f879b300e621fa4edd5353dd1ec00badb056399eceb30de7db64b753b2
     plugin: autotools
     build-environment:
       - PATH: $CRAFT_STAGE/nginx/bin:$PATH
@@ -544,13 +544,13 @@ parts:
       set -eux
       case "$SNAP_ARCH" in
       "amd64")
-        source="https://nodejs.org/download/release/latest-v20.x/node-v20.18.2-linux-x64.tar.gz"
-        checksum="eb5b031bdd728871c3b9a82655dbfa533bc262c0b6da1d09a86842430cef07d4"
+        source="https://nodejs.org/download/release/latest-v20.x/node-v20.18.3-linux-x64.tar.gz"
+        checksum="9fc3952da39b20d1fcfdb777b198cc035485afbbb1004b4df93f35245d61151e"
         arch="x64"
         ;;
       "arm64")
-        source="https://nodejs.org/download/release/latest-v20.x/node-v20.18.2-linux-arm64.tar.gz"
-        checksum="319789e8a055ff80793a05e633c8c5c9226050144a09da3747225b4ec56a2a99"
+        source="https://nodejs.org/download/release/latest-v20.x/node-v20.18.3-linux-arm64.tar.gz"
+        checksum="93a9df19238adfaa289f4784041d03edaf2fdd89fbb247faffca2fe4a1000703"
         arch="arm64"
         ;;
       *)
