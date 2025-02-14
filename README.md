@@ -26,9 +26,11 @@ If you're not running Ubuntu, start by [installing the snap daemon](https://snap
 
     sudo mastodon-server.get-certificate
 
-Congratulations! You now have your very own Mastodon instance!
+🥳 Congratulations! You now have your very own Mastodon instance! 🎉
 
-> Note that some usernames such as `admin` and `administrator` are reserved by Mastodon. See below for a complete list.
+> Note that an administrator account with a randomly generated password is created during setup. Some usernames such as `admin` and `administrator` are reserved by Mastodon. See the [FAQ](docs/faq.md) for a full list.
+
+> Note: Be patient, the creation of an account takes some time.
 
 
 # 📦 Installation
@@ -71,21 +73,6 @@ An initial setup command is required to initialize the database and configuratio
     sudo mastodon-server.setup
 
 > Note: Be patient if you have changed the `status.length` as it takes some time to recompile the assets, especially if there is a small amount of RAM available. Ideally these values should be changed before setup. Otherwise you may want to [increase swap space](https://www.baeldung.com/linux/increase-swap-space).
-
-## User names
-
-During setup, an administrator account is created with a randomly generated password. The username you enter must not be one of the following names reserved by Mastodon
-
-* root
-* admin
-* administrator
-* mod
-* moderator
-* support
-* help
-* webmaster
-
-> Note: Be patient, the creation of an account takes some time.
 
 ## SSL
 
