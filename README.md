@@ -24,8 +24,6 @@ If you're not running Ubuntu, start by [installing the snap daemon](https://snap
 
     sudo mastodon-server.setup
 
-    sudo mastodon-server.get-certificate
-
 🥳 Congratulations! You now have your very own Mastodon instance! 🎉
 
 > Note that an administrator account with a randomly generated password is created during setup. Some usernames such as `admin` and `administrator` are reserved by Mastodon. See the [FAQ](docs/faq.md) for a full list.
@@ -76,7 +74,7 @@ An initial setup command is required to initialize the database and configuratio
 
 ## SSL
 
-SSL certificates can be obtained via ACME from either [Let's Encrypt](https://letsencrypt.org/), [ZeroSSL](https://zerossl.com/) or [BuyPass](https://buypass.com):
+SSL certificates can be obtained via ACME from either [Let's Encrypt](https://letsencrypt.org/), [ZeroSSL](https://zerossl.com/) or [BuyPass](https://buypass.com). This is done either during `mastodon-server.setup` or by using:
 
     mastodon-server.get-certificate
 

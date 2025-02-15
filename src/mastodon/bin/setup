@@ -4,6 +4,7 @@
 . "$SNAP/postgres.env"
 . "$SNAP/redis.env"
 . "$SNAP/nginx.env"
+. "$SNAP/acme.env"
 
 check_root
 
@@ -12,7 +13,7 @@ if mastodon_config_exists; then
     exit 0
 fi
 
-while getopts "d:u:m:h" OPTION; do
+while getopts "d:u:m:c:s:h" OPTION; do
     case "$OPTION" in
     d)
         if is_domain "$OPTARG"; then
@@ -37,8 +38,26 @@ while getopts "d:u:m:h" OPTION; do
             echo "Invalid email '$OPTARG'"
         fi
         ;;
+    c)
+        case "$OPTARG" in
+            true|yes)
+                GET_CERTIFICATE=true
+                ;;
+            false|no)
+                GET_CERTIFICATE=false
+                ;;
+        esac
+        ;;
+    s)
+        if is_acme_server "$OPTARG"; then
+            snapctl set acme.server="$OPTARG"
+            export ACME_SERVER="$OPTARG"
+        else
+            echo "Invalid ACME server '$OPTARG'"
+        fi
+        ;;
     h)
-        echo "Usage: $SNAP_NAME.setup [-d DOMAIN] [-u USERNAME] [-m EMAIL]"
+        echo "Usage: $SNAP_NAME.setup [-d DOMAIN] [-u USERNAME] [-m EMAIL] [-c GET_CERTIFICATE] [-s SERVER]"
         exit 0
         ;;
     esac
@@ -67,6 +86,18 @@ fi
 
 echo Create admin account
 $SNAP/bin/tootctl.wrapper accounts create "$USERNAME" --email "$EMAIL" --role Owner --confirmed --approve
+
+if [ -z "$GET_CERTIFICATE" ]; then
+    if confirm "Get a certificate now?"; then
+        GET_CERTIFICATE=true
+    fi
+fi
+if [ "$GET_CERTIFICATE" == true ]; then
+    if ! [ -z "$SERVER" ]; then
+        SERVER_FLAG="-s $SERVER"
+    fi
+    $SNAP/bin/get-certificate -d $DOMAIN -m $EMAIL $SERVER_FLAG
+fi
 
 $SNAP/bin/recompile_if_required
 
