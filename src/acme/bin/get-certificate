@@ -33,7 +33,7 @@ while getopts "d:m:s:h" OPTION; do
         fi
         ;;
     h)
-        echo "Usage: $SNAP_NAME.get-certificate -d DOMAIN -m EMAIL"
+        echo "Usage: $SNAP_NAME.get-certificate [-d DOMAIN] [-m EMAIL]"
         exit 0
         ;;
     esac
