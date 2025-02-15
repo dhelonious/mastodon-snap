@@ -69,6 +69,19 @@ get_username
 get_email
 get_status_length
 
+if [ -z "$GET_CERTIFICATE" ]; then
+    if confirm "Get an SSL certificate?"; then
+        GET_CERTIFICATE=true
+    fi
+fi
+
+if [ "$STATUS_LENGTH" != "$(get_status_length_file)" ]; then
+    echo Update status character limit
+    update_status_length
+    compilation_required
+fi
+$SNAP/bin/recompile_if_required
+
 echo Create config
 generate_mastodon_secrets
 copy_mastodon_config
@@ -78,28 +91,16 @@ create_mastodon_database
 mastodon_rails db:setup > /dev/null
 $SNAP/bin/psql.wrapper -d "$MASTODON_DBNAME" -c "create extension pg_stat_statements;" > /dev/null
 
-if [ "$STATUS_LENGTH" != "$(get_status_length_file)" ]; then
-    echo Update status character limit
-    update_status_length
-    compilation_required
-fi
-
-echo Create admin account
-$SNAP/bin/tootctl.wrapper accounts create "$USERNAME" --email "$EMAIL" --role Owner --confirmed --approve
-
-if [ -z "$GET_CERTIFICATE" ]; then
-    if confirm "Get a certificate now?"; then
-        GET_CERTIFICATE=true
-    fi
-fi
 if [ "$GET_CERTIFICATE" == true ]; then
+    echo Get certificate
     if ! [ -z "$SERVER" ]; then
         SERVER_FLAG="-s $SERVER"
     fi
     $SNAP/bin/get-certificate -d $DOMAIN -m $EMAIL $SERVER_FLAG
 fi
 
-$SNAP/bin/recompile_if_required
+echo Create admin account
+$SNAP/bin/tootctl.wrapper accounts create "$USERNAME" --email "$EMAIL" --role Owner --confirmed --approve
 
 echo Restart services
 snapctl restart "$SNAP_NAME.backend"
