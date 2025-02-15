@@ -239,8 +239,6 @@ apps:
 
   get-certificate:
     command: bin/get-certificate
-    environment:
-      OPENSSL_CONF: /dev/null
     plugs:
       - network
       - network-bind
