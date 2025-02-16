@@ -20,7 +20,7 @@ jobs:
     steps:
     - name: install review-tools
       shell: bash
-      run: sudo snap install review-tools
+      run: sudo snap install review-tools --classic
     - name: download snap
       uses: robinraju/release-downloader@v1
       with:
@@ -34,10 +34,8 @@ jobs:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GH_REPO: ${{ github.repository }}
       run: |
-        snap_file=$(basename "${{ fromJson(steps.download.outputs.downloaded_files)[0] }}")
-        sudo mv $snap_file /root/
-        sudo chown root "/root/$snap_file"
-        review_results=$(sudo review-tools.check-notices /root/$snap_file)
+        snap_file="${{ fromJson(steps.download.outputs.downloaded_files)[0] }}"
+        review_results=$(sudo review-tools.check-notices $snap_file)
         version=$(echo "$review_results" | jq -r '.["mastodon-server"] | keys[0]')
         if [ -z "$version" ]; then
           echo -e "\033[31mVersion not found\033[0m"
