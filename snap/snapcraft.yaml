@@ -878,6 +878,7 @@ parts:
       - -mastodon/.rubocop*
       - -mastodon/stylelint.config.js
       - -mastodon/.*lint*
+      - -mastodon/.github
       - -mastodon/Aptfile
       - -mastodon/node_modules/*/prebuilds/win32-*
     override-prime: |
