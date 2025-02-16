@@ -64,3 +64,34 @@ jobs:
             gh issue comment "$issue_number" --body "$(echo -e "$body")"
           fi
         fi
+    - uses: actions/upload-artifact@v4
+      with:
+        name: ${{ fromJson(steps.download.outputs.downloaded_files)[0] }}
+        path: ${{ fromJson(steps.download.outputs.downloaded_files)[0] }}
+        retention-days: 1
+        overwrite: true
+    - run: echo "${{ matrix.arch }}=$snap_file" >> $GITHUB_OUTPUT
+      id: snap
+    outputs:
+      amd64: ${{ steps.snap.outputs.amd64 }}
+  scan:
+    needs: review
+    runs-on: ${{ matrix.builder }}
+    strategy:
+      matrix:
+        include:
+          - builder: ubuntu-latest
+            arch: amd64
+    steps:
+    - uses: actions/checkout@v4
+    - uses: ./.github/actions/scan
+      with:
+        snap: ${{ needs.review.outputs[matrix.arch] }}
+
+
+# TODO: fix selection for redis-server
+# snap install syft --classic
+# snap install grype --classic
+# unsquashfs $snap_file
+# syft scan dir:squashfs-root -o json | jq '[.artifacts[] | select(.name=="node" or .name=="yarn" or .name=="postgresql" or .name=="nginx" or .metadata.matches[].location.path=="/redis/bin/redis-server" or .name=="logrotate" or .name=="libvips" or .name=="ffmpeg")] | unique | sort' > sbom.json
+# grype sbom:sbom.json -o json > vulnerabilities.json
