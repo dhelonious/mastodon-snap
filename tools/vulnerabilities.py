@@ -8,7 +8,7 @@ import re
 import argparse
 import requests
 
-from pkg_resources import parse_version as vers
+from packaging.version import parse as vers
 from util import (
     dependencies_regexes,
     read_snapcraft_yaml,
@@ -30,13 +30,19 @@ def print_silent(*line):
     if not args.silent:
         print(*line)
 
-# TODO: Implement markdown table
 def print_table_header():
-    print(f"{'Name':<15} {'Local version':<15} {'Fixed version':<15} {'Severity':<10} CVEs")
+    if args.markdown:
+        print("| Name | Local version | Fixed version | Severity | CVEs |")
+        print("| :--- | :---: | :---: | :---: | :--- |")
+    else:
+        print(f"{'Name':<15} {'Local version':<15} {'Fixed version':<15} {'Severity':<10} CVEs")
+        print(f"{'='*15} {'='*15} {'='*15} {'='*10} {'='*20}")
 
-# TODO: Implement markdown table
 def print_table(name, version, fixed, severity, cves, **kwargs):
-    print(f"{name:<15} {version:<15} {fixed:<15} {severity:<10} {', '.join(cves)}")
+    if args.markdown:
+        print(f"| {' | '.join([name, version, fixed, severity, ', '.join(cves)])} |")
+    else:
+        print(f"{name:<15} {version:<15} {fixed:<15} {severity:<10} {', '.join(cves)}")
 
 def get_vulnerabilities(name, version):
     url = "https://api.osv.dev/v1/query"
@@ -110,13 +116,10 @@ for name, regex in dependencies_regexes.items():
         print_verbose(f"-> {', '.join(vulnerability['cves'])}")
         table.append({"name": name, "version": version, **vulnerability})
 
-# TODO: For testing
-# for vulnerability in get_vulnerabilities("mastodon", "4.2.1"):
-#     table.append({"name": "mastodon", "version": "4.2.1", **vulnerability})
-
 if table:
-    print()
     print_verbose("Printing table...")
     print_table_header()
     for entry in table:
         print_table(**entry)
+else:
+    print_silent("No known vulnerabilities")

@@ -15,7 +15,7 @@ runs:
       name: ${{ inputs.snap }}
   - name: extract snap
     shell: bash
-    run: unsquashfs ${{ input.snap }}
+    run: unsquashfs ${{ inputs.snap }}
   - name: enable memory overcommit
     shell: bash
     run: grype dir:squashfs-root

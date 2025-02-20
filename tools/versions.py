@@ -4,6 +4,7 @@
 Get versions of dependencies
 """
 
+import sys
 import re
 import argparse
 import requests
@@ -34,16 +35,25 @@ def print_silent(*line):
     if not args.silent:
         print(*line)
 
-# TODO: Implement markdown table
-def print_table_header():
-    print(f"{'Name':<15} {'Local version':<15} {'New version':<15} SHA256 Checksum")
+def print_error(*line):
+    print(*line, file=sys.stderr)
 
-# TODO: Implement markdown table
+def print_table_header():
+    if args.markdown:
+        print("| Name | Local version | New version | SHA256 checksum |")
+        print("| :--- | :---: | :---: | :--- |")
+    else:
+        print(f"{'Name':<15} {'Local version':<15} {'New version':<15} SHA256 checksum")
+        print(f"{'='*15} {'='*15} {'='*15} {'='*20}")
+
 def print_table(name, local_version, new_version, checksum="", print_all=False):
     if local_version != new_version or print_all:
         if local_version != new_version and print_all:
             name += "*"
-        print(f"{name:<15} {local_version:<15} {new_version:<15} {checksum}")
+        if args.markdown:
+            print(f"| {' | '.join([name, local_version, new_version, checksum])} |")
+        else:
+            print(f"{name:<15} {local_version:<15} {new_version:<15} {checksum}")
 
 
 if args.mastodon_version:
@@ -53,7 +63,7 @@ else:
     print_verbose("Getting the latest Mastodon release...")
     with requests.get("https://github.com/mastodon/mastodon/releases/latest", timeout=10) as r:
         if r.status_code != 200:
-            print(r.raise_for_status())
+            print_error(r.raise_for_status())
             exit()
         else:
             MASTODON_RELEASE = r.url.rstrip("/").split("/")[-1]
@@ -74,7 +84,7 @@ for name, settings in dependencies.items():
     print_verbose(f"{settings['url']} -> {r.status_code}")
 
     if r.status_code != 200:
-        print(r.raise_for_status())
+        print_silent(r.raise_for_status())
         continue
 
     version = None
@@ -136,8 +146,9 @@ for name, settings in dependencies.items():
         table.append((name, local_version, version, checksum))
 
 if table:
-    print()
     print_verbose("Printing table...")
     print_table_header()
     for entry in table:
         print_table(*entry, print_all=args.all)
+else:
+    print_silent("Everything is up to date")

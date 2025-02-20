@@ -18,6 +18,7 @@ jobs:
           - builder: ubuntu-latest
             arch: amd64
     steps:
+    - uses: actions/checkout@v4
     - name: install review-tools
       shell: bash
       run: sudo snap install review-tools --classic
@@ -28,34 +29,53 @@ jobs:
         tag: ${{ inputs.ref }}
         fileName: "mastodon-server_*_amd64.snap"
       id: download
-    - name: check notices
+    - name: review snap
+      id: review
       shell: bash
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GH_REPO: ${{ github.repository }}
       run: |
         snap_file=$(basename "${{ fromJson(steps.download.outputs.downloaded_files)[0] }}")
-        sudo mv $snap_file /root/
-        sudo chown root "/root/$snap_file"
-        review_results=$(sudo review-tools.check-notices /root/$snap_file)
+        echo "${{ matrix.arch }}=$snap_file" >> $GITHUB_OUTPUT
+
+        review_results=$(review-tools.check-notices $snap_file)
         version=$(echo "$review_results" | jq -r '.["mastodon-server"] | keys[0]')
         if [ -z "$version" ]; then
           echo -e "\033[31mVersion not found\033[0m"
           echo "$review_results"
           exit 1
         fi
+        title="Review for release $version"
+
+        echo -e "\033[33mGet new versions\033[0m"
+        versions="$(python3 tools/versions.py -ms)"
+        if ! [ -z "$versions" ]; then
+          body="$body## New versions\n$versions"
+        fi
+
+        echo -e "\033[33mGet vulnerabilities\033[0m"
+        vulnerabilities="$(python3 tools/vulnerabilities.py -ms)"
+        if ! [ -z "$vulnerabilities" ]; then
+          if ! [ -z "$body" ]; then body="$body\n"; fi
+          body="$body## Vulnerabilities\n$vulnerabilites"
+        fi
+
+        echo -e "\033[33mRun review-tools\033[0m"
         packages=$(echo "$review_results" | jq -r ".\"mastodon-server\".\"$version\"")
-        title="Vulnerabilities found for release $version"
-        body="Affected packages:\n"
         if [ "$packages" != "{}" ]; then
           echo -e "\033[31m$title\033[0m"
           for package in $(echo "$packages" | jq -r 'keys[]'); do
-            body="$body### $package\n"
+            if ! [ -z "$body" ]; then body="$body\n"; fi
+            body="$body### $package"
             usns=$(echo "$packages" | jq -r ".\"$package\"[]")
             for usn in $usns; do
-              body="$body- http://ubuntu.com/security/notices/$usn\n"
+              body="$body\n- http://ubuntu.com/security/notices/$usn"
             done
           done
+        fi
+
+        if ! [ -z "$body" ]; then
           existing_issue=$(gh search issues --match title "$title" --json number,title --jq ".[] | select(.title == \"$title\")")
           if [ -z "$existing_issue" ]; then
             echo -e "\033[33mCreating new GitHub issue\033[0m"
@@ -68,14 +88,12 @@ jobs:
         fi
     - uses: actions/upload-artifact@v4
       with:
-        name: ${{ fromJson(steps.download.outputs.downloaded_files)[0] }}
-        path: /root/${{ fromJson(steps.download.outputs.downloaded_files)[0] }}
+        name: ${{ steps.review.outputs[matrix.arch] }}
+        path: ${{ steps.review.outputs[matrix.arch] }}
         retention-days: 1
         overwrite: true
-    - run: echo "${{ matrix.arch }}=$snap_file" >> $GITHUB_OUTPUT
-      id: snap
     outputs:
-      amd64: ${{ steps.snap.outputs.amd64 }}
+      amd64: ${{ steps.review.outputs.amd64 }}
   scan:
     needs: review
     runs-on: ${{ matrix.builder }}
