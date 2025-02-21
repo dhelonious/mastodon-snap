@@ -28,8 +28,6 @@ If you're not running Ubuntu, start by [installing the snap daemon](https://snap
 
 > Note that an administrator account with a randomly generated password is created during setup. Some usernames such as `admin` and `administrator` are reserved by Mastodon. See the [FAQ](docs/faq.md) for a full list.
 
-> Note: Be patient, the creation of an account takes some time.
-
 
 # 📦 Installation
 

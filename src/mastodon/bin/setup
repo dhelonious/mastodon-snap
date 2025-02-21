@@ -76,33 +76,33 @@ if [ -z "$GET_CERTIFICATE" ]; then
 fi
 
 if [ "$STATUS_LENGTH" != "$(get_status_length_file)" ]; then
-    echo Update status character limit
+    echo Updating status character limit...
     update_status_length
     compilation_required
 fi
 $SNAP/bin/recompile_if_required
 
-echo Create config
+echo Creating config...
 generate_mastodon_secrets
 copy_mastodon_config
 
-echo Setup database
+echo Setting up database...
 create_mastodon_database
 mastodon_rails db:setup > /dev/null
 $SNAP/bin/psql.wrapper -d "$MASTODON_DBNAME" -c "create extension pg_stat_statements;" > /dev/null
 
 if [ "$GET_CERTIFICATE" == true ]; then
-    echo Get certificate
+    echo Getting certificate...
     if ! [ -z "$SERVER" ]; then
         SERVER_FLAG="-s $SERVER"
     fi
     $SNAP/bin/get-certificate -d $DOMAIN -m $EMAIL $SERVER_FLAG
 fi
 
-echo Create admin account
+echo Creating admin account...
 $SNAP/bin/tootctl.wrapper accounts create "$USERNAME" --email "$EMAIL" --role Owner --confirmed --approve
 
-echo Restart services
+echo Restarting services...
 snapctl restart "$SNAP_NAME.backend"
 snapctl restart "$SNAP_NAME.sidekiq"
 snapctl restart "$SNAP_NAME.streaming"
