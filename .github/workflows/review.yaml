@@ -39,6 +39,7 @@ jobs:
         snap_file=$(basename "${{ fromJson(steps.download.outputs.downloaded_files)[0] }}")
         echo "${{ matrix.arch }}=$snap_file" >> $GITHUB_OUTPUT
 
+        echo -e "\033[33mRun review-tools\033[0m"
         review_results=$(review-tools.check-notices $snap_file)
         version=$(echo "$review_results" | jq -r '.["mastodon-server"] | keys[0]')
         if [ -z "$version" ]; then
@@ -61,19 +62,13 @@ jobs:
           body="$body## Vulnerabilities\n$vulnerabilites"
         fi
 
-        echo -e "\033[33mRun review-tools\033[0m"
-        packages=$(echo "$review_results" | jq -r ".\"mastodon-server\".\"$version\"")
-        if [ "$packages" != "{}" ]; then
+        echo -e "\033[33mGet security notices\033[0m"
+        notices_json=$(echo "$review_results" | jq -r ".\"mastodon-server\".\"$version\"")
+        if [ "$notices_json" != "{}" ]; then
           echo -e "\033[31m$title\033[0m"
+          notices=$(echo $notices_json | jq -r 'to_entries | ["| Name | Security notices |", "| --- | --- |"] + map("| " + .key + " | " + ( .value | map("[\(. )](http://ubuntu.com/security/notices/\(.))") | join("<br>") ) + " |") | .[]')
           if ! [ -z "$body" ]; then body="$body\n"; fi
-          body="$body## Ubuntus security notifications"
-          for package in $(echo "$packages" | jq -r 'keys[]'); do
-            body="$body\n### $package"
-            usns=$(echo "$packages" | jq -r ".\"$package\"[]")
-            for usn in $usns; do
-              body="$body\n- http://ubuntu.com/security/notices/$usn"
-            done
-          done
+          body="$body## Security notices\n$notices"
         fi
 
         if ! [ -z "$body" ]; then
