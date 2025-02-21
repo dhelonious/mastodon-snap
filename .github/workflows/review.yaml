@@ -65,9 +65,10 @@ jobs:
         packages=$(echo "$review_results" | jq -r ".\"mastodon-server\".\"$version\"")
         if [ "$packages" != "{}" ]; then
           echo -e "\033[31m$title\033[0m"
+          if ! [ -z "$body" ]; then body="$body\n"; fi
+          body="$body## Ubuntus security notifications"
           for package in $(echo "$packages" | jq -r 'keys[]'); do
-            if ! [ -z "$body" ]; then body="$body\n"; fi
-            body="$body### $package"
+            body="$body\n### $package"
             usns=$(echo "$packages" | jq -r ".\"$package\"[]")
             for usn in $usns; do
               body="$body\n- http://ubuntu.com/security/notices/$usn"
