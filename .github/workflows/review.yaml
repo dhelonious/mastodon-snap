@@ -61,6 +61,8 @@ jobs:
           echo "Version not found" | red
           echo "$review_results" | yellow
           exit 1
+        else
+          echo "Release version: $version" | green
         fi
         title="Review for release $version"
 
