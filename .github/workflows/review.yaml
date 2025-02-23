@@ -29,6 +29,21 @@ jobs:
         tag: ${{ inputs.ref }}
         fileName: "mastodon-server_*_amd64.snap"
       id: download
+    - name: define color commands
+      shell: bash
+      run: |
+        RED="\033[31m"
+        GREEN="\033[32m"
+        YELLOW="\033[33m"
+        RESET="\033[0m"
+        SHEBANG="#!/bin/bash"
+        colorize() { echo "while IFS= read -r line; do echo -e \"$1\$line$RESET\"; done"; }
+        mkdir -p ~/bin
+        echo -e "$SHEBANG\n$(colorize $RED)" > ~/bin/red
+        echo -e "$SHEBANG\n$(colorize $GREEN)" > ~/bin/green
+        echo -e "$SHEBANG\n$(colorize $YELLOW)" > ~/bin/yellow
+        sudo chmod +x ~/bin/*
+        echo "$HOME/bin" >> $GITHUB_PATH
     - name: review snap
       id: review
       shell: bash
@@ -39,33 +54,41 @@ jobs:
         snap_file=$(basename "${{ fromJson(steps.download.outputs.downloaded_files)[0] }}")
         echo "${{ matrix.arch }}=$snap_file" >> $GITHUB_OUTPUT
 
-        echo -e "\033[33mRun review-tools\033[0m"
+        echo "Run review-tools" | yellow
         review_results=$(review-tools.check-notices $snap_file)
         version=$(echo "$review_results" | jq -r '.["mastodon-server"] | keys[0]')
         if [ -z "$version" ]; then
-          echo -e "\033[31mVersion not found\033[0m"
-          echo "$review_results"
+          echo "Version not found" | red
+          echo "$review_results" | yellow
           exit 1
         fi
         title="Review for release $version"
 
-        echo -e "\033[33mGet new versions\033[0m"
+        echo "Get new versions" | yellow
         versions="$(python3 tools/versions.py -ms)"
-        if ! [ -z "$versions" ]; then
+        if [ -z "$versions" ]; then
+          echo "Everything up to date" | green
+        else
+          echo "New versions found" | yellow
           body="$body## New versions\n$versions"
         fi
 
-        echo -e "\033[33mGet vulnerabilities\033[0m"
+        echo "Get vulnerabilities" | yellow
         vulnerabilities="$(python3 tools/vulnerabilities.py -ms)"
-        if ! [ -z "$vulnerabilities" ]; then
+        if [ -z "$vulnerabilities" ]; then
+          echo "No known vulnerabilities" | green
+        else
+          echo "Vulnerabilities found" | yellow
           if ! [ -z "$body" ]; then body="$body\n"; fi
           body="$body## Vulnerabilities\n$vulnerabilites"
         fi
 
-        echo -e "\033[33mGet security notices\033[0m"
+        echo "Get security notices" | yellow
         notices_json=$(echo "$review_results" | jq -r ".\"mastodon-server\".\"$version\"")
-        if [ "$notices_json" != "{}" ]; then
-          echo -e "\033[31m$title\033[0m"
+        if [ "$notices_json" == "{}" ]; then
+          echo "No new security notice" | green
+        else
+          echo "Security notices found" | yellow
           notices=$(echo $notices_json | jq -r 'to_entries | ["| Name | Security notices |", "| --- | --- |"] + map("| " + .key + " | " + ( .value | map("[\(. )](http://ubuntu.com/security/notices/\(.))") | join("<br>") ) + " |") | .[]')
           if ! [ -z "$body" ]; then body="$body\n"; fi
           body="$body## Security notices\n$notices"
@@ -74,11 +97,11 @@ jobs:
         if ! [ -z "$body" ]; then
           existing_issue=$(gh search issues --match title "$title" --json number,title --jq ".[] | select(.title == \"$title\")")
           if [ -z "$existing_issue" ]; then
-            echo -e "\033[33mCreating new GitHub issue\033[0m"
+            echo "Creating new GitHub issue" | yellow
             gh issue create --title "$title" --body "$(echo -e "$body")" --label security
           else
             issue_number=$(echo "$existing_issue" | jq -r ".number")
-            echo -e "\033[33mAdd comment to existing GitHub issue $issue_number\033[0m"
+            echo "Add comment to existing GitHub issue $issue_number" | yellow
             gh issue comment "$issue_number" --body "$(echo -e "$body")"
           fi
         fi
