@@ -327,6 +327,12 @@ runs:
         echo "$REFRESH_OUTPUT" | yellow
         exit 1
       fi
+  - name: print service statuses
+    if: ${{ failure() }}
+    shell: bash
+    run: |
+      echo "Print service statuses" | yellow
+      snap services mastodon-server
   - name: check logs for warnings
     if: ${{ success() || failure() }}
     shell: bash
@@ -344,12 +350,11 @@ runs:
     run: |
       echo "Check logs for errors" | yellow
       LOG_ERRORS=$(sudo grep -iE "error|failure|failed" /var/snap/mastodon-server/current/logs/*.log || true)
+      LOG_ERRORS=$(echo "$LOG_ERRORS" | grep -v "SMTP-AUTH requested but missing user name")
       if [ -z "$LOG_ERRORS" ]; then
         echo "No errors" | green
       else
         echo "$LOG_ERRORS" | red
-        # TODO: Include after 4.3 is the latest/stable channel
-        # exit 1
       fi
   - name: show postgres log
     if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
