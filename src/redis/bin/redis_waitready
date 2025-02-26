@@ -5,7 +5,7 @@
 count=${1:-10}
 
 while [ "$count" -gt 0 ]; do
-    if run_as_daemon_user redis-cli -p $REDIS_PORT ping &> /dev/null; then
+    if $SNAP/bin/redis-cli.wrapper ping &> /dev/null; then
         exit 0
     fi
     echo Waiting for redis...

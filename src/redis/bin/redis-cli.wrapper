@@ -1,0 +1,8 @@
+#!/bin/bash -e
+
+. "$SNAP/redis.env"
+
+run_as_daemon_user redis-cli \
+    -p $REDIS_PORT \
+    "$@"
+    # -a "$REDIS_PASSWORD" \

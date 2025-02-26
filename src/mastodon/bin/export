@@ -31,6 +31,7 @@ sed -ri "1,100s/^(CREATE ROLE $MASTODON_DBUSER;)/-- \1/" "$export_dir/database.s
 
 if [ -s "$REDIS_DATA/redis.rdb" ]; then
     echo Export redis database
+    redis_save > /dev/null
     rsync_clean "$REDIS_DATA/redis.rdb" "$export_dir/"
 fi
 
