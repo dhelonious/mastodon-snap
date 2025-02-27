@@ -61,6 +61,16 @@ After the snap has updated itself, a new unpublished announcement will be create
 
 > Note: Be aware that there will always be a short downtime due to the way snaps are updated.
 
+### Refresh timer
+
+If you want to control the times at which snaps are updated, you need to change the [refresh.timer](https://snapcraft.io/docs/managing-updates#p-32248-refreshtimer):
+
+    snap set system refresh.timer=03:00
+
+You can check the current settings with:
+
+    snap refresh --time
+
 
 # 🦣 Setup your instance
 
