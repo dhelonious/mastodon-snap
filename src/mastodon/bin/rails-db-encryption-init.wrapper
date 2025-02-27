@@ -4,4 +4,4 @@
 
 check_root
 
-mastodon_rails db:encryption:init "$@" | grep --color=never ACTIVE_RECORD
+mastodon_rails db:encryption:init "$@"
