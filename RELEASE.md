@@ -15,3 +15,4 @@ This release also includes:
 Changelog for 4.3.3snap5:
 
 * Separates internal settings from the `mastodon.conf`
+* Add redis bgsave to export script
