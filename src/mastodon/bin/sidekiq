@@ -1,6 +1,7 @@
 #!/bin/bash -e
 
 . "$SNAP/mastodon.env"
+. "$SNAP_CURRENT/server.conf"
 
 check_setup
 postgres_waitready

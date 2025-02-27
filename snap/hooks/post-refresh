@@ -69,6 +69,7 @@ fi
 
 if [ "$SNAP_VERSION" != "$CURRENT_SNAP_VERSION" ]; then
     echo Update mastodon
+    copy_mastodon_server_config
     update_mastodon_files
 
     # TODO: remove later, required for upgrade to Mastodon 4.3+

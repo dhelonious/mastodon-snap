@@ -54,6 +54,7 @@ mkdir_for_daemon_user "$MASTODON_HOME"
 
 reset_compilation_required
 
+copy_mastodon_server_config
 update_mastodon_files
 update_backup_dir_file
 
