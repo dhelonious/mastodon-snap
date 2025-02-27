@@ -72,7 +72,7 @@ runs:
     shell: bash
     run: |
       echo "Install snap (upgrade=${{ inputs.upgrade }})" | yellow
-      if INSTALL_OUTPUT=$(sudo snap install --dangerous ${{ inputs.snap }}); then
+      if INSTALL_OUTPUT=$(sudo SNAP_DEBUG=1 stdbuf -oL snap install --dangerous ${{ inputs.snap }}); then
         echo "Snap installation completed successfully" | green
       else
         echo "Snap installation failed" | red
