@@ -12,7 +12,7 @@ This release also includes:
 * redis 7.4.2
 * ruby 3.3.5
 
-Changelog for 4.3.3snap5:
+Changelog for 4.3.4snap1:
 
 * Separates internal settings from the `mastodon.conf`
 * Add redis bgsave to export script
