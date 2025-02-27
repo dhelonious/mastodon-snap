@@ -72,7 +72,7 @@ runs:
     shell: bash
     run: |
       echo "Install snap (upgrade=${{ inputs.upgrade }})" | yellow
-      if INSTALL_OUTPUT=$(sudo SNAP_DEBUG=1 stdbuf -oL snap install --dangerous ${{ inputs.snap }}); then
+      if INSTALL_OUTPUT=$(sudo SNAP_DEBUG=1 snap install --dangerous ${{ inputs.snap }}); then
         echo "Snap installation completed successfully" | green
       else
         echo "Snap installation failed" | red
@@ -80,6 +80,12 @@ runs:
         exit 1
       fi
       sleep 10
+  - name: show postgres log
+    if: ${{ env.ACTIONS_RUNNER_DEBUG == 'true' }}
+    shell: bash
+    run: |
+      echo "Print snap install log" | yellow
+      snap tasks --last=install
   - name: test setup
     if: ${{ inputs.upgrade == 'false' }}
     shell: bash
@@ -320,13 +326,19 @@ runs:
     shell: bash
     run: |
       echo "Refresh snap" | yellow
-      if REFRESH_OUTPUT=$(sudo snap install --dangerous ${{ inputs.snap }}); then
+      if REFRESH_OUTPUT=$(sudo SNAP_DEBUG=1 snap install --dangerous ${{ inputs.snap }}); then
         echo "Snap refresh completed successfully" | green
       else
         echo "Snap refresh failed" | red
         echo "$REFRESH_OUTPUT" | yellow
         exit 1
       fi
+  - name: show postgres log
+    if: ${{ env.ACTIONS_RUNNER_DEBUG == 'true' }}
+    shell: bash
+    run: |
+      echo "Print snap install log" | yellow
+      snap tasks --last=install
   - name: print service statuses
     if: ${{ failure() }}
     shell: bash
