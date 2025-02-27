@@ -350,7 +350,7 @@ runs:
     run: |
       echo "Check logs for errors" | yellow
       LOG_ERRORS=$(sudo grep -iE "error|failure|failed" /var/snap/mastodon-server/current/logs/*.log || true)
-      LOG_ERRORS=$(echo "$LOG_ERRORS" | grep -v "SMTP-AUTH requested but missing user name")
+      LOG_ERRORS=$(echo "$LOG_ERRORS" | grep -v "SMTP-AUTH requested but missing user name" || true)
       if [ -z "$LOG_ERRORS" ]; then
         echo "No errors" | green
       else
