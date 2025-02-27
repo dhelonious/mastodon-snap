@@ -12,7 +12,6 @@ This release also includes:
 * redis 7.4.2
 * ruby 3.3.5
 
-Changelog for 4.3.3snap4:
+Changelog for 4.3.3snap5:
 
-* Upgrade of postgresql to 17.4
-* Upgrade of dependencies to fix USN-7278-1
+* Separates internal settings from the `mastodon.conf`
