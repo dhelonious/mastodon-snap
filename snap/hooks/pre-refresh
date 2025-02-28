@@ -7,3 +7,13 @@
 update_postgres_version_file
 
 pre_refresh_tasks_required
+
+if $UPDATE_ANNOUNCEMENTS; then
+    echo Add update announcement
+    if ANNOUNCEMENT_ID=$(mastodon_publish_announcement "The server will be updated in 3 minutes and will be unavailable for a short time"); then
+        snapctl set system.announcement-id="$ANNOUNCEMENT_ID"
+        snapctl restart "$SNAP_NAME.sidekiq"
+        sleep 180
+    fi
+fi
+

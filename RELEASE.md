@@ -12,7 +12,8 @@ This release also includes:
 * redis 7.4.2
 * ruby 3.3.5
 
-Changelog for 4.3.4snap1:
+Changelog for 4.3.4snap2:
 
-* Separates internal settings from the `mastodon.conf`
-* Add redis bgsave to export script
+* Add `mastodon-server.announce` command to create server announcements
+* Add a server announcement 3 minutes before an update
+* Rename `update.backups` to `update.backup`

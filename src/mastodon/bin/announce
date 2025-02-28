@@ -1,0 +1,17 @@
+#!/bin/bash -e
+
+. "$SNAP/mastodon.env"
+. "$SNAP/postgres.env"
+
+if [ -z "$1" ]; then
+    echo "Usage: $SNAP_NAME.announce TEXT"
+    exit 1
+fi
+
+check_root
+check_setup
+postgres_waitready
+
+if mastodon_publish_announcement "$@" > /dev/null; then
+    mastodon_tootctl cache clear
+fi

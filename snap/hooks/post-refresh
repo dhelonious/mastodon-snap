@@ -17,6 +17,12 @@ if [ -d "$SECRET_DIR" ]; then
     chown -fR root:$DAEMON_USER --no-dereference "$SECRET_DIR" || true
 fi
 
+# NOTE: This is a fix for versions < 4.3.4snap2 and should be removed in the future
+if UPDATE_BACKUPS=$(snapctl get update.backups); then
+    snapctl set update.backup=$UPDATE_BACKUPS
+    snapctl unset update.backups
+fi
+
 # Postgres
 
 . "$SNAP/postgres.env"
@@ -120,10 +126,9 @@ fix_daemon_user "$ACME_HOME"
 echo Update logrotate config
 copy_config logrotate logrotate.conf
 
-# Clean update backups
+echo Clean update backups
 find "$UPDATE_BACKUP_DIR" -mindepth 1 -maxdepth 1 -type d -printf "%T@ %p\n" \
     | sort -g | head -n -1 | cut -d " " -f2 | xargs -r rm -rf
 
 update_snap_version_file
-
 post_refresh_tasks_required

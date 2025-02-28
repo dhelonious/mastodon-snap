@@ -26,7 +26,14 @@ if is_migrations_required; then
     reset_migrations_required
 fi
 
-echo Add update announcement
-mastodon_announcement "The $SNAP_NAME snap has been updated to version $SNAP_VERSION"
+if ANNOUNCEMENT_ID=$(snapctl get system.announcement-id); then
+    if ! [ -z "$ANNOUNCEMENT_ID" ]; then
+        echo Remove update announcement from db
+        mastodon_remove_announcement $ANNOUNCEMENT_ID
+    fi
+fi
+
+echo Add version announcement to db
+mastodon_add_announcement "The $SNAP_NAME snap has been updated to version $SNAP_VERSION"
 
 reset_post_refresh_tasks_required

@@ -9,7 +9,7 @@ description: |
   implements ActivityPub!)
 
 base: core24
-version: 4.3.4snap1
+version: 4.3.4snap2
 grade: stable
 confinement: strict
 
@@ -61,6 +61,10 @@ apps:
     stop-timeout: 30m
     after:
       - postgres-upgrade
+    before:
+      - backend
+      - sidekiq
+      - streaming
     plugs:
       - network
       - network-bind
@@ -69,6 +73,10 @@ apps:
   redis:
     command: bin/run_as_daemon_user redis.wrapper
     daemon: simple
+    before:
+      - backend
+      - sidekiq
+      - streaming
     plugs:
       - network
       - network-bind
@@ -136,6 +144,7 @@ apps:
     daemon: simple
     after:
       - backend
+      - sidekiq
       - streaming
     environment:
       LD_PRELOAD: $SNAP/lib/wraplib.so
@@ -152,6 +161,12 @@ apps:
 
   tootctl:
     command: bin/tootctl.wrapper
+    plugs:
+      - network
+      - removable-media
+
+  announce:
+    command: bin/announce
     plugs:
       - network
       - removable-media

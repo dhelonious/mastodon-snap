@@ -51,15 +51,17 @@ Download a snap file from the [releases page](https://github.com/dhelonious/mast
 
 A Snap Store installation is automatically updated when new versions are released.
 
+> Note: Be aware that there will always be a short downtime due to the way snaps are updated.
+
 To update your local installation, you can simply repeat the steps above with a newer version of the snap file. This will update your Mastodon instance in-place by creating a new snap revision.
 
 If you have installed a snap file locally and still want to benefit from automatic updates, you can switch to the Snap Store installation using:
 
     snap refresh --amend mastodon-server
 
-After the snap has updated itself, a new unpublished announcement will be created. You can review, publish or delete these announcements in *Preferences/Administration/Announcements*.
+After the snap has updated itself, a new unpublished announcement will be created. You can view, publish or delete this announcement in *Preferences/Administration/Announcements*.
 
-> Note: Be aware that there will always be a short downtime due to the way snaps are updated.
+> Note: By default, `update.announcement` is enabled (see the [configuration docs](docs/configuration.md)), which will display an update announcement 3 minutes before the snap is updated.
 
 ### Refresh timer
 
@@ -119,6 +121,8 @@ See the [configuration docs](docs/configuration.md) for a complete overview of t
 # 🚧 Maintenance
 
 Read the [maintenance guide](docs/maintenance.md) to learn how to access the database shell and perform other maintenance tasks on your instance.
+
+The `mastodon-server.announce` command can be used to create automated server notifications in Mastodon.
 
 
 # 🐣 Addons
