@@ -332,6 +332,7 @@ runs:
     shell: bash
     run: |
       echo "Refresh snap" | yellow
+      sudo snap set mastodon-server update.minutes=1
       if REFRESH_OUTPUT=$(sudo snap install --dangerous ${{ inputs.snap }}); then
         echo "Snap refresh completed successfully" | green
       else

@@ -3,6 +3,13 @@
 . "$SNAP/postgres.env"
 . "$SNAP/mastodon.env"
 
+if [ "$UPDATE_MINUTES" -gt "0" ]; then
+    echo Add update announcement
+    mastodon_public_announcement "The server will be updated in $UPDATE_MINUTES minutes and will be unavailable for a short time."
+    echo Wait for $UPDATE_MINUTES minutes
+    sleep ${UPDATE_MINUTES}m
+fi
+
 if ! is_pre_refresh_tasks_required; then
     exit 0
 fi
