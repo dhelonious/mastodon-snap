@@ -3,15 +3,44 @@
 . "$SNAP/mastodon.env"
 . "$SNAP/postgres.env"
 
+check_root
+check_setup
+
+print_usage() {
+    echo "Usage: $SNAP_NAME.announce [-p PUBLISH] TEXT"
+}
+
 if [ -z "$1" ]; then
-    echo "Usage: $SNAP_NAME.announce TEXT"
+    print_usage
     exit 1
 fi
 
-check_root
-check_setup
-postgres_waitready
+export PUBLISH_FLAG=t
 
-if mastodon_publish_announcement "$@" > /dev/null; then
+while getopts "p:h" OPTION; do
+    case "$OPTION" in
+    p)
+        case "$OPTARG" in
+            true|yes)
+                export PUBLISH_FLAG=t
+                ;;
+            false|no)
+                export PUBLISH_FLAG=f
+                ;;
+            *)
+                echo "The value of -p must be boolean"
+                exit 1
+                ;;
+        esac
+        ;;
+    h)
+        print_usage
+        exit 0
+        ;;
+    esac
+done
+shift "$(($OPTIND -1))"
+
+if mastodon_add_announcement "$@" > /dev/null; then
     mastodon_tootctl cache clear
 fi

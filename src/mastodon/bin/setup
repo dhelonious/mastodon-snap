@@ -13,6 +13,10 @@ if mastodon_config_exists; then
     exit 0
 fi
 
+print_usage() {
+    echo "Usage: $SNAP_NAME.setup [-d DOMAIN] [-u USERNAME] [-m EMAIL] [-c GET_CERTIFICATE] [-s SERVER]"
+}
+
 while getopts "d:u:m:c:s:h" OPTION; do
     case "$OPTION" in
     d)
@@ -46,6 +50,10 @@ while getopts "d:u:m:c:s:h" OPTION; do
             false|no)
                 GET_CERTIFICATE=false
                 ;;
+            *)
+                echo "The value of -c must be boolean"
+                exit 1
+                ;;
         esac
         ;;
     s)
@@ -57,7 +65,7 @@ while getopts "d:u:m:c:s:h" OPTION; do
         fi
         ;;
     h)
-        echo "Usage: $SNAP_NAME.setup [-d DOMAIN] [-u USERNAME] [-m EMAIL] [-c GET_CERTIFICATE] [-s SERVER]"
+        print_usage
         exit 0
         ;;
     esac
