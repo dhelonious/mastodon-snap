@@ -14,6 +14,7 @@ This release also includes:
 
 Changelog for 4.3.4snap2:
 
-* Add `mastodon-server.announce` command to create server announcements
 * Add a server announcement 3 minutes before an update
-* Rename `update.backups` to `update.backup`
+* Add `mastodon-server.announce` command to create server announcements
+* Rename `update.backups` to `update.backup
+* Update `yarn` to 4.7.0
