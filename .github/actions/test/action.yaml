@@ -57,6 +57,10 @@ runs:
     run: |
       echo "Setup host system" | yellow
       sudo sh -c "echo '127.0.0.1 ${{ steps.env.outputs.DOMAIN }}' >> /etc/hosts"
+
+  ##############################################################################
+  # Install or refresh over previous version
+
   - name: install and setup previous snap
     if: ${{ inputs.upgrade == 'true' }}
     shell: bash
@@ -327,6 +331,21 @@ runs:
         sudo head ~/dump.sql 2>/dev/null | yellow
         exit 1
       fi
+  - name: test announce command
+    shell: bash
+    run: |
+      echo "Test announce command" | yellow
+      if ANNOUNCE_OUTPUT=$(sudo mastodon-server.announce "Test announcement"); then
+        echo "Test passed" | green
+      else
+        echo "Test failed" | red
+        echo "$ANNOUNCE_OUTPUT" | yellow
+        exit 1
+      fi
+
+  ##############################################################################
+  # Refresh same version
+
   - name: refresh snap
     if: ${{ inputs.upgrade == 'false' }}
     shell: bash
