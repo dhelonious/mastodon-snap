@@ -713,8 +713,8 @@ parts:
       - -libvips/lib/pkgconfig
 
   ffmpeg:
-    source: https://ffmpeg.org/releases/ffmpeg-7.1.tar.bz2 # NOTE: https://ffmpeg.org/releases
-    source-checksum: sha256/fd59e6160476095082e94150ada5a6032d7dcc282fe38ce682a00c18e7820528
+    source: https://ffmpeg.org/releases/ffmpeg-7.1.1.tar.bz2 # NOTE: https://ffmpeg.org/releases
+    source-checksum: sha256/0c8da2f11579a01e014fc007cbacf5bb4da1d06afd0b43c7f8097ec7c0f143ba
     plugin: autotools
     build-packages:
       - clang

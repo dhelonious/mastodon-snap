@@ -51,7 +51,7 @@ while getopts "d:u:m:c:s:h" OPTION; do
                 GET_CERTIFICATE=false
                 ;;
             *)
-                echo "The value of -c must be boolean"
+                echo_error "The value of -c must be boolean"
                 exit 1
                 ;;
         esac

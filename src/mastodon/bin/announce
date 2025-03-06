@@ -28,7 +28,7 @@ while getopts "p:h" OPTION; do
                 export PUBLISH_FLAG=f
                 ;;
             *)
-                echo "The value of -p must be boolean"
+                echo_error "The value of -p must be boolean"
                 exit 1
                 ;;
         esac
