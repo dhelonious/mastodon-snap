@@ -20,3 +20,7 @@ Changelog for 4.3.4snap2:
 * Update `ffmpeg` to 7.1.1
 * Update `yarn` to 4.7.0
 * Improve output of interactive commands like `mastodon-server.setup`
+
+⚠️ Post update instructions ⚠️
+
+You should manually remove the entries corresponding to `Redis` and `PostgreSQL` from `/var/snap/mastodon-server/common/mastodon.conf`.
