@@ -9,7 +9,7 @@ description: |
   implements ActivityPub!)
 
 base: core24
-version: 4.3.5snap1
+version: 4.3.6snap1
 grade: stable
 confinement: strict
 
@@ -551,13 +551,13 @@ parts:
       set -eux
       case "$SNAP_ARCH" in
       "amd64")
-        source="https://nodejs.org/download/release/latest-v20.x/node-v20.18.3-linux-x64.tar.gz"
-        checksum="9fc3952da39b20d1fcfdb777b198cc035485afbbb1004b4df93f35245d61151e"
+        source="https://nodejs.org/download/release/latest-v20.x/node-v20.19.0-linux-x64.tar.gz"
+        checksum="8a4dbcdd8bccef3132d21e8543940557e55dcf44f00f0a99ba8a062f4552e722"
         arch="x64"
         ;;
       "arm64")
-        source="https://nodejs.org/download/release/latest-v20.x/node-v20.18.3-linux-arm64.tar.gz"
-        checksum="93a9df19238adfaa289f4784041d03edaf2fdd89fbb247faffca2fe4a1000703"
+        source="https://nodejs.org/download/release/latest-v20.x/node-v20.19.0-linux-arm64.tar.gz"
+        checksum="8a4dbcdd8bccef3132d21e8543940557e55dcf44f00f0a99ba8a062f4552e722"
         arch="arm64"
         ;;
       *)
@@ -652,8 +652,8 @@ parts:
 
   libvips:
     # NOTE: https://github.com/libvips/libvips/releases/latest
-    source: https://github.com/libvips/libvips/archive/refs/tags/v8.16.0.tar.gz
-    source-checksum: sha256/d28d7bf7e3f8fa17390c255ace4a05a1c56459e1f6015319f4847ea0733593b3
+    source: https://github.com/libvips/libvips/archive/refs/tags/v8.16.1.tar.gz
+    source-checksum: sha256/df960c3df02da8ae16ee19e79c9428e955d178242a8f06064e07e0c417238e6e
     plugin: nil
     build-packages:
       - meson
@@ -792,8 +792,8 @@ parts:
       - ffmpeg
       - rsync
     # NOTE: https://github.com/mastodon/mastodon/releases/latest
-    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.3.5.tar.gz
-    source-checksum: sha256/c24f388d92c1bae4de9c834c3b2cece13111178dd450e85d7fc5eaf7dbaf8d20
+    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.3.6.tar.gz
+    source-checksum: sha256/1ea3d54ecd90539e08c1441a6f330a3c1404b42b89d78a52acea9fdcdf713e94
     plugin: nil
     build-packages:
       - git
