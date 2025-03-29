@@ -12,10 +12,9 @@ This release also includes:
 * redis 7.4.2
 * ruby 3.3.5
 
-Changelog for 4.3.6snap1:
+Changelog for 4.3.6snap2:
 
-* Update `libvips` to 8.16.1
-* Update `node` to 20.19.0
+* Update `yarn` to 4.8.0
 
 ⚠️ Post update instructions ⚠️
 
