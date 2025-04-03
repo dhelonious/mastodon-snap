@@ -1,6 +1,6 @@
-# Unofficial snap for Mastodon 4.3.6
+# Unofficial snap for Mastodon 4.3.7
 
-See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.3.6
+See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.3.7
 
 This release also includes:
 
@@ -12,7 +12,7 @@ This release also includes:
 * redis 7.4.2
 * ruby 3.3.5
 
-Changelog for 4.3.6snap2:
+Changelog for 4.3.7snap1:
 
 * Update `yarn` to 4.8.0
 
