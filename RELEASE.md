@@ -12,9 +12,9 @@ This release also includes:
 * redis 7.4.2
 * ruby 3.3.5
 
-Changelog for 4.3.7snap1:
+Changelog for 4.3.7snap2:
 
-* Update `yarn` to 4.8.0
+* Update `yarn` to 4.8.1
 
 ⚠️ Post update instructions ⚠️
 
