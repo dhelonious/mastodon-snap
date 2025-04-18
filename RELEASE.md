@@ -6,7 +6,7 @@ This release also includes:
 
 * ffmpeg 7.1.1
 * libvips 8.16.1
-* nginx 1.27.4
+* nginx 1.27.5
 * node 20.19.0
 * postgres 17.4
 * redis 7.4.2
@@ -15,6 +15,7 @@ This release also includes:
 Changelog for 4.3.7snap3:
 
 * Update `yarn` to 4.9.0
+* Update `nginx` to 1.27.5
 
 ⚠️ Post update instructions ⚠️
 

@@ -456,8 +456,8 @@ parts:
       - nginx-customizations
       - wraplib
     # NOTE: https://nginx.org/en/download.html (mainline version)
-    source: https://nginx.org/download/nginx-1.27.4.tar.gz
-    source-checksum: sha256/294816f879b300e621fa4edd5353dd1ec00badb056399eceb30de7db64b753b2
+    source: https://nginx.org/download/nginx-1.27.5.tar.gz
+    source-checksum: sha256/e96acebb9c2a6db8a000c3dd1b32ecba1b810f0cd586232d4d921e376674dd0e
     plugin: autotools
     build-environment:
       - PATH: $CRAFT_STAGE/nginx/bin:$PATH
