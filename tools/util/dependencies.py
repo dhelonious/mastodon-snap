@@ -72,7 +72,7 @@ def get_dependencies_urls(mastodon_release, node_major):
         "node_arm64": {
             "url": "https://nodejs.org/download/release/latest-v{}.x".format(node_major),
             "url_regex": re.compile(f"v({node_major}.[0-9.]+)"),
-            "file_regex": f"source=\"({dependencies_regexes['node']})\"",
+            "file_regex": f"source=\"({dependencies_regexes['node_arm64']})\"",
         },
         "postgresql": {
             "url": "https://www.postgresql.org/ftp/latest",
