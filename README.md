@@ -26,7 +26,8 @@ If you're not running Ubuntu, start by [installing the snap daemon](https://snap
 
 🥳 Congratulations! You now have your very own Mastodon instance! 🎉
 
-> Note that an administrator account with a randomly generated password is created during setup. Some usernames such as `admin` and `administrator` are reserved by Mastodon. See the [FAQ](docs/faq.md) for a full list.
+> [!IMPORTANT]
+> An administrator account with a randomly generated password is created during setup. Some usernames such as `admin` and `administrator` are reserved by Mastodon. See the [FAQ](docs/faq.md) for a full list.
 
 
 # 📦 Installation
@@ -45,13 +46,15 @@ Download a snap file from the [releases page](https://github.com/dhelonious/mast
 
     sudo snap install mastodon-server_VERSION_ARCH.snap --dangerous
 
-> Note: In this context *dangerous* means that the snap file is not signed. This is normal for snaps built and distributed outside the snap store.
+> [!NOTE]
+> In this context *dangerous* means that the snap file is not signed. This is normal for snaps built and distributed outside the snap store.
 
 ## Updates
 
 A Snap Store installation is automatically updated when new versions are released.
 
-> Note: Be aware that there will always be a short downtime due to the way snaps are updated.
+> [!NOTE]
+> Be aware that there will always be a short downtime due to the way snaps are updated.
 
 To update your local installation, you can simply repeat the steps above with a newer version of the snap file. This will update your Mastodon instance in-place by creating a new snap revision.
 
@@ -61,7 +64,8 @@ If you have installed a snap file locally and still want to benefit from automat
 
 After the snap has updated itself, a new unpublished announcement will be created. You can view, publish or delete this announcement in *Preferences/Administration/Announcements*.
 
-> Note: By default, `update.announcement` is enabled (see the [configuration docs](docs/configuration.md)), which will display an update announcement 3 minutes before the snap is updated. This will prolong the time the snap is on hold during a refresh.
+> [!NOTE]
+> By default, `update.announcement` is enabled (see the [configuration docs](docs/configuration.md)), which will display an update announcement 3 minutes before the snap is updated. This will prolong the time the snap is on hold during a refresh.
 
 ### Refresh timer
 
@@ -80,7 +84,8 @@ An initial setup command is required to initialize the database and configuratio
 
     sudo mastodon-server.setup
 
-> Note: Be patient if you have changed the `status.length` as it takes some time to recompile the assets, especially if there is a small amount of RAM available. Ideally these values should be changed before setup. Otherwise you may want to [increase swap space](https://www.baeldung.com/linux/increase-swap-space).
+> [!NOTE]
+> Be patient if you have changed the `status.length` as it takes some time to recompile the assets, especially if there is a small amount of RAM available. Ideally these values should be changed before setup. Otherwise you may want to [increase swap space](https://www.baeldung.com/linux/increase-swap-space).
 
 ## SSL
 
@@ -90,9 +95,11 @@ SSL certificates can be obtained via ACME from either [Let's Encrypt](https://le
 
 Use the `acme.server` setting to select the CA (see the [configuration docs](docs/configuration.md)).
 
-> Note: `get-certificate` will automatically enable HTTPS on port `ports.https`.
+> [!NOTE]
+> `get-certificate` will automatically enable HTTPS on port `ports.https`.
 
-> Note: HTTP is no longer supported in production. Mastodon will always serve https:// links.
+> [!IMPORTANT]
+> HTTP is no longer supported in production. Mastodon will always serve https:// links.
 
 See the [certificates docs](docs/certificates.md) for advanced certificate topics.
 
@@ -104,7 +111,8 @@ Read the [backups guide](docs/backups.md) to learn how to export and restore you
 
 Coming from ~~Twitter~~ X and wanting a familiar look? Then the included [Mastodon Bird UI](https://github.com/ronilaukkarinen/mastodon-bird-ui) and [Tangerine UI](https://github.com/nileane/TangerineUI-for-Mastodon) themes might be for you. While *Mastodon Bird UI* retains the separation between dark, light and high contrast variants, *Tangerine UI* automatically switches to a light or dark variant depending on what your browser requests. You can change the theme in *Preferences/Appearance*.
 
-> Important: If you have a severe visual impairment, an [accessible version of the Bird UI theme](https://github.com/ronilaukkarinen/mastodon-bird-ui#how-to-install-an-accessible-version-built-for-people-with-serious-vision-impairment) is included by default with an increased font size. This theme is indicated by the phrase ***High contrast++***, which contains ***two plus signs*** and is translated into your selected language. In addition, this theme is marked with the ♿ ***emoji representing a person in a wheelchair*** as the [International Symbol of Access](https://en.wikipedia.org/wiki/International_Symbol_of_Access).
+> [!IMPORTANT]
+> If you have a severe visual impairment, an [accessible version of the Bird UI theme](https://github.com/ronilaukkarinen/mastodon-bird-ui#how-to-install-an-accessible-version-built-for-people-with-serious-vision-impairment) is included by default with an increased font size. This theme is indicated by the phrase ***High contrast++***, which contains ***two plus signs*** and is translated into your selected language. In addition, this theme is marked with the ♿ ***emoji representing a person in a wheelchair*** as the [International Symbol of Access](https://en.wikipedia.org/wiki/International_Symbol_of_Access).
 
 
 # ⚙️ Configuration
@@ -135,7 +143,8 @@ The `mastodon-server.announce` command can be used to create automated server no
 
 The day you joined the Fediverse will be celebrated by your instance with a rain of confetti! The confetti will only be visible to you when you're logged in.
 
-> Note: This addon respects accessibility settings. It won't be used if you enable the setting *Preferences/Appearance/Reduce motion in animations*.
+> [!NOTE]
+> This addon respects accessibility settings. It won't be used if you enable the setting *Preferences/Appearance/Reduce motion in animations*.
 
 ## ❄️ Let it snow
 
@@ -145,7 +154,8 @@ The day you joined the Fediverse will be celebrated by your instance with a rain
 
 Around Christmas, winter comes to your Mastodon instance as snowflakes appear at the top of the website! This wonderful addon has been created by [Roni Laukkarinen](https://github.com/ronilaukkarinen).
 
-> Note: This addon respects accessibility settings. It won't be used if you enable the setting *Preferences/Appearance/Reduce motion in animations*.
+> [!NOTE]
+> This addon respects accessibility settings. It won't be used if you enable the setting *Preferences/Appearance/Reduce motion in animations*.
 
 
 # 🔥 Troubleshooting

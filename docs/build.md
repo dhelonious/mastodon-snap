@@ -12,4 +12,5 @@ It is also possible to build the snap file yourself:
 
 in the repository's root directory.
 
-> Note: Snapcraft relies on either `multipassd` or `lxd` to create snaps inside a virtual machine. Therefore, snaps cannot be created on a virtual infrastructure that does not support nested virtualization.
+> [!NOTE]
+> Snapcraft relies on either `multipassd` or `lxd` to create snaps inside a virtual machine. Therefore, snaps cannot be created on a virtual infrastructure that does not support nested virtualization.

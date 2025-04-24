@@ -45,6 +45,7 @@ If you plan to use your instance for yourself only, you may want to enable `SING
 
 By default, this snap will not log accesses unless `log.access.enabled` is `true`. Otherwise, the IP addresses in the access logs are anonymized by removing the last octet of each IP address (e.g. 192.168.100.10 becomes 192.168.100.0). If you want to change this, for example for debugging or to use [fail2ban](https://github.com/fail2ban/fail2ban), you can set `log.access.format` to `standard`.
 
+> [!IMPORTANT]
 > Note that even if access logging is enabled and not anonymized, the log files are rotated daily and anonymized.
 
 Also, to allow Mastodon to store IP addresses, you need to increase the value (in seconds) of `IP_RETENTION_PERIOD` in `/var/snap/mastodon-server/common/mastodon.conf`. For example, to set the retention period to 24 hours, use:
@@ -67,6 +68,7 @@ Add the following lines to `/var/snap/mastodon-server/common/mastodon.conf`:
     SMTP_ENABLE_STARTTLS=always
     SMTP_FROM_ADDRESS="Mastodon <mastodon@example.com>"
 
+> [!NOTE]
 > Note that SMTP is not necessarily required for a single user instance. However, the use of an SMTP service is highly recommended when running a server.
 
 ## Elasticsearch
@@ -80,7 +82,8 @@ Elasticsearch provides some advanced search features and is required for the pos
     ES_USER=elastic
     ES_PASS=********
 
-> Note: `ES_USER` and `ES_PASS` are required if `xpack.security` is enabled in `/etc/elasticsearch/elasticsearch.yml` (see [docs.joinmastodon.org/admin/elasticsearch](https://docs.joinmastodon.org/admin/elasticsearch/#security) for details).
+> [!NOTE]
+> `ES_USER` and `ES_PASS` are required if `xpack.security` is enabled in `/etc/elasticsearch/elasticsearch.yml` (see [docs.joinmastodon.org/admin/elasticsearch](https://docs.joinmastodon.org/admin/elasticsearch/#security) for details).
 
 Create the elasticsearch indexes using the following command:
 
@@ -98,7 +101,8 @@ Add the following lines to `/var/snap/mastodon-server/common/mastodon.conf`:
     AWS_ACCESS_KEY_ID=********
     AWS_SECRET_ACCESS_KEY=********
 
-> Note: `S3_FORCE_SINGLE_REQUEST` allows Mastodon to handle large uploads properly. See [docs.joinmastodon.org/admin/config](https://docs.joinmastodon.org/admin/config/#s3) for a full list of options.
+> [!TIP]
+> `S3_FORCE_SINGLE_REQUEST` allows Mastodon to handle large uploads properly. See [docs.joinmastodon.org/admin/config](https://docs.joinmastodon.org/admin/config/#s3) for a full list of options.
 
 The [bucket policy](https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucket-policies.html) must allow for objects to be publicly readable. This is an example of a minimal policy that works:
 
@@ -126,7 +130,8 @@ The following configuration variables can be used in `/var/snap/mastodon-server/
 * DeepL: [`deepl_api_key`](https://docs.joinmastodon.org/admin/config/#deepl_api_key) and [`deepl_plan`](https://docs.joinmastodon.org/admin/config/#deepl_plan)
 * LibreTranslate: [`libre_translate_endpoint`](https://docs.joinmastodon.org/admin/config/#libre_translate_endpoint) and [`libre_translate_api_key`](https://docs.joinmastodon.org/admin/config/#libre_translate_api_key)
 
-> Note that LibreTranslate is not included in this snap due to its size.
+> [!NOTE]
+> LibreTranslate is not included in this snap due to its size.
 
 ## Reverse proxy
 

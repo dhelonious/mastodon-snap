@@ -6,7 +6,8 @@ To access the postgres database shell, use:
 
     sudo mastodon-server.psql
 
-> Tip: Use `\pset pager on` and `\setenv PAGER 'less -S'` to prevent line wrapping.
+> [!TIP]
+> Use `\pset pager on` and `\setenv PAGER 'less -S'` to prevent line wrapping.
 
 ## Rails console
 
@@ -22,7 +23,8 @@ Media and statuses are cleaned up nightly. You can control how long media is kep
 
 You can further control which content to clean up by using the `cleanup.media`, `cleanup.previews`, `cleanup.statuses` and `cleanup.orphans` settings.
 
-> Note: Depending on the activity on your server, the amount of storage required for media can be significant. Reducing the number of days media is kept should help in this case.
+> [!NOTE]
+> Depending on the activity on your server, the amount of storage required for media can be significant. Reducing the number of days media is kept should help in this case.
 
 ## Generate secrets
 
