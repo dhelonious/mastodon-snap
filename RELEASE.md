@@ -1,6 +1,6 @@
-# Unofficial snap for Mastodon 4.3.7
+# Unofficial snap for Mastodon 4.3.8
 
-See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.3.7
+See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.3.8
 
 This release also includes:
 
@@ -11,10 +11,6 @@ This release also includes:
 * postgres 17.4
 * redis 8.0.0
 * ruby 3.3.5
-
-Changelog for 4.3.7snap5:
-
-* Update `redis` to 8.0.0
 
 ⚠️ Post update instructions ⚠️
 
