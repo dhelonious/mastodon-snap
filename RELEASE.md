@@ -8,9 +8,13 @@ This release also includes:
 * libvips 8.16.1
 * nginx 1.28.0
 * node 20.19.1
-* postgres 17.4
+* postgres 17.5
 * redis 8.0.0
 * ruby 3.3.5
+
+Changelog for 4.3.8snap2:
+
+* Update postgresql to 17.5
 
 ⚠️ Post update instructions ⚠️
 

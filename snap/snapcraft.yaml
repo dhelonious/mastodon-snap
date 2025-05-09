@@ -9,7 +9,7 @@ description: |
   implements ActivityPub!)
 
 base: core24
-version: 4.3.8snap1
+version: 4.3.8snap2
 grade: stable
 confinement: strict
 
@@ -408,8 +408,8 @@ parts:
       - setpriv
       - envsubst
     # NOTE: https://www.postgresql.org/ftp/latest
-    source: https://ftp.postgresql.org/pub/source/v17.4/postgresql-17.4.tar.gz
-    source-checksum: sha256/e69d0714c3a8480c208aadba6c031fb8ce9cf580930c8012bf748c8b5ed11850
+    source: https://ftp.postgresql.org/pub/source/v17.5/postgresql-17.5.tar.gz
+    source-checksum: sha256/730bfef34b03825c051ae0fc37542c8be26b55a44e472369221afd397196e303
     plugin: autotools
     build-packages:
       - clang
