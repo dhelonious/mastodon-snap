@@ -1,19 +1,25 @@
-Unofficial snap for Mastodon 🦣📦
+Unofficial snap for Mastodon (decentralized social media server) 🦣📦
 
 
 # 📌 About
 
-The [Fediverse](https://en.wikipedia.org/wiki/Fediverse) is intended to remove the dependency on a single service provider. But users are still dependent on the instance providers. While a user can register with multiple instances and switch between them, their data is still tied to one instance at a time. In addition, users still do not have full control over their own data.
+[Mastodon](https://joinmastodon.org) is a free, open-source social network server based on [ActivityPub](https://activitypub.rocks) where users can follow friends and discover new ones. On Mastodon, users can publish anything they want: links, pictures, text, video. All Mastodon servers are interoperable as a federated network (users on one server can seamlessly communicate with users from another one, including non-Mastodon software that implements ActivityPub!)
 
-So anyone should be able to host their own Mastodon instance on a home server, an old PC, a VPS or even a RasPi. However, creating a Mastodon instance requires some advanced knowledge and skills. The officially provided [Docker Compose file](https://github.com/mastodon/mastodon/blob/main/docker-compose.yml) reduces the complexity by a good amount. However, some knowledge of Docker and some occasional debugging is still required.
-
-The goal of this project is to further simplify the installation process of Mastodon to give everyone the ability to host their own fully functional (micro) instance of Mastodon without requiring any prior knowledge of the technology behind it. This all-in-one snap package also includes a database and support for ACME to automatically obtain SSL certificates for HTTPS. Because snaps are self-updating, the process of setting up a Mastodon instance can be reduced to the execution of a single command, with a minimum of future maintenance required.
+The goal of this project is to simplify the setup of a Mastodon instance without requiring any prior knowledge of the technology behind it. This all-in-one snap package also offers support for ACME to automatically obtain SSL certificates for HTTPS.
 
 Supported architectures:
 
 * amd64
 
 For more information, see the latest [release readme](RELEASE.md) or the [FAQ](docs/faq.md).
+
+## Why a snap package?
+
+The [Fediverse](https://en.wikipedia.org/wiki/Fediverse) is intended to remove the dependency on a single service provider. But users are still dependent on the instance providers. While a user can register with multiple instances and switch between them, their data is still tied to one instance at a time. In addition, users still do not have full control over their own data.
+
+So anyone should be able to host their own Mastodon instance on a home server, an old PC, a VPS or even a RasPi. However, creating a Mastodon instance requires some advanced knowledge and skills. The officially provided [Docker Compose file](https://github.com/mastodon/mastodon/blob/main/docker-compose.yml) reduces the complexity by a good amount. However, some knowledge of Docker and some occasional debugging is still required.
+
+As mentioned above, this all-in-one snap package further simplifies the installation process of Mastodon, enabling everyone to host their own fully functional (micro) instance. Because snaps are self-updating, setting up a Mastodon instance can be reduced to executing two simple commands, with minimal future maintenance required.
 
 
 # 🚀 Quickstart
