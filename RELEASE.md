@@ -7,14 +7,16 @@ This release also includes:
 * ffmpeg 7.1.1
 * libvips 8.16.1
 * nginx 1.28.0
-* node 20.19.1
+* node 20.19.2
 * postgres 17.5
-* redis 8.0.0
+* redis 8.0.1
 * ruby 3.3.5
 
 Changelog for 4.3.8snap2:
 
+* Update node to 20.19.2
 * Update postgresql to 17.5
+* Update redis to 8.0.1
 
 ⚠️ Post update instructions ⚠️
 
