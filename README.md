@@ -11,7 +11,7 @@ Supported architectures:
 
 * amd64
 
-For more information, see the latest [release readme](RELEASE.md) or the [FAQ](docs/faq.md).
+For more information, see the latest [release readme](RELEASE.md) or the [FAQs](docs/faq.md).
 
 ## Why a snap package?
 
@@ -33,7 +33,7 @@ If you're not running Ubuntu, start by [installing the snap daemon](https://snap
 🥳 Congratulations! You now have your very own Mastodon instance! 🎉
 
 > [!IMPORTANT]
-> An administrator account with a randomly generated password is created during setup. Some usernames such as `admin` and `administrator` are reserved by Mastodon. See the [FAQ](docs/faq.md) for a full list.
+> An administrator account with a randomly generated password is created during setup. Some usernames such as `admin` and `administrator` are reserved by Mastodon. See the [FAQs](docs/faq.md) for a full list.
 
 
 # 📦 Installation
