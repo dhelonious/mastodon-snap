@@ -6,7 +6,7 @@ If none of the answers below help you, you can always re-install the snap and re
     snap install mastodon-server
     mastodon-server.restore 20240312-123456
 
-Make sure you move the backups out of `/var/snap/mastodon-server/common/backups/` before removing the snap.
+Make sure you move the backups out of `/var/snap/mastodon-server/common/backups/` before removing the Snap.
 
 ## Statistics show "0 active users"
 
@@ -32,9 +32,9 @@ If your postgres database has stopped working, for example due to a failed upgra
 
 Check the log file at `/var/snap/mastodon-server/current/logs/postgres/postgres.log`. The log message may contain instructions on how to fix the problem.
 
-If you are unable to solve the problem, or the problem cannot be solved due to the read-only file system of the snap, try the `snap revert` command to revert to the previous revision.
+If you are unable to solve the problem, or the problem cannot be solved due to the read-only file system of the Snap, try the `snap revert` command to revert to the previous revision.
 
-If reverting does not work or is not possible, try `snap remove` and reinstall the snap. You should also make a backup of the media in `/var/snap/mastodon-server/common/media/` if you have not already done so using `mastodon-server.export`. After installation, the postgres database should be initialized and working. Stop the snap with `snap stop mastodon-server` and replace the data dir, password file and media dir with your backups and change the permissions and ownership of the postgres data dir:
+If reverting does not work or is not possible, try `snap remove` and reinstall the Snap. You should also make a backup of the media in `/var/snap/mastodon-server/common/media/` if you have not already done so using `mastodon-server.export`. After installation, the postgres database should be initialized and working. Stop the Snap with `snap stop mastodon-server` and replace the data dir, password file and media dir with your backups and change the permissions and ownership of the postgres data dir:
 
     chown -R snap_daemon:root /var/snap/mastodon-server/current/postgres/data/
     find /var/snap/mastodon-server/current/postgres/data/ -type f -exec chmod 600 {} \;
@@ -44,7 +44,7 @@ Then change the permissions of the password file:
 
     chmod 640 /var/snap/mastodon-server/common/secrets/postgres
 
-Use `snap start` to restart the snap. Wait for postgres to start and use the `mastodon-server.export` command to create a proper backup. If postgres still does not work, repeat the above steps with a previous version of snap (e.g. if your postgres data dir was created by an older major version of postgres).
+Use `snap start` to restart the Snap. Wait for postgres to start and use the `mastodon-server.export` command to create a proper backup. If postgres still does not work, repeat the above steps with a previous version of Snap (e.g. if your postgres data dir was created by an older major version of postgres).
 
 > [!IMPORTANT]
 > This procedure requires root privileges.

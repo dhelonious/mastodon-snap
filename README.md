@@ -1,11 +1,11 @@
-Unofficial snap for Mastodon (decentralized social media server) 🦣📦
+Unofficial Snap for Mastodon (decentralized social media server) 🦣📦
 
 
 # 📌 About
 
 [Mastodon](https://joinmastodon.org) is a free, open-source social network server based on [ActivityPub](https://activitypub.rocks) where users can follow friends and discover new ones. On Mastodon, users can publish anything they want: links, pictures, text, video. All Mastodon servers are interoperable as a federated network (users on one server can seamlessly communicate with users from another one, including non-Mastodon software that implements ActivityPub!)
 
-The goal of this project is to simplify the setup of a Mastodon instance without requiring any prior knowledge of the technology behind it. This all-in-one snap package also offers support for ACME to automatically obtain SSL certificates for HTTPS.
+The goal of this project is to simplify the setup of a Mastodon instance without requiring any prior knowledge of the technology behind it. This all-in-one Snap package also offers support for ACME to automatically obtain SSL certificates for HTTPS.
 
 Supported architectures:
 
@@ -13,18 +13,20 @@ Supported architectures:
 
 For more information, see the latest [release readme](RELEASE.md) or the [FAQs](docs/faq.md).
 
-## Why a snap package?
+## Why a Snap package?
 
 The [Fediverse](https://en.wikipedia.org/wiki/Fediverse) is intended to remove the dependency on a single service provider. But users are still dependent on the instance providers. While a user can register with multiple instances and switch between them, their data is still tied to one instance at a time. In addition, users still do not have full control over their own data.
 
 So anyone should be able to host their own Mastodon instance on a home server, an old PC, a VPS or even a RasPi. However, creating a Mastodon instance requires some advanced knowledge and skills. The officially provided [Docker Compose file](https://github.com/mastodon/mastodon/blob/main/docker-compose.yml) reduces the complexity by a good amount. However, some knowledge of Docker and some occasional debugging is still required.
 
-As mentioned above, this all-in-one snap package further simplifies the installation process of Mastodon, enabling everyone to host their own fully functional (micro) instance. Because snaps are self-updating, setting up a Mastodon instance can be reduced to executing two simple commands, with minimal future maintenance required.
+One solution to this problem is provided by [YunoHost](https://yunohost.org), which offers a large catalog of applications, including Mastodon, that can be deployed with a single click. This makes self-hosting convenient and nearly maintenance-free. However, to ensure stability and compatibility across all these applications, YunoHost may not always be able to use the latest versions of its dependencies. This may mean that you cannot use the latest version of Mastodon or its newest features.
+
+This brings us back to why this project was started in the first place. As mentioned above, this standalone, all-in-one Snap package further simplifies the installation process for Mastodon, enabling anyone to host their own fully functional (micro)instance on any Linux system. Because Snaps are self-updating, setting up a Mastodon instance can be reduced to executing two simple commands, with minimal future maintenance required.
 
 
 # 🚀 Quickstart
 
-If you're not running Ubuntu, start by [installing the snap daemon](https://snapcraft.io/docs/installing-snapd#without-snap). Then run these commands:
+If you're not running Ubuntu, start by [installing the Snap daemon](https://snapcraft.io/docs/installing-snapd#without-snap). Then run these commands:
 
     sudo snap install mastodon-server
 
@@ -40,42 +42,42 @@ If you're not running Ubuntu, start by [installing the snap daemon](https://snap
 
 [![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/mastodon-server)
 
-If you prefer, you can also install the snap directly from the command line:
+If you prefer, you can also install the Snap directly from the command line:
 
     sudo snap install mastodon-server
 
-A common criticism of snaps is their dependence on Canonical. However, it is possible to install snaps offline and also build them locally directly from source. See the [build instructions](docs/build.md) for how to do this.
+A common criticism of Snaps is their dependence on Canonical. However, it is possible to install Snaps offline and also build them locally directly from source. See the [build instructions](docs/build.md) for how to do this.
 
-## Install from a snap file
+## Install from a Snap file
 
-Download a snap file from the [releases page](https://github.com/dhelonious/mastodon-snap/releases) and install it using:
+Download a Snap file from the [releases page](https://github.com/dhelonious/mastodon-snap/releases) and install it using:
 
     sudo snap install mastodon-server_VERSION_ARCH.snap --dangerous
 
 > [!NOTE]
-> In this context *dangerous* means that the snap file is not signed. This is normal for snaps built and distributed outside the snap store.
+> In this context *dangerous* means that the Snap file is not signed. This is normal for Snaps built and distributed outside the Snap store.
 
 ## Updates
 
 A Snap Store installation is automatically updated when new versions are released.
 
 > [!NOTE]
-> Be aware that there will always be a short downtime due to the way snaps are updated.
+> Be aware that there will always be a short downtime due to the way Snaps are updated.
 
-To update your local installation, you can simply repeat the steps above with a newer version of the snap file. This will update your Mastodon instance in-place by creating a new snap revision.
+To update your local installation, you can simply repeat the steps above with a newer version of the Snap file. This will update your Mastodon instance in-place by creating a new Snap revision.
 
-If you have installed a snap file locally and still want to benefit from automatic updates, you can switch to the Snap Store installation using:
+If you have installed a Snap file locally and still want to benefit from automatic updates, you can switch to the Snap Store installation using:
 
     snap refresh --amend mastodon-server
 
-After the snap has updated itself, a new unpublished announcement will be created. You can view, publish or delete this announcement in *Preferences/Administration/Announcements*.
+After the Snap has updated itself, a new unpublished announcement will be created. You can view, publish or delete this announcement in *Preferences/Administration/Announcements*.
 
 > [!NOTE]
-> By default, `update.announcement` is enabled (see the [configuration docs](docs/configuration.md)), which will display an update announcement 3 minutes before the snap is updated. This will prolong the time the snap is on hold during a refresh.
+> By default, `update.announcement` is enabled (see the [configuration docs](docs/configuration.md)), which will display an update announcement 3 minutes before the Snap is updated. This will prolong the time the Snap is on hold during a refresh.
 
 ### Refresh timer
 
-If you want to control the times at which snaps are updated, you need to change the [refresh.timer](https://snapcraft.io/docs/managing-updates#p-32248-refreshtimer):
+If you want to control the times at which Snaps are updated, you need to change the [refresh.timer](https://snapcraft.io/docs/managing-updates#p-32248-refreshtimer):
 
     snap set system refresh.timer=03:00
 

@@ -1,4 +1,4 @@
-# Unofficial snap for Mastodon 4.3.8
+# Unofficial Snap for Mastodon 4.3.8
 
 See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.3.8
 

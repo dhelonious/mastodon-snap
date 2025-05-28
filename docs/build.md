@@ -1,16 +1,16 @@
-# 🔨 Build the snap file locally
+# 🔨 Build the Snap file locally
 
-It is also possible to build the snap file yourself:
+It is also possible to build the Snap file yourself:
 
 1. Clone this repository:
 
     git clone https://github.com/dhelonious/mastodon-server
 
-2. Build the snap by running
+2. Build the Snap by running
 
     snapcraft
 
 in the repository's root directory.
 
 > [!NOTE]
-> Snapcraft relies on either `multipassd` or `lxd` to create snaps inside a virtual machine. Therefore, snaps cannot be created on a virtual infrastructure that does not support nested virtualization.
+> Snapcraft relies on either `multipassd` or `lxd` to create Snaps inside a virtual machine. Therefore, Snaps cannot be created on a virtual infrastructure that does not support nested virtualization.

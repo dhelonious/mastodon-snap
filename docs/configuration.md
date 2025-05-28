@@ -14,7 +14,7 @@ The following settings are available:
 | `ports.https`         | 0 to 65353                    | 443                    | HTTPS port                                                                           |
 | `acme.server`         | letsencrypt, zerossl, buypass | letsencrypt            | CA used for acquiring an SSL certificate, see [acme.sh server](https://github.com/acmesh-official/acme.sh/wiki/Server) |
 | `update.backup`       | true, false                   | true                   | Create a backup in `/var/snap/mastodon-server/common/update/backups` before updating |
-| `update.announcement` | true, false                   | true                   | Create an announcement 3 minutes before the snap is updated and publish new version  |
+| `update.announcement` | true, false                   | true                   | Create an announcement 3 minutes before the Snap is updated and publish new version  |
 | `status.length`       | integer                       | 1000                   | Character limit of statuses (toots); changes require recompilation of assets [1]     |
 | `media.dir`           | absolute path                 | `$SNAP_COMMON/media`   | Location of the media directory (*public/system*)                                    |
 | `backup.dir`          | absolute path                 | `$SNAP_COMMON/backups` | Location of the backup directory                                                     |
@@ -29,7 +29,7 @@ The following settings are available:
 | `log.access.enabled`  | true, false                   | false                  | Logging of http(s) accesses                                                          |
 | `log.access.format`   | standard, network, private    | network                | Use of real/network/no IP addresses in the access log                                |
 
-[1] Changing this value will increase the time it takes for snapcraft to update this snap. This will increase the downtime of your instance by about 5 minutes.
+[1] Changing this value will increase the time it takes for Snapcraft to update this Snap. This will increase the downtime of your instance by about 5 minutes.
 
 You can also set multiple values at once using
 
@@ -43,7 +43,7 @@ If you plan to use your instance for yourself only, you may want to enable `SING
 
 ## Data privacy
 
-By default, this snap will not log accesses unless `log.access.enabled` is `true`. Otherwise, the IP addresses in the access logs are anonymized by removing the last octet of each IP address (e.g. 192.168.100.10 becomes 192.168.100.0). If you want to change this, for example for debugging or to use [fail2ban](https://github.com/fail2ban/fail2ban), you can set `log.access.format` to `standard`.
+By default, this Snap will not log accesses unless `log.access.enabled` is `true`. Otherwise, the IP addresses in the access logs are anonymized by removing the last octet of each IP address (e.g. 192.168.100.10 becomes 192.168.100.0). If you want to change this, for example for debugging or to use [fail2ban](https://github.com/fail2ban/fail2ban), you can set `log.access.format` to `standard`.
 
 > [!IMPORTANT]
 > Note that even if access logging is enabled and not anonymized, the log files are rotated daily and anonymized.
@@ -73,7 +73,7 @@ Add the following lines to `/var/snap/mastodon-server/common/mastodon.conf`:
 
 ## Elasticsearch
 
-Elasticsearch provides some advanced search features and is required for the posts to be searchable at all. Due to its size, Elasticsearch is not included in this snap. An [external installation](https://www.elastic.co/guide/en/elasticsearch/reference/current/deb.html) can be used by adding the following lines to `/var/snap/mastodon-server/common/mastodon.conf`:
+Elasticsearch provides some advanced search features and is required for the posts to be searchable at all. Due to its size, Elasticsearch is not included in this Snap. An [external installation](https://www.elastic.co/guide/en/elasticsearch/reference/current/deb.html) can be used by adding the following lines to `/var/snap/mastodon-server/common/mastodon.conf`:
 
     ES_ENABLED=true
     ES_HOST=localhost
@@ -131,11 +131,11 @@ The following configuration variables can be used in `/var/snap/mastodon-server/
 * LibreTranslate: [`libre_translate_endpoint`](https://docs.joinmastodon.org/admin/config/#libre_translate_endpoint) and [`libre_translate_api_key`](https://docs.joinmastodon.org/admin/config/#libre_translate_api_key)
 
 > [!NOTE]
-> LibreTranslate is not included in this snap due to its size.
+> LibreTranslate is not included in this Snap due to its size.
 
 ## Reverse proxy
 
-Mastodon snap can also be used behind a reverse proxy along with other web services. In this case, SSL must not be enabled because SSL termination is done at the reverse proxy. Also, `ports.http` should be changed from the default (e.g. to `ports.http=81`).
+Mastodon Snap can also be used behind a reverse proxy along with other web services. In this case, SSL must not be enabled because SSL termination is done at the reverse proxy. Also, `ports.http` should be changed from the default (e.g. to `ports.http=81`).
 
 Here is a sample configuration for an nginx reverse proxy:
 
@@ -194,7 +194,7 @@ Here is a sample configuration for an nginx reverse proxy:
 
 ## External media storage
 
-The media directory can grow quickly, depending on how busy your server is. To move the media directory to an external volume mounted under `/media` or `/mnt`, you must first allow snap access to external media:
+The media directory can grow quickly, depending on how busy your server is. To move the media directory to an external volume mounted under `/media` or `/mnt`, you must first allow Snap access to external media:
 
     sudo snap connect mastodon-server:removable-media
 
