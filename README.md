@@ -165,5 +165,5 @@ If you encounter a problem, check if it has already been solved in the [troubles
 
 - [Fedi.Tips](https://fedi.tips/) is a valuable resource for Mastodon and the Fediverse.
 - [Fedi.Directory](https://fedi.directory/) can help you find interesting accounts to follow.
-- [FediDB](https://fedidb.org/) provides statistics on the Fediverse.
+- [FediDB](https://fedidb.com/) provides statistics on the Fediverse.
 - [FediBuzz Relay](https://relay.fedi.buzz/) can be used to follow hashtags on other instances.
