@@ -103,9 +103,10 @@ jobs:
             gh issue create --title "$title" --body "$(echo -e "$body")" --label security
           else
             issue_number=$(echo "$existing_issue" | jq -r ".number")
-            echo "Add comment to existing GitHub issue $issue_number" | yellow
-            gh issue comment "$issue_number" --body "$(echo -e "$body")" --edit-last --create-if-none
-            gh issue reopen "$issue_number" --comment "Review updated"
+            date=$(date +"%Y-%m-%d")
+            echo "Updating existing GitHub issue $issue_number" | yellow
+            gh issue edit "$issue_number" --body "$(echo -e "*Updated: $date*\n$body")"
+            gh issue reopen "$issue_number"
           fi
         fi
     - uses: actions/upload-artifact@v4
