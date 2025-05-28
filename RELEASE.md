@@ -9,14 +9,12 @@ This release also includes:
 * nginx 1.28.0
 * node 20.19.2
 * postgres 17.5
-* redis 8.0.1
+* redis 8.0.2
 * ruby 3.3.5
 
-Changelog for 4.3.8snap2:
+Changelog for 4.3.8snap3:
 
-* Update node to 20.19.2
-* Update postgresql to 17.5
-* Update redis to 8.0.1
+* Update redis to 8.0.2
 
 ⚠️ Post update instructions ⚠️
 
