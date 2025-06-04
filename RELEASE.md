@@ -1,6 +1,9 @@
-# Unofficial Snap for Mastodon 4.3.8
+# Unofficial Snap for Mastodon 4.4.0-beta.1
 
-See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.3.8
+> [!IMPORTANT]
+> This is a pre-release! This has not been as widely tested as regular releases.
+
+See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.4.0-beta.1
 
 This release also includes:
 
@@ -10,13 +13,10 @@ This release also includes:
 * node 20.19.2
 * postgres 17.5
 * redis 8.0.2
-* ruby 3.3.5
+* ruby 3.4.4
 
-Changelog for 4.3.8snap3:
+⚠️ Upgrade notes ⚠️
 
-* Update redis to 8.0.2
-* Update yarn to 4.9.2
-
-⚠️ Post update instructions ⚠️
-
-You should manually remove the entries corresponding to `Redis` and `PostgreSQL` from `/var/snap/mastodon-server/common/mastodon.conf` (versions >= 4.3.5snap1).
+* Rolling updates from versions earlier than Mastodon 4.3 are not supported
+* Import jobs from Mastodon versions earlier than Mastodon 4.2 are not supported
+* Requires updating the metadata for the Elasticsearch accounts index

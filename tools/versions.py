@@ -13,6 +13,7 @@ from util import (
     sha256_checksum,
     major,
     minor,
+    url_sub_version,
     get_dependencies_urls,
     read_snapcraft_yaml,
 )
@@ -132,8 +133,8 @@ for name, settings in dependencies.items():
         if version != local_version:
             url = local_source[0]
             url = url.replace(local_version, version)
-            url = url.replace(major(local_version), major(version))
-            url = url.replace(minor(local_version), minor(version))
+            url = url_sub_version(url, minor(local_version), minor(version))
+            url = url_sub_version(url, major(local_version), major(version))
             print_verbose(f"Checksum URL: {url}")
             print_verbose("Calculating checksum...")
             checksum = sha256_checksum(url)

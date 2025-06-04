@@ -1,5 +1,6 @@
 import hashlib
 import requests
+import re
 
 from .dependencies import dependencies_regexes, get_dependencies_urls
 
@@ -18,7 +19,14 @@ def major(version):
     return ".".join(version.split(".")[0])
 
 def minor(version):
-    return ".".join(version.split(".")[0:1])
+    return ".".join(version.split(".")[0:2])
+
+def url_sub_version(url, local_version, version):
+    return re.sub(
+        r"/(v?)"+local_version.replace(".", r"\.")+r"/",
+        r"/\g<1>"+version+"/",
+        url,
+    )
 
 def read_snapcraft_yaml():
     with open("snap/snapcraft.yaml", "r", encoding="utf-8") as yaml_file:

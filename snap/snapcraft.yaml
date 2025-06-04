@@ -9,7 +9,7 @@ description: |
   implements ActivityPub!)
 
 base: core24
-version: 4.3.8snap3
+version: 4.4.0-beta.1snap1
 grade: stable
 confinement: strict
 
@@ -29,7 +29,7 @@ environment:
   PATH: $SNAP/bin:$SNAP/usr/bin:$PATH
   LD_LIBRARY_PATH: $SNAP/lib
   LD_PRELOAD: libjemalloc.so.2
-  RUBYLIB: $SNAP/ruby/lib/ruby/3.3.0:$SNAP/ruby/lib/ruby/3.3.0/$SNAP_ARCH
+  RUBYLIB: $SNAP/ruby/lib/ruby/3.4.0:$SNAP/ruby/lib/ruby/3.4.0/$SNAP_ARCH
   RAILS_ENV: production
   NODE_ENV: production
   RAILS_SERVE_STATIC_FILES: "true"
@@ -587,8 +587,8 @@ parts:
       - curl
       - libjemalloc2
     # NOTE: see `.ruby-version`
-    source: https://cache.ruby-lang.org/pub/ruby/3.3/ruby-3.3.5.tar.gz
-    source-checksum: sha256/3781a3504222c2f26cb4b9eb9c1a12dbf4944d366ce24a9ff8cf99ecbce75196
+    source: https://cache.ruby-lang.org/pub/ruby/3.4/ruby-3.4.4.tar.gz
+    source-checksum: sha256/a0597bfdf312e010efd1effaa8d7f1d7833146fdc17950caa8158ffa3dcbfa85
     plugin: autotools
     build-packages:
       - clang
@@ -602,8 +602,8 @@ parts:
       - libdb-dev
       - libjemalloc-dev
     build-environment:
-      - RUBY_VERSION: "3.3.5" # NOTE: must be updated with ruby source
-      - RUBY_BRANCH: "3.3" # NOTE: must be updated with ruby source
+      - RUBY_VERSION: "3.4.4" # NOTE: must be updated with ruby source
+      - RUBY_BRANCH: "3.4" # NOTE: must be updated with ruby source
       - DEBIAN_DISABLE_RUBYGEMS_INTEGRATION: "true"
       - CC: clang
       - CXX: clang++
@@ -792,8 +792,8 @@ parts:
       - ffmpeg
       - rsync
     # NOTE: https://github.com/mastodon/mastodon/releases/latest
-    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.3.8.tar.gz
-    source-checksum: sha256/b3d18985a4980573940855e1ca8826fad41c9b131fcdd256d7ae7d0392037a0e
+    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.4.0-beta.1.tar.gz
+    source-checksum: sha256/dc5d16f7f72a148e7e1bbf60b4dfcbe5311a84343ec31174cc5ca8beab6e41c5
     plugin: nil
     build-packages:
       - git
@@ -811,8 +811,8 @@ parts:
       - libssl3t64
     build-environment:
       - YARN_VERSION: "4.9.2" # NOTE: https://github.com/yarnpkg/berry/releases/latest
-      - RUBY_BRANCH: "3.3" # NOTE: must be updated with ruby source
-      - BUNDLER_VERSION: "2.6.5" # NOTE: see `Gemfile.lock`
+      - RUBY_BRANCH: "3.4" # NOTE: must be updated with ruby source
+      - BUNDLER_VERSION: "2.6.9" # NOTE: see `Gemfile.lock`
       - RAILS_ENV: production
       - NODE_ENV: production
       - OTP_SECRET: precompile_placeholder
@@ -924,7 +924,7 @@ parts:
       - mastodon
     plugin: nil
     build-environment:
-      - BIRD_UI_TAG: 2.1.1 # NOTE: https://github.com/ronilaukkarinen/mastodon-bird-ui/releases/latest
+      - BIRD_UI_TAG: 2.1.2rc13 # NOTE: https://github.com/ronilaukkarinen/mastodon-bird-ui/releases/latest
       - MASTODON_STYLES: $CRAFT_STAGE/mastodon/app/javascript/styles
     override-build: |
       set -eux
@@ -989,7 +989,7 @@ parts:
       - tangerine-ui
     plugin: nil
     build-environment:
-      - RUBY_BRANCH: "3.3" # NOTE: must be updated with ruby source
+      - RUBY_BRANCH: "3.4" # NOTE: must be updated with ruby source
       - RUBYLIB: $CRAFT_STAGE/ruby/lib/ruby/$RUBY_BRANCH.0:$CRAFT_STAGE/ruby/lib/ruby/$RUBY_BRANCH.0/$SNAP_ARCH
       - PATH: $CRAFT_STAGE/mastodon/bin:$CRAFT_STAGE/ruby/bin:$CRAFT_STAGE/node/bin:$PATH
       - LD_LIBRARY_PATH: $CRAFT_STAGE/mastodon/lib:$CRAFT_STAGE/ruby/lib:$CRAFT_STAGE/node/lib
