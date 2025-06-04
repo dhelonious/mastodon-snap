@@ -15,6 +15,7 @@ This release also includes:
 Changelog for 4.3.8snap3:
 
 * Update redis to 8.0.2
+* Update yarn to 4.9.2
 
 ⚠️ Post update instructions ⚠️
 
