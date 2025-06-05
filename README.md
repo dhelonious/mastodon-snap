@@ -167,3 +167,4 @@ If you encounter a problem, check if it has already been solved in the [troubles
 - [Fedi.Directory](https://fedi.directory/) can help you find interesting accounts to follow.
 - [FediDB](https://fedidb.com/) provides statistics on the Fediverse.
 - [FediBuzz Relay](https://relay.fedi.buzz/) can be used to follow hashtags on other instances.
+- [delightful activitypub development](https://delightful.coding.social/delightful_activitypub_development/) is a curated list of software for the Fediverse
