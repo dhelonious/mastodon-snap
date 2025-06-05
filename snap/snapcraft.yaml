@@ -933,11 +933,11 @@ parts:
       curl https://raw.githubusercontent.com/ronilaukkarinen/mastodon-bird-ui/$BIRD_UI_TAG/layout-multiple-columns.css -o $MASTODON_STYLES/mastodon-bird-ui/layout-multiple-columns.scss
       sed -i "s/theme-contrast/theme-mastodon-bird-ui-contrast/g" $MASTODON_STYLES/mastodon-bird-ui/layout-multiple-columns.scss
       sed -i "s/theme-mastodon-light/theme-mastodon-bird-ui-light/g" $MASTODON_STYLES/mastodon-bird-ui/layout-multiple-columns.scss
-      echo -e "@import 'application';\n@import 'mastodon-bird-ui/layout-single-column.scss';\n@import 'mastodon-bird-ui/layout-multiple-columns.scss';" > $MASTODON_STYLES/mastodon-bird-ui-dark.scss
+      echo -e "@use 'application';\n@use 'mastodon-bird-ui/layout-single-column.scss';\n@use 'mastodon-bird-ui/layout-multiple-columns.scss';" > $MASTODON_STYLES/mastodon-bird-ui-dark.scss
       echo -e "mastodon-bird-ui-dark: styles/mastodon-bird-ui-dark.scss" >> $CRAFT_STAGE/mastodon/config/themes.yml
-      echo -e "@import 'mastodon-light/variables';\n@import 'application';\n@import 'mastodon-light/diff';\n@import 'mastodon-bird-ui/layout-single-column.scss';\n@import 'mastodon-bird-ui/layout-multiple-columns.scss';" > $MASTODON_STYLES/mastodon-bird-ui-light.scss
+      echo -e "@use 'mastodon-light/variables';\n@use 'application';\n@use 'mastodon-light/diff';\n@use 'mastodon-bird-ui/layout-single-column.scss';\n@use 'mastodon-bird-ui/layout-multiple-columns.scss';" > $MASTODON_STYLES/mastodon-bird-ui-light.scss
       echo -e "mastodon-bird-ui-light: styles/mastodon-bird-ui-light.scss" >> $CRAFT_STAGE/mastodon/config/themes.yml
-      echo -e "@import 'contrast/variables';\n@import 'application';\n@import 'contrast/diff';\n@import 'mastodon-bird-ui/layout-single-column.scss';\n@import 'mastodon-bird-ui/layout-multiple-columns.scss';" > $MASTODON_STYLES/mastodon-bird-ui-contrast.scss
+      echo -e "@use 'contrast/variables';\n@use 'application';\n@use 'contrast/diff';\n@use 'mastodon-bird-ui/layout-single-column.scss';\n@use 'mastodon-bird-ui/layout-multiple-columns.scss';" > $MASTODON_STYLES/mastodon-bird-ui-contrast.scss
       echo -e "mastodon-bird-ui-contrast: styles/mastodon-bird-ui-contrast.scss" >> $CRAFT_STAGE/mastodon/config/themes.yml
       cat $MASTODON_STYLES/mastodon-bird-ui-contrast.scss $CRAFT_STAGE/themes/mastodon-bird-ui/accessible.scss > $MASTODON_STYLES/mastodon-bird-ui-accessible.scss
       echo -e "mastodon-bird-ui-accessible: styles/mastodon-bird-ui-accessible.scss" >> $CRAFT_STAGE/mastodon/config/themes.yml
@@ -962,11 +962,11 @@ parts:
 
       curl https://raw.githubusercontent.com/nileane/TangerineUI-for-Mastodon/v$TANGERINE_UI_TAG/LICENSE -o $MASTODON_STYLES/tangerine-ui/LICENSE
       curl https://raw.githubusercontent.com/nileane/TangerineUI-for-Mastodon/v$TANGERINE_UI_TAG/mastodon/app/javascript/styles/tangerineui/tangerineui.scss -o $MASTODON_STYLES/tangerine-ui/style.scss
-      echo -e "@import 'application';\n@import 'tangerine-ui/style.scss';" > $MASTODON_STYLES/tangerine-ui.scss
+      echo -e "@use 'application';\n@use 'tangerine-ui/style.scss';" > $MASTODON_STYLES/tangerine-ui.scss
       echo -e "tangerine-ui: styles/tangerine-ui.scss" >> $CRAFT_STAGE/mastodon/config/themes.yml
       for variant in purple cherry lagoon; do
         curl https://raw.githubusercontent.com/nileane/TangerineUI-for-Mastodon/v$TANGERINE_UI_TAG/mastodon/app/javascript/styles/tangerineui-$variant/tangerineui-$variant.scss -o $MASTODON_STYLES/tangerine-ui/style-$variant.scss
-        echo -e "@import 'application';\n@import 'tangerine-ui/style-$variant.scss';" > $MASTODON_STYLES/tangerine-ui-$variant.scss
+        echo -e "@use 'application';\n@use 'tangerine-ui/style-$variant.scss';" > $MASTODON_STYLES/tangerine-ui-$variant.scss
         echo -e "tangerine-ui-$variant: styles/tangerine-ui-$variant.scss" >> $CRAFT_STAGE/mastodon/config/themes.yml
       done
 
