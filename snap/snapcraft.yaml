@@ -911,7 +911,7 @@ parts:
       mkdir -p $MASTODON_JS/mastodon/addons
       cp $CRAFT_STAGE/addons/*.js $MASTODON_JS/mastodon/addons/
       for name in snow fediday; do
-        sed -i "1s|^|import * as $name from 'mastodon/addons/$name';\n|" $MASTODON_JS/mastodon/common.js
+        sed -i "1s|^|import * as $name from 'mastodon/addons/$name';\n|" $MASTODON_JS/mastodon/common.ts
       done
 
   bird-ui:
