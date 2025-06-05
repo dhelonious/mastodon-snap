@@ -29,7 +29,6 @@ environment:
   PATH: $SNAP/bin:$SNAP/usr/bin:$PATH
   LD_LIBRARY_PATH: $SNAP/lib
   LD_PRELOAD: libjemalloc.so.2
-  RUBYLIB: $SNAP/ruby/lib/ruby/3.4.0:$SNAP/ruby/lib/ruby/3.4.0/$SNAP_ARCH
   RAILS_ENV: production
   NODE_ENV: production
   RAILS_SERVE_STATIC_FILES: "true"
@@ -822,7 +821,7 @@ parts:
       - ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY: precompile_placeholder
       - PATH: $CRAFT_STAGE/ruby/bin:$CRAFT_STAGE/node/bin:$CRAFT_STAGE/libvips/bin:$PATH
       - LD_LIBRARY_PATH: $CRAFT_STAGE/ruby/lib:$CRAFT_STAGE/node/lib:$CRAFT_STAGE/libvips/lib
-      - RUBYLIB: $CRAFT_STAGE/ruby/lib/ruby/$RUBY_BRANCH.0:$CRAFT_STAGE/ruby/lib/ruby/$RUBY_BRANCH.0/$SNAP_ARCH
+      - RUBYLIB: $CRAFT_STAGE/ruby/lib/ruby/$RUBY_BRANCH.0:$CRAFT_STAGE/ruby/lib/ruby/$RUBY_BRANCH.0/$SNAP_ARCH:$CRAFT_PART_BUILD/vendor/bundle/ruby/$RUBY_BRANCH.0
       - BUNDLE_PATH: $CRAFT_PART_BUILD/vendor/bundle
       - BUNDLE_GEMFILE: $CRAFT_PART_BUILD/Gemfile
       - BUNDLE_RAKEFILE: $CRAFT_PART_BUILD/Rakefile
@@ -833,7 +832,7 @@ parts:
       - COREPACK_HOME: /tmp/corepack
       - MASTODON_USE_LIBVIPS: "true"
       - MASTODON_STATUS_LENGTH: 1000
-      # NOTE: workaround for current issue (see https://github.com/mastodon/mastodon/releases/tag/v4.3.0-beta.1)
+      # NOTE: the charlock_holmes gem may fail to build with recent versions of gcc (see https://github.com/mastodon/mastodon/releases/tag/v4.3.0-beta.1)
       - BUNDLE_BUILD__CHARLOCK_HOLMES: "--with-cxxflags=-std=c++17"
     # NOTE: fiddle is no longer included in ruby 3.5.0
     override-build: |
@@ -844,10 +843,7 @@ parts:
       bundle config set --local path $BUNDLE_PATH
       bundle config set --local silence_root_warning true
       bundle config build.pg --with-pg-config=$CRAFT_STAGE/postgres/bin/pg_config
-      bundle config set frozen false
-      echo "gem 'fiddle', '~> 1.1.2'" >> Gemfile
       bundle install -j"$(nproc)"
-      bundle config set frozen true
 
       mkdir -p $COREPACK_HOME $YARN_CACHE_FOLDER
       corepack enable
