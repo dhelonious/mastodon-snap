@@ -987,8 +987,8 @@ parts:
     build-environment:
       - RUBY_BRANCH: "3.4" # NOTE: must be updated with ruby source
       - RUBYLIB: $CRAFT_STAGE/ruby/lib/ruby/$RUBY_BRANCH.0:$CRAFT_STAGE/ruby/lib/ruby/$RUBY_BRANCH.0/$SNAP_ARCH
-      - PATH: $CRAFT_STAGE/mastodon/bin:$CRAFT_STAGE/ruby/bin:$CRAFT_STAGE/node/bin:$PATH
-      - LD_LIBRARY_PATH: $CRAFT_STAGE/mastodon/lib:$CRAFT_STAGE/ruby/lib:$CRAFT_STAGE/node/lib
+      - PATH: $CRAFT_STAGE/mastodon/bin:$CRAFT_STAGE/ruby/bin:$CRAFT_STAGE/node/bin:$PATH:$CRAFT_STAGE/libvips/bin
+      - LD_LIBRARY_PATH: $CRAFT_STAGE/mastodon/lib:$CRAFT_STAGE/ruby/lib:$CRAFT_STAGE/node/lib:$CRAFT_STAGE/libvips/lib
       - RAILS_ENV: production
       - NODE_ENV: production
       - BUNDLE_PATH: $CRAFT_STAGE/mastodon/vendor/bundle
