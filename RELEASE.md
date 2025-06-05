@@ -1,6 +1,6 @@
 # Unofficial Snap for Mastodon 4.4.0-beta.1
 
-> [!IMPORTANT]
+> [!WARNING]
 > This is a pre-release! This has not been as widely tested as regular releases.
 
 See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.4.0-beta.1
