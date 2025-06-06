@@ -20,3 +20,6 @@ This release also includes:
 * Rolling updates from versions earlier than Mastodon 4.3 are not supported
 * Import jobs from Mastodon versions earlier than Mastodon 4.2 are not supported
 * Requires updating the metadata for the Elasticsearch accounts index
+
+> [!NOTE]
+> As of this release, the Fediday and Snow addons have been removed.

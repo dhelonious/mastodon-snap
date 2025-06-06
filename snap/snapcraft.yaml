@@ -900,20 +900,6 @@ parts:
     organize:
       config/*: config/mastodon/
 
-  mastodon-addons:
-    after:
-      - mastodon
-    plugin: nil
-    build-environment:
-      - MASTODON_JS: $CRAFT_STAGE/mastodon/app/javascript
-    override-build: |
-      set -eux
-      mkdir -p $MASTODON_JS/mastodon/addons
-      cp $CRAFT_STAGE/addons/*.js $MASTODON_JS/mastodon/addons/
-      for name in snow fediday; do
-        sed -i "1s|^|import * as $name from 'mastodon/addons/$name';\n|" $MASTODON_JS/mastodon/common.ts
-      done
-
   bird-ui:
     after:
       - curl
@@ -980,7 +966,6 @@ parts:
   mastodon-precompile:
     after:
       - mastodon
-      - mastodon-addons
       - bird-ui
       - tangerine-ui
     plugin: nil
