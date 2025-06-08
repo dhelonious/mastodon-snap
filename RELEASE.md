@@ -15,6 +15,10 @@ This release also includes:
 * redis 8.0.2
 * ruby 3.4.4
 
+Changelog for 4.4.0-beta.1snap2:
+
+* Upgrade libvips to 8.17.0
+
 ⚠️ Upgrade notes ⚠️
 
 * Rolling updates from versions earlier than Mastodon 4.3 are not supported
@@ -22,4 +26,4 @@ This release also includes:
 * Requires updating the metadata for the Elasticsearch accounts index
 
 > [!NOTE]
-> As of this release, the Fediday and Snow addons have been removed.
+> As of release `4.4.0-beta.1snap1`, the Fediday and Snow addons have been removed.

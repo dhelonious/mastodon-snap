@@ -9,7 +9,7 @@ description: |
   implements ActivityPub!)
 
 base: core24
-version: 4.4.0-beta.1snap1
+version: 4.4.0-beta.1snap2
 grade: stable
 confinement: strict
 
@@ -651,8 +651,8 @@ parts:
 
   libvips:
     # NOTE: https://github.com/libvips/libvips/releases/latest
-    source: https://github.com/libvips/libvips/archive/refs/tags/v8.16.1.tar.gz
-    source-checksum: sha256/df960c3df02da8ae16ee19e79c9428e955d178242a8f06064e07e0c417238e6e
+    source: https://github.com/libvips/libvips/archive/refs/tags/v8.17.0.tar.gz
+    source-checksum: sha256/41dd9d302dc58d956b62aa991fc2a803b1757fe764a7e1c096ead7c1127fb568
     plugin: nil
     build-packages:
       - meson
