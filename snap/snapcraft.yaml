@@ -906,7 +906,7 @@ parts:
       - mastodon
     plugin: nil
     build-environment:
-      - BIRD_UI_TAG: 2.1.2rc13 # NOTE: https://github.com/ronilaukkarinen/mastodon-bird-ui/releases/latest
+      - BIRD_UI_TAG: 2.2.0rc2 # NOTE: https://github.com/ronilaukkarinen/mastodon-bird-ui/releases/latest
       - MASTODON_STYLES: $CRAFT_STAGE/mastodon/app/javascript/styles
     override-build: |
       set -eux
@@ -956,11 +956,16 @@ parts:
         echo -e "tangerine-ui-$variant: styles/tangerine-ui-$variant.scss" >> $CRAFT_STAGE/mastodon/config/themes.yml
       done
 
+      curl https://raw.githubusercontent.com/riflesniper/TangerineUI-Lime/refs/heads/main/TangerineUI-lime.css -o $MASTODON_STYLES/tangerine-ui/style-lime.scss
+      echo -e "@use 'application';\n@use 'tangerine-ui/style-lime.scss';" > $MASTODON_STYLES/tangerine-ui-lime.scss
+      echo -e "tangerine-ui-lime: styles/tangerine-ui-lime.scss" >> $CRAFT_STAGE/mastodon/config/themes.yml
+
       for locale in $CRAFT_STAGE/mastodon/config/locales/*.yml; do
         sed -i "s/themes:$/&\n    tangerine-ui: Tangerine UI 🍊 Tangerine/" $locale
         sed -i "s/themes:$/&\n    tangerine-ui-purple: Tangerine UI 🪻 Purple/" $locale
         sed -i "s/themes:$/&\n    tangerine-ui-cherry: Tangerine UI 🍒 Cherry/" $locale
         sed -i "s/themes:$/&\n    tangerine-ui-lagoon: Tangerine UI 🐠 Lagoon/" $locale
+        sed -i "s/themes:$/&\n    tangerine-ui-lime: Tangerine UI 🍋‍🟩 Lime/" $locale
       done
 
   mastodon-precompile:

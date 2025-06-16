@@ -17,7 +17,9 @@ This release also includes:
 
 Changelog for 4.4.0-beta.1snap2:
 
-* Upgrade libvips to 8.17.0
+* Update libvips to 8.17.0
+* Update bird-ui to 2.2.0rc2
+* Add tangerine-ui lime variant by riflesniper
 
 ⚠️ Upgrade notes ⚠️
 
