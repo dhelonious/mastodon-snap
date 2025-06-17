@@ -1,21 +1,21 @@
-# Unofficial Snap for Mastodon 4.4.0-beta.1
+# Unofficial Snap for Mastodon 4.4.0-beta.2
 
 > [!WARNING]
 > This is a pre-release! This has not been as widely tested as regular releases.
 
-See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.4.0-beta.1
+See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.4.0-beta.2
 
 This release also includes:
 
 * ffmpeg 7.1.1
-* libvips 8.16.1
+* libvips 8.17.0
 * nginx 1.28.0
 * node 20.19.2
 * postgres 17.5
 * redis 8.0.2
 * ruby 3.4.4
 
-Changelog for 4.4.0-beta.1snap2:
+Changelog for 4.4.0-beta.2snap1:
 
 * Update libvips to 8.17.0
 * Update bird-ui to 2.2.0rc2
