@@ -10,6 +10,7 @@ import requests
 
 from packaging.version import parse as vers
 from util import (
+    HEADERS,
     dependencies_regexes,
     read_snapcraft_yaml,
 )
@@ -51,7 +52,7 @@ def get_vulnerabilities(name, version):
         "version": version,
     }
 
-    response = requests.post(url, json=data)
+    response = requests.post(url, json=data, headers=HEADERS)
     if response.status_code != 200:
         print_verbose(f"Error: {response.status_code}")
         return []

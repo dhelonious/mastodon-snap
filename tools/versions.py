@@ -10,6 +10,7 @@ import argparse
 import requests
 
 from util import (
+    HEADERS,
     sha256_checksum,
     major,
     minor,
@@ -62,7 +63,7 @@ if args.mastodon_version:
     MASTODON_RELEASE = f"v{ args.mastodon_version }"
 else:
     print_verbose("Getting the latest Mastodon release...")
-    with requests.get("https://github.com/mastodon/mastodon/releases/latest", timeout=10) as r:
+    with requests.get("https://github.com/mastodon/mastodon/releases/latest", headers=HEADERS) as r:
         if r.status_code != 200:
             print_error(r.raise_for_status())
             exit()
@@ -71,7 +72,7 @@ else:
 
 print_silent(f"Use Mastodon release: {MASTODON_RELEASE}")
 
-with requests.get(f"https://raw.githubusercontent.com/mastodon/mastodon/{ MASTODON_RELEASE }/Vagrantfile", timeout=10) as r:
+with requests.get(f"https://raw.githubusercontent.com/mastodon/mastodon/{ MASTODON_RELEASE }/Vagrantfile", headers=HEADERS) as r:
     NODE_MAJOR = re.findall(r".*NODE_MAJOR=([0-9]+).*", r.text)[0]
 
 dependencies = get_dependencies_urls(MASTODON_RELEASE, NODE_MAJOR)
@@ -81,7 +82,7 @@ table = []
 for name, settings in dependencies.items():
     print_silent(f"Checking {name}...")
 
-    r = requests.get(settings["url"], timeout=10)
+    r = requests.get(settings["url"], headers=HEADERS)
     print_verbose(f"{settings['url']} -> {r.status_code}")
 
     if r.status_code != 200:

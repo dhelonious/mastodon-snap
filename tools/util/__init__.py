@@ -5,6 +5,13 @@ import re
 from .dependencies import dependencies_regexes, get_dependencies_urls
 
 
+HEADERS = {
+    "User-Agent": "Mozilla/5.0",
+    "Accept": "text/html, application/vnd.github.v3+json",
+    "Accept-Language": "en",
+}
+
+
 def sha256_checksum(url):
     sha256 = hashlib.sha256()
 
