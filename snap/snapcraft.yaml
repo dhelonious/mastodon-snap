@@ -9,7 +9,7 @@ description: |
   implements ActivityPub!)
 
 base: core24
-version: 4.4.0-beta.2snap1
+version: 4.4.0-rc.1snap1
 grade: stable
 confinement: strict
 
@@ -455,8 +455,8 @@ parts:
       - nginx-customizations
       - wraplib
     # NOTE: https://nginx.org/en/download.html (mainline version)
-    source: https://nginx.org/download/nginx-1.28.0.tar.gz
-    source-checksum: sha256/c6b5c6b086c0df9d3ca3ff5e084c1d0ef909e6038279c71c1c3e985f576ff76a
+    source: https://nginx.org/download/nginx-1.29.0.tar.gz
+    source-checksum: sha256/109754dfe8e5169a7a0cf0db6718e7da2db495753308f933f161e525a579a664
     plugin: autotools
     build-environment:
       - PATH: $CRAFT_STAGE/nginx/bin:$PATH
@@ -550,13 +550,13 @@ parts:
       set -eux
       case "$SNAP_ARCH" in
       "amd64")
-        source="https://nodejs.org/download/release/latest-v20.x/node-v20.19.2-linux-x64.tar.gz"
-        checksum="eec2c7b9c6ac72e42885a42edfc0503c0e4ee455f855c4a17a6cbcf026656dd5"
+        source="https://nodejs.org/download/release/latest-v20.x/node-v20.19.3-linux-x64.tar.gz"
+        checksum="76272878069683c3a36b933d2f4842436a26b527daa930ae9346b477011ee2f3"
         arch="x64"
         ;;
       "arm64")
-        source="https://nodejs.org/download/release/latest-v20.x/node-v20.19.2-linux-arm64.tar.gz"
-        checksum="24c3090d4e8c3667cd57482263291ca4f562c2e0773d5e618a0c6ba32d21b39f"
+        source="https://nodejs.org/download/release/latest-v20.x/node-v20.19.3-linux-arm64.tar.gz"
+        checksum="8e6939f63b736470bf2cbda596ab62393f26d9af9d7046d61270899880d4f149"
         arch="arm64"
         ;;
       *)
@@ -791,8 +791,8 @@ parts:
       - ffmpeg
       - rsync
     # NOTE: https://github.com/mastodon/mastodon/releases/latest
-    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.4.0-beta.2.tar.gz
-    source-checksum: sha256/080079dc87ffcb77b945478c808573f8a4b3ad422023e4493c131e324d6f96e3
+    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.4.0-rc.1.tar.gz
+    source-checksum: sha256/7b8ba7bfabe87a03de02814eb73ebf64dadc2bfddd8030204ba93129f320e9f0
     plugin: nil
     build-packages:
       - git
@@ -906,7 +906,7 @@ parts:
       - mastodon
     plugin: nil
     build-environment:
-      - BIRD_UI_TAG: 2.2.0rc2 # NOTE: https://github.com/ronilaukkarinen/mastodon-bird-ui/releases/latest
+      - BIRD_UI_TAG: 2.2.0rc4 # NOTE: https://github.com/ronilaukkarinen/mastodon-bird-ui/releases/latest
       - MASTODON_STYLES: $CRAFT_STAGE/mastodon/app/javascript/styles
     override-build: |
       set -eux
