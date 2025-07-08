@@ -9,7 +9,7 @@ description: |
   implements ActivityPub!)
 
 base: core24
-version: 4.3.9snap1
+version: 4.3.9snap2
 grade: stable
 confinement: strict
 
@@ -501,8 +501,8 @@ parts:
     after:
       - redis-customizations
     # NOTE: https://github.com/redis/redis/releases/latest
-    source: https://download.redis.io/releases/redis-8.0.2.tar.gz
-    source-checksum: sha256/e9296b67b54c91befbcca046d67071c780a1f7c9f9e1ae5ed94773c3bb9b542f
+    source: https://download.redis.io/releases/redis-8.0.3.tar.gz
+    source-checksum: sha256/33f37290b00b14e9a884dd4dcba335febd63ea16c51609d34fa41e031ad587df
     plugin: make
     override-build: |
       set -eux
@@ -652,8 +652,8 @@ parts:
 
   libvips:
     # NOTE: https://github.com/libvips/libvips/releases/latest
-    source: https://github.com/libvips/libvips/archive/refs/tags/v8.17.0.tar.gz
-    source-checksum: sha256/41dd9d302dc58d956b62aa991fc2a803b1757fe764a7e1c096ead7c1127fb568
+    source: https://github.com/libvips/libvips/archive/refs/tags/v8.17.1.tar.gz
+    source-checksum: sha256/79f54d367a485507c1421408ae13768e4734f473edc71af511472645f46dbd08
     plugin: nil
     build-packages:
       - meson
