@@ -8,19 +8,19 @@ See the release notes for Mastodon: https://github.com/mastodon/mastodon/release
 This release also includes:
 
 * ffmpeg 7.1.1
-* libvips 8.17.0
+* libvips 8.17.1
 * nginx 1.29.0
 * node 20.19.3
 * postgres 17.5
-* redis 8.0.2
+* redis 8.0.3
 * ruby 3.4.4
 
-Changelog for 4.4.0-rc.1snap1:
+Changelog for 4.4.0-rc.1snap2:
 
-* Update nginx to 1.29.0
-* Update node to 20.19.3
-* Update bird-ui to 2.2.0rc4
-* Add tangerine-ui lime variant by riflesniper
+* Update libvips to 8.17.1
+* Update redis to 8.0.3
+* Update bird-ui to 2.2.1rc1
+* Update tangerine-ui to v2.4-prerelease
 
 ⚠️ Upgrade notes ⚠️
 
