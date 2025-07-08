@@ -958,8 +958,8 @@ parts:
 
       curl https://raw.githubusercontent.com/nileane/TangerineUI-for-Mastodon/v$TANGERINE_UI_TAG/mastodon/app/javascript/styles/tangerineui/tangerineui.scss -o $MASTODON_STYLES/tangerine-ui/style-lime.scss
       sed -i "s/by @nileane@nileane\.fr/by @nileane@nileane.fr, colors by @sprite@limezone.riflesniper.art/" $MASTODON_STYLES/tangerine-ui/style-lime.scss
-      sed -i "s/\"Tangerine\"/\"Lime\"/" $MASTODON_STYLES/tangerine-ui/style-lime.scss # --variant-name
-      sed -i "s/\"\\1F34A\\00A0\"/\"\\1F34B\\200D\\1F7E9\\00A0\"/" $MASTODON_STYLES/tangerine-ui/style-lime.scss # --variant-emoji
+      sed -i 's/"Tangerine"/"Lime"/' $MASTODON_STYLES/tangerine-ui/style-lime.scss # --variant-name
+      sed -i 's/"\\1F34A\\00A0"/"\\1F34B\\200D\\1F7E9\\00A0"/' $MASTODON_STYLES/tangerine-ui/style-lime.scss # --variant-emoji
       sed -i "s/%23e68933/%2370f702/g" $MASTODON_STYLES/tangerine-ui/style-lime.scss
       sed -i "s/#3c2a1f/rgb(21, 22, 21)/g" $MASTODON_STYLES/tangerine-ui/style-lime.scss # --color-accent-bg
       sed -i "s/#f6e5dd/#eff6dd/g" $MASTODON_STYLES/tangerine-ui/style-lime.scss # --color-accent-bg
