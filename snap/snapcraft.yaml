@@ -967,7 +967,7 @@ parts:
       sed -i "s/#ffa047/#bfff47/g" $MASTODON_STYLES/tangerine-ui/style-lime.scss # --color-accent-focus
       sed -i "s/rgb(230, 137, 51, 0.3)/rgba(152, 230, 51, 0.3)/g" $MASTODON_STYLES/tangerine-ui/style-lime.scss # --color-accent-lines
       sed -i "s/rgba(247, 105, 2, 0.12)/rgba(141, 247, 2, 0.12)/g" $MASTODON_STYLES/tangerine-ui/style-lime.scss # --color-accent-lines
-      sed -i "s/#e68933/#70f702/g" $MASTODON_STYLES/tangerine-ui/style-lime.scss # --color-accent
+      sed -i "s/#e68933/#7be038/g" $MASTODON_STYLES/tangerine-ui/style-lime.scss # --color-accent
       sed -i "s/#f76902/#70f702/g" $MASTODON_STYLES/tangerine-ui/style-lime.scss # --color-accent
       sed -i "s/rgba(121, 189, 154, 0.3)/rgba(121, 189, 121, 0.3)/g" $MASTODON_STYLES/tangerine-ui/style-lime.scss # --color-confirm-bg
       sed -i "s/#4E8A6B/#4e8a4e/g" $MASTODON_STYLES/tangerine-ui/style-lime.scss # --color-confirm-fg
