@@ -1,7 +1,15 @@
 import hashlib
 import requests
+import re
 
 from .dependencies import dependencies_regexes, get_dependencies_urls
+
+
+HEADERS = {
+    "User-Agent": "Mozilla/5.0",
+    "Accept": "text/html, application/vnd.github.v3+json",
+    "Accept-Language": "en",
+}
 
 
 def sha256_checksum(url):
@@ -19,6 +27,13 @@ def major(version):
 
 def minor(version):
     return ".".join(version.split(".")[0:2])
+
+def url_sub_version(url, local_version, version):
+    return re.sub(
+        r"/(v?)"+local_version.replace(".", r"\.")+r"/",
+        r"/\g<1>"+version+"/",
+        url,
+    )
 
 def read_snapcraft_yaml():
     with open("snap/snapcraft.yaml", "r", encoding="utf-8") as yaml_file:

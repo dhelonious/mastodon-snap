@@ -131,31 +131,6 @@ Read the [maintenance guide](docs/maintenance.md) to learn how to access the dat
 The `mastodon-server.announce` command can be used to create automated server notifications in Mastodon.
 
 
-# 🐣 Addons
-
-## 🎊 It's your Fediday!
-
-![Example of your Fediday celebration in the Mastodon web interface in dark mode](docs/media/fediday_dark.gif)
-
-![Example of your Fediday celebration in the Mastodon web interface in light mode](docs/media/fediday_light.gif)
-
-The day you joined the Fediverse will be celebrated by your instance with a rain of confetti! The confetti will only be visible to you when you're logged in.
-
-> [!NOTE]
-> This addon respects accessibility settings. It won't be used if you enable the setting *Preferences/Appearance/Reduce motion in animations*.
-
-## ❄️ Let it snow
-
-![Example of snow in the Mastodon web interface with Bird UI (dark)](docs/media/snow_dark.gif)
-
-![Example of snow in the Mastodon web interface with Bird UI (light)](docs/media/snow_light.gif)
-
-Around Christmas, winter comes to your Mastodon instance as snowflakes appear at the top of the website! This wonderful addon has been created by [Roni Laukkarinen](https://github.com/ronilaukkarinen).
-
-> [!NOTE]
-> This addon respects accessibility settings. It won't be used if you enable the setting *Preferences/Appearance/Reduce motion in animations*.
-
-
 # 🔥 Troubleshooting
 
 If you encounter a problem, check if it has already been solved in the [troubleshooting guide](docs/troubleshooting.md). Otherwise, open a new [issue on GitHub](https://github.com/dhelonious/mastodon-snap/issues).
@@ -167,3 +142,4 @@ If you encounter a problem, check if it has already been solved in the [troubles
 - [Fedi.Directory](https://fedi.directory/) can help you find interesting accounts to follow.
 - [FediDB](https://fedidb.com/) provides statistics on the Fediverse.
 - [FediBuzz Relay](https://relay.fedi.buzz/) can be used to follow hashtags on other instances.
+- [delightful activitypub development](https://delightful.coding.social/delightful_activitypub_development/) is a curated list of software for the Fediverse

@@ -10,9 +10,11 @@ import argparse
 import requests
 
 from util import (
+    HEADERS,
     sha256_checksum,
     major,
     minor,
+    url_sub_version,
     get_dependencies_urls,
     read_snapcraft_yaml,
 )
@@ -61,7 +63,7 @@ if args.mastodon_version:
     MASTODON_RELEASE = f"v{ args.mastodon_version }"
 else:
     print_verbose("Getting the latest Mastodon release...")
-    with requests.get("https://github.com/mastodon/mastodon/releases/latest", timeout=10) as r:
+    with requests.get("https://github.com/mastodon/mastodon/releases/latest", headers=HEADERS) as r:
         if r.status_code != 200:
             print_error(r.raise_for_status())
             exit()
@@ -70,7 +72,7 @@ else:
 
 print_silent(f"Use Mastodon release: {MASTODON_RELEASE}")
 
-with requests.get(f"https://raw.githubusercontent.com/mastodon/mastodon/{ MASTODON_RELEASE }/Vagrantfile", timeout=10) as r:
+with requests.get(f"https://raw.githubusercontent.com/mastodon/mastodon/{ MASTODON_RELEASE }/Vagrantfile", headers=HEADERS) as r:
     NODE_MAJOR = re.findall(r".*NODE_MAJOR=([0-9]+).*", r.text)[0]
 
 dependencies = get_dependencies_urls(MASTODON_RELEASE, NODE_MAJOR)
@@ -80,7 +82,7 @@ table = []
 for name, settings in dependencies.items():
     print_silent(f"Checking {name}...")
 
-    r = requests.get(settings["url"], timeout=10)
+    r = requests.get(settings["url"], headers=HEADERS)
     print_verbose(f"{settings['url']} -> {r.status_code}")
 
     if r.status_code != 200:
@@ -132,16 +134,8 @@ for name, settings in dependencies.items():
         if version != local_version:
             url = local_source[0]
             url = url.replace(local_version, version)
-            url = re.sub(
-                r"([^\.])"+major(local_version).replace(".", r"\.")+r"([^\.])",
-                r"\g<1>"+major(version)+r"\2",
-                url,
-            )
-            url = re.sub(
-                r"([^\.])"+minor(local_version).replace(".", r"\.")+r"([^\.])",
-                r"\g<1>"+minor(version)+r"\2",
-                url,
-            )
+            url = url_sub_version(url, minor(local_version), minor(version))
+            url = url_sub_version(url, major(local_version), major(version))
             print_verbose(f"Checksum URL: {url}")
             print_verbose("Calculating checksum...")
             checksum = sha256_checksum(url)

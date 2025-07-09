@@ -9,7 +9,7 @@ description: |
   implements ActivityPub!)
 
 base: core24
-version: 4.3.9snap2
+version: 4.4.0snap1
 grade: stable
 confinement: strict
 
@@ -29,7 +29,6 @@ environment:
   PATH: $SNAP/bin:$SNAP/usr/bin:$PATH
   LD_LIBRARY_PATH: $SNAP/lib
   LD_PRELOAD: libjemalloc.so.2
-  RUBYLIB: $SNAP/ruby/lib/ruby/3.3.0:$SNAP/ruby/lib/ruby/3.3.0/$SNAP_ARCH
   RAILS_ENV: production
   NODE_ENV: production
   RAILS_SERVE_STATIC_FILES: "true"
@@ -587,8 +586,8 @@ parts:
       - curl
       - libjemalloc2
     # NOTE: see `.ruby-version`
-    source: https://cache.ruby-lang.org/pub/ruby/3.3/ruby-3.3.5.tar.gz
-    source-checksum: sha256/3781a3504222c2f26cb4b9eb9c1a12dbf4944d366ce24a9ff8cf99ecbce75196
+    source: https://cache.ruby-lang.org/pub/ruby/3.4/ruby-3.4.4.tar.gz
+    source-checksum: sha256/a0597bfdf312e010efd1effaa8d7f1d7833146fdc17950caa8158ffa3dcbfa85
     plugin: autotools
     build-packages:
       - clang
@@ -602,8 +601,8 @@ parts:
       - libdb-dev
       - libjemalloc-dev
     build-environment:
-      - RUBY_VERSION: "3.3.5" # NOTE: must be updated with ruby source
-      - RUBY_BRANCH: "3.3" # NOTE: must be updated with ruby source
+      - RUBY_VERSION: "3.4.4" # NOTE: must be updated with ruby source
+      - RUBY_BRANCH: "3.4" # NOTE: must be updated with ruby source
       - DEBIAN_DISABLE_RUBYGEMS_INTEGRATION: "true"
       - CC: clang
       - CXX: clang++
@@ -792,8 +791,8 @@ parts:
       - ffmpeg
       - rsync
     # NOTE: https://github.com/mastodon/mastodon/releases/latest
-    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.3.9.tar.gz
-    source-checksum: sha256/c969e80032418ddcfbed974093a5b3e4d7b7407e591d34e6ba8efceed6e7c22a
+    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.4.0.tar.gz
+    source-checksum: sha256/7713d834858e919c6af7725c655b4b7d0df28009a725601b1bb11cbedf74b8f8
     plugin: nil
     build-packages:
       - git
@@ -811,8 +810,8 @@ parts:
       - libssl3t64
     build-environment:
       - YARN_VERSION: "4.9.2" # NOTE: https://github.com/yarnpkg/berry/releases/latest
-      - RUBY_BRANCH: "3.3" # NOTE: must be updated with ruby source
-      - BUNDLER_VERSION: "2.6.5" # NOTE: see `Gemfile.lock`
+      - RUBY_BRANCH: "3.4" # NOTE: must be updated with ruby source
+      - BUNDLER_VERSION: "2.6.9" # NOTE: see `Gemfile.lock`
       - RAILS_ENV: production
       - NODE_ENV: production
       - OTP_SECRET: precompile_placeholder
@@ -822,7 +821,7 @@ parts:
       - ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY: precompile_placeholder
       - PATH: $CRAFT_STAGE/ruby/bin:$CRAFT_STAGE/node/bin:$CRAFT_STAGE/libvips/bin:$PATH
       - LD_LIBRARY_PATH: $CRAFT_STAGE/ruby/lib:$CRAFT_STAGE/node/lib:$CRAFT_STAGE/libvips/lib
-      - RUBYLIB: $CRAFT_STAGE/ruby/lib/ruby/$RUBY_BRANCH.0:$CRAFT_STAGE/ruby/lib/ruby/$RUBY_BRANCH.0/$SNAP_ARCH
+      - RUBYLIB: $CRAFT_STAGE/ruby/lib/ruby/$RUBY_BRANCH.0:$CRAFT_STAGE/ruby/lib/ruby/$RUBY_BRANCH.0/$SNAP_ARCH:$CRAFT_PART_BUILD/vendor/bundle/ruby/$RUBY_BRANCH.0
       - BUNDLE_PATH: $CRAFT_PART_BUILD/vendor/bundle
       - BUNDLE_GEMFILE: $CRAFT_PART_BUILD/Gemfile
       - BUNDLE_RAKEFILE: $CRAFT_PART_BUILD/Rakefile
@@ -833,7 +832,7 @@ parts:
       - COREPACK_HOME: /tmp/corepack
       - MASTODON_USE_LIBVIPS: "true"
       - MASTODON_STATUS_LENGTH: 1000
-      # NOTE: workaround for current issue (see https://github.com/mastodon/mastodon/releases/tag/v4.3.0-beta.1)
+      # NOTE: the charlock_holmes gem may fail to build with recent versions of gcc (see https://github.com/mastodon/mastodon/releases/tag/v4.3.0-beta.1)
       - BUNDLE_BUILD__CHARLOCK_HOLMES: "--with-cxxflags=-std=c++17"
     # NOTE: fiddle is no longer included in ruby 3.5.0
     override-build: |
@@ -844,10 +843,7 @@ parts:
       bundle config set --local path $BUNDLE_PATH
       bundle config set --local silence_root_warning true
       bundle config build.pg --with-pg-config=$CRAFT_STAGE/postgres/bin/pg_config
-      bundle config set frozen false
-      echo "gem 'fiddle', '~> 1.1.2'" >> Gemfile
       bundle install -j"$(nproc)"
-      bundle config set frozen true
 
       mkdir -p $COREPACK_HOME $YARN_CACHE_FOLDER
       corepack enable
@@ -904,27 +900,13 @@ parts:
     organize:
       config/*: config/mastodon/
 
-  mastodon-addons:
-    after:
-      - mastodon
-    plugin: nil
-    build-environment:
-      - MASTODON_JS: $CRAFT_STAGE/mastodon/app/javascript
-    override-build: |
-      set -eux
-      mkdir -p $MASTODON_JS/mastodon/addons
-      cp $CRAFT_STAGE/addons/*.js $MASTODON_JS/mastodon/addons/
-      for name in snow fediday; do
-        sed -i "1s|^|import * as $name from 'mastodon/addons/$name';\n|" $MASTODON_JS/mastodon/common.js
-      done
-
   bird-ui:
     after:
       - curl
       - mastodon
     plugin: nil
     build-environment:
-      - BIRD_UI_TAG: 2.1.1 # NOTE: https://github.com/ronilaukkarinen/mastodon-bird-ui/releases/latest
+      - BIRD_UI_TAG: 2.3.0 # NOTE: https://github.com/ronilaukkarinen/mastodon-bird-ui/releases/latest
       - MASTODON_STYLES: $CRAFT_STAGE/mastodon/app/javascript/styles
     override-build: |
       set -eux
@@ -937,11 +919,11 @@ parts:
       curl https://raw.githubusercontent.com/ronilaukkarinen/mastodon-bird-ui/$BIRD_UI_TAG/layout-multiple-columns.css -o $MASTODON_STYLES/mastodon-bird-ui/layout-multiple-columns.scss
       sed -i "s/theme-contrast/theme-mastodon-bird-ui-contrast/g" $MASTODON_STYLES/mastodon-bird-ui/layout-multiple-columns.scss
       sed -i "s/theme-mastodon-light/theme-mastodon-bird-ui-light/g" $MASTODON_STYLES/mastodon-bird-ui/layout-multiple-columns.scss
-      echo -e "@import 'application';\n@import 'mastodon-bird-ui/layout-single-column.scss';\n@import 'mastodon-bird-ui/layout-multiple-columns.scss';" > $MASTODON_STYLES/mastodon-bird-ui-dark.scss
+      echo -e "@use 'application';\n@use 'mastodon-bird-ui/layout-single-column.scss';\n@use 'mastodon-bird-ui/layout-multiple-columns.scss';" > $MASTODON_STYLES/mastodon-bird-ui-dark.scss
       echo -e "mastodon-bird-ui-dark: styles/mastodon-bird-ui-dark.scss" >> $CRAFT_STAGE/mastodon/config/themes.yml
-      echo -e "@import 'mastodon-light/variables';\n@import 'application';\n@import 'mastodon-light/diff';\n@import 'mastodon-bird-ui/layout-single-column.scss';\n@import 'mastodon-bird-ui/layout-multiple-columns.scss';" > $MASTODON_STYLES/mastodon-bird-ui-light.scss
+      echo -e "@use 'mastodon-light/variables';\n@use 'application';\n@use 'mastodon-light/diff';\n@use 'mastodon-bird-ui/layout-single-column.scss';\n@use 'mastodon-bird-ui/layout-multiple-columns.scss';" > $MASTODON_STYLES/mastodon-bird-ui-light.scss
       echo -e "mastodon-bird-ui-light: styles/mastodon-bird-ui-light.scss" >> $CRAFT_STAGE/mastodon/config/themes.yml
-      echo -e "@import 'contrast/variables';\n@import 'application';\n@import 'contrast/diff';\n@import 'mastodon-bird-ui/layout-single-column.scss';\n@import 'mastodon-bird-ui/layout-multiple-columns.scss';" > $MASTODON_STYLES/mastodon-bird-ui-contrast.scss
+      echo -e "@use 'contrast/variables';\n@use 'application';\n@use 'contrast/diff';\n@use 'mastodon-bird-ui/layout-single-column.scss';\n@use 'mastodon-bird-ui/layout-multiple-columns.scss';" > $MASTODON_STYLES/mastodon-bird-ui-contrast.scss
       echo -e "mastodon-bird-ui-contrast: styles/mastodon-bird-ui-contrast.scss" >> $CRAFT_STAGE/mastodon/config/themes.yml
       cat $MASTODON_STYLES/mastodon-bird-ui-contrast.scss $CRAFT_STAGE/themes/mastodon-bird-ui/accessible.scss > $MASTODON_STYLES/mastodon-bird-ui-accessible.scss
       echo -e "mastodon-bird-ui-accessible: styles/mastodon-bird-ui-accessible.scss" >> $CRAFT_STAGE/mastodon/config/themes.yml
@@ -958,7 +940,7 @@ parts:
       - mastodon
     plugin: nil
     build-environment:
-      - TANGERINE_UI_TAG: 2.3 # NOTE: https://github.com/nileane/TangerineUI-for-Mastodon/releases/latest
+      - TANGERINE_UI_TAG: 2.4 # NOTE: https://github.com/nileane/TangerineUI-for-Mastodon/releases/latest
       - MASTODON_STYLES: $CRAFT_STAGE/mastodon/app/javascript/styles
     override-build: |
       set -eux
@@ -966,33 +948,62 @@ parts:
 
       curl https://raw.githubusercontent.com/nileane/TangerineUI-for-Mastodon/v$TANGERINE_UI_TAG/LICENSE -o $MASTODON_STYLES/tangerine-ui/LICENSE
       curl https://raw.githubusercontent.com/nileane/TangerineUI-for-Mastodon/v$TANGERINE_UI_TAG/mastodon/app/javascript/styles/tangerineui/tangerineui.scss -o $MASTODON_STYLES/tangerine-ui/style.scss
-      echo -e "@import 'application';\n@import 'tangerine-ui/style.scss';" > $MASTODON_STYLES/tangerine-ui.scss
+      echo -e "@use 'application';\n@use 'tangerine-ui/style.scss';" > $MASTODON_STYLES/tangerine-ui.scss
       echo -e "tangerine-ui: styles/tangerine-ui.scss" >> $CRAFT_STAGE/mastodon/config/themes.yml
       for variant in purple cherry lagoon; do
         curl https://raw.githubusercontent.com/nileane/TangerineUI-for-Mastodon/v$TANGERINE_UI_TAG/mastodon/app/javascript/styles/tangerineui-$variant/tangerineui-$variant.scss -o $MASTODON_STYLES/tangerine-ui/style-$variant.scss
-        echo -e "@import 'application';\n@import 'tangerine-ui/style-$variant.scss';" > $MASTODON_STYLES/tangerine-ui-$variant.scss
+        echo -e "@use 'application';\n@use 'tangerine-ui/style-$variant.scss';" > $MASTODON_STYLES/tangerine-ui-$variant.scss
         echo -e "tangerine-ui-$variant: styles/tangerine-ui-$variant.scss" >> $CRAFT_STAGE/mastodon/config/themes.yml
       done
 
+      curl https://raw.githubusercontent.com/nileane/TangerineUI-for-Mastodon/v$TANGERINE_UI_TAG/mastodon/app/javascript/styles/tangerineui/tangerineui.scss -o $MASTODON_STYLES/tangerine-ui/style-lime.scss
+      sed -i 's/"Tangerine"/"Lime"/' $MASTODON_STYLES/tangerine-ui/style-lime.scss # --variant-name
+      sed -i 's/"\\1F34A\\00A0"/"\\1F34B\\200D\\1F7E9\\00A0"/' $MASTODON_STYLES/tangerine-ui/style-lime.scss # --variant-emoji
+      sed -i "s/%23e68933/%2370f702/g" $MASTODON_STYLES/tangerine-ui/style-lime.scss
+      sed -i "s/#3c2a1f/#314026/g" $MASTODON_STYLES/tangerine-ui/style-lime.scss # --color-accent-bg
+      sed -i "s/#f6e5dd/#eff6dd/g" $MASTODON_STYLES/tangerine-ui/style-lime.scss # --color-accent-bg
+      sed -i "s/#ff9447/#b6e363/g" $MASTODON_STYLES/tangerine-ui/style-lime.scss # --color-accent-focus
+      sed -i "s/#ffa047/#b6e363/g" $MASTODON_STYLES/tangerine-ui/style-lime.scss # --color-accent-focus
+      sed -i "s/rgb(230, 137, 51, 0.3)/rgba(152, 230, 51, 0.3)/g" $MASTODON_STYLES/tangerine-ui/style-lime.scss # --color-accent-lines
+      sed -i "s/rgba(247, 105, 2, 0.12)/rgba(141, 247, 2, 0.12)/g" $MASTODON_STYLES/tangerine-ui/style-lime.scss # --color-accent-lines
+      sed -i "s/#e68933/#8dc95e/g" $MASTODON_STYLES/tangerine-ui/style-lime.scss # --color-accent
+      sed -i "s/#f76902/#89F336/g" $MASTODON_STYLES/tangerine-ui/style-lime.scss # --color-accent
+      sed -i "s/rgba(121, 189, 154, 0.3)/rgba(121, 189, 121, 0.3)/g" $MASTODON_STYLES/tangerine-ui/style-lime.scss # --color-confirm-bg
+      sed -i "s/#4E8A6B/#4e8a4e/g" $MASTODON_STYLES/tangerine-ui/style-lime.scss # --color-confirm-fg
+      sed -i "s/#79bd9a/#79bd79/g" $MASTODON_STYLES/tangerine-ui/style-lime.scss # --color-confirm
+      sed -i "s/#fffcfa/#fefffa/g" $MASTODON_STYLES/tangerine-ui/style-lime.scss # --color-content-bg-focus
+      sed -i "s/#f9f5f4/#f7f9f4/g" $MASTODON_STYLES/tangerine-ui/style-lime.scss # --color-content-secondary-bg
+      sed -i "s/rgba(237, 227, 219, 0.4)/rgba(229, 237, 219, 0.4)/g" $MASTODON_STYLES/tangerine-ui/style-lime.scss # --color-content-secondary-separator
+      sed -i "s/rgba(77, 73, 70, 0.4)/rgba(74, 77, 70, 0.4)/g" $MASTODON_STYLES/tangerine-ui/style-lime.scss # --color-content-secondary-separator
+      sed -i "s/#6e635e/#656e5e/g" $MASTODON_STYLES/tangerine-ui/style-lime.scss # --color-fg-muted
+      sed -i "s/#948c84/#8f9484/g" $MASTODON_STYLES/tangerine-ui/style-lime.scss # --color-fg-muted
+      sed -i "s/#e0d6d1/#d8e0d1/g" $MASTODON_STYLES/tangerine-ui/style-lime.scss # --color-fg
+      sed -i "s/#1e1810/#161e10/g" $MASTODON_STYLES/tangerine-ui/style-lime.scss # --color-secondary-bg
+      sed -i "s/#f2eae4/#edf2e4/g" $MASTODON_STYLES/tangerine-ui/style-lime.scss # --color-secondary-bg
+      sed -i "s/#25201c/#21251c/g" $MASTODON_STYLES/tangerine-ui/style-lime.scss # --color-secondary-separator
+      sed -i "s/#ede3db/#e7eddb/g" $MASTODON_STYLES/tangerine-ui/style-lime.scss # --color-secondary-separator
+      echo -e "@use 'application';\n@use 'tangerine-ui/style-lime.scss';" > $MASTODON_STYLES/tangerine-ui-lime.scss
+      echo -e "tangerine-ui-lime: styles/tangerine-ui-lime.scss" >> $CRAFT_STAGE/mastodon/config/themes.yml
+
       for locale in $CRAFT_STAGE/mastodon/config/locales/*.yml; do
-        sed -i "s/themes:$/&\n    tangerine-ui: Tangerine UI 🍊 Tangerine/" $locale
-        sed -i "s/themes:$/&\n    tangerine-ui-purple: Tangerine UI 🪻 Purple/" $locale
-        sed -i "s/themes:$/&\n    tangerine-ui-cherry: Tangerine UI 🍒 Cherry/" $locale
-        sed -i "s/themes:$/&\n    tangerine-ui-lagoon: Tangerine UI 🐠 Lagoon/" $locale
+        sed -i "s/themes:$/&\n    tangerine-ui: Tangerine UI 🍊/" $locale
+        sed -i "s/themes:$/&\n    tangerine-ui-purple: Tangerine UI Purple 🪻/" $locale
+        sed -i "s/themes:$/&\n    tangerine-ui-cherry: Tangerine UI Cherry 🍒/" $locale
+        sed -i "s/themes:$/&\n    tangerine-ui-lagoon: Tangerine UI Lagoon 🐠/" $locale
+        sed -i "s/themes:$/&\n    tangerine-ui-lime: Tangerine UI Lime 🍋‍🟩/" $locale
       done
 
   mastodon-precompile:
     after:
       - mastodon
-      - mastodon-addons
       - bird-ui
       - tangerine-ui
     plugin: nil
     build-environment:
-      - RUBY_BRANCH: "3.3" # NOTE: must be updated with ruby source
+      - RUBY_BRANCH: "3.4" # NOTE: must be updated with ruby source
       - RUBYLIB: $CRAFT_STAGE/ruby/lib/ruby/$RUBY_BRANCH.0:$CRAFT_STAGE/ruby/lib/ruby/$RUBY_BRANCH.0/$SNAP_ARCH
-      - PATH: $CRAFT_STAGE/mastodon/bin:$CRAFT_STAGE/ruby/bin:$CRAFT_STAGE/node/bin:$PATH
-      - LD_LIBRARY_PATH: $CRAFT_STAGE/mastodon/lib:$CRAFT_STAGE/ruby/lib:$CRAFT_STAGE/node/lib
+      - PATH: $CRAFT_STAGE/mastodon/bin:$CRAFT_STAGE/ruby/bin:$CRAFT_STAGE/node/bin:$PATH:$CRAFT_STAGE/libvips/bin
+      - LD_LIBRARY_PATH: $CRAFT_STAGE/mastodon/lib:$CRAFT_STAGE/ruby/lib:$CRAFT_STAGE/node/lib:$CRAFT_STAGE/libvips/lib
       - RAILS_ENV: production
       - NODE_ENV: production
       - BUNDLE_PATH: $CRAFT_STAGE/mastodon/vendor/bundle

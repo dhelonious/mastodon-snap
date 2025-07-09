@@ -136,11 +136,6 @@ body .content-warning {
   top: -10px;
 }
 
-/* Custom for mementomori.social */
-.status__content__text[lang="fi"].translate ~ .status__content__read-more-button {
-  display: none;
-}
-
 .layout-single-column .compose-form .autosuggest-textarea__textarea {
   max-height: 20vh !important;
   height: auto !important;
