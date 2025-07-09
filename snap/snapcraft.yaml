@@ -9,7 +9,7 @@ description: |
   implements ActivityPub!)
 
 base: core24
-version: 4.4.0-rc.1snap2
+version: 4.4.0snap1
 grade: stable
 confinement: strict
 
@@ -791,8 +791,8 @@ parts:
       - ffmpeg
       - rsync
     # NOTE: https://github.com/mastodon/mastodon/releases/latest
-    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.4.0-rc.1.tar.gz
-    source-checksum: sha256/7b8ba7bfabe87a03de02814eb73ebf64dadc2bfddd8030204ba93129f320e9f0
+    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.4.0.tar.gz
+    source-checksum: sha256/7713d834858e919c6af7725c655b4b7d0df28009a725601b1bb11cbedf74b8f8
     plugin: nil
     build-packages:
       - git
@@ -906,7 +906,7 @@ parts:
       - mastodon
     plugin: nil
     build-environment:
-      - BIRD_UI_TAG: 2.2.1rc1 # NOTE: https://github.com/ronilaukkarinen/mastodon-bird-ui/releases/latest
+      - BIRD_UI_TAG: 2.3.0 # NOTE: https://github.com/ronilaukkarinen/mastodon-bird-ui/releases/latest
       - MASTODON_STYLES: $CRAFT_STAGE/mastodon/app/javascript/styles
     override-build: |
       set -eux
@@ -940,7 +940,7 @@ parts:
       - mastodon
     plugin: nil
     build-environment:
-      - TANGERINE_UI_TAG: 2.4-prerelease # NOTE: https://github.com/nileane/TangerineUI-for-Mastodon/releases/latest
+      - TANGERINE_UI_TAG: 2.4 # NOTE: https://github.com/nileane/TangerineUI-for-Mastodon/releases/latest
       - MASTODON_STYLES: $CRAFT_STAGE/mastodon/app/javascript/styles
     override-build: |
       set -eux

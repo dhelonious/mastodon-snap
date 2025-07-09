@@ -1,9 +1,6 @@
-# Unofficial Snap for Mastodon 4.4.0-rc.1snap1
+# Unofficial Snap for Mastodon 4.4.0
 
-> [!WARNING]
-> This is a pre-release! This has not been as widely tested as regular releases.
-
-See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.4.0-rc.1
+See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.4.0
 
 This release also includes:
 
@@ -15,12 +12,15 @@ This release also includes:
 * redis 8.0.3
 * ruby 3.4.4
 
-Changelog for 4.4.0-rc.1snap2:
+Changelog for 4.4.0snap1:
 
+* Update nginx to 1.29.0
+* Update node to 20.19.3
 * Update libvips to 8.17.1
 * Update redis to 8.0.3
-* Update bird-ui to 2.2.1rc1
-* Update tangerine-ui to v2.4-prerelease
+* Update bird-ui to 2.3.0
+* Update tangerine-ui to v2.4
+* Add tangerine-ui lime variant
 
 ⚠️ Upgrade notes ⚠️
 
@@ -29,4 +29,4 @@ Changelog for 4.4.0-rc.1snap2:
 * Requires updating the metadata for the Elasticsearch accounts index
 
 > [!NOTE]
-> As of release `4.4.0-beta.1snap1`, the Fediday and Snow addons have been removed.
+> As of release `4.4.0snap1`, the Fediday and Snow addons have been removed.
