@@ -18,7 +18,7 @@ def major(version):
     return ".".join(version.split(".")[0])
 
 def minor(version):
-    return ".".join(version.split(".")[0:1])
+    return ".".join(version.split(".")[0:2])
 
 def read_snapcraft_yaml():
     with open("snap/snapcraft.yaml", "r", encoding="utf-8") as yaml_file:
