@@ -65,6 +65,13 @@ After the Snap has updated itself, a new unpublished announcement will be create
 > [!NOTE]
 > By default, `update.announcement` is enabled (see the [configuration docs](docs/configuration.md)), which will display an update announcement 3 minutes before the Snap is updated. This will prolong the time the Snap is on hold during a refresh.
 
+### Reverting
+
+If a snap update fails, you can always use the `snap revert` command to [revert to an earlier revision](https://snapcraft.io/docs/managing-updates#p-32248-revert-to-an-earlier-revision).
+
+> [!TIP]
+> Use the command `snap revert mastodon-server --revision=<rev>` to select a specific [revision](https://snapcraft.io/docs/revisions). Note that the revision is not the version number of the snap.
+
 ### Refresh timer
 
 If you want to control the times at which Snaps are updated, you need to change the [refresh.timer](https://snapcraft.io/docs/managing-updates#p-32248-refreshtimer):

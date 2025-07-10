@@ -4,6 +4,7 @@
 . "$SNAP/mastodon.env"
 
 if ! is_post_refresh_tasks_required; then
+    update_postgres_version_file
     exit 0
 fi
 

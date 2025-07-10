@@ -9,7 +9,7 @@ description: |
   implements ActivityPub!)
 
 base: core24
-version: 4.4.1snap1
+version: 4.4.1snap2
 grade: stable
 confinement: strict
 
@@ -40,6 +40,10 @@ hooks:
       - network
 
 apps:
+  init:
+    command: bin/init
+    daemon: simple
+
   logrotate:
     command: bin/logrotate.wrapper
     daemon: simple
@@ -48,6 +52,8 @@ apps:
   postgres-upgrade:
     command: bin/postgres-upgrade
     daemon: simple
+    after:
+      - init
     plugs:
       - network
       - network-bind
@@ -59,6 +65,7 @@ apps:
     stop-command: bin/pre_refresh_tasks
     stop-timeout: 30m
     after:
+      - init
       - postgres-upgrade
     before:
       - backend
@@ -72,6 +79,8 @@ apps:
   redis:
     command: bin/run_as_daemon_user redis.wrapper
     daemon: simple
+    after:
+      - init
     before:
       - backend
       - sidekiq
@@ -84,6 +93,8 @@ apps:
   recompile-assets:
     command: bin/recompile_if_required
     daemon: oneshot
+    after:
+      - init
     plugs:
       - network
       - network-bind
@@ -92,6 +103,7 @@ apps:
     command: bin/post_refresh_tasks
     daemon: oneshot
     after:
+      - init
       - postgres
     plugs:
       - network
@@ -101,6 +113,7 @@ apps:
     command: bin/run_as_daemon_user backend
     daemon: simple
     after:
+      - init
       - postgres
       - redis
       - migrations
@@ -114,6 +127,7 @@ apps:
     command: bin/run_as_daemon_user sidekiq
     daemon: simple
     after:
+      - init
       - postgres
       - redis
       - migrations
@@ -129,6 +143,7 @@ apps:
     command: bin/run_as_daemon_user streaming
     daemon: simple
     after:
+      - init
       - redis
       - recompile-assets
     plugs:
@@ -142,6 +157,7 @@ apps:
     reload-command: bin/nginx.wrapper -s reload
     daemon: simple
     after:
+      - init
       - backend
       - sidekiq
       - streaming
@@ -150,6 +166,26 @@ apps:
     plugs:
       - network
       - network-bind
+      - removable-media
+
+  acme:
+    command: bin/run_as_daemon_user acme.sh-renew.wrapper
+    daemon: simple
+    timer: 03:00
+
+  backup:
+    command: bin/backup
+    daemon: simple
+    timer: 00:00
+    plugs:
+      - removable-media
+
+  cleanup:
+    command: bin/cleanup
+    daemon: simple
+    timer: 00:00
+    plugs:
+      - network
       - removable-media
 
   setup:
@@ -197,18 +233,6 @@ apps:
       - network
       - removable-media
 
-  backup:
-    command: bin/backup
-    daemon: simple
-    timer: 00:00
-    plugs:
-      - removable-media
-
-  acme:
-    command: bin/run_as_daemon_user acme.sh-renew.wrapper
-    daemon: simple
-    timer: 03:00
-
   console:
     command: bin/rails-console.wrapper
     plugs:
@@ -250,14 +274,6 @@ apps:
     plugs:
       - network
       - network-bind
-
-  cleanup:
-    command: bin/cleanup
-    daemon: simple
-    timer: 00:00
-    plugs:
-      - network
-      - removable-media
 
 parts:
   license:
