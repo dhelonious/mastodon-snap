@@ -69,6 +69,31 @@ The message "Too many open files" indicates that you have reached the file descr
 
     ulimit -n 65536
 
+### Database export fails due to broken pages
+
+    Export database
+    pg_dump: error: Dumping the contents of table "statuses" failed: PQgetResult() failed.
+    pg_dump: detail: Error message from server: ERROR:  invalid page in block 14781 of relation base/97120/97257
+    pg_dump: detail: Command was: COPY public.statuses (id, uri, text, ...) TO stdout;
+    pg_dumpall: error: pg_dump failed on database "mastodon", exiting
+
+Find the table name in the error description. In this example, it is `public.statuses`. Then, run the following command to fix the broken pages:
+
+    mastodon-server.psql
+
+    postgres=# \c mastodon
+    You are now connected to database "mastodon" as user "postgres".
+
+    mastodon=# SET zero_damaged_pages = on;
+    SET
+
+    mastodon=# VACUUM FULL public.statuses;
+    WARNING:  invalid page in block 14781 of relation base/97120/97257; zeroing out page
+    VACUUM
+
+    mastodon=# REINDEX TABLE public.statuses;
+    REINDEX
+
 ## 2FA issues
 
 ### I cannot enable 2FA due to an ArgumentError: key must be 32 bytes or longer
