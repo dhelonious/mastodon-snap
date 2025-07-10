@@ -30,10 +30,10 @@ sed -ri "1,100s/^(CREATE ROLE postgres;)/-- \1/" "$export_dir/database.sql"
 sed -ri "1,100s/^(CREATE ROLE $MASTODON_DBUSER;)/-- \1/" "$export_dir/database.sql"
 
 if [ -s "$REDIS_DATA/redis.rdb" ]; then
-    echo Export redis database
     if redis_waitready; then
         redis_save
     fi
+    echo Export redis database
     rsync_clean "$REDIS_DATA/redis.rdb" "$export_dir/"
 fi
 
