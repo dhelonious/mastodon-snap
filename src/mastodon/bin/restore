@@ -5,8 +5,21 @@
 . "$SNAP/redis.env"
 
 check_root
-check_setup
 check_service postgres
+
+print_usage() {
+    echo "Usage: $SNAP_NAME.restore BACKUP"
+}
+
+while getopts "h" OPTION; do
+    case "$OPTION" in
+    h)
+        print_usage
+        exit 0
+        ;;
+    esac
+done
+shift "$(($OPTIND -1))"
 
 if [ -z "$1" ]; then
     echo "No backup specified"
@@ -14,7 +27,7 @@ if [ -z "$1" ]; then
 fi
 
 backup_dir="$BACKUP_DIR/$1"
-echo Restore backup from $backup_dir
+echo Restoring backup from $backup_dir
 
 BACKUP_VERSION="$(cat $backup_dir/version)"
 if [ "$BACKUP_VERSION" != "$SNAP_VERSION" ]; then
@@ -28,35 +41,41 @@ if [ "$BACKUP_VERSION" != "$SNAP_VERSION" ]; then
     fi
 fi
 
-echo Restore settings
+echo Restoring settings...
 cat "$backup_dir/settings" | while read setting; do
     snapctl set $setting
 done
 
 if [ "$(snapctl get media.dir)" != "$(get_media_dir_link)" ]; then
-    echo Link media dir
+    echo Linking media dir...
     link_media_dir
 fi
 
-echo Stop services
+echo Stopping services...
 snapctl stop "$SNAP_NAME.nginx"
 snapctl stop "$SNAP_NAME.backend"
 snapctl stop "$SNAP_NAME.sidekiq"
 snapctl stop "$SNAP_NAME.streaming"
 
-echo Drop old database
-$SNAP/bin/psql.wrapper -c "drop owned by $MASTODON_DBUSER cascade;"
-$SNAP/bin/psql.wrapper -c "drop database if exists $MASTODON_DBNAME;"
-# $SNAP/bin/psql.wrapper -c "drop role if exists $MASTODON_DBUSER;"
-
-echo Restore configuration
+echo Restoring configuration...
 rsync --ignore-times --no-owner --no-perms --chmod g+w --chown root:$DAEMON_USER "$backup_dir/mastodon.conf" "$SNAP_COMMON/" \
     && chmod 664 "$SNAP_COMMON/mastodon.conf"
 
 mastodon_set_var DB_PASS "$(get_secret postgres)"
 # mastodon_set_var REDIS_PASSWORD "$(get_secret redis)"
 
-echo Restore database
+if mastodon_database_exists; then
+    echo Dropping old database...
+    $SNAP/bin/psql.wrapper -c "drop owned by $MASTODON_DBUSER cascade;"
+    $SNAP/bin/psql.wrapper -c "drop database if exists $MASTODON_DBNAME;"
+    # $SNAP/bin/psql.wrapper -c "drop role if exists $MASTODON_DBUSER;"
+else
+    echo Setting up database user...
+    postgres_waitready
+    psql.wrapper -c "create user $MASTODON_DBUSER with password '$PG_PASSWORD';" > /dev/null
+fi
+
+echo Restoring database...
 postgres_restore_database "$backup_dir/database.sql"
 if [ "$BACKUP_VERSION" != "$SNAP_VERSION" ]; then
     if confirm "Do you want to start a database migration?"; then
@@ -67,18 +86,18 @@ if [ "$BACKUP_VERSION" != "$SNAP_VERSION" ]; then
 fi
 
 if [ -f "$backup_dir/redis.rdb" ]; then
-    echo Restore redis database
+    echo Restoring redis database...
     snapctl stop "$SNAP_NAME.redis"
     run_as_daemon_user cp "$backup_dir/redis.rdb" "$REDIS_DATA/"
     snapctl start "$SNAP_NAME.redis"
 fi
 
-echo Clean up media references
+echo Cleaning up media references...
 $SNAP/bin/tootctl.wrapper preview_cards remove --days 1
 $SNAP/bin/tootctl.wrapper media remove --days 1
 
 if [ -f "$backup_dir/media.tar.gz" ]; then
-    echo Restore uploads
+    echo Restoring uploads...
     run_as_daemon_user tar -xzf "$backup_dir/media.tar.gz" -C "$MEDIA_DIR" --strip-components=1 --no-same-permissions --no-same-owner --skip-old-files
 
     echo The following action may take a long time to complete
@@ -89,7 +108,7 @@ fi
 
 $SNAP/bin/recompile_if_required
 
-echo Restart services
+echo Restarting services...
 snapctl start "$SNAP_NAME.backend"
 snapctl start "$SNAP_NAME.sidekiq"
 snapctl start "$SNAP_NAME.streaming"

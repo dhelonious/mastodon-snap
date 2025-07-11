@@ -20,7 +20,7 @@ A backup can be restored using the `mastodon-server.restore` command, e. g:
 
     sudo mastodon-server.restore 20230201-010203
 
-If you wish to restore a backup to a fresh installation, you must first run the `mastodon-server.setup` command. The admin account created during setup will be replaced with the backed up account.
+This is also possible with a fresh installation that has not yet been set up. If required, a certificate must be created manually using `mastodon-server.get-certificate`.
 
 > [!NOTE]
 > The error messages indicating that some roles already exist can be safely ignored.

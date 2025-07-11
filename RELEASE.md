@@ -15,6 +15,7 @@ This release also includes:
 Changelog for 4.4.1snap2:
 
 * Add proper support for reverting the snap
+* Improve the restore script to be independent of the setup script
 * Update bird-ui to 2.3.1
 
 ⚠️ Upgrade notes ⚠️
