@@ -7,7 +7,7 @@ This release also includes:
 * ffmpeg 7.1.1
 * libvips 8.17.1
 * nginx 1.29.0
-* node 20.19.3
+* node 20.19.4
 * postgres 17.5
 * redis 8.0.3
 * ruby 3.4.4
@@ -16,6 +16,7 @@ Changelog for 4.4.1snap2:
 
 * Add proper support for reverting the snap
 * Improve the restore script to be independent of the setup script
+* Update node to 20.19.4
 * Update bird-ui to 2.3.1
 * Update tangerine-ui to 2.4.2
 
