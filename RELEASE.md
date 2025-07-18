@@ -18,7 +18,7 @@ Changelog for 4.4.1snap2:
 * Improve the restore script to be independent of the setup script
 * Update node to 20.19.4
 * Update bird-ui to 2.3.1
-* Update tangerine-ui to 2.4.2
+* Update tangerine-ui to 2.4.3
 
 ⚠️ Upgrade notes ⚠️
 
