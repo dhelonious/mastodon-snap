@@ -9,7 +9,7 @@ description: |
   implements ActivityPub!)
 
 base: core24
-version: 4.4.1snap2
+version: 4.4.2snap1
 grade: stable
 confinement: strict
 
@@ -807,8 +807,8 @@ parts:
       - ffmpeg
       - rsync
     # NOTE: https://github.com/mastodon/mastodon/releases/latest
-    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.4.1.tar.gz
-    source-checksum: sha256/9578da0c6d00e75be91a258b9dc38c4eea5eff0179af5f676ef30f60b40003b9
+    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.4.2.tar.gz
+    source-checksum: sha256/e9026d101031d41727d6ab4056f4ee40f58972945ec7624ecbe5c7dd12e4ee9e
     plugin: nil
     build-packages:
       - git
@@ -922,7 +922,7 @@ parts:
       - mastodon
     plugin: nil
     build-environment:
-      - BIRD_UI_TAG: 2.3.1 # NOTE: https://github.com/ronilaukkarinen/mastodon-bird-ui/releases/latest
+      - BIRD_UI_TAG: 2.3.2 # NOTE: https://github.com/ronilaukkarinen/mastodon-bird-ui/releases/latest
       - MASTODON_STYLES: $CRAFT_STAGE/mastodon/app/javascript/styles
     override-build: |
       set -eux
