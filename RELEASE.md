@@ -1,6 +1,6 @@
-# Unofficial Snap for Mastodon 4.4.1
+# Unofficial Snap for Mastodon 4.4.2
 
-See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.4.1
+See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.4.2
 
 This release also includes:
 
