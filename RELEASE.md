@@ -17,8 +17,8 @@ Changelog for 4.4.2snap1:
 * Add proper support for reverting the snap
 * Improve the restore script to be independent of the setup script
 * Update node to 20.19.4
-* Update bird-ui to 2.3.2
-* Update tangerine-ui to 2.4.3
+* Update bird-ui to 2.3.3
+* Update tangerine-ui to 2.4.4
 
 ⚠️ Upgrade notes ⚠️
 
