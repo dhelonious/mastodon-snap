@@ -9,7 +9,7 @@ description: |
   implements ActivityPub!)
 
 base: core24
-version: 4.4.2snap1
+version: 4.4.2snap2
 grade: stable
 confinement: strict
 
@@ -516,8 +516,8 @@ parts:
     after:
       - redis-customizations
     # NOTE: https://github.com/redis/redis/releases/latest
-    source: https://download.redis.io/releases/redis-8.0.3.tar.gz
-    source-checksum: sha256/33f37290b00b14e9a884dd4dcba335febd63ea16c51609d34fa41e031ad587df
+    source: https://download.redis.io/releases/redis-8.2.0.tar.gz
+    source-checksum: sha256/ff95b83b7cf2f7a33af3be1e52fdf2e791c259f8272465c3b09f9e6bc901b604
     plugin: make
     override-build: |
       set -eux

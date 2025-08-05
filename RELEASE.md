@@ -12,13 +12,9 @@ This release also includes:
 * redis 8.0.3
 * ruby 3.4.4
 
-Changelog for 4.4.2snap1:
+Changelog for 4.4.2snap2:
 
-* Add proper support for reverting the snap
-* Improve the restore script to be independent of the setup script
-* Update node to 20.19.4
-* Update bird-ui to 2.3.3
-* Update tangerine-ui to 2.4.4
+* Update redis to 8.2.0
 
 ⚠️ Upgrade notes ⚠️
 
