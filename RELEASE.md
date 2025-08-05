@@ -1,6 +1,6 @@
-# Unofficial Snap for Mastodon 4.4.2
+# Unofficial Snap for Mastodon 4.4.3
 
-See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.4.2
+See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.4.3
 
 This release also includes:
 
@@ -9,10 +9,10 @@ This release also includes:
 * nginx 1.29.0
 * node 20.19.4
 * postgres 17.5
-* redis 8.0.3
+* redis 8.2.0
 * ruby 3.4.4
 
-Changelog for 4.4.2snap2:
+Changelog for 4.4.3snap1:
 
 * Update redis to 8.2.0
 
