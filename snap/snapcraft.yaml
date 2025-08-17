@@ -9,7 +9,7 @@ description: |
   implements ActivityPub!)
 
 base: core24
-version: 4.4.3snap1
+version: 4.4.3snap2
 grade: stable
 confinement: strict
 
@@ -423,8 +423,8 @@ parts:
       - setpriv
       - envsubst
     # NOTE: https://www.postgresql.org/ftp/latest
-    source: https://ftp.postgresql.org/pub/source/v17.5/postgresql-17.5.tar.gz
-    source-checksum: sha256/730bfef34b03825c051ae0fc37542c8be26b55a44e472369221afd397196e303
+    source: https://ftp.postgresql.org/pub/source/v17.6/postgresql-17.6.tar.gz
+    source-checksum: sha256/2910b85283674da2dae6ac13fe5ebbaaf3c482446396cba32e6728d3cc736d86
     plugin: autotools
     build-packages:
       - clang
@@ -471,8 +471,8 @@ parts:
       - nginx-customizations
       - wraplib
     # NOTE: https://nginx.org/en/download.html (mainline version)
-    source: https://nginx.org/download/nginx-1.29.0.tar.gz
-    source-checksum: sha256/109754dfe8e5169a7a0cf0db6718e7da2db495753308f933f161e525a579a664
+    source: https://nginx.org/download/nginx-1.29.1.tar.gz
+    source-checksum: sha256/c589f7e7ed801ddbd904afbf3de26ae24eb0cce27c7717a2e94df7fb12d6ad27
     plugin: autotools
     build-environment:
       - PATH: $CRAFT_STAGE/nginx/bin:$PATH

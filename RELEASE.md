@@ -12,9 +12,10 @@ This release also includes:
 * redis 8.2.0
 * ruby 3.4.4
 
-Changelog for 4.4.3snap1:
+Changelog for 4.4.3snap2:
 
-* Update redis to 8.2.0
+* Update nginx to 1.29.1
+* Update postgres to 17.6
 
 ⚠️ Upgrade notes ⚠️
 
