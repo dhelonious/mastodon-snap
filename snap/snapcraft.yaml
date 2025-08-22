@@ -516,8 +516,8 @@ parts:
     after:
       - redis-customizations
     # NOTE: https://github.com/redis/redis/releases/latest
-    source: https://download.redis.io/releases/redis-8.2.0.tar.gz
-    source-checksum: sha256/ff95b83b7cf2f7a33af3be1e52fdf2e791c259f8272465c3b09f9e6bc901b604
+    source: https://download.redis.io/releases/redis-8.2.1.tar.gz
+    source-checksum: sha256/e2c1cb9dd4180a35b943b85dfc7dcdd42566cdbceca37d0d0b14c21731582d3e
     plugin: make
     override-build: |
       set -eux
@@ -728,8 +728,8 @@ parts:
       - -libvips/lib/pkgconfig
 
   ffmpeg:
-    source: https://ffmpeg.org/releases/ffmpeg-7.1.1.tar.bz2 # NOTE: https://ffmpeg.org/releases
-    source-checksum: sha256/0c8da2f11579a01e014fc007cbacf5bb4da1d06afd0b43c7f8097ec7c0f143ba
+    source: https://ffmpeg.org/releases/ffmpeg-8.0.tar.bz2 # NOTE: https://ffmpeg.org/releases
+    source-checksum: sha256/3e74acc48ddb9f5f70b6747d3f439d51e7cc5497f097d58e5975c84488f4d186
     plugin: autotools
     build-packages:
       - clang
@@ -825,7 +825,7 @@ parts:
       - libmagic-mgc
       - libssl3t64
     build-environment:
-      - YARN_VERSION: "4.9.2" # NOTE: https://github.com/yarnpkg/berry/releases/latest
+      - YARN_VERSION: "4.9.3" # NOTE: https://github.com/yarnpkg/berry/releases/latest
       - RUBY_BRANCH: "3.4" # NOTE: must be updated with ruby source
       - BUNDLER_VERSION: "2.6.9" # NOTE: see `Gemfile.lock`
       - RAILS_ENV: production
