@@ -746,6 +746,7 @@ parts:
       - libx265-dev
       - libwebp-dev
       - yasm
+      - nasm
     stage-packages:
       - libsnappy1v5
       - libaom3
@@ -760,6 +761,7 @@ parts:
       - libwebp7
       - libvorbisenc2
       - yasm
+      - nasm
     build-environment:
       - CC: clang
       - CXX: clang++
