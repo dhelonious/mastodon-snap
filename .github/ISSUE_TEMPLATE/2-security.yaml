@@ -33,3 +33,9 @@ body:
     description: If applicable, provide references to CVEs and USNs here.
   validations:
     required: false
+- type: input
+  attributes:
+    label: Affected versions
+    description: Which versions are affected?
+  validations:
+    required: false
