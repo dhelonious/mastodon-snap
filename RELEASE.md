@@ -12,13 +12,9 @@ This release also includes:
 * redis 8.2.1
 * ruby 3.4.4
 
-Changelog for 4.4.3snap2:
+Changelog for 4.4.3snap3:
 
-* Update ffmpeg to 8.0
-* Update nginx to 1.29.1
-* Update postgres to 17.6
-* Update redis to 8.2.1
-* Update yarn to 4.9.3
+* Disable `client_max_body_size` in nginx settings
 
 ⚠️ Upgrade notes ⚠️
 
