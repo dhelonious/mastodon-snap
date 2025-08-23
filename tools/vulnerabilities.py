@@ -76,14 +76,14 @@ def get_vulnerabilities(name, version):
                 closest_version = None
 
                 for event in range_.get("events", []):
-                    introduced = event.get("introduced")
-                    fixed = event.get("fixed")
+                    introduced = event.get("introduced", "")
+                    fixed = event.get("fixed", "")
 
-                    if introduced in ["0", None]:
+                    if introduced in ["0", ""]:
                         continue
 
                     try:
-                        if (vers(version) >= vers(introduced) and (fixed in ["0", None] or vers(version) <= vers(fixed))):
+                        if (vers(version) >= vers(introduced) and (fixed in ["0", ""] or vers(version) <= vers(fixed))):
                             if closest_version is None or vers(closest_version) < vers(introduced):
                                 closest_version = introduced
                     except:

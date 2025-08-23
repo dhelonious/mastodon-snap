@@ -82,7 +82,7 @@ jobs:
         else
           echo "Vulnerabilities found" | yellow
           if ! [ -z "$body" ]; then body="$body\n"; fi
-          body="$body## Vulnerabilities\n$vulnerabilites"
+          body="$body## Vulnerabilities\n$vulnerabilities"
         fi
 
         echo "Get security notices" | yellow
