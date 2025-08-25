@@ -6,8 +6,10 @@ Unofficial Snap for Mastodon (decentralized social media server) 🦣📦
 - [About](#-about)
 - [Quickstart](#-quickstart)
 - [Installation](#-installation)
-  - [Install from a Snap file](#install-from-a-snap-file)
+  - [Online from the Snap store](#online-from-the-snap-store)
+  - [Offline from a Snap file](#offline-from-a-snap-file)
   - [Updates](#updates)
+  - [Revisions](#revisions)
 - [Setup your instance](#-setup-your-instance)
   - [Certificates](#certificates)
   - [Backups](#backups)
@@ -47,22 +49,25 @@ If you're not running Ubuntu, start by [installing the Snap daemon](https://snap
 
 # 📦 Installation
 
+## Online from the Snap store
+
 [![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/mastodon-server)
 
-If you prefer, you can also install the Snap directly from the command line:
+You can also install the Snap directly from the command line:
 
     sudo snap install mastodon-server
 
-A common criticism of Snaps is their dependence on Canonical. However, it is possible to install Snaps offline and also build them locally directly from source. See the [build instructions](docs/build.md) for how to do this.
+## Offline from a Snap file
 
-## Install from a Snap file
-
-Download a Snap file from the [releases page](https://github.com/dhelonious/mastodon-snap/releases) and install it using:
+If you don't want to use the Snap store, you can also download a Snap file from the [releases page](https://github.com/dhelonious/mastodon-snap/releases) and install it using:
 
     sudo snap install mastodon-server_VERSION_ARCH.snap --dangerous
 
+> [!TIP]
+> In this context *dangerous* only means that the Snap file is not signed. This is normal for Snaps built and distributed outside the Snap store.
+
 > [!NOTE]
-> In this context *dangerous* means that the Snap file is not signed. This is normal for Snaps built and distributed outside the Snap store.
+> A common criticism of Snaps is their dependence on Canonical. However, it is possible to install Snaps offline and also build them locally directly from source. See the [build instructions](docs/build.md) for how to do this.
 
 ## Updates
 
@@ -82,13 +87,6 @@ After the Snap has updated itself, a new unpublished announcement will be create
 > [!NOTE]
 > By default, `update.announcement` is enabled (see the [configuration docs](docs/configuration.md)), which will display an update announcement 3 minutes before the Snap is updated. This will prolong the time the Snap is on hold during a refresh.
 
-### Reverting
-
-If a snap update fails, you can always use the `snap revert` command to [revert to an earlier revision](https://snapcraft.io/docs/managing-updates#p-32248-revert-to-an-earlier-revision).
-
-> [!TIP]
-> Use the command `snap revert mastodon-server --revision=<rev>` to select a specific [revision](https://snapcraft.io/docs/revisions). Note that the revision is not the version number of the snap.
-
 ### Refresh timer
 
 If you want to control the times at which Snaps are updated, you need to change the [refresh.timer](https://snapcraft.io/docs/managing-updates#p-32248-refreshtimer):
@@ -98,6 +96,13 @@ If you want to control the times at which Snaps are updated, you need to change 
 You can check the current settings with:
 
     snap refresh --time
+
+## Revisions
+
+If a snap update fails, you can always use the `snap revert` command to [revert to an earlier revision](https://snapcraft.io/docs/managing-updates#p-32248-revert-to-an-earlier-revision).
+
+> [!TIP]
+> Use the command `snap revert mastodon-server --revision=<rev>` to select a specific [revision](https://snapcraft.io/docs/revisions). Note that the revision is *not* the version number of the snap.
 
 
 # 🦣 Setup your instance
