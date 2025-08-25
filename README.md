@@ -1,6 +1,23 @@
 Unofficial Snap for Mastodon (decentralized social media server) 🦣📦
 
 
+# 📖 Table of contents
+
+- [About](#-about)
+- [Quickstart](#-quickstart)
+- [Installation](#-installation)
+  - [Install from a Snap file](#install-from-a-snap-file)
+  - [Updates](#updates)
+- [Setup your instance](#-setup-your-instance)
+  - [Certificates](#certificates)
+  - [Backups](#backups)
+  - [Themes](#themes)
+- [Configuration](#️-configuration)
+- [Maintenance](#-maintenance)
+- [Troubleshooting](#-troubleshooting)
+- [Resources](#-resources)
+
+
 # 📌 About
 
 [Mastodon](https://joinmastodon.org) is a free, open-source social network server based on [ActivityPub](https://activitypub.rocks) where users can follow friends and discover new ones. On Mastodon, users can publish anything they want: links, pictures, text, video. All Mastodon servers are interoperable as a federated network (users on one server can seamlessly communicate with users from another one, including non-Mastodon software that implements ActivityPub!)
@@ -92,7 +109,10 @@ An initial setup command is required to initialize the database and configuratio
 > [!NOTE]
 > Be patient if you have changed the `status.length` as it takes some time to recompile the assets, especially if there is a small amount of RAM available. Ideally these values should be changed before setup. Otherwise you may want to [increase swap space](https://www.baeldung.com/linux/increase-swap-space).
 
-## SSL
+> [!TIP]
+> If you're restoring your instance from a backup, use the `mastodon-server.restore` command directly. See the [backups guide](docs/backups.md)) for more information.
+
+## Certificates
 
 SSL certificates can be obtained via ACME from either [Let's Encrypt](https://letsencrypt.org/), [ZeroSSL](https://zerossl.com/) or [BuyPass](https://buypass.com). This is done either during `mastodon-server.setup` or by using:
 
