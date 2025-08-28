@@ -13,6 +13,7 @@ from util import (
     HEADERS,
     dependencies_regexes,
     read_snapcraft_yaml,
+    osv_packages,
 )
 
 
@@ -48,7 +49,7 @@ def print_table(name, version, fixed, severity, cves, **kwargs):
 def get_vulnerabilities(name, version):
     url = "https://api.osv.dev/v1/query"
     data = {
-        "package": {"name": name},
+        "package": osv_packages.get(name, {"name": name}),
         "version": version,
     }
 

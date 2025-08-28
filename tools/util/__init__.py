@@ -3,6 +3,7 @@ import requests
 import re
 
 from .dependencies import dependencies_regexes, get_dependencies_urls
+from .vulnerabilities import osv_packages
 
 
 HEADERS = {
