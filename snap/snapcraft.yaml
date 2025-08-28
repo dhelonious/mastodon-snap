@@ -827,7 +827,7 @@ parts:
       - libmagic-mgc
       - libssl3t64
     build-environment:
-      - YARN_VERSION: "4.9.3" # NOTE: https://github.com/yarnpkg/berry/releases/latest
+      - YARN_VERSION: "4.9.4" # NOTE: https://github.com/yarnpkg/berry/releases/latest
       - RUBY_BRANCH: "3.4" # NOTE: must be updated with ruby source
       - BUNDLER_VERSION: "2.6.9" # NOTE: see `Gemfile.lock`
       - RAILS_ENV: production

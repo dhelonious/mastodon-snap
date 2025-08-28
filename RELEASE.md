@@ -14,6 +14,7 @@ This release also includes:
 
 Changelog for 4.4.3snap3:
 
+* Update yarn to 4.9.4
 * Disable `client_max_body_size` in nginx settings
 
 ⚠️ Upgrade notes ⚠️
