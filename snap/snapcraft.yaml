@@ -9,7 +9,7 @@ description: |
   implements ActivityPub!)
 
 base: core24
-version: 4.4.3snap3
+version: 4.4.4snap1
 grade: stable
 confinement: strict
 
@@ -566,13 +566,13 @@ parts:
       set -eux
       case "$SNAP_ARCH" in
       "amd64")
-        source="https://nodejs.org/download/release/latest-v20.x/node-v20.19.4-linux-x64.tar.gz"
-        checksum="d80a33707605ced9a31b8f543cea9ab512bc3d2fef2c148f31a50e939ff07560"
+        source="https://nodejs.org/download/release/latest-v20.x/node-v20.19.5-linux-x64.tar.gz"
+        checksum="4eba5fbe1fb10753bc06e42f001a91c5cec16798b7764a3e9257adc59af47fe1"
         arch="x64"
         ;;
       "arm64")
-        source="https://nodejs.org/download/release/latest-v20.x/node-v20.19.4-linux-arm64.tar.gz"
-        checksum="d200798332b7a56d355888ce58e6a639fac7939a4833e5bc8780c66888e1ce4d"
+        source="https://nodejs.org/download/release/latest-v20.x/node-v20.19.5-linux-arm64.tar.gz"
+        checksum="a08b513de673853ca16395ec461a104a99bf0e941ebb7baedb98b30cd221d8cc"
         arch="arm64"
         ;;
       *)
@@ -667,8 +667,8 @@ parts:
 
   libvips:
     # NOTE: https://github.com/libvips/libvips/releases/latest
-    source: https://github.com/libvips/libvips/archive/refs/tags/v8.17.1.tar.gz
-    source-checksum: sha256/79f54d367a485507c1421408ae13768e4734f473edc71af511472645f46dbd08
+    source: https://github.com/libvips/libvips/archive/refs/tags/v8.17.2.tar.gz
+    source-checksum: sha256/66e2c8f0a716a08cf99e46a27535ef4938f1cae110dd9207cf8e992616b36ba7
     plugin: nil
     build-packages:
       - meson
@@ -809,8 +809,8 @@ parts:
       - ffmpeg
       - rsync
     # NOTE: https://github.com/mastodon/mastodon/releases/latest
-    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.4.3.tar.gz
-    source-checksum: sha256/ede116b80a525462f5ea68d046a4cdd787930fc6d2f9327c140756311ee07848
+    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.4.4.tar.gz
+    source-checksum: sha256/1df58eec7da0c47767493ec3ec3ec2225a0bcca94871d1d6615ee324aaed91ba
     plugin: nil
     build-packages:
       - git
