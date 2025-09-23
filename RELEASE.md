@@ -1,6 +1,6 @@
-# Unofficial Snap for Mastodon 4.4.4
+# Unofficial Snap for Mastodon 4.4.5
 
-See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.4.4
+See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.4.5
 
 This release also includes:
 
@@ -12,7 +12,6 @@ This release also includes:
 * redis 8.2.1
 * ruby 3.4.4
 
-Changelog for 4.4.4snap1:
+Changelog for 4.4.5snap1:
 
-* Update node to 20.19.5
-* Update libvips to 8.17.2
+* Update yarn to 4.10.3

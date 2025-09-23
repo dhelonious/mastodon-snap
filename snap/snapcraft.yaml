@@ -9,7 +9,7 @@ description: |
   implements ActivityPub!)
 
 base: core24
-version: 4.4.4snap1
+version: 4.4.5snap1
 grade: stable
 confinement: strict
 
@@ -809,8 +809,8 @@ parts:
       - ffmpeg
       - rsync
     # NOTE: https://github.com/mastodon/mastodon/releases/latest
-    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.4.4.tar.gz
-    source-checksum: sha256/1df58eec7da0c47767493ec3ec3ec2225a0bcca94871d1d6615ee324aaed91ba
+    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.4.5.tar.gz
+    source-checksum: sha256/add9ee5caae722549a2f7ed2129ecaed0945a1b2f942afbdbb7bd8ab73961fe6
     plugin: nil
     build-packages:
       - git
@@ -827,7 +827,7 @@ parts:
       - libmagic-mgc
       - libssl3t64
     build-environment:
-      - YARN_VERSION: "4.9.4" # NOTE: https://github.com/yarnpkg/berry/releases/latest
+      - YARN_VERSION: "4.10.3" # NOTE: https://github.com/yarnpkg/berry/releases/latest
       - RUBY_BRANCH: "3.4" # NOTE: must be updated with ruby source
       - BUNDLER_VERSION: "2.6.9" # NOTE: see `Gemfile.lock`
       - RAILS_ENV: production
