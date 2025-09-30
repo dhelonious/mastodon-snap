@@ -92,6 +92,11 @@ if [ -f "$backup_dir/redis.rdb" ]; then
     snapctl start "$SNAP_NAME.redis"
 fi
 
+if [ -d "$backup_dir/certs" ]; then
+    echo Restoring certificates...
+    cp "$backup_dir/certs/*" "$CERT_DIR/"
+fi
+
 echo Cleaning up media references...
 $SNAP/bin/tootctl.wrapper preview_cards remove --days 1
 $SNAP/bin/tootctl.wrapper media remove --days 1
