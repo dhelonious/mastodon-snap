@@ -4,6 +4,7 @@
 . "$SNAP/debug.env"
 
 begin_debug install
+trap end_debug EXIT
 
 reset_restart_required redis
 reset_restart_required postgres
@@ -90,5 +91,3 @@ echo Install logrotate
 . "$SNAP/logrotate.env"
 
 copy_config logrotate logrotate.conf
-
-end_debug

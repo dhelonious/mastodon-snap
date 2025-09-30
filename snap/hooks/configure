@@ -6,6 +6,7 @@
 . "$SNAP/debug.env"
 
 begin_debug configure
+trap end_debug EXIT
 
 export CURRENT_DOMAIN="$(mastodon_get_var LOCAL_DOMAIN)"
 export CURRENT_HTTP_PORT="$(nginx_get_http_port)"
@@ -75,5 +76,3 @@ restart_service_if_required backend
 restart_service_if_required sidekiq
 restart_service_if_required streaming
 restart_service_if_required nginx
-
-end_debug

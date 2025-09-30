@@ -4,6 +4,8 @@
 . "$SNAP/mastodon.env"
 . "$SNAP/debug.env"
 
+trap reset_pre_refresh_tasks_required EXIT
+
 begin_debug pre_refresh_tasks
 
 if ! is_pre_refresh_tasks_required; then
@@ -22,5 +24,3 @@ fi
 
 echo Start pre-deployment db migrations
 SKIP_POST_DEPLOYMENT_MIGRATIONS=true mastodon_db_migrate
-
-reset_pre_refresh_tasks_required

@@ -6,6 +6,7 @@
 . "$SNAP/debug.env"
 
 begin_debug pre-refresh
+trap end_debug EXIT
 
 update_postgres_version_file
 
@@ -19,5 +20,3 @@ if $UPDATE_ANNOUNCEMENT; then
         sleep 180
     fi
 fi
-
-end_debug

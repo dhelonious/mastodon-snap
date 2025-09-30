@@ -4,6 +4,8 @@
 . "$SNAP/mastodon.env"
 . "$SNAP/debug.env"
 
+trap reset_post_refresh_tasks_required EXIT
+
 begin_debug post_refresh_tasks
 
 if ! is_post_refresh_tasks_required; then
@@ -39,5 +41,3 @@ fi
 
 echo Add version announcement to db
 mastodon_add_announcement "The $SNAP_NAME snap has been updated to version $SNAP_VERSION"
-
-reset_post_refresh_tasks_required
