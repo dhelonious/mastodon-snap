@@ -12,6 +12,6 @@ This release also includes:
 * redis 8.2.1
 * ruby 3.4.4
 
-Changelog for 4.4.5snap1:
+Changelog for 4.4.5snap2:
 
-* Update yarn to 4.10.3
+* Add debug logging

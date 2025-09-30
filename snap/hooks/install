@@ -1,6 +1,10 @@
 #!/bin/bash -e
 
 . "$SNAP/snap.env"
+. "$SNAP/debug.env"
+
+begin_debug install
+
 set_default_settings
 
 reset_restart_required redis
@@ -87,3 +91,5 @@ echo Install logrotate
 . "$SNAP/logrotate.env"
 
 copy_config logrotate logrotate.conf
+
+end_debug

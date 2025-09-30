@@ -6,28 +6,29 @@ Basic settings can be configured using key-value pairs:
 
 The following settings are available:
 
-| Key                   | Values                        | Default value          | Description                                                                          |
-|-----------------------|-------------------------------|------------------------|--------------------------------------------------------------------------------------|
-| `domain`              | valid FQDN                    |                        | FQDN of the Mastodon instance                                                        |
-| `email`               | valid e-mail                  |                        | E-mail address of the owner of the Mastodon instance                                 |
-| `ports.http`          | 0 to 65353                    | 80                     | HTTP port                                                                            |
-| `ports.https`         | 0 to 65353                    | 443                    | HTTPS port                                                                           |
+| Key                   | Values                        | Default value          | Description                                                                             |
+|-----------------------|-------------------------------|------------------------|-----------------------------------------------------------------------------------------|
+| `domain`              | valid FQDN                    |                        | FQDN of the Mastodon instance                                                           |
+| `email`               | valid e-mail                  |                        | E-mail address of the owner of the Mastodon instance                                    |
+| `ports.http`          | 0 to 65353                    | 80                     | HTTP port                                                                               |
+| `ports.https`         | 0 to 65353                    | 443                    | HTTPS port                                                                              |
 | `acme.server`         | letsencrypt, zerossl, buypass | letsencrypt            | CA used for acquiring an SSL certificate, see [acme.sh server](https://github.com/acmesh-official/acme.sh/wiki/Server) |
-| `update.backup`       | true, false                   | true                   | Create a backup in `/var/snap/mastodon-server/common/update/backups` before updating |
-| `update.announcement` | true, false                   | true                   | Create an announcement 3 minutes before the Snap is updated and publish new version  |
-| `status.length`       | integer                       | 1000                   | Character limit of statuses (toots); changes require recompilation of assets [1]     |
-| `media.dir`           | absolute path                 | `$SNAP_COMMON/media`   | Location of the media directory (*public/system*)                                    |
-| `backup.dir`          | absolute path                 | `$SNAP_COMMON/backups` | Location of the backup directory                                                     |
-| `backup.days`         | integer                       | 0                      | Create and keep backups for `backup.days` (enabled if > 0)                           |
-| `cleanup.days`        | integer                       | 3                      | Cleanup media and statuses older than `cleanup.days` (enabled if > 0)                |
+| `update.backup`       | true, false                   | true                   | Create a backup in `/var/snap/mastodon-server/common/update/backups` before updating    |
+| `update.announcement` | true, false                   | true                   | Create an announcement 3 minutes before the Snap is updated and publish new version     |
+| `status.length`       | integer                       | 1000                   | Character limit of statuses (toots); changes require recompilation of assets [1]        |
+| `media.dir`           | absolute path                 | `$SNAP_COMMON/media`   | Location of the media directory (*public/system*)                                       |
+| `backup.dir`          | absolute path                 | `$SNAP_COMMON/backups` | Location of the backup directory                                                        |
+| `backup.days`         | integer                       | 0                      | Create and keep backups for `backup.days` (enabled if > 0)                              |
+| `cleanup.days`        | integer                       | 3                      | Cleanup media and statuses older than `cleanup.days` (enabled if > 0)                   |
 | `cleanup.media`       | true, false                   | true                   | Cleanup media files, see [tootctl media remove](https://docs.joinmastodon.org/admin/tootctl/#media-remove) |
 | `cleanup.headers`     | true, false                   | true                   | Cleanup headers, see [tootctl media remove](https://docs.joinmastodon.org/admin/tootctl/#media-remove) |
 | `cleanup.previews`    | true, false                   | true                   | Cleanup preview cards, see [tootctl preview_cards remove](https://docs.joinmastodon.org/admin/tootctl/#preview_cards) |
 | `cleanup.statuses`    | true, false                   | true                   | Cleanup unreferenced statuses, see [tootctl statuses remove](https://docs.joinmastodon.org/admin/tootctl/#statuses-remove) |
 | `cleanup.orphans`     | true, false                   | false                  | Cleanup orphaned media files, see [tootctl media remove-orphans](https://docs.joinmastodon.org/admin/tootctl/#media-remove-orphans) |
 | `cleanup.accounts`    | true, false                   | false                  | Cleanup user accounts, see [tootctl accounts delete](https://docs.joinmastodon.org/admin/tootctl/#accounts-delete) |
-| `log.access.enabled`  | true, false                   | false                  | Logging of http(s) accesses                                                          |
-| `log.access.format`   | standard, network, private    | network                | Use of real/network/no IP addresses in the access log                                |
+| `log.access.enabled`  | true, false                   | false                  | Logging of http(s) accesses                                                             |
+| `log.access.format`   | standard, network, private    | network                | Use of real/network/no IP addresses in the access log                                   |
+| `log.debug`           | true, false                   | false                  | If enabled, create additional debug logs in `~/snap/mastodon-server/common/debug/logs/` |
 
 [1] Changing this value will increase the time it takes for Snapcraft to update this Snap. This will increase the downtime of your instance by about 5 minutes.
 

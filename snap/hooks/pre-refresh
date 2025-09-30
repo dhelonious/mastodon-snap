@@ -3,12 +3,15 @@
 . "$SNAP/snap.env"
 . "$SNAP/postgres.env"
 . "$SNAP/mastodon.env"
+. "$SNAP/debug.env"
+
+begin_debug pre-refresh
 
 update_postgres_version_file
 
 pre_refresh_tasks_required
 
-if $UPDATE_ANNOUNCEMENTS; then
+if $UPDATE_ANNOUNCEMENT; then
     echo Add update announcement
     if ANNOUNCEMENT_ID=$(mastodon_publish_announcement "The server will be updated in 3 minutes and will be unavailable for a short time"); then
         snapctl set system.announcement-id="$ANNOUNCEMENT_ID"
@@ -17,3 +20,4 @@ if $UPDATE_ANNOUNCEMENTS; then
     fi
 fi
 
+end_debug

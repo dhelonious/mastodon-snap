@@ -8,6 +8,9 @@ If none of the answers below help you, you can always re-install the snap and re
 
 Make sure you move the backups out of `/var/snap/mastodon-server/common/backups/` before removing the Snap.
 
+> [!TIP]
+> Additional debug logs will be created when the `log.debug` setting is enabled (see the [configuration docs](docs/configuration.md)).
+
 ## Statistics show "0 active users"
 
 Statistics are compiled every night. So the number of users should be correct within 24 hours.

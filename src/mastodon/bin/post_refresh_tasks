@@ -2,6 +2,9 @@
 
 . "$SNAP/postgres.env"
 . "$SNAP/mastodon.env"
+. "$SNAP/debug.env"
+
+begin_debug post_refresh_tasks
 
 if ! is_post_refresh_tasks_required; then
     update_postgres_version_file

@@ -70,6 +70,7 @@ runs:
       sleep 10
       sudo snap set mastodon-server domain="${{ steps.env.outputs.DOMAIN }}"
       sudo snap set mastodon-server email="${{ steps.env.outputs.EMAIL }}"
+      sudo snap set mastodon-server log.debug=true
       sudo mastodon-server.setup -u ${{ steps.env.outputs.USERNAME }} -c no
       sleep 10
   - name: install snap
@@ -103,6 +104,7 @@ runs:
       echo "Test setup" | yellow
       sudo snap set mastodon-server domain="${{ steps.env.outputs.DOMAIN }}"
       sudo snap set mastodon-server email="${{ steps.env.outputs.EMAIL }}"
+      sudo snap set mastodon-server log.debug=true
       if sudo mastodon-server.setup -u ${{ steps.env.outputs.USERNAME }} -c no; then
         echo "Mastodon setup completed successfully" | green
       else
@@ -455,6 +457,34 @@ runs:
 
   ##############################################################################
   # Debugging
+  - name: show configure hook log
+    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
+    shell: bash
+    run: |
+      echo "::group::configure hook log:"
+      sudo cat "/root/snap/mastodon-server/common/debug/logs/configure.log" | yellow
+      echo "::endgroup::"
+  - name: show install hook log
+    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
+    shell: bash
+    run: |
+      echo "::group::install hook log:"
+      sudo cat "/root/snap/mastodon-server/common/debug/logs/install.log" | yellow
+      echo "::endgroup::"
+  - name: show post-refresh hook log
+    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
+    shell: bash
+    run: |
+      echo "::group::post-refresh hook log:"
+      sudo cat "/root/snap/mastodon-server/common/debug/logs/post-refresh.log" | yellow
+      echo "::endgroup::"
+  - name: show pre-refresh hook log
+    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
+    shell: bash
+    run: |
+      echo "::group::pre-refresh hook log:"
+      sudo cat "/root/.snap/mastodon-server/common/debug/logs/pre-refresh.log" | yellow
+      echo "::endgroup::"
   - name: show postgres journalctl
     if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
     shell: bash

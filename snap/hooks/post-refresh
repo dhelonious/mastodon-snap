@@ -1,6 +1,10 @@
 #!/bin/bash -e
 
 . "$SNAP/snap.env"
+. "$SNAP/debug.env"
+
+begin_debug post-refresh
+
 set_default_settings
 
 export CURRENT_SNAP_VERSION="$(get_snap_version_file)"
@@ -131,3 +135,5 @@ find "$UPDATE_BACKUP_DIR" -mindepth 1 -maxdepth 1 -type d -printf "%T@ %p\n" \
     | sort -g | head -n -1 | cut -d " " -f2 | xargs -r rm -rf
 
 post_refresh_tasks_required
+
+end_debug
