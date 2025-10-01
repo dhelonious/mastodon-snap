@@ -49,16 +49,6 @@ apps:
     daemon: simple
     timer: 00:00
 
-  postgres-upgrade:
-    command: bin/postgres-upgrade
-    daemon: simple
-    after:
-      - init
-    plugs:
-      - network
-      - network-bind
-      - removable-media
-
   postgres:
     command: bin/run_as_daemon_user postgres.wrapper
     daemon: simple
@@ -66,7 +56,6 @@ apps:
     stop-timeout: 30m
     after:
       - init
-      - postgres-upgrade
     before:
       - backend
       - sidekiq
@@ -99,7 +88,7 @@ apps:
       - network
       - network-bind
 
-  migrations:
+  post-refresh:
     command: bin/post_refresh_tasks
     daemon: oneshot
     after:
@@ -116,7 +105,7 @@ apps:
       - init
       - postgres
       - redis
-      - migrations
+      - post-refresh
       - recompile-assets
     plugs:
       - network
@@ -130,7 +119,7 @@ apps:
       - init
       - postgres
       - redis
-      - migrations
+      - post-refresh
       - recompile-assets
     environment:
       MALLOC_ARENA_MAX: 2

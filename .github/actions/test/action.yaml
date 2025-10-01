@@ -492,13 +492,6 @@ runs:
       echo "::group::journalctl postgres:"
       sudo journalctl -xu snap.mastodon-server.postgres.service --all
       echo "::endgroup::"
-  - name: show postgres-upgrade journalctl
-    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
-    shell: bash
-    run: |
-      echo "::group::journalctl postgres-upgrade:"
-      sudo journalctl -xu snap.mastodon-server.postgres-upgrade.service --all
-      echo "::endgroup::"
   - name: show nginx journalctl
     if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
     shell: bash
@@ -534,12 +527,12 @@ runs:
       echo "::group::journalctl sidekiq:"
       sudo journalctl -xu snap.mastodon-server.sidekiq.service --all
       echo "::endgroup::"
-  - name: show migrations journalctl
+  - name: show post-refresh journalctl
     if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
     shell: bash
     run: |
-      echo "::group::journalctl migrations:"
-      sudo journalctl -xu snap.mastodon-server.migrations.service --all
+      echo "::group::journalctl post-refresh:"
+      sudo journalctl -xu snap.mastodon-server.post-refresh.service --all
       echo "::endgroup::"
   - name: show recompile-assets journalctl
     if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}

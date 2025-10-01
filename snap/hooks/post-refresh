@@ -48,6 +48,14 @@ echo Update postgres config
 copy_config_as_daemon_user postgres postgresql.conf
 enable_postgres_config
 
+if pg_version_changed; then
+    echo Update postgres data
+    run_as_daemon_user rm -rf "$PG_DATA"
+    run_as_daemon_user mkdir -pm 0700 "$PG_DATA"
+    run_as_daemon_user initdb.wrapper
+    enable_postgres_config
+fi
+
 snapctl start "$SNAP_NAME.postgres"
 
 # Redis
@@ -139,3 +147,4 @@ find "$UPDATE_BACKUP_DIR" -mindepth 1 -maxdepth 1 -type d -printf "%T@ %p\n" \
     | sort -g | head -n -1 | cut -d " " -f2 | xargs -r rm -rf
 
 post_refresh_tasks_required
+snapctl start "$SNAP_NAME.post-refresh"

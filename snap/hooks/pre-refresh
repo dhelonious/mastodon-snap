@@ -10,13 +10,29 @@ trap end_debug EXIT
 
 update_postgres_version_file
 
-pre_refresh_tasks_required
+if mastodon_config_exists; then
 
-if $UPDATE_ANNOUNCEMENT; then
-    echo Add update announcement
-    if ANNOUNCEMENT_ID=$(mastodon_publish_announcement "The server will be updated in 3 minutes and will be unavailable for a short time"); then
-        snapctl set system.announcement-id="$ANNOUNCEMENT_ID"
-        snapctl restart "$SNAP_NAME.sidekiq"
-        sleep 180
+    if $UPDATE_ANNOUNCEMENTS; then
+        echo Add update announcement
+        if ANNOUNCEMENT_ID=$(mastodon_publish_announcement "The server will be updated in 5 minutes and will be unavailable for a short time"); then
+            snapctl set system.announcement-id="$ANNOUNCEMENT_ID"
+            snapctl restart "$SNAP_NAME.sidekiq"
+        fi
     fi
+
+    # TODO: Remove since this will only consume time in the pre-refresh hook
+    # echo Run pre-deployment db migrations
+    # SKIP_POST_DEPLOYMENT_MIGRATIONS=true mastodon_db_migrate
+
+    if $UPDATE_BACKUP; then
+        echo Trigger full update backup
+        # NOTE: This may slow down the database dump required for postgres major version upgrades
+        snapctl start "$SNAP_NAME.backup"
+    fi
+
+    echo Create database backup
+    postgres_export_database "$SNAP_COMMON/database.sql"
+
+    sleep 300
+
 fi

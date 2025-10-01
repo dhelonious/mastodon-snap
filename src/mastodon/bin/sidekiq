@@ -7,5 +7,9 @@ check_setup
 postgres_waitready
 redis_waitready
 
+while is_active post-refresh; do
+    sleep 1
+done
+
 mastodon_sidekiq -c 25 \
     2>&1 | tee -a "$LOG_DIR/sidekiq.log"

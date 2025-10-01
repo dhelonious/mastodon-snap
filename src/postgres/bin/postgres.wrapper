@@ -7,10 +7,6 @@ if ! $(config_exists postgres postgresql.conf); then
     exit 0
 fi
 
-while is_active postgres-upgrade; do
-    sleep 1
-done
-
 mkdir_pid
 mkdir_sock
 mkdir -p "$PG_SOCK_DIR"
