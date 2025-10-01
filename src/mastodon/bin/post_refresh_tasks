@@ -36,6 +36,7 @@ if ANNOUNCEMENT_ID=$(snapctl get system.announcement-id); then
     if ! [ -z "$ANNOUNCEMENT_ID" ]; then
         echo Remove update announcement from db
         mastodon_remove_announcement $ANNOUNCEMENT_ID
+        snapctl unset system.announcement-id
     fi
 fi
 
