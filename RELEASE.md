@@ -15,3 +15,4 @@ This release also includes:
 Changelog for 4.4.5snap2:
 
 * Add debug logging
+* Remove the `update.backup` feature, since it is generally not required. If the refresh fails, the snapshot reverts to the previous version without any loss of data.
