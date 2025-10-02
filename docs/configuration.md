@@ -14,7 +14,7 @@ The following settings are available:
 | `ports.https`         | 0 to 65353                    | 443                    | HTTPS port                                                                              |
 | `acme.server`         | letsencrypt, zerossl, buypass | letsencrypt            | CA used for acquiring an SSL certificate, see [acme.sh server](https://github.com/acmesh-official/acme.sh/wiki/Server) |
 | `update.backup`       | true, false                   | true                   | Create a backup in `/var/snap/mastodon-server/common/update/backups` before updating    |
-| `update.announcement` | true, false                   | true                   | Create an announcement 3 minutes before the Snap is updated and publish new version     |
+| `update.announcement` | true, false                   | true                   | Create an announcement 5 minutes before the Snap is updated and publish new version     |
 | `status.length`       | integer                       | 1000                   | Character limit of statuses (toots); changes require recompilation of assets [1]        |
 | `media.dir`           | absolute path                 | `$SNAP_COMMON/media`   | Location of the media directory (*public/system*)                                       |
 | `backup.dir`          | absolute path                 | `$SNAP_COMMON/backups` | Location of the backup directory                                                        |

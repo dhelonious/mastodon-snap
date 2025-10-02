@@ -6,10 +6,7 @@
 check_setup
 postgres_waitready
 redis_waitready
-
-while is_active post-refresh; do
-    sleep 1
-done
+migrations_waitready
 
 mastodon_rails s -p 3000 \
     2>&1 | tee -a "$LOG_DIR/backend.log"

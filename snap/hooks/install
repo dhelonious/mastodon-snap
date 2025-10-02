@@ -1,10 +1,11 @@
 #!/bin/bash -e
 
-. "$SNAP/snap.env"
 . "$SNAP/debug.env"
 
-begin_debug_log install
 trap end_debug_log EXIT
+begin_debug_log install
+
+. "$SNAP/snap.env"
 
 reset_restart_required redis
 reset_restart_required postgres

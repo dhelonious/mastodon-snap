@@ -1,12 +1,13 @@
 #!/bin/bash -e
 
+. "$SNAP/debug.env"
+
+trap end_debug_log EXIT
+begin_debug_log configure
+
 . "$SNAP/snap.env"
 . "$SNAP/nginx.env"
 . "$SNAP/mastodon.env"
-. "$SNAP/debug.env"
-
-begin_debug_log configure
-trap end_debug_log EXIT
 
 export CURRENT_DOMAIN="$(mastodon_get_var LOCAL_DOMAIN)"
 export CURRENT_HTTP_PORT="$(nginx_get_http_port)"

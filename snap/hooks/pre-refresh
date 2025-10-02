@@ -1,12 +1,13 @@
 #!/bin/bash -e
 
+. "$SNAP/debug.env"
+
+trap end_debug_log EXIT
+begin_debug_log pre-refresh
+
 . "$SNAP/snap.env"
 . "$SNAP/postgres.env"
 . "$SNAP/mastodon.env"
-. "$SNAP/debug.env"
-
-begin_debug_log pre-refresh
-trap end_debug_log EXIT
 
 update_postgres_version_file
 
@@ -33,6 +34,9 @@ if mastodon_config_exists; then
     echo Create database backup
     postgres_export_database "$SNAP_COMMON/database.sql"
 
-    sleep 300
+    if $UPDATE_ANNOUNCEMENTS; then
+        # NOTE: The pre-refresh hook will be terminated automatically after 5 minutes
+        sleep 300
+    fi
 
 fi

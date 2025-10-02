@@ -85,7 +85,7 @@ If you have installed a Snap file locally and still want to benefit from automat
 After the Snap has updated itself, a new unpublished announcement will be created. You can view, publish or delete this announcement in *Preferences/Administration/Announcements*.
 
 > [!NOTE]
-> By default, `update.announcement` is enabled (see the [configuration docs](docs/configuration.md)), which will display an update announcement 3 minutes before the Snap is updated. This will prolong the time the Snap is on hold during a refresh.
+> By default, `update.announcement` is enabled (see the [configuration docs](docs/configuration.md)), which will display an update announcement 5 minutes before the Snap is updated. This will prolong the time the Snap is on hold during a refresh.
 
 ### Refresh timer
 

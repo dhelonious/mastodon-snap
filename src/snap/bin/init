@@ -1,5 +1,0 @@
-#!/bin/bash -e
-
-. "$SNAP/snap.env"
-
-update_snap_version_file

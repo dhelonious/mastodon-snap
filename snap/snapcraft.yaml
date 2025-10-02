@@ -40,10 +40,6 @@ hooks:
       - network
 
 apps:
-  init:
-    command: bin/init
-    daemon: simple
-
   logrotate:
     command: bin/logrotate.wrapper
     daemon: simple
@@ -53,8 +49,6 @@ apps:
     command: bin/run_as_daemon_user postgres.wrapper
     daemon: simple
     stop-timeout: 30m
-    after:
-      - init
     before:
       - backend
       - sidekiq
@@ -67,8 +61,6 @@ apps:
   redis:
     command: bin/run_as_daemon_user redis.wrapper
     daemon: simple
-    after:
-      - init
     before:
       - backend
       - sidekiq
@@ -81,17 +73,14 @@ apps:
   recompile-assets:
     command: bin/recompile_if_required
     daemon: oneshot
-    after:
-      - init
     plugs:
       - network
       - network-bind
 
-  post-refresh:
-    command: bin/post_refresh_tasks
+  migrations:
+    command: bin/migrations
     daemon: oneshot
     after:
-      - init
       - postgres
     plugs:
       - network
@@ -101,10 +90,9 @@ apps:
     command: bin/run_as_daemon_user backend
     daemon: simple
     after:
-      - init
       - postgres
       - redis
-      - post-refresh
+      - migrations
       - recompile-assets
     plugs:
       - network
@@ -115,10 +103,9 @@ apps:
     command: bin/run_as_daemon_user sidekiq
     daemon: simple
     after:
-      - init
       - postgres
       - redis
-      - post-refresh
+      - migrations
       - recompile-assets
     environment:
       MALLOC_ARENA_MAX: 2
@@ -131,7 +118,6 @@ apps:
     command: bin/run_as_daemon_user streaming
     daemon: simple
     after:
-      - init
       - redis
       - recompile-assets
     plugs:
@@ -145,7 +131,6 @@ apps:
     reload-command: bin/nginx.wrapper -s reload
     daemon: simple
     after:
-      - init
       - backend
       - sidekiq
       - streaming

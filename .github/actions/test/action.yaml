@@ -485,12 +485,12 @@ runs:
       echo "::group::post-refresh hook log:"
       sudo cat "/root/snap/mastodon-server/common/debug/logs/post-refresh.log" | yellow
       echo "::endgroup::"
-  - name: show post_refresh_tasks log
+  - name: show migrations debug log
     if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
     shell: bash
     run: |
-      echo "::group::pre-refresh hook log:"
-      sudo cat "/root/.snap/mastodon-server/common/debug/logs/post_refresh_tasks.log" | yellow
+      echo "::group::migrations debug log:"
+      sudo cat "/root/snap/mastodon-server/common/debug/logs/migrations.log" | yellow
       echo "::endgroup::"
   - name: show postgres journalctl
     if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
@@ -534,12 +534,12 @@ runs:
       echo "::group::journalctl sidekiq:"
       sudo journalctl -xu snap.mastodon-server.sidekiq.service --all
       echo "::endgroup::"
-  - name: show post-refresh journalctl
+  - name: show migrations journalctl
     if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
     shell: bash
     run: |
-      echo "::group::journalctl post-refresh:"
-      sudo journalctl -xu snap.mastodon-server.post-refresh.service --all
+      echo "::group::journalctl migrations:"
+      sudo journalctl -xu snap.mastodon-server.migrations.service --all
       echo "::endgroup::"
   - name: show recompile-assets journalctl
     if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}

@@ -1,10 +1,11 @@
 #!/bin/bash -e
 
-. "$SNAP/snap.env"
 . "$SNAP/debug.env"
 
-begin_debug_log post-refresh
 trap end_debug_log EXIT
+begin_debug_log post-refresh
+
+. "$SNAP/snap.env"
 
 set_default_settings
 
@@ -74,7 +75,6 @@ copy_config_as_daemon_user redis redis.conf
 # Mastodon
 
 . "$SNAP/mastodon.env"
-reset_migrations_required
 
 # NOTE: This is a fix for older versions and may be removed in the future
 echo Set permissions on mastodon files and dirs
@@ -105,9 +105,6 @@ if [ "$SNAP_VERSION" != "$CURRENT_SNAP_VERSION" ]; then
     if mastodon_config_exists; then
         echo Update mastodon config
         upgrade_mastodon_config
-
-        echo Enable database migrations
-        migrations_required
     fi
 fi
 
@@ -145,6 +142,3 @@ copy_config logrotate logrotate.conf
 echo Clean update backups
 find "$UPDATE_BACKUP_DIR" -mindepth 1 -maxdepth 1 -type d -printf "%T@ %p\n" \
     | sort -g | head -n -1 | cut -d " " -f2 | xargs -r rm -rf
-
-post_refresh_tasks_required
-snapctl start "$SNAP_NAME.post-refresh"
