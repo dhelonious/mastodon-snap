@@ -52,7 +52,6 @@ apps:
   postgres:
     command: bin/run_as_daemon_user postgres.wrapper
     daemon: simple
-    stop-command: bin/pre_refresh_tasks
     stop-timeout: 30m
     after:
       - init

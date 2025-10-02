@@ -5,8 +5,8 @@
 . "$SNAP/mastodon.env"
 . "$SNAP/debug.env"
 
-begin_debug pre-refresh
-trap end_debug EXIT
+begin_debug_log pre-refresh
+trap end_debug_log EXIT
 
 update_postgres_version_file
 

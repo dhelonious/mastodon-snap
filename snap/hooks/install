@@ -3,8 +3,8 @@
 . "$SNAP/snap.env"
 . "$SNAP/debug.env"
 
-begin_debug install
-trap end_debug EXIT
+begin_debug_log install
+trap end_debug_log EXIT
 
 reset_restart_required redis
 reset_restart_required postgres

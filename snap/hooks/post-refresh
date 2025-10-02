@@ -3,8 +3,8 @@
 . "$SNAP/snap.env"
 . "$SNAP/debug.env"
 
-begin_debug post-refresh
-trap end_debug EXIT
+begin_debug_log post-refresh
+trap end_debug_log EXIT
 
 set_default_settings
 

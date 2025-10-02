@@ -457,6 +457,13 @@ runs:
 
   ##############################################################################
   # Debugging
+  - name: show install hook log
+    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
+    shell: bash
+    run: |
+      echo "::group::install hook log:"
+      sudo cat "/root/snap/mastodon-server/common/debug/logs/install.log" | yellow
+      echo "::endgroup::"
   - name: show configure hook log
     if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
     shell: bash
@@ -464,12 +471,12 @@ runs:
       echo "::group::configure hook log:"
       sudo cat "/root/snap/mastodon-server/common/debug/logs/configure.log" | yellow
       echo "::endgroup::"
-  - name: show install hook log
+  - name: show pre-refresh hook log
     if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
     shell: bash
     run: |
-      echo "::group::install hook log:"
-      sudo cat "/root/snap/mastodon-server/common/debug/logs/install.log" | yellow
+      echo "::group::pre-refresh hook log:"
+      sudo cat "/root/.snap/mastodon-server/common/debug/logs/pre-refresh.log" | yellow
       echo "::endgroup::"
   - name: show post-refresh hook log
     if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
@@ -478,12 +485,12 @@ runs:
       echo "::group::post-refresh hook log:"
       sudo cat "/root/snap/mastodon-server/common/debug/logs/post-refresh.log" | yellow
       echo "::endgroup::"
-  - name: show pre-refresh hook log
+  - name: show post_refresh_tasks log
     if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
     shell: bash
     run: |
       echo "::group::pre-refresh hook log:"
-      sudo cat "/root/.snap/mastodon-server/common/debug/logs/pre-refresh.log" | yellow
+      sudo cat "/root/.snap/mastodon-server/common/debug/logs/post_refresh_tasks.log" | yellow
       echo "::endgroup::"
   - name: show postgres journalctl
     if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}

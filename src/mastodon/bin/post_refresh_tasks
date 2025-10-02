@@ -4,7 +4,8 @@
 . "$SNAP/mastodon.env"
 . "$SNAP/debug.env"
 
-trap reset_post_refresh_tasks_required EXIT
+begin_debug_log post_refresh_tasks
+trap "reset_post_refresh_tasks_required; end_debug_log" EXIT
 
 if ! is_post_refresh_tasks_required; then
     update_postgres_version_file
@@ -19,6 +20,8 @@ if pg_version_changed; then
         echo Restore mastodon db
         postgres_restore_database "$SNAP_COMMON/database.sql"
         rm -f "$SNAP_COMMON/database.sql"
+    else
+        echo_error The major version of postgresql has changed, but there is no data dump to restore the mastodon db.
     fi
 
     update_postgres_version_file
