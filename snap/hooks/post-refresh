@@ -45,6 +45,14 @@ copy_config_as_daemon_user postgres postgresql.conf
 enable_postgres_config
 
 if pg_version_changed; then
+    if ! grep -q "PostgreSQL database cluster dump complete" "$SNAP_COMMON/database.sql"; then
+        echo_error The major version of postgresql has changed, but the database backup file $SNAP_COMMON/database.sql does not exist or is incomplete.
+        echo_error The database may be too large to export automatically before refreshing.
+        echo_error If this issue persists, you will need to install the new version and restore a backup manually.
+        echo_error The refresh process will now stop and the snap will be reverted to the previous revision.
+        exit 1
+    fi
+
     echo Update postgres data
     run_as_daemon_user rm -rf "$PG_DATA"
     run_as_daemon_user mkdir -pm 0700 "$PG_DATA"
