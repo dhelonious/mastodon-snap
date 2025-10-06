@@ -9,7 +9,7 @@ begin_debug_log post-refresh
 
 set_default_settings
 
-export CURRENT_SNAP_VERSION="$(get_snap_version_file)"
+export PREVIOUS_SNAP_VERSION="$(get_snap_version_file)"
 
 # NOTE: This is a fix for older versions and may be removed in the future
 echo Set permissions on log dir
@@ -44,24 +44,6 @@ echo Update postgres config
 copy_config_as_daemon_user postgres postgresql.conf
 enable_postgres_config
 
-if pg_version_changed; then
-    if ! grep -q "PostgreSQL database cluster dump complete" "$SNAP_COMMON/database.sql"; then
-        echo_error The major version of postgresql has changed, but the database backup file $SNAP_COMMON/database.sql does not exist or is incomplete.
-        echo_error The database may be too large to export automatically before refreshing.
-        echo_error If this issue persists, you will need to install the new version and restore a backup manually.
-        echo_error The refresh process will now stop and the snap will be reverted to the previous revision.
-        exit 1
-    fi
-
-    echo Update postgres data
-    run_as_daemon_user rm -rf "$PG_DATA"
-    run_as_daemon_user mkdir -pm 0700 "$PG_DATA"
-    run_as_daemon_user initdb.wrapper
-    enable_postgres_config
-fi
-
-snapctl start "$SNAP_NAME.postgres"
-
 # Redis
 
 . "$SNAP/redis.env"
@@ -92,7 +74,7 @@ if [ "$(get_owner $MEDIA_DIR)" != "$DAEMON_USER" ]; then
     fix_daemon_user_media_dir
 fi
 
-if [ "$SNAP_VERSION" != "$CURRENT_SNAP_VERSION" ]; then
+if [ "$SNAP_VERSION" != "$PREVIOUS_SNAP_VERSION" ]; then
     echo Update mastodon
     copy_mastodon_server_config
     update_mastodon_files

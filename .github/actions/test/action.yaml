@@ -73,6 +73,12 @@ runs:
       sudo snap set mastodon-server log.debug=true
       sudo mastodon-server.setup -u ${{ steps.env.outputs.USERNAME }} -c no
       sleep 10
+  - name: set system.previous-revision variable for upgrade test # TODO: remove
+    if: ${{ inputs.upgrade == 'true' }}
+    shell: bash
+    run: |
+      PREVIOUS_SNAP_REVISION="$(readlink /var/snap/mastodon-server/current)"
+      sudo snap set mastodon-server system.previous-revision="$PREVIOUS_SNAP_REVISION"
   - name: install snap
     shell: bash
     run: |
@@ -394,7 +400,7 @@ runs:
     shell: bash
     run: |
       echo "Check logs for errors" | yellow
-      LOG_ERRORS=$(sudo grep -iE "error|failure|failed" /var/snap/mastodon-server/current/logs/*.log || true)
+      LOG_ERRORS=$(sudo grep -iE "error|fail" /var/snap/mastodon-server/current/logs/*.log ~/snap/snap/mastodon-server/common/debug/logs/*.log || true)
       LOG_ERRORS=$(echo "$LOG_ERRORS" | grep -v "SMTP-AUTH requested but missing user name" || true)
       if [ -z "$LOG_ERRORS" ]; then
         echo "No errors" | green
@@ -485,13 +491,6 @@ runs:
       echo "::group::post-refresh hook log:"
       sudo cat "/root/snap/mastodon-server/common/debug/logs/post-refresh.log" | yellow
       echo "::endgroup::"
-  - name: show migrations debug log
-    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
-    shell: bash
-    run: |
-      echo "::group::migrations debug log:"
-      sudo cat "/root/snap/mastodon-server/common/debug/logs/migrations.log" | yellow
-      echo "::endgroup::"
   - name: show postgres journalctl
     if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
     shell: bash
@@ -533,6 +532,13 @@ runs:
     run: |
       echo "::group::journalctl sidekiq:"
       sudo journalctl -xu snap.mastodon-server.sidekiq.service --all
+      echo "::endgroup::"
+  - name: show postgres-upgrade journalctl
+    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
+    shell: bash
+    run: |
+      echo "::group::journalctl postgres-upgrade:"
+      sudo journalctl -xu snap.mastodon-server.postgres-upgrade.service --all
       echo "::endgroup::"
   - name: show migrations journalctl
     if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}

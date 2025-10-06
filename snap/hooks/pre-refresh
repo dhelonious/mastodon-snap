@@ -10,6 +10,7 @@ begin_debug_log pre-refresh
 . "$SNAP/mastodon.env"
 
 update_postgres_version_file
+snapctl set system.previous-revision="$SNAP_REVISION"
 
 if mastodon_config_exists; then
 
@@ -19,13 +20,7 @@ if mastodon_config_exists; then
             snapctl set system.announcement-id="$ANNOUNCEMENT_ID"
             snapctl restart "$SNAP_NAME.sidekiq"
         fi
-    fi
 
-    echo Create database backup
-    postgres_export_database "$SNAP_COMMON/database.sql"
-    sed -ri "1,100s/^(CREATE ROLE postgres;)/-- \1/" "$SNAP_COMMON/database.sql"
-
-    if $UPDATE_ANNOUNCEMENTS; then
         # NOTE: The pre-refresh hook will be terminated automatically after 5 minutes
         sleep 300
     fi

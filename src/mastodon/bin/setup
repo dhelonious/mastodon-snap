@@ -70,7 +70,7 @@ while getopts "d:u:m:c:s:h" OPTION; do
         ;;
     esac
 done
-shift "$(($OPTIND -1))"
+shift "$(($OPTIND-1))"
 
 get_domain
 get_username

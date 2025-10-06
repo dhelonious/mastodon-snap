@@ -2,43 +2,25 @@
 
 . "$SNAP/debug.env"
 
-trap end_debug_log EXIT
-begin_debug_log migrations
+trap end_debug EXIT
+begin_debug
 
-. "$SNAP/postgres.env"
 . "$SNAP/mastodon.env"
 
-if ! mastodon_config_exists; then
-    echo "Mastodon has not yet been set up; just updating the version files"
-    update_snap_version_file
-    update_postgres_version_file
-fi
-
-if pg_version_changed; then
-    if [ -f "$SNAP_COMMON/database.sql" ]; then
-        echo Restore mastodon db
-        postgres_restore_database "$SNAP_COMMON/database.sql"
-        rm -f "$SNAP_COMMON/database.sql"
-    else
-        echo_error The major version of postgresql has changed, but there is no file $SNAP_COMMON/database.sql to restore the mastodon db.
-    fi
-
-    echo Update postgres version file
-    update_postgres_version_file
-fi
-
 if snap_version_changed; then
-    echo Run db migrations
-    mastodon_db_migrate
+    if mastodon_config_exists; then
+        echo Run db migrations
+        mastodon_db_migrate
 
-    echo Add version announcement to db
-    mastodon_add_announcement "The $SNAP_NAME snap has been updated to version $SNAP_VERSION"
+        echo Add version announcement to db
+        mastodon_add_announcement "The $SNAP_NAME snap has been updated to version $SNAP_VERSION"
 
-    if ANNOUNCEMENT_ID=$(snapctl get system.announcement-id); then
-        if ! [ -z "$ANNOUNCEMENT_ID" ]; then
-            echo Remove update announcement from db
-            mastodon_remove_announcement $ANNOUNCEMENT_ID
-            snapctl unset system.announcement-id
+        if ANNOUNCEMENT_ID=$(snapctl get system.announcement-id); then
+            if ! [ -z "$ANNOUNCEMENT_ID" ]; then
+                echo Remove update announcement from db
+                mastodon_remove_announcement $ANNOUNCEMENT_ID
+                snapctl unset system.announcement-id
+            fi
         fi
     fi
 

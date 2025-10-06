@@ -17,3 +17,4 @@ Changelog for 4.4.5snap2:
 * Update redis to 8.2.2
 * Remove the `update.backup` feature, since it is generally not required. If the refresh fails, the snapshot reverts to the previous version without any loss of data.
 * Add debug logging
+* Rework the database upgrade procedure so that it uses `pg_upgrade`
