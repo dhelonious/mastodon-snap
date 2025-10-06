@@ -96,7 +96,7 @@ fi
 
 if [ -d "$backup_dir/certs" ]; then
     echo Restoring certificates...
-    cp "$backup_dir/certs/*" "$CERT_DIR/"
+    cp -r "$backup_dir/certs/"* "$CERT_DIR/"
 fi
 
 echo Cleaning up media references...
