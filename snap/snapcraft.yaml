@@ -408,8 +408,8 @@ parts:
       - setpriv
       - envsubst
     # NOTE: https://www.postgresql.org/ftp/latest
-    source: https://ftp.postgresql.org/pub/source/v17.6/postgresql-17.6.tar.gz
-    source-checksum: sha256/2910b85283674da2dae6ac13fe5ebbaaf3c482446396cba32e6728d3cc736d86
+    source: https://ftp.postgresql.org/pub/source/v18.0/postgresql-18.0.tar.gz
+    source-checksum: sha256/30e97fc1f1594a7226580ea51080d3d883f4a0fb6ff716dbf7ad09e9f7e93ab2
     plugin: autotools
     build-packages:
       - clang
