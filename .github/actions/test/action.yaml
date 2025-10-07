@@ -73,12 +73,6 @@ runs:
       sudo snap set mastodon-server log.debug=true
       sudo mastodon-server.setup -u ${{ steps.env.outputs.USERNAME }} -c no
       sleep 10
-  - name: set system.previous-revision variable for upgrade test # TODO: remove
-    if: ${{ inputs.upgrade == 'true' }}
-    shell: bash
-    run: |
-      PREVIOUS_SNAP_REVISION="$(readlink /var/snap/mastodon-server/current)"
-      sudo snap set mastodon-server system.previous-revision="$PREVIOUS_SNAP_REVISION"
   - name: install snap
     shell: bash
     run: |
