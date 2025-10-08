@@ -6,16 +6,16 @@ This release also includes:
 
 * ffmpeg 8.0
 * libvips 8.17.2
-* nginx 1.29.1
+* nginx 1.29.2
 * node 20.19.5
 * redis 8.2.2
 * postgres 18.0
 * ruby 3.4.4
 
-Changelog for 4.4.5snap3:
+Changelog for 4.4.5snap4:
 
-* Update redis to 8.2.2
 * Update postgresql to 18.0
-* Remove the `update.backup` feature, since it is generally not required. If the refresh fails, the snapshot reverts to the previous version without any loss of data.
-* Add debug logging
-* Rework the database upgrade procedure so that it uses `pg_upgrade`
+* Update nginx to 1.29.2
+
+> [!NOTE]
+> As of release `4.4.5snap3`, the `update.backup` feature has been removed. If the refresh fails, the snapshot reverts to the previous version without any loss of data.
