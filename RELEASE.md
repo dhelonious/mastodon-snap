@@ -1,6 +1,6 @@
-# Unofficial Snap for Mastodon 4.4.5
+# Unofficial Snap for Mastodon 4.4.6
 
-See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.4.5
+See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.4.6
 
 This release also includes:
 
@@ -12,10 +12,7 @@ This release also includes:
 * postgres 18.0
 * ruby 3.4.4
 
-Changelog for 4.4.5snap4:
+Changelog for 4.4.6snap1:
 
 * Update postgresql to 18.0
 * Update nginx to 1.29.2
-
-> [!NOTE]
-> As of release `4.4.5snap3`, the `update.backup` feature has been removed. If the refresh fails, the snapshot reverts to the previous version without any loss of data.
