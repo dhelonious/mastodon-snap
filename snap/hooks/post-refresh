@@ -74,6 +74,15 @@ if [ "$(get_owner $MEDIA_DIR)" != "$DAEMON_USER" ]; then
     fix_daemon_user_media_dir
 fi
 
+# NOTE: This is a fix for versions <= 4.4.6snap1 and should be removed in the future
+if UPDATE_ANNOUNCEMENT="$(snapctl get update.announcement)"; then
+    if ! [ -z "$UPDATE_ANNOUNCEMENT" ]; then
+        snapctl set announcement.pre-refresh="$UPDATE_ANNOUNCEMENT"
+        snapctl set announcement.pre-refresh="$UPDATE_ANNOUNCEMENT"
+    fi
+    snapctl unset update.announcement
+fi
+
 if [ "$SNAP_VERSION" != "$PREVIOUS_SNAP_VERSION" ]; then
     echo Update mastodon
     copy_mastodon_server_config

@@ -14,7 +14,7 @@ snapctl set system.previous-revision="$SNAP_REVISION"
 
 if mastodon_config_exists; then
 
-    if $UPDATE_ANNOUNCEMENTS; then
+    if $ANNOUNCEMENT_PRE_REFRESH; then
         echo Add update announcement
         if ANNOUNCEMENT_ID=$(mastodon_publish_announcement "The server will be updated in 5 minutes and will be unavailable for a short time"); then
             snapctl set system.announcement-id="$ANNOUNCEMENT_ID"

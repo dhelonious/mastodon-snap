@@ -12,15 +12,17 @@ if snap_version_changed; then
         echo Run db migrations
         mastodon_db_migrate
 
-        echo Add version announcement to db
-        mastodon_add_announcement "The $SNAP_NAME snap has been updated to version $SNAP_VERSION"
-
         if ANNOUNCEMENT_ID=$(snapctl get system.announcement-id); then
             if ! [ -z "$ANNOUNCEMENT_ID" ]; then
                 echo Remove update announcement from db
                 mastodon_remove_announcement $ANNOUNCEMENT_ID
                 snapctl unset system.announcement-id
             fi
+        fi
+
+        if $ANNOUNCEMENT_PRE_REFRESH; then
+            echo Add version announcement to db
+            mastodon_add_announcement "The $SNAP_NAME snap has been updated to version $SNAP_VERSION"
         fi
     fi
 
