@@ -12,7 +12,6 @@ This release also includes:
 * postgres 18.0
 * ruby 3.4.4
 
-Changelog for 4.4.6snap1:
+Changelog for 4.4.6snap2:
 
-* Update postgresql to 18.0
-* Update nginx to 1.29.2
+* The announcement setting `update.announcement` has been split into `announcement.pre-refresh` and `announcement.post-refresh`.
