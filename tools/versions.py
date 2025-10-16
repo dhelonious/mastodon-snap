@@ -71,6 +71,12 @@ else:
             MASTODON_RELEASE = r.url.rstrip("/").split("/")[-1]
 
 print_silent(f"Use Mastodon release: {MASTODON_RELEASE}")
+if args.mastodon_version:
+    print_verbose("Calculating Mastodon release checksum...")
+    mastodon_checksum = sha256_checksum(
+        f"https://github.com/mastodon/mastodon/archive/refs/tags/{MASTODON_RELEASE}.tar.gz"
+    )
+    print_silent(f"Mastodon release checksum: {mastodon_checksum}")
 
 with requests.get(f"https://raw.githubusercontent.com/mastodon/mastodon/{ MASTODON_RELEASE }/Vagrantfile", headers=HEADERS) as r:
     NODE_MAJOR = re.findall(r".*NODE_MAJOR=([0-9]+).*", r.text)[0]
