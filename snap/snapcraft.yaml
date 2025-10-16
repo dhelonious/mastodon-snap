@@ -9,7 +9,7 @@ description: |
   implements ActivityPub!)
 
 base: core24
-version: 4.4.7snap1
+version: 4.5.0-beta.1snap1
 grade: stable
 confinement: strict
 
@@ -587,8 +587,8 @@ parts:
       - curl
       - libjemalloc2
     # NOTE: see `.ruby-version`
-    source: https://cache.ruby-lang.org/pub/ruby/3.4/ruby-3.4.4.tar.gz
-    source-checksum: sha256/a0597bfdf312e010efd1effaa8d7f1d7833146fdc17950caa8158ffa3dcbfa85
+    source: https://cache.ruby-lang.org/pub/ruby/3.4/ruby-3.4.7.tar.gz
+    source-checksum: sha256/23815a6d095696f7919090fdc3e2f9459b2c83d57224b2e446ce1f5f7333ef36
     plugin: autotools
     build-packages:
       - clang
@@ -602,7 +602,7 @@ parts:
       - libdb-dev
       - libjemalloc-dev
     build-environment:
-      - RUBY_VERSION: "3.4.4" # NOTE: must be updated with ruby source
+      - RUBY_VERSION: "3.4.7" # NOTE: must be updated with ruby source
       - RUBY_BRANCH: "3.4" # NOTE: must be updated with ruby source
       - DEBIAN_DISABLE_RUBYGEMS_INTEGRATION: "true"
       - CC: clang
@@ -794,8 +794,8 @@ parts:
       - ffmpeg
       - rsync
     # NOTE: https://github.com/mastodon/mastodon/releases/latest
-    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.4.7.tar.gz
-    source-checksum: sha256/488f9c81e0e5b24f8d5c715f747102c1854f81aca3e137b0e126af77129dd618
+    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.5.0-beta.1.tar.gz
+    source-checksum: sha256/2e384fba5a9f23b2708e03d60b8ade71e70cd41f868c867e8b49f156306633fd
     plugin: nil
     build-packages:
       - git
@@ -814,7 +814,7 @@ parts:
     build-environment:
       - YARN_VERSION: "4.10.3" # NOTE: https://github.com/yarnpkg/berry/releases/latest
       - RUBY_BRANCH: "3.4" # NOTE: must be updated with ruby source
-      - BUNDLER_VERSION: "2.6.9" # NOTE: see `Gemfile.lock`
+      - BUNDLER_VERSION: "2.7.2" # NOTE: see `Gemfile.lock`
       - RAILS_ENV: production
       - NODE_ENV: production
       - OTP_SECRET: precompile_placeholder

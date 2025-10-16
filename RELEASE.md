@@ -1,6 +1,9 @@
-# Unofficial Snap for Mastodon 4.4.7
+# Unofficial Snap for Mastodon 4.5.0-beta.1
 
-See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.4.7
+See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.5.0-beta.1
+
+> [!WARNING]
+> This is a pre-release that has not been as widely tested as regular releases.
 
 This release also includes:
 
@@ -10,8 +13,9 @@ This release also includes:
 * node 20.19.5
 * redis 8.2.2
 * postgres 18.0
-* ruby 3.4.4
+* ruby 3.4.7
 
-Changelog for 4.4.7snap1:
+Changelog for 4.5.0-beta.1snap1:
 
-* The announcement setting `update.announcement` has been split into `announcement.pre-refresh` and `announcement.post-refresh`.
+* Update ruby to 3.4.7
+* Update bundler to 2.7.2
