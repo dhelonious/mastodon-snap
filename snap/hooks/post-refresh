@@ -78,7 +78,7 @@ fi
 if UPDATE_ANNOUNCEMENT="$(snapctl get update.announcement)"; then
     if ! [ -z "$UPDATE_ANNOUNCEMENT" ]; then
         snapctl set announcement.pre-refresh="$UPDATE_ANNOUNCEMENT"
-        snapctl set announcement.pre-refresh="$UPDATE_ANNOUNCEMENT"
+        snapctl set announcement.post-refresh="$UPDATE_ANNOUNCEMENT"
     fi
     snapctl unset update.announcement
 fi

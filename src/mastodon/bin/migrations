@@ -20,7 +20,7 @@ if snap_version_changed; then
             fi
         fi
 
-        if $ANNOUNCEMENT_PRE_REFRESH; then
+        if $ANNOUNCEMENT_POST_REFRESH; then
             echo Add version announcement to db
             mastodon_add_announcement "The $SNAP_NAME snap has been updated to version $SNAP_VERSION"
         fi
