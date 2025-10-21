@@ -1,6 +1,6 @@
-# Unofficial Snap for Mastodon 4.4.7
+# Unofficial Snap for Mastodon 4.4.8
 
-See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.4.7
+See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.4.8
 
 This release also includes:
 
@@ -11,7 +11,3 @@ This release also includes:
 * redis 8.2.2
 * postgres 18.0
 * ruby 3.4.4
-
-Changelog for 4.4.7snap1:
-
-* The announcement setting `update.announcement` has been split into `announcement.pre-refresh` and `announcement.post-refresh`.
