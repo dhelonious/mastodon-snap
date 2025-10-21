@@ -17,4 +17,4 @@ This release also includes:
 
 Changelog for 4.5.0-beta.2snap1:
 
-* Update bird-ui to 2.3.4rc6
+* Update bird-ui to 2.3.5rc6
