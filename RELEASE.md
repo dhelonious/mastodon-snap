@@ -1,6 +1,6 @@
-# Unofficial Snap for Mastodon 4.5.0-beta.1
+# Unofficial Snap for Mastodon 4.5.0-beta.2
 
-See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.5.0-beta.1
+See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.5.0-beta.2
 
 > [!WARNING]
 > This is a pre-release that has not been as widely tested as regular releases.
@@ -15,7 +15,6 @@ This release also includes:
 * postgres 18.0
 * ruby 3.4.7
 
-Changelog for 4.5.0-beta.1snap1:
+Changelog for 4.5.0-beta.2snap1:
 
-* Update ruby to 3.4.7
-* Update bundler to 2.7.2
+* Update bird-ui to 2.3.4rc6
