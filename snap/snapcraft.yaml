@@ -9,7 +9,7 @@ description: |
   implements ActivityPub!)
 
 base: core24
-version: 4.5.0-beta.2snap1
+version: 4.5.0-rc.1snap1
 grade: stable
 confinement: strict
 
@@ -456,8 +456,8 @@ parts:
       - nginx-customizations
       - wraplib
     # NOTE: https://nginx.org/en/download.html (mainline version)
-    source: https://nginx.org/download/nginx-1.29.2.tar.gz
-    source-checksum: sha256/5669e3c29d49bf7f6eb577275b86efe4504cf81af885c58a1ed7d2e7b8492437
+    source: https://nginx.org/download/nginx-1.29.3.tar.gz
+    source-checksum: sha256/9befcced12ee09c2f4e1385d7e8e21c91f1a5a63b196f78f897c2d044b8c9312
     plugin: autotools
     build-environment:
       - PATH: $CRAFT_STAGE/nginx/bin:$PATH
@@ -794,8 +794,8 @@ parts:
       - ffmpeg
       - rsync
     # NOTE: https://github.com/mastodon/mastodon/releases/latest
-    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.5.0-beta.2.tar.gz
-    source-checksum: sha256/57ce13672d413dafadfdc0686aa162e2273bd20976564685ae88a5417193be1b
+    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.5.0-rc.1.tar.gz
+    source-checksum: sha256/1ceb553bc8d75fcac16124610574b6535002ae41d7bb387355d9739d502cc594
     plugin: nil
     build-packages:
       - git
