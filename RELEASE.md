@@ -15,7 +15,6 @@ This release also includes:
 * postgres 18.0
 * ruby 3.4.7
 
-Changelog for 4.5.0-beta.2snap1:
+Changelog for 4.5.0-rc.1snap1:
 
-* Update bird-ui to 2.3.5rc6
 * Update nginx to 1.29.3
