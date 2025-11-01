@@ -19,4 +19,4 @@ Changelog for 4.5.0-rc.2snap1:
 
 * Update nginx to 1.29.3
 * Update libvips to 8.17.3
-* Update bird-ui to 2.3.5rc8
+* Update bird-ui to 2.3.4rc8
