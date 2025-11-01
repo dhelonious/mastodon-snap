@@ -1,6 +1,6 @@
-# Unofficial Snap for Mastodon 4.5.0-rc.1
+# Unofficial Snap for Mastodon 4.5.0-rc.2
 
-See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.5.0-rc.1
+See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.5.0-rc.2
 
 > [!WARNING]
 > This is a pre-release that has not been as widely tested as regular releases.
@@ -8,13 +8,15 @@ See the release notes for Mastodon: https://github.com/mastodon/mastodon/release
 This release also includes:
 
 * ffmpeg 8.0
-* libvips 8.17.2
+* libvips 8.17.3
 * nginx 1.29.3
 * node 20.19.5
 * redis 8.2.2
 * postgres 18.0
 * ruby 3.4.7
 
-Changelog for 4.5.0-rc.1snap1:
+Changelog for 4.5.0-rc.2snap1:
 
 * Update nginx to 1.29.3
+* Update libvips to 8.17.3
+* Update bird-ui to 2.3.5rc8

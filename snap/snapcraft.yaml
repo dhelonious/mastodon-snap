@@ -9,7 +9,7 @@ description: |
   implements ActivityPub!)
 
 base: core24
-version: 4.5.0-rc.1snap1
+version: 4.5.0-rc.2snap1
 grade: stable
 confinement: strict
 
@@ -652,8 +652,8 @@ parts:
 
   libvips:
     # NOTE: https://github.com/libvips/libvips/releases/latest
-    source: https://github.com/libvips/libvips/archive/refs/tags/v8.17.2.tar.gz
-    source-checksum: sha256/66e2c8f0a716a08cf99e46a27535ef4938f1cae110dd9207cf8e992616b36ba7
+    source: https://github.com/libvips/libvips/archive/refs/tags/v8.17.3.tar.gz
+    source-checksum: sha256/c1180d13f33742685c513ac42c0556dd1ce9e2b79cdb248a807576e2d8b63b32
     plugin: nil
     build-packages:
       - meson
@@ -794,8 +794,8 @@ parts:
       - ffmpeg
       - rsync
     # NOTE: https://github.com/mastodon/mastodon/releases/latest
-    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.5.0-rc.1.tar.gz
-    source-checksum: sha256/1ceb553bc8d75fcac16124610574b6535002ae41d7bb387355d9739d502cc594
+    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.5.0-rc.2.tar.gz
+    source-checksum: sha256/151e87456d5a59aed74d8e701b52d4a46e9f15daf25f2d690ff486b4dd6e80a7
     plugin: nil
     build-packages:
       - git
@@ -909,7 +909,7 @@ parts:
       - mastodon
     plugin: nil
     build-environment:
-      - BIRD_UI_TAG: 2.3.5rc6 # NOTE: https://github.com/ronilaukkarinen/mastodon-bird-ui/releases/latest
+      - BIRD_UI_TAG: 2.3.5rc8 # NOTE: https://github.com/ronilaukkarinen/mastodon-bird-ui/releases/latest
       - MASTODON_STYLES: $CRAFT_STAGE/mastodon/app/javascript/styles
     override-build: |
       set -eux
