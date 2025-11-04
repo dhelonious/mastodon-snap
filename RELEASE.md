@@ -11,12 +11,10 @@ This release also includes:
 * libvips 8.17.3
 * nginx 1.29.3
 * node 20.19.5
-* redis 8.2.2
+* redis 8.2.3
 * postgres 18.0
 * ruby 3.4.7
 
-Changelog for 4.5.0-rc.2snap1:
+Changelog for 4.5.0-rc.2snap2:
 
-* Update nginx to 1.29.3
-* Update libvips to 8.17.3
-* Update bird-ui to 2.3.4rc8
+* Update redis to 8.2.3
