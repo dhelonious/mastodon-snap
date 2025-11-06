@@ -9,7 +9,7 @@ description: |
   implements ActivityPub!)
 
 base: core24
-version: 4.4.8snap1
+version: 4.5.0snap1
 grade: stable
 confinement: strict
 
@@ -456,8 +456,8 @@ parts:
       - nginx-customizations
       - wraplib
     # NOTE: https://nginx.org/en/download.html (mainline version)
-    source: https://nginx.org/download/nginx-1.29.2.tar.gz
-    source-checksum: sha256/5669e3c29d49bf7f6eb577275b86efe4504cf81af885c58a1ed7d2e7b8492437
+    source: https://nginx.org/download/nginx-1.29.3.tar.gz
+    source-checksum: sha256/9befcced12ee09c2f4e1385d7e8e21c91f1a5a63b196f78f897c2d044b8c9312
     plugin: autotools
     build-environment:
       - PATH: $CRAFT_STAGE/nginx/bin:$PATH
@@ -501,8 +501,8 @@ parts:
     after:
       - redis-customizations
     # NOTE: https://github.com/redis/redis/releases/latest
-    source: https://download.redis.io/releases/redis-8.2.2.tar.gz
-    source-checksum: sha256/4e340e8e822a82114b6fb0f7ca581b749fa876e31e36e9fbcb75416bec9d0608
+    source: https://download.redis.io/releases/redis-8.2.3.tar.gz
+    source-checksum: sha256/d88f2361fdf3a3a8668fe5753e29915566109dca07b4cb036427ea6dc7783671
     plugin: make
     override-build: |
       set -eux
@@ -587,8 +587,8 @@ parts:
       - curl
       - libjemalloc2
     # NOTE: see `.ruby-version`
-    source: https://cache.ruby-lang.org/pub/ruby/3.4/ruby-3.4.4.tar.gz
-    source-checksum: sha256/a0597bfdf312e010efd1effaa8d7f1d7833146fdc17950caa8158ffa3dcbfa85
+    source: https://cache.ruby-lang.org/pub/ruby/3.4/ruby-3.4.7.tar.gz
+    source-checksum: sha256/23815a6d095696f7919090fdc3e2f9459b2c83d57224b2e446ce1f5f7333ef36
     plugin: autotools
     build-packages:
       - clang
@@ -602,7 +602,7 @@ parts:
       - libdb-dev
       - libjemalloc-dev
     build-environment:
-      - RUBY_VERSION: "3.4.4" # NOTE: must be updated with ruby source
+      - RUBY_VERSION: "3.4.7" # NOTE: must be updated with ruby source
       - RUBY_BRANCH: "3.4" # NOTE: must be updated with ruby source
       - DEBIAN_DISABLE_RUBYGEMS_INTEGRATION: "true"
       - CC: clang
@@ -652,8 +652,8 @@ parts:
 
   libvips:
     # NOTE: https://github.com/libvips/libvips/releases/latest
-    source: https://github.com/libvips/libvips/archive/refs/tags/v8.17.2.tar.gz
-    source-checksum: sha256/66e2c8f0a716a08cf99e46a27535ef4938f1cae110dd9207cf8e992616b36ba7
+    source: https://github.com/libvips/libvips/archive/refs/tags/v8.17.3.tar.gz
+    source-checksum: sha256/c1180d13f33742685c513ac42c0556dd1ce9e2b79cdb248a807576e2d8b63b32
     plugin: nil
     build-packages:
       - meson
@@ -794,8 +794,8 @@ parts:
       - ffmpeg
       - rsync
     # NOTE: https://github.com/mastodon/mastodon/releases/latest
-    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.4.8.tar.gz
-    source-checksum: sha256/1ceb553bc8d75fcac16124610574b6535002ae41d7bb387355d9739d502cc594
+    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.5.0.tar.gz
+    source-checksum: sha256/86d3daa5e402d0cbc702cfda4d1c9e5043f8d7df2ade1be11b1e8054c6f36340
     plugin: nil
     build-packages:
       - git
@@ -814,7 +814,7 @@ parts:
     build-environment:
       - YARN_VERSION: "4.10.3" # NOTE: https://github.com/yarnpkg/berry/releases/latest
       - RUBY_BRANCH: "3.4" # NOTE: must be updated with ruby source
-      - BUNDLER_VERSION: "2.6.9" # NOTE: see `Gemfile.lock`
+      - BUNDLER_VERSION: "2.7.2" # NOTE: see `Gemfile.lock`
       - RAILS_ENV: production
       - NODE_ENV: production
       - OTP_SECRET: precompile_placeholder
@@ -915,13 +915,14 @@ parts:
       set -eux
       mkdir -p $MASTODON_STYLES/mastodon-bird-ui
 
-      curl https://raw.githubusercontent.com/ronilaukkarinen/mastodon-bird-ui/$BIRD_UI_TAG/LICENSE -o $MASTODON_STYLES/mastodon-bird-ui/LICENSE
-      curl https://raw.githubusercontent.com/ronilaukkarinen/mastodon-bird-ui/$BIRD_UI_TAG/layout-single-column.css -o $MASTODON_STYLES/mastodon-bird-ui/layout-single-column.scss
+      curl https://raw.githubusercontent.com/ronilaukkarinen/mastodon-bird-ui/refs/tags/$BIRD_UI_TAG/LICENSE -o $MASTODON_STYLES/mastodon-bird-ui/LICENSE
+      curl https://raw.githubusercontent.com/ronilaukkarinen/mastodon-bird-ui/refs/tags/$BIRD_UI_TAG/layout-single-column.css -o $MASTODON_STYLES/mastodon-bird-ui/layout-single-column.scss
       sed -i "s/theme-contrast/theme-mastodon-bird-ui-contrast/g" $MASTODON_STYLES/mastodon-bird-ui/layout-single-column.scss
       sed -i "s/theme-mastodon-light/theme-mastodon-bird-ui-light/g" $MASTODON_STYLES/mastodon-bird-ui/layout-single-column.scss
-      curl https://raw.githubusercontent.com/ronilaukkarinen/mastodon-bird-ui/$BIRD_UI_TAG/layout-multiple-columns.css -o $MASTODON_STYLES/mastodon-bird-ui/layout-multiple-columns.scss
+      curl https://raw.githubusercontent.com/ronilaukkarinen/mastodon-bird-ui/refs/tags/$BIRD_UI_TAG/layout-multiple-columns.css -o $MASTODON_STYLES/mastodon-bird-ui/layout-multiple-columns.scss
       sed -i "s/theme-contrast/theme-mastodon-bird-ui-contrast/g" $MASTODON_STYLES/mastodon-bird-ui/layout-multiple-columns.scss
       sed -i "s/theme-mastodon-light/theme-mastodon-bird-ui-light/g" $MASTODON_STYLES/mastodon-bird-ui/layout-multiple-columns.scss
+
       echo -e "@use 'application';\n@use 'mastodon-bird-ui/layout-single-column.scss';\n@use 'mastodon-bird-ui/layout-multiple-columns.scss';" > $MASTODON_STYLES/mastodon-bird-ui-dark.scss
       echo -e "mastodon-bird-ui-dark: styles/mastodon-bird-ui-dark.scss" >> $CRAFT_STAGE/mastodon/config/themes.yml
       echo -e "@use 'mastodon-light/variables';\n@use 'application';\n@use 'mastodon-light/diff';\n@use 'mastodon-bird-ui/layout-single-column.scss';\n@use 'mastodon-bird-ui/layout-multiple-columns.scss';" > $MASTODON_STYLES/mastodon-bird-ui-light.scss
@@ -943,14 +944,14 @@ parts:
       - mastodon
     plugin: nil
     build-environment:
-      - TANGERINE_UI_TAG: 2.4.4 # NOTE: https://github.com/nileane/TangerineUI-for-Mastodon/releases/latest
+      - TANGERINE_UI_TAG: 2.5 # NOTE: https://github.com/nileane/TangerineUI-for-Mastodon/releases/latest
       - MASTODON_STYLES: $CRAFT_STAGE/mastodon/app/javascript/styles
     override-build: |
       set -eux
       mkdir -p $MASTODON_STYLES/tangerine-ui
 
-      curl https://raw.githubusercontent.com/nileane/TangerineUI-for-Mastodon/v$TANGERINE_UI_TAG/LICENSE -o $MASTODON_STYLES/tangerine-ui/LICENSE
-      curl https://raw.githubusercontent.com/nileane/TangerineUI-for-Mastodon/v$TANGERINE_UI_TAG/mastodon/app/javascript/styles/tangerineui/tangerineui.scss -o $MASTODON_STYLES/tangerine-ui/style.scss
+      curl https://raw.githubusercontent.com/nileane/TangerineUI-for-Mastodon/refs/tags/v$TANGERINE_UI_TAG/LICENSE -o $MASTODON_STYLES/tangerine-ui/LICENSE
+      curl https://raw.githubusercontent.com/nileane/TangerineUI-for-Mastodon/refs/tags/v$TANGERINE_UI_TAG/mastodon/app/javascript/styles/tangerineui/tangerineui.scss -o $MASTODON_STYLES/tangerine-ui/style.scss
       echo -e "@use 'application';\n@use 'tangerine-ui/style.scss';" > $MASTODON_STYLES/tangerine-ui.scss
       echo -e "tangerine-ui: styles/tangerine-ui.scss" >> $CRAFT_STAGE/mastodon/config/themes.yml
       for variant in purple cherry lagoon; do
