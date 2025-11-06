@@ -1,9 +1,6 @@
-# Unofficial Snap for Mastodon 4.5.0-rc.2
+# Unofficial Snap for Mastodon 4.5.0
 
-See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.5.0-rc.2
-
-> [!WARNING]
-> This is a pre-release that has not been as widely tested as regular releases.
+See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.5.0
 
 This release also includes:
 
@@ -11,10 +8,12 @@ This release also includes:
 * libvips 8.17.3
 * nginx 1.29.3
 * node 20.19.5
-* redis 8.2.3
 * postgres 18.0
+* redis 8.2.3
 * ruby 3.4.7
 
-Changelog for 4.5.0-rc.2snap2:
+Changelog for 4.5.0snap1:
 
 * Update redis to 8.2.3
+* Update tangerine-ui to 2.5
+* Downgrade bird-ui to 2.3.3 (stable)
