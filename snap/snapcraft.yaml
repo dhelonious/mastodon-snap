@@ -994,6 +994,11 @@ parts:
       echo -e "tangerine-ui-lime: styles/tangerine-ui-lime.scss" >> $CRAFT_STAGE/mastodon/config/themes.yml
 
       curl https://raw.githubusercontent.com/nileane/TangerineUI-for-Mastodon/refs/tags/v$TANGERINE_UI_TAG/mastodon/config/locales/tangerineui.yml -o $MASTODON_LOCALES/tangerineui.yml
+      sed -i "s/tangerineui: \(.*\)$/tangerine-ui: \1 🍊/" $MASTODON_LOCALES/tangerineui.yml
+      sed -i "s/tangerineui-purple: \(.*\)$/tangerine-ui-purple: \1 🪻/" $MASTODON_LOCALES/tangerineui.yml
+      sed -i "s/tangerineui-cherry: \(.*\)$/tangerine-ui-cherry: \1 🍒/" $MASTODON_LOCALES/tangerineui.yml
+      sed -i "s/tangerineui-lagoon: \(.*\)$/tangerine-ui-lagoon: \1 🐠/" $MASTODON_LOCALES/tangerineui.yml
+      sed -i "s/themes:$/&\n    tangerine-ui-lime: Tangerine UI (Lime) 🍋‍🟩/" $MASTODON_LOCALES/en.yml
 
   mastodon-precompile:
     after:
