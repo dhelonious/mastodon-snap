@@ -12,8 +12,6 @@ This release also includes:
 * redis 8.2.3
 * ruby 3.4.7
 
-Changelog for 4.5.0snap1:
+Changelog for 4.5.0snap2:
 
-* Update redis to 8.2.3
-* Update tangerine-ui to 2.5
-* Downgrade bird-ui to 2.3.3 (stable)
+* Use tangerine-ui's native locale file
