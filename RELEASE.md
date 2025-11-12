@@ -15,3 +15,6 @@ This release also includes:
 Changelog for 4.5.0snap2:
 
 * Use tangerine-ui's native locale file
+* Update tangerine-ui to 2.5.1
+* Update bird-ui to 3.0.0
+* Update yarn to 4.11.0
