@@ -9,7 +9,7 @@ description: |
   implements ActivityPub!)
 
 base: core24
-version: 4.5.0snap2
+version: 4.5.1snap1
 grade: stable
 confinement: strict
 
@@ -408,8 +408,8 @@ parts:
       - setpriv
       - envsubst
     # NOTE: https://www.postgresql.org/ftp/latest
-    source: https://ftp.postgresql.org/pub/source/v18.0/postgresql-18.0.tar.gz
-    source-checksum: sha256/30e97fc1f1594a7226580ea51080d3d883f4a0fb6ff716dbf7ad09e9f7e93ab2
+    source: https://ftp.postgresql.org/pub/source/v18.1/postgresql-18.1.tar.gz
+    source-checksum: sha256/b0f18c2d6973d2aa023cfc77feda787d7bbe9c31a3977d0f04ac29885fb98ec4
     plugin: autotools
     build-packages:
       - clang
@@ -794,8 +794,8 @@ parts:
       - ffmpeg
       - rsync
     # NOTE: https://github.com/mastodon/mastodon/releases/latest
-    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.5.0.tar.gz
-    source-checksum: sha256/86d3daa5e402d0cbc702cfda4d1c9e5043f8d7df2ade1be11b1e8054c6f36340
+    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.5.1.tar.gz
+    source-checksum: sha256/1b63614ef4c7780495e68fec448292ad6e5127c0b8b9852fe327e8979132d7cb
     plugin: nil
     build-packages:
       - git
@@ -945,7 +945,7 @@ parts:
       - mastodon
     plugin: nil
     build-environment:
-      - TANGERINE_UI_TAG: 2.5.1 # NOTE: https://github.com/nileane/TangerineUI-for-Mastodon/releases/latest
+      - TANGERINE_UI_TAG: 2.5.2 # NOTE: https://github.com/nileane/TangerineUI-for-Mastodon/releases/latest
       - MASTODON_STYLES: $CRAFT_STAGE/mastodon/app/javascript/styles
       - MASTODON_LOCALES: $CRAFT_STAGE/mastodon/config/locales
     override-build: |
