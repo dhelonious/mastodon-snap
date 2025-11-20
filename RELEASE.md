@@ -9,13 +9,9 @@ This release also includes:
 * nginx 1.29.3
 * node 20.19.5
 * postgres 18.1
-* redis 8.2.3
+* redis 8.4.0
 * ruby 3.4.7
 
-Changelog for 4.5.1snap1:
+Changelog for 4.5.1snap2:
 
-* Update postgres to 18.1
-* Update yarn to 4.11.0
-* Update bird-ui to 3.0.0
-* Update tangerine-ui to 2.5.2
-* Use tangerine-ui's native locale file
+* Update redis to 8.4.0
