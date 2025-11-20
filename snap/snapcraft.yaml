@@ -9,7 +9,7 @@ description: |
   implements ActivityPub!)
 
 base: core24
-version: 4.5.1snap2
+version: 4.5.2snap1
 grade: stable
 confinement: strict
 
@@ -713,8 +713,8 @@ parts:
       - -libvips/lib/pkgconfig
 
   ffmpeg:
-    source: https://ffmpeg.org/releases/ffmpeg-8.0.tar.bz2 # NOTE: https://ffmpeg.org/releases
-    source-checksum: sha256/3e74acc48ddb9f5f70b6747d3f439d51e7cc5497f097d58e5975c84488f4d186
+    source: https://ffmpeg.org/releases/ffmpeg-8.0.1.tar.bz2 # NOTE: https://ffmpeg.org/releases
+    source-checksum: sha256/65ff433fab5727fb2dc41f1d508dc60e6192fea44cab2e0301194feee4bcf1d7
     plugin: autotools
     build-packages:
       - clang
@@ -794,8 +794,8 @@ parts:
       - ffmpeg
       - rsync
     # NOTE: https://github.com/mastodon/mastodon/releases/latest
-    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.5.1.tar.gz
-    source-checksum: sha256/1b63614ef4c7780495e68fec448292ad6e5127c0b8b9852fe327e8979132d7cb
+    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.5.2.tar.gz
+    source-checksum: sha256/5fc1f2409f59ac4fdd07addb01ed1ab0dba57251cd1f44a39c3e4a57037795d7
     plugin: nil
     build-packages:
       - git
