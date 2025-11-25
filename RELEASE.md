@@ -12,7 +12,6 @@ This release also includes:
 * redis 8.4.0
 * ruby 3.4.7
 
-Changelog for 4.5.2snap1:
+Changelog for 4.5.2snap2:
 
-* Update redis to 8.4.0
-* Update ffmpeg to 8.0.1
+* Update yarn to 4.12.0
