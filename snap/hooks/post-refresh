@@ -33,6 +33,10 @@ echo Set permissions on postgres files and dirs
 fix_daemon_user "$PG_HOME"
 fix_daemon_user "$PG_SOCK_DIR"
 fix_daemon_user "$PG_LOG_FILE"
+# TODO: Remove if no longer required
+# if [ -d "$PG_DATA" ]; then
+#     run_as_daemon_user chmod 700 "$PG_DATA" -R
+# fi
 
 echo Update postgres config
 copy_config_as_daemon_user postgres postgresql.conf
