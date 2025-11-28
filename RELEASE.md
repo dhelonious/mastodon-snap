@@ -16,3 +16,4 @@ Changelog for 4.5.2snap2:
 
 * Update node to 20.19.6
 * Update yarn to 4.12.0
+* Remove post-refresh tasks that were required for upgrades to version 4.3+

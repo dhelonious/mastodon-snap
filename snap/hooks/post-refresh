@@ -88,14 +88,6 @@ if [ "$SNAP_VERSION" != "$PREVIOUS_SNAP_VERSION" ]; then
     copy_mastodon_server_config
     update_mastodon_files
 
-    # TODO: remove later, required for upgrade to Mastodon 4.3+
-    if [ -z "$ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY" ] || [ "$ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY" == "precompile_placeholder" ] || \
-        [ -z "$ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY" ] || [ "$ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY" == "precompile_placeholder" ] || \
-        [ -z "$ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT" ] || [ "$ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT" == "precompile_placeholder" ]
-    then
-        generate_mastodon_db_encryption_secrets
-    fi
-
     if mastodon_config_exists; then
         echo Update mastodon config
         upgrade_mastodon_config
