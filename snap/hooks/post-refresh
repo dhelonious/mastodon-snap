@@ -11,11 +11,9 @@ set_default_settings
 
 export PREVIOUS_SNAP_VERSION="$(get_snap_version_file)"
 
-# NOTE: This is a fix for older versions and may be removed in the future
 echo Set permissions on log dir
 fix_daemon_user "$LOG_DIR"
 
-# NOTE: This is a fix for older versions and may be removed in the future
 echo Set permissions on secret dir
 if [ -d "$SECRET_DIR" ]; then
     chmod -f 750 "$SECRET_DIR" || true
@@ -31,14 +29,10 @@ snapctl unset update.backups
 
 . "$SNAP/postgres.env"
 
-# NOTE: This is a fix for older versions and may be removed in the future
 echo Set permissions on postgres files and dirs
 fix_daemon_user "$PG_HOME"
 fix_daemon_user "$PG_SOCK_DIR"
 fix_daemon_user "$PG_LOG_FILE"
-if [ -d "$PG_DATA" ]; then
-    run_as_daemon_user chmod 700 "$PG_DATA" -R
-fi
 
 echo Update postgres config
 copy_config_as_daemon_user postgres postgresql.conf
@@ -48,7 +42,6 @@ enable_postgres_config
 
 . "$SNAP/redis.env"
 
-# NOTE: This is a fix for older versions and may be removed in the future
 echo Set permissions on redis files and dirs
 fix_daemon_user "$REDIS_HOME"
 fix_daemon_user "$SOCK_DIR/redis.sock"
@@ -61,15 +54,11 @@ copy_config_as_daemon_user redis redis.conf
 
 . "$SNAP/mastodon.env"
 
-# NOTE: This is a fix for older versions and may be removed in the future
 echo Set permissions on mastodon files and dirs
 fix_daemon_user "$MASTODON_HOME"
 fix_daemon_user "$LOG_DIR/backend.log"
 fix_daemon_user "$LOG_DIR/streaming.log"
 fix_daemon_user "$LOG_DIR/sidekiq.log"
-if mastodon_config_exists; then
-    chmod 664 "$SNAP_COMMON/mastodon.conf"
-fi
 if [ "$(get_owner $MEDIA_DIR)" != "$DAEMON_USER" ]; then
     fix_daemon_user_media_dir
 fi
@@ -98,7 +87,6 @@ fi
 
 . "$SNAP/nginx.env"
 
-# NOTE: This is a fix for older versions and may be removed in the future
 echo Set permissions on nginx files and dirs
 fix_daemon_user "$NGINX_HOME"
 fix_daemon_user "$SNAP_COMMON/.well-known"
@@ -116,7 +104,6 @@ copy_nginx_configs
 
 # Acme
 
-# NOTE: This is a fix for older versions and may be removed in the future
 echo Set permissions on acme dir
 fix_daemon_user "$ACME_HOME"
 
