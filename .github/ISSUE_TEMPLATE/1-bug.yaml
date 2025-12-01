@@ -24,7 +24,7 @@ body:
 - type: dropdown
   attributes:
     label: Architecture
-    description: What architecture are you running?
+    description: Which architecture are you running?
     options:
       - amd64
     default: 0
@@ -33,6 +33,6 @@ body:
 - type: input
   attributes:
     label: OS
-    description: What OS and version are you running?
+    description: Which OS and version are you running?
   validations:
     required: true
