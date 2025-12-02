@@ -522,8 +522,8 @@ parts:
       - acme-customizations
       - curl
     # NOTE: https://github.com/acmesh-official/acme.sh/releases/latest
-    source: https://github.com/acmesh-official/acme.sh/archive/refs/tags/3.1.1.tar.gz
-    source-checksum: sha256/c5d623ac0af400e83cd676aefaf045228f60e9fc597fea5db4c3a5bd7f6bfcf4
+    source: https://github.com/acmesh-official/acme.sh/archive/refs/tags/3.1.2.tar.gz
+    source-checksum: sha256/a51511ad0e2912be45125cf189401e4ae776ca1a29d5768f020a1e35a9560186
     plugin: dump
     organize:
       "*": acme/
