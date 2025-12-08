@@ -1,6 +1,6 @@
-# Unofficial Snap for Mastodon 4.5.2
+# Unofficial Snap for Mastodon 4.5.3
 
-See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.5.2
+See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.5.3
 
 This release also includes:
 
@@ -12,7 +12,7 @@ This release also includes:
 * redis 8.4.0
 * ruby 3.4.7
 
-Changelog for 4.5.2snap2:
+Changelog for 4.5.3snap1:
 
 * Update node to 20.19.6
 * Update acme.sh to 3.1.2

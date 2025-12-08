@@ -9,7 +9,7 @@ description: |
   implements ActivityPub!)
 
 base: core24
-version: 4.5.2snap2
+version: 4.5.3snap1
 grade: stable
 confinement: strict
 
@@ -794,8 +794,8 @@ parts:
       - ffmpeg
       - rsync
     # NOTE: https://github.com/mastodon/mastodon/releases/latest
-    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.5.2.tar.gz
-    source-checksum: sha256/5fc1f2409f59ac4fdd07addb01ed1ab0dba57251cd1f44a39c3e4a57037795d7
+    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.5.3.tar.gz
+    source-checksum: sha256/3b13b32e6ea85cfe3be6deb0feafa736d9cd1a2ecaffc5f79130a1e45436d992
     plugin: nil
     build-packages:
       - git
