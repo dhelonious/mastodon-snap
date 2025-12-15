@@ -15,3 +15,7 @@ This release also includes:
 Changelog for 4.5.3snap2:
 
 * Update nginx to 1.29.4
+* Add the `mastodon-server.generate-wrapstodon` command to create a year-in-review report (see [docs/features.md](docs/features.md)).
+
+> [!NOTE]
+> Mastodon 4.6 will introduce an automatically generated Wrapstodon feature. However, to enable users of this snap to do so in 2025, the old, lightweight Wrapstodon implementation will be supported in version 4.5.

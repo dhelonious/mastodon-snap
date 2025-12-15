@@ -224,6 +224,12 @@ apps:
       - network
       - network-bind
 
+  generate-wrapstodon:
+    command: bin/generate-wrapstodon
+    plugs:
+      - network
+      - network-bind
+
   db-migrate:
     command: bin/db-migrate
     plugs:
