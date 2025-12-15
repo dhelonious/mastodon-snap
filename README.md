@@ -15,8 +15,8 @@ Unofficial Snap for Mastodon (decentralized social media server) 🦣📦
   - [Backups](#backups)
   - [Themes](#themes)
 - [Configuration](#️-configuration)
-- [Maintenance](#-maintenance)
 - [Features](#-features)
+- [Maintenance](#-maintenance)
 - [Troubleshooting](#-troubleshooting)
 - [Resources](#-resources)
 
@@ -155,6 +155,11 @@ The command
 replaces the `sudo -u mastodon RAILS_ENV=production bin/tootctl` command often found in guides and documentations.
 
 See the [configuration docs](docs/configuration.md) for a complete overview of the configuration variables and other commands.
+
+
+# 🧩 Features
+
+The [feature list](docs/features.md) provides an overview of some additional features that may enhance your user experience.
 
 
 # 🚧 Maintenance
