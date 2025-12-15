@@ -16,6 +16,7 @@ Unofficial Snap for Mastodon (decentralized social media server) 🦣📦
   - [Themes](#themes)
 - [Configuration](#️-configuration)
 - [Maintenance](#-maintenance)
+- [Features](#-features)
 - [Troubleshooting](#-troubleshooting)
 - [Resources](#-resources)
 
