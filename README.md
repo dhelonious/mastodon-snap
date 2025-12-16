@@ -44,6 +44,9 @@ If you're not running Ubuntu, start by [installing the Snap daemon](https://snap
 
 🥳 Congratulations! You now have your very own Mastodon instance! 🎉
 
+> [!TIP]
+> If you're looking for accounts to follow, check out the [Mastodon Starter Packs Directory](https://fedidevs.com/starter-packs/).
+
 > [!IMPORTANT]
 > An administrator account with a randomly generated password is created during setup. Some usernames such as `admin` and `administrator` are reserved by Mastodon. See the [FAQs](docs/faq.md) for a full list.
 
@@ -182,3 +185,4 @@ If you encounter a problem, check if it has already been solved in the [troubles
 - [FediBuzz Relay](https://relay.fedi.buzz/) can be used to follow hashtags on other instances.
 - [Mastodon Starter Pack Directory](https://fedidevs.com/starter-packs/) provides community starter packs for Mastodon and the Fediverse.
 - [delightful activitypub development](https://delightful.coding.social/delightful_activitypub_development/) is a curated list of software for the Fediverse.
+- [Mastodon - Simplified Federation!](https://addons.mozilla.org/en-US/firefox/addon/mastodon-simplified-federation/) is a Firefox add-on that simplifies the process of following or interacting with users on other Mastodon instances.
