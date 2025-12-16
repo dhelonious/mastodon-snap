@@ -116,7 +116,7 @@ An initial setup command is required to initialize the database and configuratio
 > Be patient if you have changed the `status.length` as it takes some time to recompile the assets, especially if there is a small amount of RAM available. Ideally these values should be changed before setup. Otherwise you may want to [increase swap space](https://www.baeldung.com/linux/increase-swap-space).
 
 > [!TIP]
-> If you're restoring your instance from a backup, use the `mastodon-server.restore` command directly. See the [backups guide](docs/backups.md)) for more information.
+> If you're restoring your instance from a backup, use the `mastodon-server.restore` command directly. See the [backups guide](docs/backups.md) for more information.
 
 ## Certificates
 
