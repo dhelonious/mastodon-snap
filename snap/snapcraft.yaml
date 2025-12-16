@@ -909,6 +909,17 @@ parts:
     organize:
       config/*: config/mastodon/
 
+  mastodon-fediday:
+    after:
+      - mastodon
+    plugin: nil
+    build-environment:
+      - MASTODON_APP: $CRAFT_STAGE/mastodon/app
+    override-build: |
+      set -eux
+      cp $CRAFT_STAGE/features/fediday.ts $MASTODON_APP/javascript/entrypoints/
+      echo "= vite_typescript_tag 'fediday', defer: true" >> $MASTODON_APP/views/layouts/application.html.haml
+
   bird-ui:
     after:
       - curl
