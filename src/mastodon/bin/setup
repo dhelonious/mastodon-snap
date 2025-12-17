@@ -104,7 +104,7 @@ if [ "$GET_CERTIFICATE" == true ]; then
     if ! [ -z "$SERVER" ]; then
         SERVER_FLAG="-s $SERVER"
     fi
-    $SNAP/bin/get-certificate -d $DOMAIN -m $EMAIL $SERVER_FLAG
+    $SNAP/bin/get-certificate -d $DOMAIN -m $EMAIL $SERVER_FLAG || true
 fi
 
 echo Creating admin account...
