@@ -31,3 +31,17 @@ Mastodon reserves some usernames for internal use. Currently these are:
 * webmaster
 
 Simply choose a different name to complete the setup process.
+
+
+## A user has forgotten their password. What should I do?
+
+There are two ways to reset the password:
+
+1. The user can click the "Forgot your password?" button and wait for the confirmation email. This method only works if SMTP is configured properly.
+
+2. Use the following command to reset the user's password:
+
+    mastodon-server.tootctl accounts modify <username> --reset-password
+
+> [!TIP]
+> This also works for the admin account.
