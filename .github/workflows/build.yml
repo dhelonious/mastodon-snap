@@ -5,6 +5,7 @@ on:
     branches:
     - development
     - development_beta
+    - 'feature-**'
     paths:
     - 'snap/**'
     - 'src/**'
