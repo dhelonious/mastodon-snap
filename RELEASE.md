@@ -15,3 +15,4 @@ This release also includes:
 Changelog for 4.5.3snap3:
 
 * Update libvips to 8.18.0
+* Add improved Fediday feature (see [docs/features.md](docs/features.md))
