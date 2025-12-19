@@ -2,3 +2,4 @@
 *.sublime-*
 /prime/
 /build.log
+__pycache__

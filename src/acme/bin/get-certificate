@@ -5,9 +5,53 @@
 
 check_root
 check_service nginx
-check_domain
-check_email
 
+print_usage() {
+    echo "Usage: $SNAP_NAME.get-certificate [-d DOMAIN] [-m EMAIL] [-s SERVER]"
+}
+
+while getopts "d:m:s:h" OPTION; do
+    case "$OPTION" in
+    d)
+        if is_domain "$OPTARG"; then
+            snapctl set domain="$OPTARG"
+            export DOMAIN="$OPTARG"
+        else
+            echo_error "Invalid domain '$OPTARG'"
+            exit 1
+        fi
+        ;;
+    m)
+        if is_email "$OPTARG"; then
+            snapctl set email="$OPTARG"
+            export EMAIL="$OPTARG"
+        else
+            echo_error "Invalid email '$OPTARG'"
+            exit 1
+        fi
+        ;;
+    s)
+        if is_acme_server "$OPTARG"; then
+            snapctl set acme.server="$OPTARG"
+            export ACME_SERVER="$OPTARG"
+        else
+            echo_error "Invalid ACME server '$OPTARG'"
+            exit 1
+        fi
+        ;;
+    h)
+        print_usage
+        exit 0
+        ;;
+    esac
+done
+shift "$(($OPTIND -1))"
+
+get_domain
+get_email
+get_acme_server
+
+acme.sh.wrapper --register-account --accountemail "$EMAIL"
 acme.sh.wrapper --issue -d "$DOMAIN" --accountemail "$EMAIL"
 
 snapctl restart "$SNAP_NAME.nginx"

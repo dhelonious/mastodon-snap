@@ -45,12 +45,22 @@ runs:
     run: |
       echo "Set environment variables" | yellow
       echo "DOMAIN=local.host" >> $GITHUB_OUTPUT
+      echo "USERNAME=test_admin" >> $GITHUB_OUTPUT
+      echo "EMAIL=admin@local.host" >> $GITHUB_OUTPUT
       echo "HTTP_PORT=81" >> $GITHUB_OUTPUT
       echo "HTTPS_PORT=444" >> $GITHUB_OUTPUT
       echo "COMPOSE_FORM_FILE=/var/snap/mastodon-server/current/mastodon/app/javascript/mastodon/features/compose/components/compose_form.jsx" >> $GITHUB_OUTPUT
       echo "STATUS_LENGTH_VALIDATOR_FILE=/var/snap/mastodon-server/current/mastodon/app/validators/status_length_validator.rb" >> $GITHUB_OUTPUT
-      echo "LIMIT=600" >> $GITHUB_OUTPUT
-      echo "COUNTER=400" >> $GITHUB_OUTPUT
+      echo "STATUS_LENGTH=500" >> $GITHUB_OUTPUT
+  - name: setup host
+    shell: bash
+    run: |
+      echo "Setup host system" | yellow
+      sudo sh -c "echo '127.0.0.1 ${{ steps.env.outputs.DOMAIN }}' >> /etc/hosts"
+
+  ##############################################################################
+  # Install or refresh over previous version
+
   - name: install and setup previous snap
     if: ${{ inputs.upgrade == 'true' }}
     shell: bash
@@ -58,8 +68,10 @@ runs:
       echo "Install previous snap" | yellow
       sudo snap install mastodon-server
       sleep 10
-      sudo snap set mastodon-server domain="${{ steps.env.outputs.domain }}"
-      sudo mastodon-server.setup
+      sudo snap set mastodon-server domain="${{ steps.env.outputs.DOMAIN }}"
+      sudo snap set mastodon-server email="${{ steps.env.outputs.EMAIL }}"
+      sudo snap set mastodon-server log.debug=true
+      sudo mastodon-server.setup -u ${{ steps.env.outputs.USERNAME }} -c no
       sleep 10
   - name: install snap
     shell: bash
@@ -73,13 +85,27 @@ runs:
         exit 1
       fi
       sleep 10
+  - name: print snap install tasks
+    if: ${{ env.ACTIONS_RUNNER_DEBUG == 'true' }}
+    shell: bash
+    run: |
+      echo "Print snap install tasks" | yellow
+      snap debug timings --last=install
+  - name: print snap refresh tasks
+    if: ${{ env.ACTIONS_RUNNER_DEBUG == 'true' }}
+    shell: bash
+    run: |
+      echo "Print snap refresh tasks" | yellow
+      snap debug timings --last=refresh
   - name: test setup
     if: ${{ inputs.upgrade == 'false' }}
     shell: bash
     run: |
       echo "Test setup" | yellow
-      sudo snap set mastodon-server domain="${{ steps.env.outputs.domain }}"
-      if sudo mastodon-server.setup; then
+      sudo snap set mastodon-server domain="${{ steps.env.outputs.DOMAIN }}"
+      sudo snap set mastodon-server email="${{ steps.env.outputs.EMAIL }}"
+      sudo snap set mastodon-server log.debug=true
+      if sudo mastodon-server.setup -u ${{ steps.env.outputs.USERNAME }} -c no; then
         echo "Mastodon setup completed successfully" | green
       else
         echo "Mastodon setup failed" | red
@@ -88,6 +114,17 @@ runs:
         exit 1
       fi
       sleep 30
+  - name: print snap settings
+    shell: bash
+    run: |
+      echo "Print snap settings" | yellow
+      if SETTINGS=$(sudo snap get mastodon-server -d); then
+        echo "$SETTINGS" | green
+      else
+        echo "Snap settings could not be retrieved" | red
+        echo "$SETTINGS" | red
+        exit 1
+      fi
   - name: check services
     shell: bash
     run: |
@@ -120,7 +157,7 @@ runs:
     shell: bash
     run: |
       echo "Check reachability" | yellow
-      HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" --resolve ${{ steps.env.outputs.domain }}:80:127.0.0.1 http://${{ steps.env.outputs.domain }}:80)
+      HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" --resolve ${{ steps.env.outputs.DOMAIN }}:80:127.0.0.1 http://${{ steps.env.outputs.DOMAIN }}:80)
       if [ "$HTTP_STATUS" -eq 200 ]; then
         echo "Check passed" | green
       else
@@ -133,10 +170,10 @@ runs:
     shell: bash
     run: |
       echo "Generate SSL certificate" | yellow
-      CERT_DIR="/var/snap/mastodon-server/common/certs/${{ steps.env.outputs.domain }}_ecc"
+      CERT_DIR="/var/snap/mastodon-server/common/certs/${{ steps.env.outputs.DOMAIN }}_ecc"
       sudo mkdir -p "$CERT_DIR"
       echo "Create self signed certificate"
-      sudo openssl req -x509 -newkey rsa:2048 -sha256 -keyout "$CERT_DIR/${{ steps.env.outputs.domain }}.key" -days 1 -nodes -out "$CERT_DIR/fullchain.cer" -subj "/CN=${{ steps.env.outputs.domain }}"
+      sudo openssl req -x509 -newkey rsa:2048 -sha256 -keyout "$CERT_DIR/${{ steps.env.outputs.DOMAIN }}.key" -days 1 -nodes -out "$CERT_DIR/fullchain.cer" -subj "/CN=${{ steps.env.outputs.DOMAIN }}"
       echo "Restart mastodon-server.nginx"
       sudo snap restart mastodon-server.nginx
       sleep 10
@@ -160,7 +197,7 @@ runs:
     shell: bash
     run: |
       echo "Check HTTP port" | yellow
-      HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" --resolve "${{ steps.env.outputs.domain }}:${{ steps.env.outputs.HTTP_PORT }}:127.0.0.1" "http://${{ steps.env.outputs.domain }}:${{ steps.env.outputs.HTTP_PORT }}")
+      HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" --resolve "${{ steps.env.outputs.DOMAIN }}:${{ steps.env.outputs.HTTP_PORT }}:127.0.0.1" "http://${{ steps.env.outputs.DOMAIN }}:${{ steps.env.outputs.HTTP_PORT }}")
       if [ "$HTTP_STATUS" -eq 301 ]; then
         echo "Check passed" | green
       else
@@ -173,7 +210,7 @@ runs:
     shell: bash
     run: |
       echo "Check HTTPS port" | yellow
-      HTTPS_STATUS=$(curl -s -o /dev/null -w "%{http_code}" --resolve "${{ steps.env.outputs.domain }}:${{ steps.env.outputs.HTTPS_PORT }}:127.0.0.1" "https://${{ steps.env.outputs.domain }}:${{ steps.env.outputs.HTTPS_PORT }}" --insecure)
+      HTTPS_STATUS=$(curl -s -o /dev/null -w "%{http_code}" --resolve "${{ steps.env.outputs.DOMAIN }}:${{ steps.env.outputs.HTTPS_PORT }}:127.0.0.1" "https://${{ steps.env.outputs.DOMAIN }}:${{ steps.env.outputs.HTTPS_PORT }}" --insecure)
       if [ "$HTTPS_STATUS" -eq 200 ]; then
         echo "Check passed" | green
       else
@@ -228,7 +265,7 @@ runs:
     shell: bash
     run: |
       echo "Trigger recompile" | yellow
-      if sudo snap set mastodon-server status.char-limit=${{ steps.env.outputs.LIMIT }} status.char-counter=${{ steps.env.outputs.COUNTER }}; then
+      if sudo snap set mastodon-server status.length=${{ steps.env.outputs.STATUS_LENGTH }}; then
         echo "Test passed" | green
       else
         echo "Test failed" | red
@@ -240,35 +277,35 @@ runs:
     run: |
       echo "Check 'MAX_CHARS' in ${{ steps.env.outputs.STATUS_LENGTH_VALIDATOR_FILE }}" | yellow
       MAX_CHARS=$(sudo sed -rn "s/^.*MAX_CHARS = ([0-9]+).*$/\1/p" "${{ steps.env.outputs.STATUS_LENGTH_VALIDATOR_FILE }}")
-      if [ "$MAX_CHARS" -eq "${{ steps.env.outputs.LIMIT }}" ]; then
+      if [ "$MAX_CHARS" -eq "${{ steps.env.outputs.STATUS_LENGTH }}" ]; then
         echo "Check passed" | green
       else
         echo "Check failed" | red
-        echo "MAX_CHARS=$MAX_CHARS" | yellow
+        echo "MAX_CHARS = $MAX_CHARS" | yellow
         exit 1
       fi
-  - name: check length fulltext
+  - name: check fulltext length
     shell: bash
     run: |
       echo "Check 'length(fulltext)' in ${{ steps.env.outputs.COMPOSE_FORM_FILE }}" | yellow
-      LENGTH_FULLTEXT=$(sudo sed -rn "s/^.*length\(fulltext\) > ([0-9]+).*$/\1/p" "${{ steps.env.outputs.COMPOSE_FORM_FILE }}")
-      if [ "$LENGTH_FULLTEXT" -eq "${{ steps.env.outputs.LIMIT }}" ]; then
+      FULLTEXT_LENGTH=$(sudo sed -rn "s/^.*length\(fulltext\) > ([0-9]+).*$/\1/p" "${{ steps.env.outputs.COMPOSE_FORM_FILE }}")
+      if [ "$FULLTEXT_LENGTH" -eq "${{ steps.env.outputs.STATUS_LENGTH }}" ]; then
         echo "Check passed" | green
       else
         echo "Check failed" | red
-        echo "LENGTH_FULLTEXT=$LENGTH_FULLTEXT" | yellow
+        echo "length(fulltext) > $FULLTEXT_LENGTH" | yellow
         exit 1
       fi
-  - name: check character counter max
+  - name: check character counter
     shell: bash
     run: |
       echo "Check 'CharacterCounter max' in ${{ steps.env.outputs.COMPOSE_FORM_FILE }}" | yellow
-      CHARACTER_COUNTER_MAX=$(sudo sed -rn "s/^.*CharacterCounter max=\{([0-9]+)\}.*$/\1/p" "${{ steps.env.outputs.COMPOSE_FORM_FILE }}")
-      if [ "$CHARACTER_COUNTER_MAX" -eq "${{ steps.env.outputs.COUNTER }}" ]; then
+      MAX_CHARACTER_COUNTER=$(sudo sed -rn "s/^.*CharacterCounter max=\{([0-9]+)\}.*$/\1/p" "${{ steps.env.outputs.COMPOSE_FORM_FILE }}")
+      if [ "$MAX_CHARACTER_COUNTER" -eq "${{ steps.env.outputs.STATUS_LENGTH }}" ]; then
         echo "Check passed" | green
       else
         echo "Check failed" | red
-        echo "CHARACTER_COUNTER_MAX=$CHARACTER_COUNTER_MAX" | yellow
+        echo "CharacterCounter max={$MAX_CHARACTER_COUNTER}" | yellow
         exit 1
       fi
   - name: test rails console
@@ -284,6 +321,17 @@ runs:
           exit 1
         fi
       fi
+  - name: test wrapstodon feature
+    shell: bash
+    run: |
+      echo "Test wrapstodon feature" | yellow
+      if WRAPSTODON_OUTPUT="$(sudo mastodon-server.generate-wrapstodon)"; then
+        echo "Test passed" | green
+      else
+        echo "Test failed" | red
+        echo "$WRAPSTODON_OUTPUT" | yellow
+        exit 1
+      fi
   - name: test postgres dump
     shell: bash
     run: |
@@ -296,6 +344,21 @@ runs:
         sudo head ~/dump.sql 2>/dev/null | yellow
         exit 1
       fi
+  - name: test announce command
+    shell: bash
+    run: |
+      echo "Test announce command" | yellow
+      if ANNOUNCE_OUTPUT=$(sudo mastodon-server.announce "Test announcement"); then
+        echo "Test passed" | green
+      else
+        echo "Test failed" | red
+        echo "$ANNOUNCE_OUTPUT" | yellow
+        exit 1
+      fi
+
+  ##############################################################################
+  # Refresh same version
+
   - name: refresh snap
     if: ${{ inputs.upgrade == 'false' }}
     shell: bash
@@ -308,6 +371,24 @@ runs:
         echo "$REFRESH_OUTPUT" | yellow
         exit 1
       fi
+  - name: print snap install tasks
+    if: ${{ env.ACTIONS_RUNNER_DEBUG == 'true' }}
+    shell: bash
+    run: |
+      echo "Print snap install tasks" | yellow
+      snap debug timings --last=install
+  - name: print snap refresh tasks
+    if: ${{ env.ACTIONS_RUNNER_DEBUG == 'true' }}
+    shell: bash
+    run: |
+      echo "Print snap refresh tasks" | yellow
+      snap debug timings --last=refresh
+  - name: print service statuses
+    if: ${{ failure() }}
+    shell: bash
+    run: |
+      echo "Print service statuses" | yellow
+      snap services mastodon-server
   - name: check logs for warnings
     if: ${{ success() || failure() }}
     shell: bash
@@ -324,13 +405,12 @@ runs:
     shell: bash
     run: |
       echo "Check logs for errors" | yellow
-      LOG_ERRORS=$(sudo grep -iE "error|failure|failed" /var/snap/mastodon-server/current/logs/*.log || true)
+      LOG_ERRORS=$(sudo grep -iE "error|fail" /var/snap/mastodon-server/current/logs/*.log ~/snap/snap/mastodon-server/common/debug/logs/*.log || true)
+      LOG_ERRORS=$(echo "$LOG_ERRORS" | grep -v "SMTP-AUTH requested but missing user name" || true)
       if [ -z "$LOG_ERRORS" ]; then
         echo "No errors" | green
       else
         echo "$LOG_ERRORS" | red
-        # TODO: Include after 4.3 is the latest/stable channel
-        # exit 1
       fi
   - name: show postgres log
     if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
@@ -388,19 +468,41 @@ runs:
 
   ##############################################################################
   # Debugging
+
+  - name: show install hook log
+    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
+    shell: bash
+    run: |
+      echo "::group::install hook log:"
+      sudo cat "/root/snap/mastodon-server/common/debug/logs/install.log" | yellow
+      echo "::endgroup::"
+  - name: show configure hook log
+    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
+    shell: bash
+    run: |
+      echo "::group::configure hook log:"
+      sudo cat "/root/snap/mastodon-server/common/debug/logs/configure.log" | yellow
+      echo "::endgroup::"
+  - name: show pre-refresh hook log
+    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
+    shell: bash
+    run: |
+      echo "::group::pre-refresh hook log:"
+      sudo cat "/root/.snap/mastodon-server/common/debug/logs/pre-refresh.log" | yellow
+      echo "::endgroup::"
+  - name: show post-refresh hook log
+    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
+    shell: bash
+    run: |
+      echo "::group::post-refresh hook log:"
+      sudo cat "/root/snap/mastodon-server/common/debug/logs/post-refresh.log" | yellow
+      echo "::endgroup::"
   - name: show postgres journalctl
     if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
     shell: bash
     run: |
       echo "::group::journalctl postgres:"
       sudo journalctl -xu snap.mastodon-server.postgres.service --all
-      echo "::endgroup::"
-  - name: show postgres-upgrade journalctl
-    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
-    shell: bash
-    run: |
-      echo "::group::journalctl postgres-upgrade:"
-      sudo journalctl -xu snap.mastodon-server.postgres-upgrade.service --all
       echo "::endgroup::"
   - name: show nginx journalctl
     if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
@@ -436,6 +538,13 @@ runs:
     run: |
       echo "::group::journalctl sidekiq:"
       sudo journalctl -xu snap.mastodon-server.sidekiq.service --all
+      echo "::endgroup::"
+  - name: show postgres-upgrade journalctl
+    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
+    shell: bash
+    run: |
+      echo "::group::journalctl postgres-upgrade:"
+      sudo journalctl -xu snap.mastodon-server.postgres-upgrade.service --all
       echo "::endgroup::"
   - name: show migrations journalctl
     if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}

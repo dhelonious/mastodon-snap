@@ -1,0 +1,20 @@
+#!/bin/bash -e
+
+. "$SNAP/postgres.env"
+
+cd /tmp
+
+if ! PG_UPGRADE_OUTPUT=$(exec pg_upgrade \
+    -D "$PG_DATA" \
+    -B "$SNAP/postgres/bin" \
+    -s "$PG_SOCK_DIR" \
+    -U postgres \
+    -P "$PG_PORT" \
+    -p "$(($PG_PORT+1))" \
+    "$@" 2>&1)
+then
+    echo_error "$PG_UPGRADE_OUTPUT" | sed -n '/pg_ctl/ s/.*-l "\([^"]*\)".*/\1/p'
+    PG_UPGRADE_LOG=$(echo $PG_UPGRADE_OUTPUT | sed -n '/pg_ctl/ s/.*-l "\([^"]*\)".*/\1/p')
+    echo_error "$PG_UPGRADE_LOG:\n$(cat $PG_UPGRADE_LOG)"
+    exit 1
+fi

@@ -1,23 +1,18 @@
-# Unofficial snap for Mastodon 4.3.1
+# Unofficial Snap for Mastodon 4.5.3
 
-See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.3.1
+See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.5.3
 
 This release also includes:
 
-* node 20.17.0
-* ruby 3.3.5
-* nginx 1.27.2
-* postgres 17.0
-* redis 7.4.1
-* libvips 8.15.5
-* ffmpeg 7.1
+* ffmpeg 8.0.1
+* libvips 8.18.0
+* nginx 1.29.4
+* node 20.19.6
+* postgres 18.1
+* redis 8.4.0
+* ruby 3.4.7
 
-Changelog for 4.3.1snap2:
+Changelog for 4.5.3snap3:
 
-* Improve security of nginx
-* Add debug mode and `mastodon-server.debug-report` command
-* Add automatic performance tuning and scaling for PostgreSQL, Nginx and Mastodon based on the available RAM and number of CPUS
-* Adds automatic performance tuning and scaling for PostgreSQL, Nginx and Mastodon based on available RAM and number of CPUS.
-* Adds the `system.cpu`, `system.ram` and `system.ssd` settings.
-* Adds the `mastodon-server.tune` command to update configurations after tuning
-* Adds the `mastodon-server.debug-report` command.
+* Update libvips to 8.18.0
+* Add improved Fediday feature (see [docs/features.md](docs/features.md))

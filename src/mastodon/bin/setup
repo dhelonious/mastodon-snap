@@ -4,6 +4,7 @@
 . "$SNAP/postgres.env"
 . "$SNAP/redis.env"
 . "$SNAP/nginx.env"
+. "$SNAP/acme.env"
 
 check_root
 
@@ -12,34 +13,104 @@ if mastodon_config_exists; then
     exit 0
 fi
 
-check_domain
-check_status_max_chars
-check_status_max_chars_counter
+print_usage() {
+    echo "Usage: $SNAP_NAME.setup [-d DOMAIN] [-u USERNAME] [-m EMAIL] [-c GET_CERTIFICATE] [-s SERVER]"
+}
 
-echo Create config
+while getopts "d:u:m:c:s:h" OPTION; do
+    case "$OPTION" in
+    d)
+        if is_domain "$OPTARG"; then
+            snapctl set domain="$OPTARG"
+            export DOMAIN="$OPTARG"
+        else
+            echo "Invalid domain '$OPTARG'"
+        fi
+        ;;
+    u)
+        if is_username "$OPTARG"; then
+            export USERNAME="$OPTARG"
+        else
+            echo "Invalid username '$OPTARG'"
+        fi
+        ;;
+    m)
+        if is_email "$OPTARG"; then
+            snapctl set email="$OPTARG"
+            export EMAIL="$OPTARG"
+        else
+            echo "Invalid email '$OPTARG'"
+        fi
+        ;;
+    c)
+        case "$OPTARG" in
+            true|yes)
+                GET_CERTIFICATE=true
+                ;;
+            false|no)
+                GET_CERTIFICATE=false
+                ;;
+            *)
+                echo_error "The value of -c must be boolean"
+                exit 1
+                ;;
+        esac
+        ;;
+    s)
+        if is_acme_server "$OPTARG"; then
+            snapctl set acme.server="$OPTARG"
+            export ACME_SERVER="$OPTARG"
+        else
+            echo "Invalid ACME server '$OPTARG'"
+        fi
+        ;;
+    h)
+        print_usage
+        exit 0
+        ;;
+    esac
+done
+shift "$(($OPTIND-1))"
+
+get_domain
+get_username
+get_email
+get_status_length
+
+if [ -z "$GET_CERTIFICATE" ]; then
+    if confirm "Get an SSL certificate?"; then
+        GET_CERTIFICATE=true
+    fi
+fi
+
+if [ "$STATUS_LENGTH" != "$(get_status_length_file)" ]; then
+    echo Updating status character limit...
+    update_status_length
+    compilation_required
+fi
+$SNAP/bin/recompile_if_required
+
+echo Creating config...
 generate_mastodon_secrets
 copy_mastodon_config
 
-echo Setup database
+echo Setting up database...
 create_mastodon_database
 mastodon_rails db:setup > /dev/null
 $SNAP/bin/psql.wrapper -d "$MASTODON_DBNAME" -c "create extension pg_stat_statements;" > /dev/null
 
-if [ "$STATUS_MAX_CHARS" != "$(get_status_max_chars_file)" ]; then
-    echo Update status character limit
-    update_status_max_chars
-    compilation_required
+if [ "$GET_CERTIFICATE" == true ]; then
+    echo Getting certificate...
+    if ! [ -z "$SERVER" ]; then
+        SERVER_FLAG="-s $SERVER"
+    fi
+    $SNAP/bin/get-certificate -d $DOMAIN -m $EMAIL $SERVER_FLAG || true
 fi
 
-if [ "$STATUS_MAX_CHARS_COUNTER" != "$(get_status_max_chars_counter_file)" ]; then
-    echo Update status character counter
-    update_status_max_chars_counter
-    compilation_required
-fi
+echo Creating admin account...
+$SNAP/bin/tootctl.wrapper accounts create "$USERNAME" --email "$EMAIL" --role Owner --confirmed --approve
 
-$SNAP/bin/recompile_if_required
-
-echo Restart services
+echo Restarting services...
 snapctl restart "$SNAP_NAME.backend"
 snapctl restart "$SNAP_NAME.sidekiq"
 snapctl restart "$SNAP_NAME.streaming"

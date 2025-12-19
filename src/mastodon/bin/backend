@@ -1,11 +1,13 @@
 #!/bin/bash -e
 
 . "$SNAP/mastodon.env"
+. "$SNAP_CURRENT/server.conf"
 
 check_setup
 postgres_waitready
 redis_waitready
 load_backend_tuning_env
+migrations_waitready
 
 mastodon_rails s -p 3000 \
     2>&1 | tee -a "$LOG_DIR/backend.log"

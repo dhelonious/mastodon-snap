@@ -50,6 +50,19 @@ jobs:
     outputs:
       amd64: ${{ steps.snap.outputs.amd64 }}
       channel: ${{ steps.channel_regex.outputs.group1 }}
+  scan:
+    needs: build
+    runs-on: ${{ matrix.builder }}
+    strategy:
+      matrix:
+        include:
+          - builder: ubuntu-latest
+            arch: amd64
+    steps:
+    - uses: actions/checkout@v4
+    - uses: ./.github/actions/scan
+      with:
+        snap: ${{ needs.build.outputs[matrix.arch] }}
   test:
     needs: build
     runs-on: ${{ matrix.builder }}
@@ -67,12 +80,14 @@ jobs:
     needs:
       - build
       - test
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
     - uses: ./.github/actions/release
       with:
         tag: ${{ inputs.tag }}
-        channel: ${{ inputs.channel || needs.build.outputs.channel }}
+        channel: ${{ inputs.channel || needs.build.outputs.channel || 'stable' }}
+        update: true
   publish:
     if: ${{ inputs.channel != 'none' }}
     needs:
@@ -89,5 +104,5 @@ jobs:
     - uses: ./.github/actions/publish
       with:
         snap: ${{ needs.build.outputs[matrix.arch] }}
-        channel: ${{ inputs.channel || steps.regex.outputs.group1 }}
+        channel: ${{ inputs.channel || needs.build.outputs.channel || 'stable' }}
         SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}

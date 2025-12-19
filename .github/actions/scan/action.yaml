@@ -1,0 +1,21 @@
+name: scan
+run-name: Scan snap for vulnerabilities
+inputs:
+  snap:
+    required: true
+    type: string
+runs:
+  using: composite
+  steps:
+  - name: install grype
+    shell: bash
+    run: sudo snap install grype --classic
+  - uses: actions/download-artifact@v4
+    with:
+      name: ${{ inputs.snap }}
+  - name: extract snap
+    shell: bash
+    run: unsquashfs ${{ inputs.snap }}
+  - name: enable memory overcommit
+    shell: bash
+    run: grype dir:squashfs-root

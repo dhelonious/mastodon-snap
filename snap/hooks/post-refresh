@@ -1,20 +1,19 @@
 #!/bin/bash -e
 
-. "$SNAP/snap.env"
+. "$SNAP/debug.env"
 
-if debug_file_exists; then
-    enable_debug_mode post-refresh
-fi
+trap end_debug_log EXIT
+begin_debug_log post-refresh
+
+. "$SNAP/snap.env"
 
 set_default_settings
 
-export CURRENT_SNAP_VERSION="$(get_snap_version_file)"
+export PREVIOUS_SNAP_VERSION="$(get_snap_version_file)"
 
-# NOTE: This is a fix for older versions and may be removed in the future
 echo Set permissions on log dir
 fix_daemon_user "$LOG_DIR"
 
-# NOTE: This is a fix for older versions and may be removed in the future
 echo Set permissions on secret dir
 if [ -d "$SECRET_DIR" ]; then
     chmod -f 750 "$SECRET_DIR" || true
@@ -22,15 +21,19 @@ if [ -d "$SECRET_DIR" ]; then
     chown -fR root:$DAEMON_USER --no-dereference "$SECRET_DIR" || true
 fi
 
+# NOTE: This is a fix for versions < 4.4.5snap2 and should be removed in the future
+snapctl unset update.backup
+snapctl unset update.backups
+
 # Postgres
 
 . "$SNAP/postgres.env"
 
-# NOTE: This is a fix for older versions and may be removed in the future
 echo Set permissions on postgres files and dirs
 fix_daemon_user "$PG_HOME"
 fix_daemon_user "$PG_SOCK_DIR"
 fix_daemon_user "$PG_LOG_FILE"
+# NOTE: Permissions must be fixed each time the postgres data dir has been moved
 if [ -d "$PG_DATA" ]; then
     run_as_daemon_user chmod 700 "$PG_DATA" -R
 fi
@@ -40,13 +43,10 @@ load_postgres_tuning_env
 copy_config_as_daemon_user postgres postgresql.conf
 enable_postgres_config
 
-snapctl start "$SNAP_NAME.postgres"
-
 # Redis
 
 . "$SNAP/redis.env"
 
-# NOTE: This is a fix for older versions and may be removed in the future
 echo Set permissions on redis files and dirs
 fix_daemon_user "$REDIS_HOME"
 fix_daemon_user "$SOCK_DIR/redis.sock"
@@ -58,40 +58,33 @@ copy_config_as_daemon_user redis redis.conf
 # Mastodon
 
 . "$SNAP/mastodon.env"
-reset_migrations_required
 
-# NOTE: This is a fix for older versions and may be removed in the future
 echo Set permissions on mastodon files and dirs
 fix_daemon_user "$MASTODON_HOME"
 fix_daemon_user "$LOG_DIR/backend.log"
 fix_daemon_user "$LOG_DIR/streaming.log"
 fix_daemon_user "$LOG_DIR/sidekiq.log"
-if mastodon_config_exists; then
-    chmod 664 "$SNAP_COMMON/mastodon.conf"
-fi
 if [ "$(get_owner $MEDIA_DIR)" != "$DAEMON_USER" ]; then
     fix_daemon_user_media_dir
 fi
 
-if [ "$SNAP_VERSION" != "$CURRENT_SNAP_VERSION" ]; then
-    echo Update mastodon
-    update_mastodon_files
-
-    # TODO: remove later, required for upgrade to Mastodon 4.3+
-    if [ -z "$ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY" ] || [ "$ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY" == "precompile_placeholder" ] || \
-        [ -z "$ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY" ] || [ "$ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY" == "precompile_placeholder" ] || \
-        [ -z "$ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT" ] || [ "$ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT" == "precompile_placeholder" ]
-    then
-        generate_mastodon_db_encryption_secrets
+# NOTE: This is a fix for versions <= 4.4.6snap1 and should be removed in the future
+if UPDATE_ANNOUNCEMENT="$(snapctl get update.announcement)"; then
+    if ! [ -z "$UPDATE_ANNOUNCEMENT" ]; then
+        snapctl set announcement.pre-refresh="$UPDATE_ANNOUNCEMENT"
+        snapctl set announcement.post-refresh="$UPDATE_ANNOUNCEMENT"
     fi
+    snapctl unset update.announcement
+fi
+
+if [ "$SNAP_VERSION" != "$PREVIOUS_SNAP_VERSION" ]; then
+    echo Update mastodon
+    copy_mastodon_server_config
+    update_mastodon_files
 
     if mastodon_config_exists; then
         echo Update mastodon config
-        link_mastodon_config
         upgrade_mastodon_config
-
-        echo Enable database migrations
-        migrations_required
     fi
 fi
 
@@ -99,7 +92,6 @@ fi
 
 . "$SNAP/nginx.env"
 
-# NOTE: This is a fix for older versions and may be removed in the future
 echo Set permissions on nginx files and dirs
 fix_daemon_user "$NGINX_HOME"
 fix_daemon_user "$SNAP_COMMON/.well-known"
@@ -107,12 +99,16 @@ fix_daemon_user "$NGINX_CACHE"
 fix_daemon_user "$NGINX_LOG_FILE"
 fix_daemon_user "$NGINX_ACCESS_LOG_FILE"
 
+# NOTE: This is a fix for older versions and may be removed in the future
+if ! is_access_log_format "$(snapctl get log.access.format)"; then
+    snapctl set log.access.format="network"
+fi
+
 echo Update nginx configs
 copy_nginx_configs
 
 # Acme
 
-# NOTE: This is a fix for older versions and may be removed in the future
 echo Set permissions on acme dir
 fix_daemon_user "$ACME_HOME"
 
@@ -120,15 +116,3 @@ fix_daemon_user "$ACME_HOME"
 
 echo Update logrotate config
 copy_config logrotate logrotate.conf
-
-# Clean update backups
-find "$UPDATE_BACKUP_DIR" -mindepth 1 -maxdepth 1 -type d -printf "%T@ %p\n" \
-    | sort -g | head -n -1 | cut -d " " -f2 | xargs -r rm -rf
-
-update_snap_version_file
-
-post_refresh_tasks_required
-
-if debug_file_exists; then
-    disable_debug_mode
-fi

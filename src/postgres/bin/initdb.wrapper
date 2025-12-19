@@ -3,5 +3,7 @@
 . "$SNAP/postgres.env"
 
 mkdir -p "$PG_DATA"
+chmod 700 "$PG_DATA"
 
-exec initdb -D "$PG_DATA" -U postgres -A trust -E UTF8 --locale=C
+# TODO: The option `--no-data-checksums` should be replaced by `--data-checksums` in the future
+exec initdb -D "$PG_DATA" -U postgres -A trust -E UTF8 --locale=C "$@" --no-data-checksums

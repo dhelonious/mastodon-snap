@@ -1,0 +1,31 @@
+#!/bin/bash -e
+
+. "$SNAP/debug.env"
+
+trap end_debug EXIT
+begin_debug
+
+. "$SNAP/mastodon.env"
+
+if snap_version_changed; then
+    if mastodon_config_exists; then
+        echo Run db migrations
+        mastodon_db_migrate
+
+        if ANNOUNCEMENT_ID=$(snapctl get system.announcement-id); then
+            if ! [ -z "$ANNOUNCEMENT_ID" ]; then
+                echo Remove update announcement from db
+                mastodon_remove_announcement $ANNOUNCEMENT_ID
+                snapctl unset system.announcement-id
+            fi
+        fi
+
+        if $ANNOUNCEMENT_POST_REFRESH; then
+            echo Add version announcement to db
+            mastodon_add_announcement "The $SNAP_NAME snap has been updated to version $SNAP_VERSION"
+        fi
+    fi
+
+    echo Update snap version file
+    update_snap_version_file
+fi

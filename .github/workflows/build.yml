@@ -5,6 +5,7 @@ on:
     branches:
     - development
     - development_beta
+    - 'feature-**'
     paths:
     - 'snap/**'
     - 'src/**'
@@ -16,6 +17,11 @@ on:
     - '!**.md'
   workflow_dispatch:
     inputs:
+      scan:
+        description: Scan for vulnerabilities
+        required: true
+        type: boolean
+        default: true
       test:
         description: Run tests
         required: true
@@ -44,6 +50,20 @@ jobs:
       id: snap
     outputs:
       amd64: ${{ steps.snap.outputs.amd64 }}
+  scan:
+    if: ${{ !(inputs.scan == 'false') }}
+    needs: build
+    runs-on: ${{ matrix.builder }}
+    strategy:
+      matrix:
+        include:
+          - builder: ubuntu-latest
+            arch: amd64
+    steps:
+    - uses: actions/checkout@v4
+    - uses: ./.github/actions/scan
+      with:
+        snap: ${{ needs.build.outputs[matrix.arch] }}
   test:
     if: ${{ !(inputs.test == 'false') }}
     needs: build

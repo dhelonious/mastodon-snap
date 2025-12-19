@@ -2,18 +2,16 @@
 
 . "$SNAP/postgres.env"
 
+postgres_upgrade_waitready
+
 if ! $(config_exists postgres postgresql.conf); then
     echo "Postgres is not yet configured"
     exit 0
 fi
 
-while is_active postgres-upgrade; do
-    sleep 1
-done
-
+mkdir_pid
+mkdir_sock
 mkdir -p "$PG_SOCK_DIR"
-
-sed -ie "s|^include_if_exists = .*|include_if_exists = '$(config_dir postgres)/postgresql.conf'|" "$PG_DATA/postgresql.conf"
 
 postgres \
     -D "$PG_DATA" \

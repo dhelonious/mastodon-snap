@@ -7,6 +7,7 @@ if ! $(config_exists redis redis.conf); then
     exit 0
 fi
 
+mkdir_pid
 mkdir -p "$REDIS_DATA"
 
 redis-server "$REDIS_CONFIG/redis.conf"

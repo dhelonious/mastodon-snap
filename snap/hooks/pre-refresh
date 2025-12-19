@@ -1,5 +1,10 @@
 #!/bin/bash -e
 
+. "$SNAP/debug.env"
+
+trap end_debug_log EXIT
+begin_debug_log pre-refresh
+
 . "$SNAP/snap.env"
 
 if debug_file_exists; then
@@ -10,9 +15,19 @@ fi
 . "$SNAP/mastodon.env"
 
 update_postgres_version_file
+snapctl set system.previous-revision="$SNAP_REVISION"
 
-pre_refresh_tasks_required
+if mastodon_config_exists; then
 
-if debug_file_exists; then
-    disable_debug_mode
+    if $ANNOUNCEMENT_PRE_REFRESH; then
+        echo Add update announcement
+        if ANNOUNCEMENT_ID=$(mastodon_publish_announcement "The server will be updated in 5 minutes and will be unavailable for a short time"); then
+            snapctl set system.announcement-id="$ANNOUNCEMENT_ID"
+            snapctl restart "$SNAP_NAME.sidekiq"
+        fi
+
+        # NOTE: The pre-refresh hook will be terminated automatically after 5 minutes
+        sleep 300
+    fi
+
 fi

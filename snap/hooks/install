@@ -1,12 +1,11 @@
 #!/bin/bash -e
 
+. "$SNAP/debug.env"
+
+trap end_debug_log EXIT
+begin_debug_log install
+
 . "$SNAP/snap.env"
-
-if debug_file_exists; then
-    enable_debug_mode install
-fi
-
-set_default_settings
 
 reset_restart_required redis
 reset_restart_required postgres
@@ -16,11 +15,11 @@ reset_restart_required streaming
 reset_restart_required nginx
 
 update_snap_version_file
+set_default_settings
 
 mkdir -pm 0750 "$SECRET_DIR"
 chown root:$DAEMON_USER "$SECRET_DIR"
-mkdir -pm 0777 "$PID_DIR" "$SOCK_DIR"
-mkdir -p "$UPDATE_DIR" "$UPDATE_BACKUP_DIR" "$DEFAULT_BACKUP_DIR"
+mkdir -p "$UPDATE_DIR" "$DEFAULT_BACKUP_DIR"
 mkdir_for_daemon_user "$CERT_DIR"
 mkdir_for_daemon_user "$DEFAULT_MEDIA_DIR"
 mkdir_for_daemon_user "$LOG_DIR"
@@ -61,6 +60,7 @@ mkdir_for_daemon_user "$MASTODON_HOME"
 
 reset_compilation_required
 
+copy_mastodon_server_config
 update_mastodon_files
 update_backup_dir_file
 
