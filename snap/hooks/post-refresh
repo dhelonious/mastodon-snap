@@ -39,8 +39,7 @@ if [ -d "$PG_DATA" ]; then
 fi
 
 echo Update postgres config
-load_postgres_tuning_env
-copy_config_as_daemon_user postgres postgresql.conf
+copy_postgres_config
 enable_postgres_config
 
 # Redis

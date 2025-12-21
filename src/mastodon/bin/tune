@@ -11,8 +11,7 @@ check_system_ssd
 . "$SNAP/mastodon.env"
 
 echo Update postgres config
-load_postgres_tuning_env
-copy_config_as_daemon_user postgres postgresql.conf
+copy_postgres_config
 
 echo Update nginx configs
 copy_nginx_configs

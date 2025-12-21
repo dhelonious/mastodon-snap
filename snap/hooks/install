@@ -36,8 +36,7 @@ echo Install postgres
 
 mkdir_for_daemon_user "$PG_HOME"
 
-load_postgres_tuning_env
-copy_config_as_daemon_user postgres postgresql.conf
+copy_postgres_config
 setup_postgres_database
 
 update_postgres_version_file
