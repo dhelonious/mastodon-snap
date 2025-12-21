@@ -29,6 +29,9 @@ The following settings are available:
 | `ports.http`                | 0 to 65353                    | 80                     | HTTP port                                                                               |
 | `ports.https`               | 0 to 65353                    | 443                    | HTTPS port                                                                              |
 | `status.length`             | integer                       | 1000                   | Character limit of statuses (toots); changes require recompilation of assets [1]        |
+| `system.cpu`                | integer, auto                 | 2                      | Number of CPU cores available (`auto` will try to determine the number of CPU cores)    |
+| `system.ram`                | integer, auto                 | 2                      | Available RAM in GB (`auto` will try to determine the amount of RAM)                    |
+| `system.ssd`                | true, false                   | true                   | Should be changed if the snap is installed on a slow disk                               |
 
 [1] Changing this value will increase the time it takes for Snapcraft to update this Snap. This will increase the downtime of your instance by about 5 minutes.
 
@@ -208,3 +211,14 @@ Change the `media.dir` settings to your external directory:
     sudo set mastodon-server media.dir=/media/mastodon
 
 You can then remove the old media directory.
+
+## Tuning
+
+By default, snap tries to detect the hardware resources available and sets the parameters accordingly for optimal performance. These values are stored in the `system.cpu` and `system.ram` snap settings. You can change these values manually and then run `mastodon-server.tune` to update the configurations:
+
+    sudo snap set mastodon-server system.cpu=4 system.ram=8
+    sudo mastodon-server.tune
+
+> Tip: This can be used to limit the resource usage of the snap. This can be useful if you are running several different services on one machine.
+
+> Note: Be careful when changing these settings! If you set them too high, your system may become overloaded and mastodon-server may stop working.
