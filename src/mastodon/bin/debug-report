@@ -1,7 +1,6 @@
 #!/bin/bash -e
 
 . "$SNAP/acme.env"
-. "$SNAP/imagemagick.env"
 . "$SNAP/logrotate.env"
 . "$SNAP/mastodon.env"
 . "$SNAP/nginx.env"
@@ -15,7 +14,7 @@ echo
 echo_underline "=" Settings
 echo
 
-snap get mastodon-server -d
+snapctl get $SNAP_NAME -d
 
 echo
 echo_underline "=" Files
@@ -27,10 +26,18 @@ echo
 echo_underline "=" Environment
 echo
 
+printenv | sort
+
+echo
+echo_underline "=" Tuning
+echo
+
+before_tuning=$(declare -xp)
+
 load_postgres_tuning_env
 load_nginx_tuning_env
 load_backend_tuning_env
 load_sidekiq_tuning_env
 load_streaming_tuning_env
 
-printenv
+declare -xp | comm -13 <(echo "$before_tuning") - | sed -E "s/^declare -x ([^=]+=)/\1/" | sort

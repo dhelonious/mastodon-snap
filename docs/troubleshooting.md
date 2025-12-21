@@ -1,12 +1,16 @@
 # 🔥 Troubleshooting
 
-If none of the answers below help you, you can always re-install the snap and restore a backup:
+To help with troubleshooting, a debug report containing an overview of the current installation's files, settings and variables can be generated:
+
+    mastodon-server.debug-report
+
+If none of the answers below help, you can always uninstall and reinstall the app and restore a backup:
 
     snap remove mastodon-server
     snap install mastodon-server
     mastodon-server.restore 20240312-123456
 
-Make sure you move the backups out of `/var/snap/mastodon-server/common/backups/` before removing the Snap.
+Before removing the Snap, make sure you move the backups out of `/var/snap/mastodon-server/common/backups/`.
 
 > [!TIP]
 > Additional debug logs will be created when the `log.debug` setting is enabled (see the [configuration docs](docs/configuration.md)).
