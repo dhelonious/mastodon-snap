@@ -114,15 +114,15 @@ runs:
         exit 1
       fi
       sleep 30
-  - name: print debug report
+  - name: print snap settings
     shell: bash
     run: |
-      echo "Print debug report" | yellow
-      if DEBUG_REPORT=$(mastodon-server.debug-report 2>&1); then
-        echo "$DEBUG_REPORT" | green
+      echo "Print snap settings" | yellow
+      if SETTINGS=$(sudo snap get mastodon-server -d 2>&1); then
+        echo "$SETTINGS" | green
       else
-        echo "DEBUG REPORT could not be generated" | red
-        echo "$DEBUG_REPORT" | red
+        echo "Snap settings could not be retrieved" | red
+        echo "$SETTINGS" | red
         exit 1
       fi
   - name: check services
@@ -469,6 +469,14 @@ runs:
   ##############################################################################
   # Debugging
 
+  - name: print debug report
+    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
+    shell: bash
+    run: |
+      echo "::group::debug report:"
+      echo "Print debug report" | yellow
+      mastodon-server.debug-report
+      echo "::endgroup::"
   - name: show install hook log
     if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
     shell: bash
