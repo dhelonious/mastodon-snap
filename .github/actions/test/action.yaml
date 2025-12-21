@@ -77,7 +77,7 @@ runs:
     shell: bash
     run: |
       echo "Install snap (upgrade=${{ inputs.upgrade }})" | yellow
-      if INSTALL_OUTPUT=$(sudo snap install --dangerous ${{ inputs.snap }}); then
+      if INSTALL_OUTPUT=$(sudo snap install --dangerous ${{ inputs.snap }} 2>&1); then
         echo "Snap installation completed successfully" | green
       else
         echo "Snap installation failed" | red
@@ -114,15 +114,15 @@ runs:
         exit 1
       fi
       sleep 30
-  - name: print snap settings
+  - name: print debug report
     shell: bash
     run: |
-      echo "Print snap settings" | yellow
-      if SETTINGS=$(sudo snap get mastodon-server -d); then
-        echo "$SETTINGS" | green
+      echo "Print debug report" | yellow
+      if DEBUG_REPORT=$(mastodon-server.debug-report 2>&1); then
+        echo "$DEBUG_REPORT" | green
       else
-        echo "Snap settings could not be retrieved" | red
-        echo "$SETTINGS" | red
+        echo "DEBUG REPORT could not be generated" | red
+        echo "$DEBUG_REPORT" | red
         exit 1
       fi
   - name: check services
@@ -229,7 +229,7 @@ runs:
     run: |
       echo "Change media dir" | yellow
       sudo mkdir -p ~/media
-      if COMMAND_OUTPUT=$(sudo mastodon-server.external-media-dir ~/media); then
+      if COMMAND_OUTPUT=$(sudo mastodon-server.external-media-dir ~/media 2>&1); then
         echo "Test passed" | green
       else
         echo "Test failed" | red
@@ -240,7 +240,7 @@ runs:
     shell: bash
     run: |
       echo "Test export" | yellow
-      if EXPORT_OUTPUT=$(sudo mastodon-server.export); then
+      if EXPORT_OUTPUT=$(sudo mastodon-server.export 2>&1); then
         echo "Test passed" | green
       else
         echo "Test failed" | red
@@ -254,7 +254,7 @@ runs:
     shell: bash
     run: |
       echo "Test restore" | yellow
-      if RESTORE_OUTPUT=$(bash -c "yes || true" | sudo mastodon-server.restore ${{ steps.export.outputs.backup_dir }}); then
+      if RESTORE_OUTPUT=$(bash -c "yes || true" | sudo mastodon-server.restore ${{ steps.export.outputs.backup_dir }} 2>&1); then
         echo "Test passed" | green
       else
         echo "Test failed" | red
@@ -348,7 +348,7 @@ runs:
     shell: bash
     run: |
       echo "Test announce command" | yellow
-      if ANNOUNCE_OUTPUT=$(sudo mastodon-server.announce "Test announcement"); then
+      if ANNOUNCE_OUTPUT=$(sudo mastodon-server.announce "Test announcement" 2>&1); then
         echo "Test passed" | green
       else
         echo "Test failed" | red
@@ -364,7 +364,7 @@ runs:
     shell: bash
     run: |
       echo "Refresh snap" | yellow
-      if REFRESH_OUTPUT=$(sudo snap install --dangerous ${{ inputs.snap }}); then
+      if REFRESH_OUTPUT=$(sudo snap install --dangerous ${{ inputs.snap }} 2>&1); then
         echo "Snap refresh completed successfully" | green
       else
         echo "Snap refresh failed" | red
@@ -458,7 +458,7 @@ runs:
     shell: bash
     run: |
       echo "Remove snap" | yellow
-      if REMOVE_OUTPUT=$(sudo snap remove --purge mastodon-server); then
+      if REMOVE_OUTPUT=$(sudo snap remove --purge mastodon-server 2>&1); then
         echo "Snap removal completed successfully" | green
       else
         echo "Snap removal failed" | red
