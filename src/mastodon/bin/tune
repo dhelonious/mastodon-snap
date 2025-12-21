@@ -10,6 +10,18 @@ check_system_ssd
 . "$SNAP/nginx.env"
 . "$SNAP/mastodon.env"
 
+begin_print_env
+load_postgres_tuning_env
+load_nginx_tuning_env
+load_backend_tuning_env
+load_sidekiq_tuning_env
+load_streaming_tuning_env
+end_print_env
+
+if ! confirm "Do you want to tune the instance based on these values?"; then
+    exit 0
+fi
+
 echo Update postgres config
 copy_postgres_config
 

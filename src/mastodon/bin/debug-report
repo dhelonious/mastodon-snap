@@ -32,12 +32,10 @@ echo
 echo_underline "=" Tuning
 echo
 
-before_tuning=$(declare -xp)
-
+begin_print_env
 load_postgres_tuning_env
 load_nginx_tuning_env
 load_backend_tuning_env
 load_sidekiq_tuning_env
 load_streaming_tuning_env
-
-declare -xp | comm -13 <(echo "$before_tuning") - | sed -E "s/^declare -x ([^=]+=)/\1/" | sort
+end_print_env
