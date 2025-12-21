@@ -6,10 +6,8 @@
 check_setup
 postgres_waitready
 redis_waitready
-load_sidekiq_tuning_env
 migrations_waitready
+load_sidekiq_tuning_env
 
-export DB_POOL=${SIDEKIQ_DB_POOL:-25}
-
-mastodon_sidekiq -c $DB_POOL \
+mastodon_sidekiq -c $SIDEKIQ_DB_POOL \
     2>&1 | tee -a "$LOG_DIR/sidekiq.log"
