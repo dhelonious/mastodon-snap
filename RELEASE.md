@@ -12,8 +12,10 @@ This release also includes:
 * redis 8.4.0
 * ruby 3.4.7
 
-Changelog for 4.3.3snap3:
+Changelog for 4.5.3snap3:
 
+* Update libvips to 8.18.0
+* Add improved Fediday feature (see [docs/features.md](docs/features.md))
 * Improve security of nginx
 * Add automatic performance tuning and scaling for PostgreSQL, Nginx and Mastodon based on the available RAM and number of CPUS
 * Adds automatic performance tuning and scaling for PostgreSQL, Nginx and Mastodon based on available RAM and number of CPUS.
