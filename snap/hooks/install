@@ -93,9 +93,3 @@ echo Install logrotate
 . "$SNAP/logrotate.env"
 
 copy_config logrotate logrotate.conf
-
-# Post installation commands
-
-if debug_file_exists; then
-    disable_debug_mode
-fi

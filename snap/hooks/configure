@@ -76,7 +76,3 @@ restart_service_if_required backend
 restart_service_if_required sidekiq
 restart_service_if_required streaming
 restart_service_if_required nginx
-
-if debug_file_exists; then
-    disable_debug_mode
-fi

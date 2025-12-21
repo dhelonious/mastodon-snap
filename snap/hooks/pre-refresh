@@ -5,12 +5,6 @@
 trap end_debug_log EXIT
 begin_debug_log pre-refresh
 
-. "$SNAP/snap.env"
-
-if debug_file_exists; then
-    enable_debug_mode pre-refresh
-fi
-
 . "$SNAP/postgres.env"
 . "$SNAP/mastodon.env"
 
