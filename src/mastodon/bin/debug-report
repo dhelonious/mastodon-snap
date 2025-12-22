@@ -14,7 +14,9 @@ echo
 echo_underline "=" Settings
 echo
 
-snapctl get $SNAP_NAME -d
+for setting in $(sed "s/[.,].*//" <<< "$SETTINGS" | sort -u); do
+    echo "$setting: $(snapctl get $setting)"
+done
 
 echo
 echo_underline "=" Files
