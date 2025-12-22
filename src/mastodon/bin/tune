@@ -2,9 +2,67 @@
 
 . "$SNAP/snap.env"
 
-check_system_cpu
-check_system_ram
-check_system_ssd
+print_usage() {
+    echo "Usage: $SNAP_NAME.tune [-c number of CPUs] [-r RAM in GB] [-s SSD]"
+}
+
+while getopts "c:r:s:h" OPTION; do
+    case "$OPTION" in
+    c)
+        if is_number "$OPTARG"; then
+            snapctl set system.cpu="$OPTARG"
+            export SYSTEM_CPU="$OPTARG"
+            system_cpu_optarg=true
+        else
+            echo_error "Invalid number of CPUs: '$OPTARG'"
+            exit 1
+        fi
+        ;;
+    r)
+        if is_number "$OPTARG"; then
+            snapctl set system.ram="$OPTARG"
+            export SYSTEM_RAM="$OPTARG"
+            system_ram_optarg=true
+        else
+            echo_error "Invalid value for RAM: '$OPTARG'"
+            exit 1
+        fi
+        ;;
+    c)
+        case "$OPTARG" in
+            true|yes)
+                snapctl set system.ssd=true
+                export SYSTEM_SSD=true
+                system_ssd_optarg=true
+                ;;
+            false|no)
+                snapctl set system.ssd=false
+                export SYSTEM_SSD=false
+                system_ssd_optarg=true
+                ;;
+            *)
+                echo_error "The value of -s must be boolean"
+                exit 1
+                ;;
+        esac
+        ;;
+    h)
+        print_usage
+        exit 0
+        ;;
+    esac
+done
+shift "$(($OPTIND-1))"
+
+if ! [ ${system_cpu_optarg:-false} ]; then
+    check_system_cpu
+fi
+if ! [ ${system_ram_optarg:-false} ]; then
+    check_system_ram
+fi
+if ! [ ${system_ssd_optarg:-false} ]; then
+    check_system_ssd
+fi
 
 . "$SNAP/postgres.env"
 . "$SNAP/nginx.env"

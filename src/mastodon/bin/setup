@@ -24,14 +24,16 @@ while getopts "d:u:m:c:s:h" OPTION; do
             snapctl set domain="$OPTARG"
             export DOMAIN="$OPTARG"
         else
-            echo "Invalid domain '$OPTARG'"
+            echo_error "Invalid domain: '$OPTARG'"
+            exit 1
         fi
         ;;
     u)
         if is_username "$OPTARG"; then
             export USERNAME="$OPTARG"
         else
-            echo "Invalid username '$OPTARG'"
+            echo_error "Invalid username: '$OPTARG'"
+            exit 1
         fi
         ;;
     m)
@@ -39,7 +41,8 @@ while getopts "d:u:m:c:s:h" OPTION; do
             snapctl set email="$OPTARG"
             export EMAIL="$OPTARG"
         else
-            echo "Invalid email '$OPTARG'"
+            echo_error "Invalid email: '$OPTARG'"
+            exit 1
         fi
         ;;
     c)
@@ -61,7 +64,8 @@ while getopts "d:u:m:c:s:h" OPTION; do
             snapctl set acme.server="$OPTARG"
             export ACME_SERVER="$OPTARG"
         else
-            echo "Invalid ACME server '$OPTARG'"
+            echo_error "Invalid ACME server: '$OPTARG'"
+            exit 1
         fi
         ;;
     h)

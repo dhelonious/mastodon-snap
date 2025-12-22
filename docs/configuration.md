@@ -221,4 +221,4 @@ By default, snap tries to detect the hardware resources available and sets the p
 
 > Tip: This can be used to limit the resource usage of the snap. This can be useful if you are running several different services on one machine.
 
-> Note: Be careful when changing these settings! If you set them too high, your system may become overloaded and mastodon-server may stop working.
+> Note: Be careful when changing these values! Setting them too high may overload your system or cause mastodon-server to stop working properly. The default values should work well on all systems, including smaller ones.
