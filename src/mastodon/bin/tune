@@ -55,13 +55,27 @@ done
 shift "$(($OPTIND-1))"
 
 if ! [ ${system_cpu_optarg:-false} == true ]; then
-    check_system_cpu
+    while ! is_number "$SYSTEM_CPU"; do
+        read -p "Enter the number of CPU cores available: " -ei "$SYSTEM_CPU" SYSTEM_CPU
+    done
+    export SYSTEM_CPU=$SYSTEM_CPU
 fi
+
 if ! [ ${system_ram_optarg:-false} == true ]; then
-    check_system_ram
+    while ! is_number "$SYSTEM_RAM"; do
+        read -p "Enter the amount of RAM available in GB: " -ei "$SYSTEM_RAM" SYSTEM_RAM
+    done
+    export SYSTEM_RAM="$((SYSTEM_RAM * GB))"
 fi
+
 if ! [ ${system_ssd_optarg:-false} == true ]; then
-    check_system_ssd
+    if ! is_boolean "$SYSTEM_SSD"; then
+        if confirm "Is $SNAP_NAME installed on an SSD?"; then
+            export SYSTEM_SSD=true
+        else
+            export SYSTEM_SSD=false
+        fi
+    fi
 fi
 
 . "$SNAP/postgres.env"
@@ -79,6 +93,11 @@ end_print_env
 if ! confirm "Do you want to tune the instance based on these values?"; then
     exit 0
 fi
+
+echo Update snap settings
+snapctl set system.cpu=$SYSTEM_CPU
+snapctl set system.ram=$SYSTEM_RAM
+snapctl set system.ssd=$SYSTEM_SSD
 
 echo Update postgres config
 copy_postgres_config

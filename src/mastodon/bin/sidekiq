@@ -9,5 +9,5 @@ redis_waitready
 migrations_waitready
 load_sidekiq_tuning_env
 
-mastodon_sidekiq -c $SIDEKIQ_DB_POOL \
+mastodon_sidekiq -c $SIDEKIQ_CONCURRENCY \
     2>&1 | tee -a "$LOG_DIR/sidekiq.log"
