@@ -28,7 +28,7 @@ while getopts "c:r:s:h" OPTION; do
             exit 1
         fi
         ;;
-    c)
+    s)
         case "$OPTARG" in
             true|yes)
                 snapctl set system.ssd=true
@@ -54,13 +54,13 @@ while getopts "c:r:s:h" OPTION; do
 done
 shift "$(($OPTIND-1))"
 
-if ! [ ${system_cpu_optarg:-false} ]; then
+if ! [ ${system_cpu_optarg:-false} == true ]; then
     check_system_cpu
 fi
-if ! [ ${system_ram_optarg:-false} ]; then
+if ! [ ${system_ram_optarg:-false} == true ]; then
     check_system_ram
 fi
-if ! [ ${system_ssd_optarg:-false} ]; then
+if ! [ ${system_ssd_optarg:-false} == true ]; then
     check_system_ssd
 fi
 
