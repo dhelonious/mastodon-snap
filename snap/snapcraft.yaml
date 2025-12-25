@@ -484,8 +484,10 @@ parts:
     plugin: autotools
     build-packages:
       - autoconf
+      - autoconf-archive
       - automake
       - make
+      - libtool
       - pkg-config
       - libevent-dev
     override-build: |
