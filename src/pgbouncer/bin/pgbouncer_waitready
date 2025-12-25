@@ -1,0 +1,17 @@
+#!/bin/bash -e
+
+. "$SNAP/pgbouncer.env"
+
+count=${1:-10}
+
+while [ "$count" -gt 0 ]; do
+    if psql.wrapper "host=localhost port=$PGB_PORT user=$PGB_USER dbname=pgbouncer" -c "SHOW POOLS;"; then
+        exit 0
+    fi
+    echo Waiting for pgbouncer...
+    sleep 1
+    count=$((count-1))
+done
+
+echo_error Pgbouncer is not running
+exit 1

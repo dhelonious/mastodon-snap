@@ -19,6 +19,7 @@ export CURRENT_STATUS_LENGTH="$(get_status_length_file)"
 
 reset_restart_required redis
 reset_restart_required postgres
+reset_restart_required pgbouncer
 reset_restart_required backend
 reset_restart_required sidekiq
 reset_restart_required streaming
@@ -72,6 +73,7 @@ snapctl start "$SNAP_NAME.recompile-assets"
 
 restart_service_if_required redis
 restart_service_if_required postgres
+restart_service_if_required pgbouncer
 restart_service_if_required backend
 restart_service_if_required sidekiq
 restart_service_if_required streaming

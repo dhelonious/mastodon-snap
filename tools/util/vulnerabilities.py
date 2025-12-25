@@ -39,6 +39,10 @@ osv_packages = {
         "name": "https://github.com/nodejs/node",
         "ecosystem": "GIT",
     },
+    "pgbouncer": {
+        "name": "https://github.com/pgbouncer/pgbouncer",
+        "ecosystem": "GIT",
+    },
     "postgresql": {
         "name": "https://github.com/postgres/postgres",
         "ecosystem": "GIT",

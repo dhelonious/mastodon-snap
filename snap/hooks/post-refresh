@@ -42,6 +42,18 @@ echo Update postgres config
 copy_postgres_config
 enable_postgres_config
 
+# Pgbouncer
+
+. "$SNAP/pgbouncer.env"
+
+echo Set permissions on pgbouncer files and dirs
+fix_daemon_user "$PGB_HOME"
+fix_daemon_user "$PGB_SOCK_DIR"
+fix_daemon_user "$PGB_LOG_FILE"
+
+echo Update pgbouncer config
+copy_config_as_daemon_user pgbouncer pgbouncer.ini
+
 # Redis
 
 . "$SNAP/redis.env"

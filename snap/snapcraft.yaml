@@ -58,7 +58,6 @@ apps:
   postgres:
     command: bin/run_as_daemon_user postgres.wrapper
     daemon: simple
-    stop-timeout: 30m
     after:
       - postgres-upgrade
     before:
@@ -69,6 +68,19 @@ apps:
       - network
       - network-bind
       - removable-media # TODO: Is this plug required?
+
+  pgbouncer:
+    command: bin/run_as_daemon_user pgbouncer.wrapper
+    daemon: simple
+    after:
+      - postgres
+    before:
+      - backend
+      - sidekiq
+      - streaming
+    plugs:
+      - network
+      - network-bind
 
   redis:
     command: bin/run_as_daemon_user redis.wrapper
@@ -462,6 +474,38 @@ parts:
     source: src/postgres/
     organize:
       config/*: config/postgres/
+
+  pgbouncer:
+    after:
+      - postgres
+    # NOTE: https://github.com/pgbouncer/pgbouncer/releases/latest
+    source: https://github.com/pgbouncer/pgbouncer/archive/refs/tags/pgbouncer_1_25_1.tar.gz
+    source-checksum: sha256/b0d192a8e7244d0701085985af5724466b5c8ba5b6dd7393db5e19d87deaa038
+    plugin: autotools
+    build-packages:
+      - autoconf
+      - automake
+      - make
+      - pkg-config
+      - libevent-dev
+    override-build: |
+      set -eux
+      autoreconf -fiv
+      ./configure --prefix=$CRAFT_PART_INSTALL/pgbouncer
+      make -j"$(nproc)"
+      make install
+      cp -f $CRAFT_PART_SRC/COPYRIGHT $CRAFT_PART_INSTALL/pgbouncer/
+    organize:
+      pgbouncer/usr/bin/pgbouncer: pgbouncer/bin/pgbouncer
+    stage:
+      - pgbouncer/COPYRIGHT
+      - pgbouncer/bin/pgbouncer
+
+  pgbouncer-customizations:
+    plugin: dump
+    source: src/pgbouncer/
+    organize:
+      config/*: config/pgbouncer/
 
   nginx:
     after:

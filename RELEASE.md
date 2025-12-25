@@ -23,3 +23,4 @@ Changelog for 4.5.3snap3:
 * Adds the `mastodon-server.tune` command to update configurations after tuning
 * Adds the `mastodon-server.debug-report` command.
 * Add `mastodon-server.debug-report` command
+* Add `pgbouncer` for database connection pooling

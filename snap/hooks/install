@@ -41,6 +41,15 @@ setup_postgres_database
 
 update_postgres_version_file
 
+# Pgbouncer
+
+echo Install pgbouncer
+. "$SNAP/pgbouncer.env"
+
+mkdir_for_daemon_user "$PGB_HOME"
+
+copy_config_as_daemon_user pgbouncer pgbouncer.ini
+
 # Redis
 
 echo Install redis

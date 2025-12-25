@@ -149,6 +149,7 @@ runs:
       }
       check_service_status redis
       check_service_status postgres
+      check_service_status pgbouncer
       check_service_status backend
       check_service_status sidekiq
       check_service_status streaming
@@ -418,6 +419,13 @@ runs:
     run: |
       echo "::group::postgres.log:"
       cat /var/snap/mastodon-server/current/logs/postgres.log
+      echo "::endgroup::"
+  - name: show pgbouncer log
+    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
+    shell: bash
+    run: |
+      echo "::group::pgbouncer.log:"
+      cat /var/snap/mastodon-server/current/logs/pgbouncer.log
       echo "::endgroup::"
   - name: show nginx log
     if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}

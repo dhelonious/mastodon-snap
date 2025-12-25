@@ -1,0 +1,16 @@
+#!/bin/bash -e
+
+. "$SNAP/pgbouncer.env"
+
+postgres_waitready
+
+if ! $(config_exists pgbouncer pgbouncer.ini); then
+    echo "Pgbouncer is not yet configured"
+    exit 0
+fi
+
+mkdir_pid
+mkdir_sock
+mkdir -p "$PGB_SOCK_DIR"
+
+pgbouncer -u pgbouncer $PGB_CONFIG/pgbouncer.ini 2>&1 | tee -a "$PGB_LOG_FILE"
