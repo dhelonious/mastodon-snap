@@ -489,6 +489,8 @@ parts:
     override-build: |
       set -eux
       ./configure --prefix=$CRAFT_PART_INSTALL/pgbouncer
+      mkdir -p doc
+      touch doc/pgbouncer.{1,5}
       make -j"$(nproc)"
       make install
       cp -f $CRAFT_PART_SRC/COPYRIGHT $CRAFT_PART_INSTALL/pgbouncer/
