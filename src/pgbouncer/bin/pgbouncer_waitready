@@ -5,7 +5,7 @@
 count=${1:-10}
 
 while [ "$count" -gt 0 ]; do
-    if psql.wrapper "host=localhost port=$PGB_PORT user=$PGB_USER dbname=pgbouncer" -c "SHOW POOLS;"; then
+    if psql.wrapper "host=localhost port=$PGB_PORT user=$PGB_USER password=$PGB_PASSWORD dbname=pgbouncer" -c "SHOW POOLS;" > /dev/null; then
         exit 0
     fi
     echo Waiting for pgbouncer...

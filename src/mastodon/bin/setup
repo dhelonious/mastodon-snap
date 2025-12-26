@@ -99,9 +99,9 @@ generate_mastodon_secrets
 copy_mastodon_config
 
 echo Setting up database...
-create_mastodon_database
+create_db_user
 mastodon_rails db:setup > /dev/null
-$SNAP/bin/psql.wrapper -d "$MASTODON_DBNAME" -c "create extension pg_stat_statements;" > /dev/null
+$SNAP/bin/psql.wrapper -d mastodon -c "create extension pg_stat_statements;" > /dev/null
 
 if [ "$GET_CERTIFICATE" == true ]; then
     echo Getting certificate...

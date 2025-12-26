@@ -5,4 +5,4 @@
 check_root
 check_setup
 
-$SNAP/bin/pg_dump.wrapper -d "$MASTODON_DBNAME" -Fc "$@"
+$SNAP/bin/pg_dump.wrapper -d "$MASTODON_DB" -Fc "$@"

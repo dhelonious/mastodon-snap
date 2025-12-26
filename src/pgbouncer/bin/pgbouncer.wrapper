@@ -13,4 +13,4 @@ mkdir_pid
 mkdir_sock
 mkdir -p "$PGB_SOCK_DIR"
 
-pgbouncer -u pgbouncer $PGB_CONFIG/pgbouncer.ini 2>&1 | tee -a "$PGB_LOG_FILE"
+pgbouncer $PGB_CONFIG/pgbouncer.ini

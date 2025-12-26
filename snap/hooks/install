@@ -27,6 +27,7 @@ mkdir_for_daemon_user "$LOG_DIR"
 # Secrets
 
 export PG_PASSWORD=$(generate_secret postgres)
+export PGB_PASSWORD=$(generate_secret pgbouncer)
 # export REDIS_PASSWORD=$(generate_secret redis)
 
 # Postgres
@@ -49,6 +50,7 @@ echo Install pgbouncer
 mkdir_for_daemon_user "$PGB_HOME"
 
 copy_pgbouncer_config
+create_pgbouncer_user
 
 # Redis
 

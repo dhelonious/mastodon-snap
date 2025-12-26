@@ -27,7 +27,7 @@ rsync_clean "$SNAP_COMMON/mastodon.conf" "$export_dir/"
 echo Exporting database...
 postgres_export_database "$export_dir/database.sql"
 sed -ri "1,100s/^(CREATE ROLE postgres;)/-- \1/" "$export_dir/database.sql"
-sed -ri "1,100s/^(CREATE ROLE $MASTODON_DBUSER;)/-- \1/" "$export_dir/database.sql"
+sed -ri "1,100s/^(CREATE ROLE $PG_USER;)/-- \1/" "$export_dir/database.sql"
 
 if [ -s "$REDIS_DATA/redis.rdb" ]; then
     if redis_waitready; then

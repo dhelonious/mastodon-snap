@@ -68,13 +68,13 @@ mastodon_set_var DB_PASS "$(get_secret postgres)"
 
 if mastodon_database_exists; then
     echo Dropping old database...
-    $SNAP/bin/psql.wrapper -c "drop owned by $MASTODON_DBUSER cascade;"
-    $SNAP/bin/psql.wrapper -c "drop database if exists $MASTODON_DBNAME;"
-    # $SNAP/bin/psql.wrapper -c "drop role if exists $MASTODON_DBUSER;"
+    $SNAP/bin/psql.wrapper -c "drop owned by $PG_USER cascade;"
+    $SNAP/bin/psql.wrapper -c "drop database if exists $MASTODON_DB;"
+    # $SNAP/bin/psql.wrapper -c "drop role if exists $PG_USER;"
 else
     echo Setting up database user...
     postgres_waitready
-    psql.wrapper -c "create user $MASTODON_DBUSER with password '$PG_PASSWORD';" > /dev/null
+    psql.wrapper -c "create user $PG_USER with password '$PG_PASSWORD';" > /dev/null
 fi
 
 echo Restoring database...
