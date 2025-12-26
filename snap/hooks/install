@@ -48,7 +48,7 @@ echo Install pgbouncer
 
 mkdir_for_daemon_user "$PGB_HOME"
 
-copy_config_as_daemon_user pgbouncer pgbouncer.ini
+copy_pgbouncer_config
 
 # Redis
 

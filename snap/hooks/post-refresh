@@ -52,7 +52,7 @@ fix_daemon_user "$PGB_SOCK_DIR"
 fix_daemon_user "$PGB_LOG_FILE"
 
 echo Update pgbouncer config
-copy_config_as_daemon_user pgbouncer pgbouncer.ini
+copy_pgbouncer_config
 
 # Redis
 
