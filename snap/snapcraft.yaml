@@ -478,24 +478,16 @@ parts:
   pgbouncer:
     after:
       - postgres
-    # NOTE: https://github.com/pgbouncer/pgbouncer/releases/latest
-    source: https://github.com/pgbouncer/pgbouncer/archive/refs/tags/pgbouncer_1_25_1.tar.gz
-    source-checksum: sha256/b0d192a8e7244d0701085985af5724466b5c8ba5b6dd7393db5e19d87deaa038
-    source-submodules:
-      - usual
+    # NOTE: https://www.pgbouncer.org/downloads/
+    source: https://www.pgbouncer.org/downloads/files/1.25.1/pgbouncer-1.25.1.tar.gz
+    source-checksum: sha256/6e566ae92fe3ef7f6a1b9e26d6049f7d7ca39c40e29e7b38f6d5500ae15d8465
     plugin: autotools
     build-packages:
-      - autoconf
-      - autoconf-archive
-      - automake
       - make
-      - libtool
       - pkg-config
       - libevent-dev
     override-build: |
       set -eux
-      aclocal -I m4
-      autoreconf -fiv
       ./configure --prefix=$CRAFT_PART_INSTALL/pgbouncer
       make -j"$(nproc)"
       make install

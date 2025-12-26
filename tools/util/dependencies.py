@@ -12,7 +12,7 @@ dependencies_regexes = {
     "nginx": r"https://nginx\.org/download/nginx-([0-9\.]+)\.tar\.gz",
     "node": r"https://nodejs\.org/download/release/latest-v[0-9]+\.x/node-v([0-9\.]+)-linux-x64\.tar\.gz",
     "node_arm64": r"https://nodejs\.org/download/release/latest-v[0-9]+\.x/node-v([0-9\.]+)-linux-arm64\.tar\.gz",
-    "pgbouncer": r"https://github\.com/pgbouncer/pgbouncer/archive/refs/tags/pgbouncer_([0-9a-z-_]+)\.tar\.gz",
+    "pgbouncer": r"https://www.pgbouncer.org/downloads/files/[0-9\.]+/pgbouncer-([0-9\.]+).tar.gz",
     "postgresql": r"https://ftp\.postgresql\.org/pub/source/v[0-9\.]+/postgresql-([0-9\.]+)\.tar\.gz",
     "redis": r"https://download\.redis\.io/releases/redis-([0-9\.]+)\.tar\.gz",
     "ruby": r"https://cache\.ruby-lang\.org/pub/ruby/[0-9\.]+/ruby-([0-9\.]+)\.tar\.gz",
@@ -80,7 +80,7 @@ def get_dependencies_urls(mastodon_release, node_major):
             # NOTE: tag -> "url": "https://api.github.com/repos/pgbouncer/pgbouncer/tags",
             "file_regex": f"source: ({dependencies_regexes['pgbouncer']})",
             "lstrip": "pgbouncer_",
-            # "replace": ["_", "."],
+            "replace": ["_", "."],
         },
         "postgresql": {
             "url": "https://www.postgresql.org/ftp/latest",
