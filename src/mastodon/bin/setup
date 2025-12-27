@@ -2,6 +2,7 @@
 
 . "$SNAP/mastodon.env"
 . "$SNAP/postgres.env"
+. "$SNAP/pgbouncer.env"
 . "$SNAP/redis.env"
 . "$SNAP/nginx.env"
 . "$SNAP/acme.env"

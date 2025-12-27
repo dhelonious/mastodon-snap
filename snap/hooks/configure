@@ -6,6 +6,7 @@ trap end_debug_log EXIT
 begin_debug_log configure
 
 . "$SNAP/snap.env"
+. "$SNAP/pgbouncer.env"
 . "$SNAP/nginx.env"
 . "$SNAP/mastodon.env"
 
@@ -25,6 +26,11 @@ reset_restart_required sidekiq
 reset_restart_required streaming
 reset_restart_required nginx
 reset_compilation_required
+
+if pgbouncer_user_exists; then
+    create_pgbouncer_user
+    restart_required pgbouncer
+fi
 
 if [ "$NGINX_ACCESS_LOG" != "$CURRENT_NGINX_ACCESS_LOG" ]; then
     restart_required nginx
