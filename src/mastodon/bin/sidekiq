@@ -5,6 +5,7 @@
 
 check_setup
 postgres_waitready
+pgbouncer_waitready
 redis_waitready
 migrations_waitready
 load_sidekiq_tuning_env

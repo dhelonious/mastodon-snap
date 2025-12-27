@@ -107,7 +107,7 @@ copy_nginx_configs
 
 echo Restart services
 snapctl restart "$SNAP_NAME.postgres"
-postgres_waitready
+snapctl restart "$SNAP_NAME.pgbouncer"
 snapctl restart "$SNAP_NAME.backend"
 snapctl restart "$SNAP_NAME.streaming"
 snapctl restart "$SNAP_NAME.sidekiq"

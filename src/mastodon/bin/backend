@@ -5,6 +5,7 @@
 
 check_setup
 postgres_waitready
+pgbouncer_waitready
 redis_waitready
 load_backend_tuning_env
 migrations_waitready
