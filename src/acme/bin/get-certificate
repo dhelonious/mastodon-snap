@@ -54,4 +54,4 @@ get_acme_server
 acme.sh.wrapper --register-account --accountemail "$EMAIL"
 acme.sh.wrapper --issue -d "$DOMAIN" --accountemail "$EMAIL"
 
-snapctl restart "$SNAP_NAME.nginx"
+restart_service nginx

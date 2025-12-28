@@ -17,7 +17,7 @@ if mastodon_config_exists; then
         echo Add update announcement
         if ANNOUNCEMENT_ID=$(mastodon_publish_announcement "The server will be updated in 5 minutes and will be unavailable for a short time"); then
             snapctl set system.announcement-id="$ANNOUNCEMENT_ID"
-            snapctl restart "$SNAP_NAME.sidekiq"
+            restart_service sidekiq
         fi
 
         # NOTE: The pre-refresh hook will be terminated automatically after 5 minutes

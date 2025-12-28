@@ -116,7 +116,7 @@ echo Creating admin account...
 $SNAP/bin/tootctl.wrapper accounts create "$USERNAME" --email "$EMAIL" --role Owner --confirmed --approve
 
 echo Restarting services...
-snapctl restart "$SNAP_NAME.backend"
-snapctl restart "$SNAP_NAME.sidekiq"
-snapctl restart "$SNAP_NAME.streaming"
-snapctl restart "$SNAP_NAME.nginx"
+restart_service backend
+restart_service sidekiq
+restart_service streaming
+restart_service nginx
