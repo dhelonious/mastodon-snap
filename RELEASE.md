@@ -17,6 +17,7 @@ Changelog for 4.5.3snap3:
 
 * Update libvips to 8.18.0
 * Add pgbouncer for database connection pooling
+* Split sidekiq into prioritised processes (`sidekiq-high`, `sidekiq-medium`, and `sidekiq-low`)
 * Improve the security of nginx
 * The `mastodon-server.debug-report` command has been added
 * Add automatic performance tuning and scaling for PostgreSQL, Nginx and Mastodon, based on available RAM and the number of CPUs. The settings `system.cpu`, `system.ram` and `system.ssd` have been added, as well as the `mastodon-server.tune` command.
