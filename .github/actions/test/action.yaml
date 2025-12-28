@@ -362,7 +362,7 @@ runs:
     shell: bash
     run: |
       echo "Test db-migrate command" | yellow
-      if DB_MIGRATE_OUTPUT=$(yes | sudo mastodon-server.db-migrate 2>&1); then
+      if DB_MIGRATE_OUTPUT=$(echo y | sudo mastodon-server.db-migrate 2>&1); then
         echo "Test passed" | green
       else
         echo "Test failed" | red
@@ -373,7 +373,7 @@ runs:
     shell: bash
     run: |
       echo "Test db-rollback command" | yellow
-      if DB_ROLLBACK_OUTPUT=$(yes | sudo mastodon-server.db-rollback 2>&1); then
+      if DB_ROLLBACK_OUTPUT=$(echo y | sudo mastodon-server.db-rollback 2>&1); then
         echo "Test passed" | green
       else
         echo "Test failed" | red
