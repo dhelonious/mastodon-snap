@@ -8,6 +8,7 @@ This release also includes:
 * libvips 8.18.0
 * nginx 1.29.4
 * node 20.19.6
+* pgbouncer 1.25.1
 * postgres 18.1
 * redis 8.4.0
 * ruby 3.4.7
@@ -15,12 +16,8 @@ This release also includes:
 Changelog for 4.5.3snap3:
 
 * Update libvips to 8.18.0
-* Add improved Fediday feature (see [docs/features.md](docs/features.md))
-* Improve security of nginx
-* Add automatic performance tuning and scaling for PostgreSQL, Nginx and Mastodon based on the available RAM and number of CPUS
-* Adds automatic performance tuning and scaling for PostgreSQL, Nginx and Mastodon based on available RAM and number of CPUS.
-* Adds the `system.cpu`, `system.ram` and `system.ssd` settings.
-* Adds the `mastodon-server.tune` command to update configurations after tuning
-* Adds the `mastodon-server.debug-report` command.
-* Add `mastodon-server.debug-report` command
-* Add `pgbouncer` for database connection pooling
+* Add pgbouncer for database connection pooling
+* Improve the security of nginx
+* The `mastodon-server.debug-report` command has been added
+* Add automatic performance tuning and scaling for PostgreSQL, Nginx and Mastodon, based on available RAM and the number of CPUs. The settings `system.cpu`, `system.ram` and `system.ssd` have been added, as well as the `mastodon-server.tune` command.
+* Add an improved Fediday feature (see [docs/features.md](docs/features.md))
