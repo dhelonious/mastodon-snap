@@ -564,6 +564,10 @@ parts:
       make -j"$(nproc)"
       make install PREFIX=$CRAFT_PART_INSTALL/redis
       cp -f $CRAFT_PART_SRC/LICENSE.txt $CRAFT_PART_INSTALL/redis/
+    stage:
+      - redis/bin/redis-server
+      - redis/bin/redis-cli
+      - redis/LICENSE.txt
 
   redis-customizations:
     plugin: dump
@@ -1120,6 +1124,7 @@ parts:
       find $CRAFT_PRIME -type d -name include -prune -print -execdir rm -rf {} \;
       find $CRAFT_PRIME/usr/share/doc -type f -not -name "copyright" -execdir rm -f {} \;
       mv -f $CRAFT_PRIME/usr/share/doc $CRAFT_PRIME/doc
+      find $CRAFT_PRIME -type d -name doc -not -path $CRAFT_PRIME/doc -prune -print -execdir rm -rf {} \;
       find $CRAFT_PRIME -type f -name "README.md" -execdir rm -f {} \;
       find $CRAFT_PRIME -xtype l -print -exec rm {} \;
       find $CRAFT_PRIME -type d -empty -depth -print -execdir rmdir {} \;
