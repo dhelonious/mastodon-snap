@@ -358,6 +358,28 @@ runs:
         echo "$ANNOUNCE_OUTPUT" | yellow
         exit 1
       fi
+  - name: test db-migrate command
+    shell: bash
+    run: |
+      echo "Test db-migrate command" | yellow
+      if DB_MIGRATE_OUTPUT=$(yes | sudo mastodon-server.db-migrate 2>&1); then
+        echo "Test passed" | green
+      else
+        echo "Test failed" | red
+        echo "$DB_MIGRATE_OUTPUT" | yellow
+        exit 1
+      fi
+  - name: test db-rollback command
+    shell: bash
+    run: |
+      echo "Test db-rollback command" | yellow
+      if DB_ROLLBACK_OUTPUT=$(yes | sudo mastodon-server.db-rollback 2>&1); then
+        echo "Test passed" | green
+      else
+        echo "Test failed" | red
+        echo "$DB_ROLLBACK_OUTPUT" | yellow
+        exit 1
+      fi
 
   ##############################################################################
   # Refresh same version

@@ -36,7 +36,7 @@ jobs:
     - uses: kaisugi/action-regex-match@v1.0.1
       with:
         text: ${{ github.ref_name }}
-        regex: '^[\d\.]+-?(beta|rc)?([\d\.]+)?snap\d+-?(beta|rc)?$'
+        regex: '^[\d\.]+-?(beta|rc)?([\d\.]+)?snap\d+-?(beta|rc)?([\d\.]+)?$'
       id: regex
     - uses: ./.github/actions/build
       id: build
