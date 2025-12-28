@@ -5,13 +5,13 @@
 confirm "Mastodon must be stopped to perform maintenance tasks. Continue?" || exit 0
 
 echo Stop services
-snapctl stop "$SNAP_NAME.streaming"
-snapctl stop "$SNAP_NAME.sidekiq"
-snapctl stop "$SNAP_NAME.backend"
+stop_service streaming
+stop_service sidekiq
+stop_service backend
 
 $SNAP/bin/tootctl.wrapper maintenance "$@"
 
 echo Start services
-snapctl start "$SNAP_NAME.backend"
-snapctl start "$SNAP_NAME.sidekiq"
-snapctl start "$SNAP_NAME.streaming"
+start_service backend
+start_service sidekiq
+start_service streaming

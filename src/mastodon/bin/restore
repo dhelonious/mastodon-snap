@@ -54,10 +54,10 @@ if [ "$(snapctl get media.dir)" != "$(get_media_dir_link)" ]; then
 fi
 
 echo Stopping services...
-snapctl stop "$SNAP_NAME.nginx"
-snapctl stop "$SNAP_NAME.backend"
-snapctl stop "$SNAP_NAME.sidekiq"
-snapctl stop "$SNAP_NAME.streaming"
+stop_service nginx
+stop_service backend
+stop_service sidekiq
+stop_service streaming
 
 echo Restoring configuration...
 rsync --ignore-times --no-owner --no-perms --chmod g+w --chown root:$DAEMON_USER "$backup_dir/mastodon.conf" "$SNAP_COMMON/" \
@@ -89,9 +89,9 @@ fi
 
 if [ -f "$backup_dir/redis.rdb" ]; then
     echo Restoring redis database...
-    snapctl stop "$SNAP_NAME.redis"
+    stop_service redis
     run_as_daemon_user cp "$backup_dir/redis.rdb" "$REDIS_DATA/"
-    snapctl start "$SNAP_NAME.redis"
+    start_service redis
 fi
 
 if [ -d "$backup_dir/certs" ]; then
@@ -116,7 +116,7 @@ fi
 $SNAP/bin/recompile_if_required
 
 echo Restarting services...
-snapctl start "$SNAP_NAME.backend"
-snapctl start "$SNAP_NAME.sidekiq"
-snapctl start "$SNAP_NAME.streaming"
-snapctl start "$SNAP_NAME.nginx"
+start_service backend
+start_service sidekiq
+start_service streaming
+start_service nginx

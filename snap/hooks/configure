@@ -75,7 +75,7 @@ fi
 
 echo Restart services
 
-snapctl start "$SNAP_NAME.recompile-assets"
+start_service recompile-assets
 
 restart_service_if_required redis
 restart_service_if_required postgres

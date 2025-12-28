@@ -12,5 +12,24 @@ load_sidekiq_tuning_env
 
 export MALLOC_ARENA_MAX=2
 
-mastodon_sidekiq -c $SIDEKIQ_CONCURRENCY \
-    2>&1 | tee -a "$LOG_DIR/sidekiq.log"
+case "$1" in
+    high)
+        concurrency=$(( SIDEKIQ_CONCURRENCY * 3 / 6 ))
+        log_file=sidekiq-high.log
+        ;;
+    medium)
+        concurrency=$(( SIDEKIQ_CONCURRENCY * 2 / 6  ))
+        log_file=sidekiq-medium.log
+        ;;
+    low)
+        concurrency=$(( SIDEKIQ_CONCURRENCY * 1 / 6 ))
+        log_file=sidekiq-low.log
+        ;;
+    *)
+        concurrency=$SIDEKIQ_CONCURRENCY
+        log_file=sidekiq.log
+        ;;
+esac
+
+mastodon_sidekiq -c $concurrency \
+    2>&1 | tee -a "$LOG_DIR/$log_file"

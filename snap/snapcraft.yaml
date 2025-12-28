@@ -62,7 +62,9 @@ apps:
       - postgres-upgrade
     before:
       - backend
-      - sidekiq
+      - sidekiq-high
+      - sidekiq-medium
+      - sidekiq-low
       - streaming
     plugs:
       - network
@@ -76,7 +78,9 @@ apps:
       - postgres
     before:
       - backend
-      - sidekiq
+      - sidekiq-high
+      - sidekiq-medium
+      - sidekiq-low
       - streaming
     plugs:
       - network
@@ -87,7 +91,9 @@ apps:
     daemon: simple
     before:
       - backend
-      - sidekiq
+      - sidekiq-high
+      - sidekiq-medium
+      - sidekiq-low
       - streaming
     plugs:
       - network
@@ -123,8 +129,34 @@ apps:
       - network-bind
       - removable-media
 
-  sidekiq:
-    command: bin/run_as_daemon_user sidekiq
+  sidekiq-high:
+    command: bin/run_as_daemon_user sidekiq high
+    daemon: simple
+    after:
+      - postgres
+      - redis
+      - migrations
+      - recompile-assets
+    plugs:
+      - network
+      - network-bind
+      - removable-media
+
+  sidekiq-medium:
+    command: bin/run_as_daemon_user sidekiq medium
+    daemon: simple
+    after:
+      - postgres
+      - redis
+      - migrations
+      - recompile-assets
+    plugs:
+      - network
+      - network-bind
+      - removable-media
+
+  sidekiq-low:
+    command: bin/run_as_daemon_user sidekiq low
     daemon: simple
     after:
       - postgres
@@ -154,7 +186,9 @@ apps:
     daemon: simple
     after:
       - backend
-      - sidekiq
+      - sidekiq-high
+      - sidekiq-medium
+      - sidekiq-low
       - streaming
     environment:
       LD_PRELOAD: $SNAP/lib/wraplib.so

@@ -151,7 +151,9 @@ runs:
       check_service_status postgres
       check_service_status pgbouncer
       check_service_status backend
-      check_service_status sidekiq
+      check_service_status sidekiq-high
+      check_service_status sidekiq-medium
+      check_service_status sidekiq-low
       check_service_status streaming
       check_service_status nginx
   - name: check reachability
@@ -455,12 +457,26 @@ runs:
       echo "::group::streaming.log:"
       cat /var/snap/mastodon-server/current/logs/streaming.log
       echo "::endgroup::"
-  - name: show sidekiq log
+  - name: show sidekiq-high log
     if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
     shell: bash
     run: |
-      echo "::group::sidekiq.log:"
-      cat /var/snap/mastodon-server/current/logs/sidekiq.log
+      echo "::group::sidekiq-high.log:"
+      cat /var/snap/mastodon-server/current/logs/sidekiq-high.log
+      echo "::endgroup::"
+  - name: show sidekiq-medium log
+    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
+    shell: bash
+    run: |
+      echo "::group::sidekiq-medium.log:"
+      cat /var/snap/mastodon-server/current/logs/sidekiq-medium.log
+      echo "::endgroup::"
+  - name: show sidekiq-low log
+    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
+    shell: bash
+    run: |
+      echo "::group::sidekiq-low.log:"
+      cat /var/snap/mastodon-server/current/logs/sidekiq-low.log
       echo "::endgroup::"
   - name: remove snap
     shell: bash
@@ -548,12 +564,26 @@ runs:
       echo "::group::journalctl streaming:"
       sudo journalctl -xu snap.mastodon-server.streaming.service --all
       echo "::endgroup::"
-  - name: show sidekiq journalctl
+  - name: show sidekiq-high journalctl
     if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
     shell: bash
     run: |
-      echo "::group::journalctl sidekiq:"
-      sudo journalctl -xu snap.mastodon-server.sidekiq.service --all
+      echo "::group::journalctl sidekiq-high:"
+      sudo journalctl -xu snap.mastodon-server.sidekiq-high.service --all
+      echo "::endgroup::"
+  - name: show sidekiq-medium journalctl
+    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
+    shell: bash
+    run: |
+      echo "::group::journalctl sidekiq-medium:"
+      sudo journalctl -xu snap.mastodon-server.sidekiq-medium.service --all
+      echo "::endgroup::"
+  - name: show sidekiq-low journalctl
+    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
+    shell: bash
+    run: |
+      echo "::group::journalctl sidekiq-low:"
+      sudo journalctl -xu snap.mastodon-server.sidekiq-low.service --all
       echo "::endgroup::"
   - name: show postgres-upgrade journalctl
     if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
