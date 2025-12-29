@@ -107,10 +107,11 @@ if [ -f "$backup_dir/media.tar.gz" ]; then
     echo Restoring uploads...
     run_as_daemon_user tar -xzf "$backup_dir/media.tar.gz" -C "$MEDIA_DIR" --strip-components=1 --no-same-permissions --no-same-owner --skip-old-files
 
-    echo The following action may take a long time to complete
-    # TODO: make --concurrency N configurable (default 5)
+    echo The following actions may take a long time to complete
+    confirm "Refresh recent media?" && \
+        $SNAP/bin/tootctl.wrapper media refresh --days 1
     confirm "Refresh remote account avatars and headers?" && \
-        $SNAP/bin/tootctl.wrapper accounts refresh --all --concurrency 5
+        $SNAP/bin/tootctl.wrapper accounts refresh --all
 fi
 
 $SNAP/bin/recompile_if_required
