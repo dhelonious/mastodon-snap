@@ -49,14 +49,16 @@ runs:
   - name: print vulnerabilities
     shell: bash
     run: |
-      vulnerabilities=$(jq -r ".matches[].vulnerability.id" vulnerabilities.json)
+      vulnerabilities=$(jq '.matches[] | "\(.vulnerability.id) \(.vulnerability.severity)"' vulnerabilities.json)
       if [ -z "$vulnerabilities" ]; then
         echo No vulnerabilities found
       else
         echo Vulnerabilities:
         for v in $vulnerabilities; do
-          echo "::group::$v"
-          cat vulnerabilities.json | grype explain -q --id $v
+          id=$(echo $v | cut -d " " -f1)
+          severity=$(echo $v | cut -d " " -f2)
+          echo "::group::$id ($severity)"
+          cat vulnerabilities.json | grype explain -q --id $id
           echo "::endgroup::"
         done
       fi
