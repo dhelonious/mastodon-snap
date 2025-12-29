@@ -14,7 +14,6 @@ on:
         type: string
 jobs:
   scan:
-    needs: review
     runs-on: ${{ matrix.builder }}
     strategy:
       matrix:
@@ -27,6 +26,7 @@ jobs:
       with:
         snap: ${{ needs.review.outputs[matrix.arch] }}
   review:
+    needs: scan
     runs-on: ${{ matrix.builder }}
     strategy:
       matrix:

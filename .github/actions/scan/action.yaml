@@ -31,7 +31,15 @@ runs:
     shell: bash
     run: |
       grype sbom:sbom.json --distro ubuntu:24.04 -o json > vulnerabilities.min.json
-      jq "." vulnerabilities.min.json > vulnerabilities.json
+      jq "
+        def severity_weight:
+          if .vulnerability.severity == 'Critical' then 5
+          elif .vulnerability.severity == 'High' then 4
+          elif .vulnerability.severity == 'Medium' then 3
+          elif .vulnerability.severity == 'Low' then 2
+          else 1 end;
+          .matches |= sort_by(- (severity_weight))
+        " vulnerabilities.min.json > vulnerabilities.json
   - uses: actions/upload-artifact@v4
     with:
       name: vulnerabilities.json
@@ -41,7 +49,7 @@ runs:
   - name: print vulnerabilities
     shell: bash
     run: |
-      vulnerabilities=$(jq -r '.matches[].vulnerability.id' vulnerabilities.json | sort -u)
+      vulnerabilities=$(jq -r ".matches[].vulnerability.id" vulnerabilities.json)
       if [ -z "$vulnerabilities" ]; then
         echo No vulnerabilities found
       else
