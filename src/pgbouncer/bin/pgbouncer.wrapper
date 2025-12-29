@@ -2,7 +2,7 @@
 
 . "$SNAP/pgbouncer.env"
 
-postgres_waitready
+postgres_upgrade_waitready
 
 if ! $(config_exists pgbouncer pgbouncer.ini); then
     echo "Pgbouncer is not yet configured"
