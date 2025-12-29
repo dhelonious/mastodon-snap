@@ -13,6 +13,19 @@ on:
         required: false
         type: string
 jobs:
+  scan:
+    needs: review
+    runs-on: ${{ matrix.builder }}
+    strategy:
+      matrix:
+        include:
+          - builder: ubuntu-latest
+            arch: amd64
+    steps:
+    - uses: actions/checkout@v4
+    - uses: ./.github/actions/scan
+      with:
+        snap: ${{ needs.review.outputs[matrix.arch] }}
   review:
     runs-on: ${{ matrix.builder }}
     strategy:
@@ -120,16 +133,3 @@ jobs:
         overwrite: true
     outputs:
       amd64: ${{ steps.review.outputs.amd64 }}
-  scan:
-    needs: review
-    runs-on: ${{ matrix.builder }}
-    strategy:
-      matrix:
-        include:
-          - builder: ubuntu-latest
-            arch: amd64
-    steps:
-    - uses: actions/checkout@v4
-    - uses: ./.github/actions/scan
-      with:
-        snap: ${{ needs.review.outputs[matrix.arch] }}

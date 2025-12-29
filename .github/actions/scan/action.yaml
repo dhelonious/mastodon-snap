@@ -7,15 +7,48 @@ inputs:
 runs:
   using: composite
   steps:
-  - name: install grype
-    shell: bash
-    run: sudo snap install grype --classic
   - uses: actions/download-artifact@v4
     with:
       name: ${{ inputs.snap }}
-  - name: extract snap
+  - name: install syft
     shell: bash
-    run: unsquashfs ${{ inputs.snap }}
-  - name: enable memory overcommit
+    run: sudo snap install syft --classic
+  - name: generate SBOM
     shell: bash
-    run: grype dir:squashfs-root
+    run: |
+      syft snap:${{ inputs.snap }} -o json > sbom.min.json
+      jq "." sbom.min.json > sbom.json
+  - uses: actions/upload-artifact@v4
+    with:
+      name: sbom.json
+      path: sbom.json
+      retention-days: 1
+      overwrite: true
+  - name: install grype
+    shell: bash
+    run: sudo snap install grype --classic
+  - name: scan SBOM
+    shell: bash
+    run: |
+      grype sbom:sbom.json --distro ubuntu:24.04 -o json > vulnerabilities.min.json
+      jq "." vulnerabilities.min.json > vulnerabilities.json
+  - uses: actions/upload-artifact@v4
+    with:
+      name: vulnerabilities.json
+      path: vulnerabilities.json
+      retention-days: 1
+      overwrite: true
+  - name: print vulnerabilities
+    shell: bash
+    run: |
+      vulnerabilities=$(jq -r '.matches[].vulnerability.id' vulnerabilities.json | sort -u)
+      if [ -z "$vulnerabilities" ]; then
+        echo No vulnerabilities found
+      else
+        echo Vulnerabilities:
+        for v in $vulnerabilities; do
+          echo "::group::$v"
+          cat vulnerabilities.json | grype explain -q --id $v
+          echo "::endgroup::"
+        done
+      fi
