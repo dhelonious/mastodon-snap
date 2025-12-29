@@ -42,5 +42,6 @@ done
 shift "$(($OPTIND-1))"
 
 if mastodon_add_announcement "$@" > /dev/null; then
-    mastodon_tootctl cache clear
+    load_tootctl_tuning_env
+    mastodon_tootctl cache clear --concurrency $TOOTCTL_CONCURRENCY
 fi

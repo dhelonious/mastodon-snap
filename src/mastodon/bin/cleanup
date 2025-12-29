@@ -3,6 +3,7 @@
 . "$SNAP/mastodon.env"
 
 check_setup
+load_tootctl_tuning_env
 
 if [ "$CLEANUP_DAYS" -lt "1" ]; then
     echo "Cleanup not enabled (days < 1)"
@@ -15,37 +16,37 @@ echo_log() {
 
 if $CLEANUP_MEDIA; then
     echo_log "Cleanup media files older than $CLEANUP_DAYS days"
-    $SNAP/bin/tootctl.wrapper media remove --days=$CLEANUP_DAYS \
+    mastodon_tootctl media remove --days=$CLEANUP_DAYS --concurrency $TOOTCTL_CONCURRENCY \
         2>&1 | tee -a "$LOG_DIR/cleanup.log"
 fi
 
 if $CLEANUP_HEADERS; then
     echo_log "Cleanup headers older than $CLEANUP_DAYS days"
-    $SNAP/bin/tootctl.wrapper media remove --remove-headers --include-follows --days=$CLEANUP_DAYS \
+    mastodon_tootctl media remove --remove-headers --include-follows --days=$CLEANUP_DAYS --concurrency $TOOTCTL_CONCURRENCY \
         2>&1 | tee -a "$LOG_DIR/cleanup.log"
 fi
 
 if $CLEANUP_PREVIEWS; then
     echo_log "Cleanup preview cards older than $CLEANUP_DAYS days"
-    $SNAP/bin/tootctl.wrapper preview_cards remove --days=$CLEANUP_DAYS \
+    mastodon_tootctl preview_cards remove --days=$CLEANUP_DAYS --concurrency $TOOTCTL_CONCURRENCY \
         2>&1 | tee -a "$LOG_DIR/cleanup.log"
 fi
 
 if $CLEANUP_STATUSES; then
     echo_log "Cleanup unreferenced statuses older than $CLEANUP_DAYS days"
-    $SNAP/bin/tootctl.wrapper statuses remove --days=$CLEANUP_DAYS \
+    mastodon_tootctl statuses remove --days=$CLEANUP_DAYS --concurrency $TOOTCTL_CONCURRENCY \
         2>&1 | tee -a "$LOG_DIR/cleanup.log"
 fi
 
 if $CLEANUP_ORPHANS; then
     echo_log "Cleanup orphaned media files"
-    $SNAP/bin/tootctl.wrapper media remove-orphans \
+    mastodon_tootctl media remove-orphans --concurrency $TOOTCTL_CONCURRENCY \
         2>&1 | tee -a "$LOG_DIR/cleanup.log"
 fi
 
 if $CLEANUP_ACCOUNTS; then
     echo_log "Cleanup accounts that never interacted with a local user"
-    $SNAP/bin/tootctl.wrapper accounts prune \
+    mastodon_tootctl accounts prune --concurrency $TOOTCTL_CONCURRENCY \
         2>&1 | tee -a "$LOG_DIR/cleanup.log"
 fi
 

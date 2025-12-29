@@ -5,10 +5,12 @@
 
 check_setup
 redis_waitready
+load_mastodon_env
 load_streaming_tuning_env
 
 export DB_POOL=$STREAMING_DB_POOL
 export MALLOC_ARENA_MAX=2
 
-mastodon_streaming \
+cd "$MASTODON_HOME" && \
+    run_as_daemon_user node streaming "$@" \
     2>&1 | tee -a "$LOG_DIR/streaming.log"

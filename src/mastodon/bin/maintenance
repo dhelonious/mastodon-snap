@@ -9,7 +9,7 @@ stop_service streaming
 stop_service sidekiq
 stop_service backend
 
-$SNAP/bin/tootctl.wrapper maintenance "$@"
+mastodon_tootctl maintenance "$@"
 
 echo Start services
 start_service backend

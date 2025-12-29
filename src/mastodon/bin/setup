@@ -113,7 +113,7 @@ if [ "$GET_CERTIFICATE" == true ]; then
 fi
 
 echo Creating admin account...
-$SNAP/bin/tootctl.wrapper accounts create "$USERNAME" --email "$EMAIL" --role Owner --confirmed --approve
+mastodon_tootctl accounts create "$USERNAME" --email "$EMAIL" --role Owner --confirmed --approve
 
 echo Restarting services...
 restart_service backend

@@ -8,6 +8,7 @@ postgres_waitready
 pgbouncer_waitready
 redis_waitready
 migrations_waitready
+load_mastodon_env
 load_sidekiq_tuning_env
 
 export MALLOC_ARENA_MAX=2
@@ -31,5 +32,6 @@ case "$1" in
         ;;
 esac
 
-mastodon_sidekiq -c $concurrency \
+cd "$MASTODON_HOME" && \
+    run_as_daemon_user bundle exec sidekiq -c $concurrency "$@" \
     2>&1 | tee -a "$LOG_DIR/$log_file"

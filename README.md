@@ -159,9 +159,6 @@ replaces the `sudo -u mastodon RAILS_ENV=production bin/tootctl` command often f
 
 See the [configuration docs](docs/configuration.md) for a complete overview of the configuration variables and other commands.
 
-> [!NOTE]
-> The `mastodon-server.tootctl` command automatically selects an appropriate level of concurrency. Therefore, you cannot specify a concurrency level using the `--concurrency` option.
-
 
 # 🧩 Features
 

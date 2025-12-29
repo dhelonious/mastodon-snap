@@ -3,5 +3,7 @@
 . "$SNAP/mastodon.env"
 
 check_setup
+load_mastodon_env
 
-mastodon_tootctl "$@"
+cd "$MASTODON_HOME" && \
+    run_as_daemon_user bundle exec tootctl "$@"

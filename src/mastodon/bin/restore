@@ -6,6 +6,7 @@
 
 check_root
 check_service postgres
+load_tootctl_tuning_env
 
 print_usage() {
     echo "Usage: $SNAP_NAME.restore BACKUP"
@@ -100,8 +101,8 @@ if [ -d "$backup_dir/certs" ]; then
 fi
 
 echo Cleaning up media references...
-$SNAP/bin/tootctl.wrapper preview_cards remove --days 1
-$SNAP/bin/tootctl.wrapper media remove --days 1
+mastodon_tootctl preview_cards remove --days 1 --concurrency $TOOTCTL_CONCURRENCY
+mastodon_tootctl media remove --days 1 --concurrency $TOOTCTL_CONCURRENCY
 
 if [ -f "$backup_dir/media.tar.gz" ]; then
     echo Restoring uploads...
@@ -109,9 +110,9 @@ if [ -f "$backup_dir/media.tar.gz" ]; then
 
     echo The following actions may take a long time to complete
     confirm "Refresh recent media?" && \
-        $SNAP/bin/tootctl.wrapper media refresh --days 1
+        mastodon_tootctl media refresh --days 1 --concurrency $TOOTCTL_CONCURRENCY
     confirm "Refresh remote account avatars and headers?" && \
-        $SNAP/bin/tootctl.wrapper accounts refresh --all
+        mastodon_tootctl accounts refresh --all --concurrency $TOOTCTL_CONCURRENCY
 fi
 
 $SNAP/bin/recompile_if_required
