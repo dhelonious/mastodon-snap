@@ -11,6 +11,9 @@
 echo_border "=" "Debug report for snap version $(cat "$SNAP_COMMON/version")"
 
 echo
+echo NOTE: This report contains your domain name and email address. Please review this information carefully before sharing it.
+
+echo
 echo_underline "=" Settings
 echo
 
@@ -27,6 +30,11 @@ find "/var/snap/$SNAP_NAME" -maxdepth 3 | sed -e "s|^/var/snap/$SNAP_NAME/||" -e
 echo
 echo_underline "=" Environment
 echo
+
+test -n "$PG_PASSWORD" && PG_PASSWORD="********"
+test -n "$PGB_PASSWORD" && PGB_PASSWORD="********"
+# test -n "$REDIS_PASSWORD" && REDIS_PASSWORD="********"
+test -n "$SMTP_PASSWORD" && SMTP_PASSWORD="********"
 
 printenv | sort
 
