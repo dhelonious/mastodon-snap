@@ -12,11 +12,11 @@ if snap_version_changed; then
         echo Run db migrations
         mastodon_db_migrate
 
-        if ANNOUNCEMENT_ID=$(snapctl get system.announcement-id); then
+        if ANNOUNCEMENT_ID=$(snapctl get snap.announcement-id); then
             if ! [ -z "$ANNOUNCEMENT_ID" ]; then
                 echo Remove update announcement from db
                 mastodon_remove_announcement $ANNOUNCEMENT_ID
-                snapctl unset system.announcement-id
+                snapctl unset snap.announcement-id
             fi
         fi
 

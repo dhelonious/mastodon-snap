@@ -2,7 +2,7 @@
 
 . "$SNAP/mastodon.env"
 
-if [ "$(snapctl get system.compilation-required)" == true ]; then
+if [ "$(snapctl get snap.compilation-required)" == true ]; then
     echo "Recompiling assets (this takes some time)"
     mastodon_rails assets:precompile
     mastodon_rails log:clear tmp:clear

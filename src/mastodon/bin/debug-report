@@ -20,6 +20,8 @@ echo
 for setting in $(sed "s/[.,].*//" <<< "$SETTINGS" | sort -u); do
     echo "$setting: $(snapctl get $setting)"
 done
+echo "snap: $(snapctl get snap)"
+echo "service: $(snapctl get service)"
 
 echo
 echo_underline "=" Files

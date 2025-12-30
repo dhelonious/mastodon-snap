@@ -25,6 +25,44 @@ fi
 snapctl unset update.backup
 snapctl unset update.backups
 
+# NOTE: This is a fix for versions < 4.5.3snap3 and should be removed in the future
+if SYSTEM_PREVIOUS_REVISION=$(snapctl get snap.previous-revision); then
+    if ! [ -z "$SYSTEM_PREVIOUS_REVISION" ]; then
+        snapctl set snap.previous-revision="$SYSTEM_PREVIOUS_REVISION"
+        snapctl unset snap.previous-revision
+    fi
+fi
+if SYSTEM_ANNOUNCEMENT_ID=$(snapctl get snap.announcement-id); then
+    if ! [ -z "$SYSTEM_ANNOUNCEMENT_ID" ]; then
+        snapctl set snap.announcement-id="$SYSTEM_ANNOUNCEMENT_ID"
+        snapctl unset snap.announcement-id
+    fi
+fi
+if SYSTEM_COMPILATION_REQUIRED=$(snapctl get snap.compilation-required); then
+    if ! [ -z "$SYSTEM_COMPILATION_REQUIRED" ]; then
+        snapctl set snap.complation-required="$SYSTEM_COMPILATION_REQUIRED"
+        snapctl unset snap.compilation-required
+    fi
+fi
+if SYSTEM_RESTART_REQUIRED=$(snapctl get system.restart-required); then
+    if ! [ -z "$SYSTEM_RESTART_REQUIRED" ]; then
+        snapctl set service.restart-required.backend=$(snapctl get system.restart-required.backend)
+        snapctl unset system.restart-required.backend
+        snapctl set service.restart-required.nginx=$(snapctl get system.restart-required.nginx)
+        snapctl unset system.restart-required.nginx
+        snapctl set service.restart-required.pgbouncer=$(snapctl get system.restart-required.pgbouncer)
+        snapctl unset system.restart-required.pgbouncer
+        snapctl set service.restart-required.postgres=$(snapctl get system.restart-required.postgres)
+        snapctl unset system.restart-required.postgres
+        snapctl set service.restart-required.redis=$(snapctl get system.restart-required.redis)
+        snapctl unset system.restart-required.redis
+        snapctl set service.restart-required.sidekiq=$(snapctl get system.restart-required.sidekiq)
+        snapctl unset system.restart-required.sidekiq
+        snapctl set service.restart-required.streaming=$(snapctl get system.restart-required.streaming)
+        snapctl unset system.restart-required.streaming
+    fi
+fi
+
 # Postgres
 
 . "$SNAP/postgres.env"

@@ -9,14 +9,14 @@ begin_debug_log pre-refresh
 . "$SNAP/mastodon.env"
 
 update_postgres_version_file
-snapctl set system.previous-revision="$SNAP_REVISION"
+snapctl set snap.previous-revision="$SNAP_REVISION"
 
 if mastodon_config_exists; then
 
     if $ANNOUNCEMENT_PRE_REFRESH; then
         echo Add update announcement
         if ANNOUNCEMENT_ID=$(mastodon_publish_announcement "The server will be updated in 5 minutes and will be unavailable for a short time"); then
-            snapctl set system.announcement-id="$ANNOUNCEMENT_ID"
+            snapctl set snap.announcement-id="$ANNOUNCEMENT_ID"
             restart_service sidekiq
         fi
 
