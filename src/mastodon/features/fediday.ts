@@ -1,5 +1,5 @@
 // Based on snow addon by Roni Laukkarinen
-// https://github.com/ronilaukkarinen/mastodon/commit/9bf1563
+// https://github.com/ronilaukkarinen/mastodon
 
 import { me, owner, reduceMotion } from 'mastodon/initial_state';
 import { store } from 'mastodon/store';
