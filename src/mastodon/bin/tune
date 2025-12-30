@@ -55,6 +55,7 @@ done
 shift "$(($OPTIND-1))"
 
 if ! [ ${system_cpu_optarg:-false} == true ]; then
+    SYSTEM_CPU=none
     while ! is_number "$SYSTEM_CPU"; do
         read -p "Enter the number of CPU cores available: " -ei "$SYSTEM_CPU" SYSTEM_CPU
     done
@@ -62,6 +63,7 @@ if ! [ ${system_cpu_optarg:-false} == true ]; then
 fi
 
 if ! [ ${system_ram_optarg:-false} == true ]; then
+    SYSTEM_RAM=none
     while ! is_number "$SYSTEM_RAM"; do
         read -p "Enter the amount of RAM available in GB: " -ei "$SYSTEM_RAM" SYSTEM_RAM
     done
@@ -69,6 +71,7 @@ if ! [ ${system_ram_optarg:-false} == true ]; then
 fi
 
 if ! [ ${system_ssd_optarg:-false} == true ]; then
+    SYSTEM_SSD=none
     if ! is_boolean "$SYSTEM_SSD"; then
         if confirm "Is $SNAP_NAME installed on an SSD?"; then
             export SYSTEM_SSD=true
@@ -82,6 +85,7 @@ fi
 . "$SNAP/nginx.env"
 . "$SNAP/mastodon.env"
 
+echo Tuning variables:
 begin_print_env
 load_postgres_tuning_env
 load_nginx_tuning_env
