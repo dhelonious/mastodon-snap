@@ -108,11 +108,13 @@ if [ -f "$backup_dir/media.tar.gz" ]; then
     echo Restoring uploads...
     run_as_daemon_user tar -xzf "$backup_dir/media.tar.gz" -C "$MEDIA_DIR" --strip-components=1 --no-same-permissions --no-same-owner --skip-old-files
 
-    echo The following actions may take a long time to complete
+    echo The following action may take a long time to complete
     confirm "Refresh recent media?" && \
-        mastodon_tootctl media refresh --days 1 --concurrency $TOOTCTL_CONCURRENCY
+        mastodon_tootctl media refresh --days 1 --force --concurrency $TOOTCTL_CONCURRENCY
+
+    echo The following action may take a long time to complete
     confirm "Refresh remote account avatars and headers?" && \
-        mastodon_tootctl accounts refresh --all --concurrency $TOOTCTL_CONCURRENCY
+        mastodon_tootctl accounts refresh --all --force --concurrency $TOOTCTL_CONCURRENCY
 fi
 
 $SNAP/bin/recompile_if_required
