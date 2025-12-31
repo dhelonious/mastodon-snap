@@ -46,19 +46,19 @@ if SYSTEM_COMPILATION_REQUIRED=$(snapctl get snap.compilation-required); then
 fi
 if SYSTEM_RESTART_REQUIRED=$(snapctl get system.restart-required); then
     if ! [ -z "$SYSTEM_RESTART_REQUIRED" ]; then
-        snapctl set service.restart-required.backend=$(snapctl get system.restart-required.backend)
+        snapctl set services.backend.restart-required=$(snapctl get system.restart-required.backend)
         snapctl unset system.restart-required.backend
-        snapctl set service.restart-required.nginx=$(snapctl get system.restart-required.nginx)
+        snapctl set services.nginx.restart-required=$(snapctl get system.restart-required.nginx)
         snapctl unset system.restart-required.nginx
-        snapctl set service.restart-required.pgbouncer=$(snapctl get system.restart-required.pgbouncer)
+        snapctl set services.pgbouncer.restart-required=$(snapctl get system.restart-required.pgbouncer)
         snapctl unset system.restart-required.pgbouncer
-        snapctl set service.restart-required.postgres=$(snapctl get system.restart-required.postgres)
+        snapctl set services.postgres.restart-required=$(snapctl get system.restart-required.postgres)
         snapctl unset system.restart-required.postgres
-        snapctl set service.restart-required.redis=$(snapctl get system.restart-required.redis)
+        snapctl set services.redis.restart-required=$(snapctl get system.restart-required.redis)
         snapctl unset system.restart-required.redis
-        snapctl set service.restart-required.sidekiq=$(snapctl get system.restart-required.sidekiq)
+        snapctl set services.sidekiq.restart-required=$(snapctl get system.restart-required.sidekiq)
         snapctl unset system.restart-required.sidekiq
-        snapctl set service.restart-required.streaming=$(snapctl get system.restart-required.streaming)
+        snapctl set services.streaming.restart-required=$(snapctl get system.restart-required.streaming)
         snapctl unset system.restart-required.streaming
     fi
 fi
