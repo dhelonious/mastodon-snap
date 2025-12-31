@@ -6,32 +6,32 @@ Basic settings can be configured using key-value pairs:
 
 The following settings are available:
 
-| Key                         | Values                        | Default value          | Description                                                                             |
-|-----------------------------|-------------------------------|------------------------|-----------------------------------------------------------------------------------------|
-| `acme.server`               | letsencrypt, zerossl, buypass | letsencrypt            | CA used for acquiring an SSL certificate, see [acme.sh server](https://github.com/acmesh-official/acme.sh/wiki/Server) |
-| `announcement.post-refresh` | true, false                   | true                   | Create an unpublished announcement once the Snap has been refreshed                     |
-| `announcement.pre-refresh`  | true, false                   | true                   | Create an announcement 5 minutes before the Snap is refreshed                           |
-| `backup.days`               | integer                       | 0                      | Create and keep backups for `backup.days` (enabled if > 0)                              |
-| `backup.dir`                | absolute path                 | `$SNAP_COMMON/backups` | Location of the backup directory                                                        |
-| `cleanup.accounts`          | true, false                   | false                  | Cleanup user accounts, see [tootctl accounts delete](https://docs.joinmastodon.org/admin/tootctl/#accounts-delete) |
-| `cleanup.days`              | integer                       | 3                      | Cleanup media and statuses older than `cleanup.days` (enabled if > 0)                   |
-| `cleanup.headers`           | true, false                   | true                   | Cleanup headers, see [tootctl media remove](https://docs.joinmastodon.org/admin/tootctl/#media-remove) |
-| `cleanup.media`             | true, false                   | true                   | Cleanup media files, see [tootctl media remove](https://docs.joinmastodon.org/admin/tootctl/#media-remove) |
-| `cleanup.orphans`           | true, false                   | false                  | Cleanup orphaned media files, see [tootctl media remove-orphans](https://docs.joinmastodon.org/admin/tootctl/#media-remove-orphans) |
-| `cleanup.previews`          | true, false                   | true                   | Cleanup preview cards, see [tootctl preview_cards remove](https://docs.joinmastodon.org/admin/tootctl/#preview_cards) |
-| `cleanup.statuses`          | true, false                   | true                   | Cleanup unreferenced statuses, see [tootctl statuses remove](https://docs.joinmastodon.org/admin/tootctl/#statuses-remove) |
-| `domain`                    | valid FQDN                    |                        | FQDN of the Mastodon instance                                                           |
-| `email`                     | valid e-mail                  |                        | E-mail address of the owner of the Mastodon instance                                    |
-| `log.access.enabled`        | true, false                   | false                  | Logging of http(s) accesses                                                             |
-| `log.access.format`         | standard, network, private    | network                | Use of real/network/no IP addresses in the access log                                   |
-| `log.debug`                 | true, false                   | false                  | If enabled, create additional debug logs in `~/snap/mastodon-server/common/debug/logs/` |
-| `media.dir`                 | absolute path                 | `$SNAP_COMMON/media`   | Location of the media directory (*public/system*)                                       |
-| `ports.http`                | 0 to 65353                    | 80                     | HTTP port                                                                               |
-| `ports.https`               | 0 to 65353                    | 443                    | HTTPS port                                                                              |
-| `status.length`             | integer                       | 1000                   | Character limit of statuses (toots); changes require recompilation of assets [1]        |
-| `system.cpu`                | integer, auto                 | 2                      | Number of CPU cores available (`auto` will try to determine the number of CPU cores)    |
-| `system.ram`                | integer, auto                 | 2                      | Available RAM in GB (`auto` will try to determine the amount of RAM)                    |
-| `system.ssd`                | true, false                   | true                   | Should be changed if the snap is installed on a slow disk                               |
+| Key                          | Values                        | Default value          | Description                                                                             |
+|------------------------------|-------------------------------|------------------------|-----------------------------------------------------------------------------------------|
+| `acme.server`                | letsencrypt, zerossl, buypass | letsencrypt            | CA used for acquiring an SSL certificate, see [acme.sh server](https://github.com/acmesh-official/acme.sh/wiki/Server) |
+| `announcements.post-refresh` | true, false                   | true                   | Create an unpublished announcement once the Snap has been refreshed                     |
+| `announcements.pre-refresh`  | true, false                   | true                   | Create an announcement 5 minutes before the Snap is refreshed                           |
+| `backup.days`                | integer                       | 0                      | Create and keep backups for `backup.days` (enabled if > 0)                              |
+| `backup.dir`                 | absolute path                 | `$SNAP_COMMON/backups` | Location of the backup directory                                                        |
+| `cleanup.accounts`           | true, false                   | false                  | Cleanup user accounts, see [tootctl accounts delete](https://docs.joinmastodon.org/admin/tootctl/#accounts-delete) |
+| `cleanup.days`               | integer                       | 3                      | Cleanup media and statuses older than `cleanup.days` (enabled if > 0)                   |
+| `cleanup.headers`            | true, false                   | true                   | Cleanup headers, see [tootctl media remove](https://docs.joinmastodon.org/admin/tootctl/#media-remove) |
+| `cleanup.media`              | true, false                   | true                   | Cleanup media files, see [tootctl media remove](https://docs.joinmastodon.org/admin/tootctl/#media-remove) |
+| `cleanup.orphans`            | true, false                   | false                  | Cleanup orphaned media files, see [tootctl media remove-orphans](https://docs.joinmastodon.org/admin/tootctl/#media-remove-orphans) |
+| `cleanup.previews`           | true, false                   | true                   | Cleanup preview cards, see [tootctl preview_cards remove](https://docs.joinmastodon.org/admin/tootctl/#preview_cards) |
+| `cleanup.statuses`           | true, false                   | true                   | Cleanup unreferenced statuses, see [tootctl statuses remove](https://docs.joinmastodon.org/admin/tootctl/#statuses-remove) |
+| `domain`                     | valid FQDN                    |                        | FQDN of the Mastodon instance                                                           |
+| `email`                      | valid e-mail                  |                        | E-mail address of the owner of the Mastodon instance                                    |
+| `logs.access.enabled`        | true, false                   | false                  | Logging of http(s) accesses                                                             |
+| `logs.access.format`         | standard, network, private    | network                | Use of real/network/no IP addresses in the access log                                   |
+| `logs.debug`                 | true, false                   | false                  | If enabled, create additional debug logs in `~/snap/mastodon-server/common/debug/logs/` |
+| `media.dir`                  | absolute path                 | `$SNAP_COMMON/media`   | Location of the media directory (*public/system*)                                       |
+| `ports.http`                 | 0 to 65353                    | 80                     | HTTP port                                                                               |
+| `ports.https`                | 0 to 65353                    | 443                    | HTTPS port                                                                              |
+| `status.length`              | integer                       | 1000                   | Character limit of statuses (toots); changes require recompilation of assets [1]        |
+| `system.cpu`                 | integer, auto                 | 2                      | Number of CPU cores available (`auto` will try to determine the number of CPU cores)    |
+| `system.ram`                 | integer, auto                 | 2                      | Available RAM in GB (`auto` will try to determine the amount of RAM)                    |
+| `system.ssd`                 | true, false                   | true                   | Should be changed if the snap is installed on a slow disk                               |
 
 [1] Changing this value will increase the time it takes for Snapcraft to update this Snap. This will increase the downtime of your instance by about 5 minutes.
 
@@ -47,7 +47,7 @@ If you plan to use your instance for yourself only, you may want to enable `SING
 
 ## Data privacy
 
-By default, this Snap will not log accesses unless `log.access.enabled` is `true`. Otherwise, the IP addresses in the access logs are anonymized by removing the last octet of each IP address (e.g. 192.168.100.10 becomes 192.168.100.0). If you want to change this, for example for debugging or to use [fail2ban](https://github.com/fail2ban/fail2ban), you can set `log.access.format` to `standard`.
+By default, this Snap will not log accesses unless `logs.access.enabled` is `true`. Otherwise, the IP addresses in the access logs are anonymized by removing the last octet of each IP address (e.g. 192.168.100.10 becomes 192.168.100.0). If you want to change this, for example for debugging or to use [fail2ban](https://github.com/fail2ban/fail2ban), you can set `logs.access.format` to `standard`.
 
 > [!IMPORTANT]
 > Note that even if access logging is enabled and not anonymized, the log files are rotated daily and anonymized.

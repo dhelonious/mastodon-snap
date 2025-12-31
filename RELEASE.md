@@ -22,3 +22,4 @@ Changelog for 4.5.3snap3:
 * The `mastodon-server.debug-report` command has been added
 * Add automatic performance tuning and scaling for PostgreSQL, Nginx and Mastodon, based on available RAM and the number of CPUs. The settings `system.cpu`, `system.ram` and `system.ssd` have been added, as well as the `mastodon-server.tune` command.
 * Add an improved Fediday feature (see [docs/features.md](docs/features.md))
+* Use `logs` and `announcements` as the settings names instead of `log` and `announcement` (see [docs/configuration.md](docs/configuration.md))

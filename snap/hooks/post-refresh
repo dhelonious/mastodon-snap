@@ -123,10 +123,23 @@ fi
 # NOTE: This is a fix for versions <= 4.4.6snap1 and should be removed in the future
 if UPDATE_ANNOUNCEMENT="$(snapctl get update.announcement)"; then
     if ! [ -z "$UPDATE_ANNOUNCEMENT" ]; then
-        snapctl set announcement.pre-refresh="$UPDATE_ANNOUNCEMENT"
-        snapctl set announcement.post-refresh="$UPDATE_ANNOUNCEMENT"
+        snapctl set announcements.pre-refresh="$UPDATE_ANNOUNCEMENT"
+        snapctl set announcements.post-refresh="$UPDATE_ANNOUNCEMENT"
     fi
-    snapctl unset update.announcement
+    snapctl unset update.announcements
+fi
+# NOTE: This is a fix for versions < 4.5.3snap3 and should be removed in the future
+if ANNOUNCEMENT_PRE_REFRESH=$(snapctl get announcement.pre-refresh); then
+    if ! [ -z "$ANNOUNCEMENT_PRE_REFRESH" ]; then
+        snapctl set announcements.pre-refresh="$ANNOUNCEMENT_PRE_REFRESH"
+        snapctl unset announcement.pre-refresh
+    fi
+fi
+if ANNOUNCEMENT_POST_REFRESH=$(snapctl get announcement.post-refresh); then
+    if ! [ -z "$ANNOUNCEMENT_POST_REFRESH" ]; then
+        snapctl set announcements.post-refresh="$ANNOUNCEMENT_POST_REFRESH"
+        snapctl unset announcement.post-refresh
+    fi
 fi
 
 if [ "$SNAP_VERSION" != "$PREVIOUS_SNAP_VERSION" ]; then
@@ -152,8 +165,23 @@ fix_daemon_user "$NGINX_LOG_FILE"
 fix_daemon_user "$NGINX_ACCESS_LOG_FILE"
 
 # NOTE: This is a fix for older versions and may be removed in the future
-if ! is_access_log_format "$(snapctl get log.access.format)"; then
-    snapctl set log.access.format="network"
+if ! is_access_log_format "$(snapctl get logs.access.format)"; then
+    snapctl set logs.access.format="network"
+fi
+# NOTE: This is a fix for versions < 4.5.3snap3 and should be removed in the future
+if LOG_ACCESS=$(snapctl get log.access); then
+    if ! [ -z "$LOG_ACCESS" ]; then
+        snapctl set logs.access.format=$(snapctl get log.access.format)
+        snapctl unset log.access.format
+        snapctl set logs.access.enabled=$(snapctl get log.access.enabled)
+        snapctl unset log.access.enabled
+    fi
+fi
+if LOG_DEBUG=$(snapctl get log.debug); then
+    if ! [ -z "$LOG_DEBUG" ]; then
+        snapctl set logs.debug=$(snapctl get log.debug)
+        snapctl unset log.debug
+    fi
 fi
 
 echo Update nginx configs
