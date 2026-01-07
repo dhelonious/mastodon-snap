@@ -40,7 +40,7 @@ if SYSTEM_ANNOUNCEMENT_ID=$(snapctl get snap.announcement-id); then
 fi
 if SYSTEM_COMPILATION_REQUIRED=$(snapctl get snap.compilation-required); then
     if ! [ -z "$SYSTEM_COMPILATION_REQUIRED" ]; then
-        snapctl set snap.complation-required="$SYSTEM_COMPILATION_REQUIRED"
+        snapctl set snap.compilation-required="$SYSTEM_COMPILATION_REQUIRED"
         snapctl unset snap.compilation-required
     fi
 fi
@@ -141,6 +141,7 @@ if ANNOUNCEMENT_POST_REFRESH=$(snapctl get announcement.post-refresh); then
         snapctl unset announcement.post-refresh
     fi
 fi
+snapctl unset announcement
 
 if [ "$SNAP_VERSION" != "$PREVIOUS_SNAP_VERSION" ]; then
     echo Update mastodon
@@ -183,6 +184,7 @@ if LOG_DEBUG=$(snapctl get log.debug); then
         snapctl unset log.debug
     fi
 fi
+snapctl unset log
 
 echo Update nginx configs
 copy_nginx_configs
