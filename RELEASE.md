@@ -1,6 +1,6 @@
-# Unofficial Snap for Mastodon 4.5.3
+# Unofficial Snap for Mastodon 4.5.4
 
-See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.5.3
+See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.5.4
 
 This release also includes:
 
@@ -13,7 +13,7 @@ This release also includes:
 * redis 8.4.0
 * ruby 3.4.7
 
-Changelog for 4.5.3snap3:
+Changelog for 4.5.4snap1:
 
 * Update libvips to 8.18.0
 * Add pgbouncer for database connection pooling
