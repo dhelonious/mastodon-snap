@@ -12,7 +12,7 @@ The following settings are available:
 | `announcements.post-refresh` | true, false                   | true                   | Create an unpublished announcement once the Snap has been refreshed                     |
 | `announcements.pre-refresh`  | true, false                   | true                   | Create an announcement 5 minutes before the Snap is refreshed                           |
 | `backup.days`                | integer                       | 0                      | Create and keep backups for `backup.days` (enabled if > 0)                              |
-| `backup.dir`                 | absolute path                 | `$SNAP_COMMON/backups` | Location of the backup directory                                                        |
+| `backup.dir`                 | absolute path                 | `$SNAP_COMMON/backups` | Location of the backup directory [1]                                                    |
 | `cleanup.accounts`           | true, false                   | false                  | Cleanup user accounts, see [tootctl accounts delete](https://docs.joinmastodon.org/admin/tootctl/#accounts-delete) |
 | `cleanup.days`               | integer                       | 3                      | Cleanup media and statuses older than `cleanup.days` (enabled if > 0)                   |
 | `cleanup.headers`            | true, false                   | true                   | Cleanup headers, see [tootctl media remove](https://docs.joinmastodon.org/admin/tootctl/#media-remove) |
@@ -25,15 +25,16 @@ The following settings are available:
 | `logs.access.enabled`        | true, false                   | false                  | Logging of http(s) accesses                                                             |
 | `logs.access.format`         | standard, network, private    | network                | Use of real/network/no IP addresses in the access log                                   |
 | `logs.debug`                 | true, false                   | false                  | If enabled, create additional debug logs in `~/snap/mastodon-server/common/debug/logs/` |
-| `media.dir`                  | absolute path                 | `$SNAP_COMMON/media`   | Location of the media directory (*public/system*)                                       |
+| `media.dir`                  | absolute path                 | `$SNAP_COMMON/media`   | Location of the media directory (*public/system*) [1]                                   |
 | `ports.http`                 | 0 to 65353                    | 80                     | HTTP port                                                                               |
 | `ports.https`                | 0 to 65353                    | 443                    | HTTPS port                                                                              |
-| `status.length`              | integer                       | 1000                   | Character limit of statuses (toots); changes require recompilation of assets [1]        |
+| `status.length`              | integer                       | 1000                   | Character limit of statuses (toots); changes require recompilation of assets [2]        |
 | `system.cpu`                 | integer, auto                 | 2                      | Number of CPU cores available (`auto` will try to determine the number of CPU cores)    |
 | `system.ram`                 | integer, auto                 | 2                      | Available RAM in GB (`auto` will try to determine the amount of RAM)                    |
 | `system.ssd`                 | true, false                   | true                   | Should be changed if the snap is installed on a slow disk                               |
 
-[1] Changing this value will increase the time it takes for Snapcraft to update this Snap. This will increase the downtime of your instance by about 5 minutes.
+[1] This features requires the removable media plug. To install it, run the command: `sudo snap connect mastodon-server:removable-media`.
+[2] Changing this value will increase the time it takes for Snapcraft to update this Snap. This will increase the downtime of your instance by about 5 minutes.
 
 You can also set multiple values at once using
 
@@ -196,21 +197,48 @@ Here is a sample configuration for an nginx reverse proxy:
         }
     }
 
-## External media storage
+## External storage
 
-The media directory can grow quickly, depending on how busy your server is. To move the media directory to an external volume mounted under `/media` or `/mnt`, you must first allow Snap access to external media:
+By default, the mastodon-server Snap does not have access to directories other than `/snap/mastodon-server/`, `/var/snap/mastodon-server/`, and `~/snap/mastodon-server/`. However, it might be desirable to relocate some directories to an external location under `/media/` or `/mnt/`.
+
+To do this, you must first allow the Snap access to external media:
 
     sudo snap connect mastodon-server:removable-media
 
-If the default media dir `/var/snap/mastodon-server/common/media` already contains files, you can transfer them to your external directory:
+### Media
+
+Depending on how busy your server is, the media directory can grow quickly. If you do not have access to S3 storage, you may wish to move the media to a separate partition or disk mounted at `/media/mastodon`.
+
+1. If the default media directory `/var/snap/mastodon-server/common/media` already contains files, you can transfer them to your external directory:
 
     sudo rsync -a /var/snap/mastodon-server/common/media /media/mastodon
 
-Change the `media.dir` settings to your external directory:
+2. Then, change the `media.dir` settings to point to your external directory:
 
     sudo set mastodon-server media.dir=/media/mastodon
 
-You can then remove the old media directory.
+3. Afterwards, you can remove the contents of the old media directory:
+
+    rm -rf /var/snap/mastodon-server/common/media/*
+
+> [!IMPORTANT]
+> The order of these steps matters if you are doing this after your instance has been running for a while. If you change the `media.dir` to an empty directory, Mastodon will not be able to display media and will have to fetch it, which causes unnecessary network traffic and may even require manual intervention.
+
+### Backups
+
+Since each export contains a compressed archive of the media directory, the size of the backup directory also increases. Additionally, when you uninstall the Snap, all of the above-mentioned directories are deleted, including the default backup directory `/var/snap/mastodon-server/common/backups`, which contains all manual and automatic exports.
+
+Therefore, you may wish to change the location of the `backup.dir` to an external device or NAS mounted under `/mnt/backups`:
+
+    sudo set mastodon-server backup.dir=/mnt/backups
+
+If the default backup directory `/var/snap/mastodon-server/common/backups` already contains exports, you can transfer them to your external directory like this:
+
+    sudo rsync -a /var/snap/mastodon-server/common/backups /mnt/backups
+
+You can then remove the contents of the old backup directory:
+
+    rm -rf /var/snap/mastodon-server/common/backups/*
 
 ## Tuning
 

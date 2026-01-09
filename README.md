@@ -6,7 +6,7 @@ Unofficial Snap for Mastodon (decentralized social media server) 🦣📦
 - [About](#-about)
 - [Quickstart](#-quickstart)
 - [Installation](#-installation)
-  - [Online from the Snap store](#online-from-the-snap-store)
+  - [Online from the Snap Store](#online-from-the-snap-store)
   - [Offline from a Snap file](#offline-from-a-snap-file)
   - [Updates](#updates)
   - [Revisions](#revisions)
@@ -53,7 +53,7 @@ If you're not running Ubuntu, start by [installing the Snap daemon](https://snap
 
 # 📦 Installation
 
-## Online from the Snap store
+## Online from the Snap Store
 
 [![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/mastodon-server)
 

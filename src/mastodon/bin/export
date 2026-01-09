@@ -48,3 +48,10 @@ if [ -z "$SKIP_MEDIA_EXPORT" ]; then
         tar -czf "$export_dir/media.tar.gz" -C "$(dirname $MEDIA_DIR)" --exclude=*/cache "$(basename $MEDIA_DIR)"
     fi
 fi
+
+echo Export finished successfully!
+if [ "$BACKUP_DIR" == "$DEFAULT_BACKUP_DIR" ]; then
+    echo
+    echo [!] You are currently using the default backup directory.
+    echo Make sure you copy $export_dir to a safe location. Otherwise, your export will be deleted when you uninstall the snap. To permantently change the location of the backup directory, use 'snap set mastodon-server backup.dir=/mnt/backups'.
+fi
