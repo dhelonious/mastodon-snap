@@ -1,4 +1,4 @@
-# 🪪 Certificates
+# 📜 Certificates
 
 ## Provide your own certificates
 
