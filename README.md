@@ -1,4 +1,6 @@
-Unofficial Snap for Mastodon (decentralized social media server) 🦣📦
+Unofficial Snap for Mastodon (decentralized social media server)
+
+<img src="docs/media/mascot.png" width=50% alt="The mastodon-snap mascot is an origami mastodon."/>
 
 
 # 📖 Table of contents
