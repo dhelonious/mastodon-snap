@@ -1,6 +1,6 @@
 Unofficial Snap for Mastodon (decentralized social media server)
 
-<img src="docs/media/mascot.png" width=50% alt="The mastodon-snap mascot is an origami mastodon."/>
+<img src="docs/media/papodon.png" width=50% alt="An image of Papodon, an origami mastodon and the mastodon-snap mascot."/>
 
 
 # 📖 Table of contents
