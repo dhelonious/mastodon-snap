@@ -7,7 +7,7 @@ This release also includes:
 * ffmpeg 8.0.1
 * libvips 8.18.0
 * nginx 1.29.4
-* node 20.19.6
+* node 20.20.0
 * pgbouncer 1.25.1
 * postgres 18.1
 * redis 8.4.0
@@ -18,6 +18,7 @@ This release also includes:
 
 Changelog for 4.5.4snap1:
 
+* Update node to 20.20.0
 * Update libvips to 8.18.0
 * Add pgbouncer for database connection pooling
 * Split sidekiq into prioritised processes (`sidekiq-high`, `sidekiq-medium`, and `sidekiq-low`)
