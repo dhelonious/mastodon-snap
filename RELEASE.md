@@ -13,6 +13,9 @@ This release also includes:
 * redis 8.4.0
 * ruby 3.4.7
 
+> [!IMPORTANT]
+> This release should greatly enhance performance due to the addition of pgbouncer, extra sidekiq workers, and support for tuning based on system hardware. Take a look at the tuning section of the [readme](README.md) to find out more.
+
 Changelog for 4.5.4snap1:
 
 * Update libvips to 8.18.0

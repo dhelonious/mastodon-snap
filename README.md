@@ -143,6 +143,17 @@ See the [certificates docs](docs/certificates.md) for advanced certificate topic
 
 Read the [backups guide](docs/backups.md) to learn how to export and restore your Mastodon server.
 
+## Tuning
+
+You can tune services to fit your system by adapting the settings `system.cpu`, `system.ram` and `system.ssd`. On modern systems, the value of `system.ssd` can almost always be set to true and ignored.
+
+By default, it is assumed that `system.cpu=2` and `system.ram=2` (GB). This does not necessarily mean that your server only has two CPU cores and two GB of RAM. Rather, this means that Mastodon will scale its services, such as PostgreSQL, Sidekiq and Nginx, to use roughly that amount of system resources. If your system is more powerful, or if mastodon-server is the only application running on your system, you can increase these values. See the [configuration docs](docs/configuration.md) for an overview of these settings.
+
+You can use the `mastodon-server.tune` command to tune the settings. This will also display a preview of the resulting service settings, which is of interest primarily to experts.
+
+> [!TIP]
+> There is also the option to set `system.cpu=auto` and `system.ram=auto`, which will determine the maximum available resources for the Snap. This should usually correspond to the actual number of CPU cores and amount of RAM.
+
 ## Themes
 
 Coming from ~~Twitter~~ X and wanting a familiar look? Then the included [Mastodon Bird UI](https://github.com/ronilaukkarinen/mastodon-bird-ui) and [Tangerine UI](https://github.com/nileane/TangerineUI-for-Mastodon) themes might be for you. While *Mastodon Bird UI* retains the separation between dark, light and high contrast variants, *Tangerine UI* automatically switches to a light or dark variant depending on what your browser requests. You can change the theme in *Preferences/Appearance*.
