@@ -16,6 +16,8 @@ Unofficial Snap for Mastodon (decentralized social media server)
   - [Certificates](#certificates)
   - [Backups](#backups)
   - [Themes](#themes)
+  - [Migration](#migration)
+  - [Tuning](#tuning)
 - [Configuration](#️-configuration)
 - [Features](#-features)
 - [Maintenance](#-maintenance)
@@ -143,6 +145,17 @@ See the [certificates docs](docs/certificates.md) for advanced certificate topic
 
 Read the [backups guide](docs/backups.md) to learn how to export and restore your Mastodon server.
 
+## Themes
+
+Coming from ~~Twitter~~ X and wanting a familiar look? Then the included [Mastodon Bird UI](https://github.com/ronilaukkarinen/mastodon-bird-ui) and [Tangerine UI](https://github.com/nileane/TangerineUI-for-Mastodon) themes might be for you. While *Mastodon Bird UI* retains the separation between dark, light and high contrast variants, *Tangerine UI* automatically switches to a light or dark variant depending on what your browser requests. You can change the theme in *Preferences/Appearance*.
+
+> [!IMPORTANT]
+> If you have a severe visual impairment, an [accessible version of the Bird UI theme](https://github.com/ronilaukkarinen/mastodon-bird-ui#how-to-install-an-accessible-version-built-for-people-with-serious-vision-impairment) is included by default with an increased font size. This theme is indicated by the phrase ***High contrast++***, which contains ***two plus signs*** and is translated into your selected language. In addition, this theme is marked with the ♿ ***emoji representing a person in a wheelchair*** as the [International Symbol of Access](https://en.wikipedia.org/wiki/International_Symbol_of_Access).
+
+## Migration
+
+Refer to the [migration guide](docs/migration.md) to migrate an existing account or instance to your mastodon-server Snap. The guide also contains instructions on how to migrate away from it, should you wish to do so.
+
 ## Tuning
 
 You can tune services to fit your system by adapting the settings `system.cpu`, `system.ram` and `system.ssd`. On modern systems, the value of `system.ssd` can almost always be set to true and ignored.
@@ -153,13 +166,6 @@ You can use the `mastodon-server.tune` command to tune the settings. This will a
 
 > [!TIP]
 > There is also the option to set `system.cpu=auto` and `system.ram=auto`, which will determine the maximum available resources for the Snap. This should usually correspond to the actual number of CPU cores and amount of RAM.
-
-## Themes
-
-Coming from ~~Twitter~~ X and wanting a familiar look? Then the included [Mastodon Bird UI](https://github.com/ronilaukkarinen/mastodon-bird-ui) and [Tangerine UI](https://github.com/nileane/TangerineUI-for-Mastodon) themes might be for you. While *Mastodon Bird UI* retains the separation between dark, light and high contrast variants, *Tangerine UI* automatically switches to a light or dark variant depending on what your browser requests. You can change the theme in *Preferences/Appearance*.
-
-> [!IMPORTANT]
-> If you have a severe visual impairment, an [accessible version of the Bird UI theme](https://github.com/ronilaukkarinen/mastodon-bird-ui#how-to-install-an-accessible-version-built-for-people-with-serious-vision-impairment) is included by default with an increased font size. This theme is indicated by the phrase ***High contrast++***, which contains ***two plus signs*** and is translated into your selected language. In addition, this theme is marked with the ♿ ***emoji representing a person in a wheelchair*** as the [International Symbol of Access](https://en.wikipedia.org/wiki/International_Symbol_of_Access).
 
 
 # ⚙️ Configuration

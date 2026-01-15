@@ -12,7 +12,7 @@ Note that exports do not include media cached from other servers. This means tha
 > If you just want to export the Mastodon database, use the `db-dump` command.
 
 > [!NOTE]
-> The backup directory can be changed using the `backup.dir` setting (see the [configuration docs](docs/configuration.md)). If backups are to be stored on external storage, the Snap must be connected to the `removable-media` plug.
+> The backup directory can be changed using the `backup.dir` setting (see the [configuration docs](docs/configuration.md)). If backups are to be stored on external storage, the Snap must be connected to the `removable-media` interface.
 
 ## Restore
 
