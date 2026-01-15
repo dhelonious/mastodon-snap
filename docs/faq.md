@@ -1,5 +1,24 @@
 # ❓ FAQs
 
+## Why shouldn't I join mastodon.social?
+
+Joining an existing instance ([mastodon.social](https://mastodon.social/) is just one example) is perfectly acceptable and should be the first step you take to explore the Fediverse. For most people, this will also be a long-term solution. Mastodon instances, especially the larger ones, are professionally hosted and maintained. Therefore, they can be considered safe and future-proof.
+
+However, there may be reasons to consider a self-hosted approach. First and foremost, you may want total control over your data at all times, which is only possible if your data remains on a machine that you fully control. Another reason might be that you want to start an instance for your family and friends, or for like-minded individuals around a specific topic or hobby.
+
+Lastly, you may want more control over content moderation. If your home instance blocks a particular domain, you cannot follow accounts from it or receive messages. One solution to this issue would be to switch to an instance that does not block this domain. Alternatively, you could switch to a self-hosted instance and decide which domains to block yourself. In both cases, you may wish to read this article: [Moving or leaving accounts](https://docs.joinmastodon.org/user/moving/).
+
+## Why should I not use masto.host?
+
+Managed services, such as those offered by [masto.host](https://masto.host/), are ideal for users who lack the means or motivation to self-host. They offer most of the above benefits, but without the burden of full responsibility for running and maintaining a Mastodon instance alone.
+
+This is generally fine, but a few concerns should be kept in mind:
+
+1. Running multiple instances on the same infrastructure undermines the concept of a decentralised federation. If the infrastructure becomes temporarily unavailable due to technical errors, or permanently unavailable if the business shuts down, you will not be able to access your account. Therefore, having a backup account on another instance and regularly exporting your data may be a good idea.
+
+2. With a managed service, data access is limited because you only control the instance, not the host itself. This is the main difference between a managed service and a virtual private server (VPS). However, it should be noted that [masto.host](https://masto.host/) offers the feature of [downloading backups](https://masto.host/help/downloading-backups/).
+
+3. To achieve true independence, it is important to maintain choices. Currently, the only managed instance providers for Mastodon are [masto.host](https://masto.host/) and [toot.io](https://toot.io/mastodon_hosting.html). This does not mean that these providers' services are bad in any way. However, you should be aware that the options are currently limited and will probably remain so in future.
 
 ## Why is yet another method of setting up Mastodon needed?
 
@@ -10,7 +29,6 @@ So anyone should be able to host their own Mastodon instance on a home server, a
 One solution to this problem is provided by [YunoHost](https://yunohost.org), which offers a large catalog of applications, including Mastodon, that can be deployed with a single click. This makes self-hosting convenient and nearly maintenance-free. However, to ensure stability and compatibility across all these applications, YunoHost may not always be able to use the latest versions of its dependencies. This may mean that you cannot use the latest version of Mastodon or its newest features.
 
 This brings us back to why this project was started in the first place. This standalone, all-in-one Snap package further simplifies the installation process for Mastodon, enabling anyone to host their own fully functional (micro)instance on any Linux system. Because Snaps are self-updating, setting up a Mastodon instance can be reduced to executing two simple commands, with minimal future maintenance required.
-
 
 ## Why use Canonical's Snap packaging instead of Flatpak?
 
