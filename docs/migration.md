@@ -7,7 +7,7 @@ If you want to move your account to or from a public instance, you can simply [e
 > [!IMPORTANT]
 > Mastodon currently does not support importing posts or media.
 
-## Migration an instance to the mastodon-server Snap
+## Migrating an instance to the mastodon-server Snap
 
 Requirements:
 
