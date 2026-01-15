@@ -14,16 +14,9 @@ This release also includes:
 * ruby 3.4.7
 
 > [!IMPORTANT]
-> This release should greatly enhance performance due to the addition of pgbouncer, extra sidekiq workers, and support for tuning based on system hardware. Take a look at the tuning section of the [readme](README.md) to find out more.
+> Release 4.5.4snap1 should have greatly enhanced performance due to the addition of pgbouncer, extra sidekiq workers, and support for tuning based on system hardware. Take a look at the tuning section of the [readme](README.md) to find out more.
 
-Changelog for 4.5.4snap1:
+Changelog for 4.5.4snap2:
 
-* Update node to 20.20.0
-* Update libvips to 8.18.0
-* Add pgbouncer for database connection pooling
-* Split sidekiq into prioritised processes (`sidekiq-high`, `sidekiq-medium`, and `sidekiq-low`)
-* Improve the security of nginx
-* The `mastodon-server.debug-report` command has been added
-* Add automatic performance tuning and scaling for PostgreSQL, Nginx and Mastodon, based on available RAM and the number of CPUs. The settings `system.cpu`, `system.ram` and `system.ssd` have been added, as well as the `mastodon-server.tune` command.
-* Add an improved Fediday feature (see [docs/features.md](docs/features.md))
-* Use `logs` and `announcements` as the settings names instead of `log` and `announcement` (see [docs/configuration.md](docs/configuration.md))
+* Add an additional `-p` option to the `mastodon-server.export` and `mastodon-server.restore` commands to select the path (requires the connection of the `removable-media` interface, see [docs/configuration.md](docs/configuration.md)).
+* Add the ability to specify a directory name in `mastodon-server.export`.

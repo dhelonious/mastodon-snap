@@ -9,11 +9,37 @@ check_service postgres
 load_tootctl_tuning_env
 
 print_usage() {
-    echo "Usage: $SNAP_NAME.restore BACKUP"
+    echo "Usage: $SNAP_NAME.restore [-p PATH] NAME"
 }
 
-while getopts "h" OPTION; do
+if [ -z "$1" ]; then
+    print_usage
+    exit 0
+fi
+
+backup_dir="$BACKUP_DIR"
+
+while getopts "p:h" OPTION; do
     case "$OPTION" in
+    p)
+        backup_dir="$OPTARG"
+
+        case "$backup_dir" in
+            /media/*|/mnt/*|/run/media/*)
+                if ! [ -d "$backup_dir" ]; then
+                    echo_error The path $backup_dir does not exist or is not accessible
+                    echo_error
+                    echo_error External backups can only be accessed if the removable-media interface is connected.
+                    echo_error You can connect it using the command: sudo snap connect $SNAP_NAME:removable-media
+                    exit 1
+                fi
+                ;;
+            *)
+                echo_error "An external backup can only be on a removable media (/media/*, /mnt/*, /run/media/*)"
+                exit 1
+                ;;
+        esac
+        ;;
     h)
         print_usage
         exit 0
@@ -22,22 +48,18 @@ while getopts "h" OPTION; do
 done
 shift "$(($OPTIND-1))"
 
-if [ -z "$1" ]; then
-    echo "No backup specified"
-    exit 0
-fi
+export_dir="$backup_dir/$1"
 
-if [ -z "$(ls -A '$BACKUP_DIR')" ]; then
-    echo_error "The backup directory $BACKUP_DIR is empty"
+if ! [ -d "$export_dir" ]; then
+    echo_error "The backup $export_dir does not exist"
     exit 1
 fi
 
 confirm "Are you sure you want to restore $1?" || exit 0
 
-backup_dir="$BACKUP_DIR/$1"
-echo Restoring backup from $backup_dir
+echo Restoring backup from $export_dir
 
-BACKUP_VERSION="$(cat $backup_dir/version)"
+BACKUP_VERSION="$(cat $export_dir/version)"
 if [ "$BACKUP_VERSION" != "$SNAP_VERSION" ]; then
     echo CAUTION: You are trying to restore a backup from another version!
     echo "Snap version: $SNAP_VERSION"
@@ -50,7 +72,7 @@ if [ "$BACKUP_VERSION" != "$SNAP_VERSION" ]; then
 fi
 
 echo Restoring settings...
-cat "$backup_dir/settings" | while read setting; do
+cat "$export_dir/settings" | while read setting; do
     snapctl set $setting
 done
 
@@ -66,7 +88,7 @@ stop_service sidekiq
 stop_service streaming
 
 echo Restoring configuration...
-rsync --ignore-times --no-owner --no-perms --chmod g+w --chown root:$DAEMON_USER "$backup_dir/mastodon.conf" "$SNAP_COMMON/" \
+rsync --ignore-times --no-owner --no-perms --chmod g+w --chown root:$DAEMON_USER "$export_dir/mastodon.conf" "$SNAP_COMMON/" \
     && chmod 664 "$SNAP_COMMON/mastodon.conf"
 
 mastodon_set_var DB_PASS "$(get_secret postgres)"
@@ -84,7 +106,7 @@ else
 fi
 
 echo Restoring database...
-postgres_restore_database "$backup_dir/database.sql"
+postgres_restore_database "$export_dir/database.sql"
 if [ "$BACKUP_VERSION" != "$SNAP_VERSION" ]; then
     if confirm "Do you want to start a database migration?"; then
         mastodon_db_migrate
@@ -93,25 +115,25 @@ if [ "$BACKUP_VERSION" != "$SNAP_VERSION" ]; then
     fi
 fi
 
-if [ -f "$backup_dir/redis.rdb" ]; then
+if [ -f "$export_dir/redis.rdb" ]; then
     echo Restoring redis database...
     stop_service redis
-    run_as_daemon_user cp "$backup_dir/redis.rdb" "$REDIS_DATA/"
+    run_as_daemon_user cp "$export_dir/redis.rdb" "$REDIS_DATA/"
     start_service redis
 fi
 
-if [ -d "$backup_dir/certs" ]; then
+if [ -d "$export_dir/certs" ]; then
     echo Restoring certificates...
-    cp -r "$backup_dir/certs/"* "$CERT_DIR/"
+    cp -r "$export_dir/certs/"* "$CERT_DIR/"
 fi
 
 echo Cleaning up media references...
 mastodon_tootctl preview_cards remove --days 1 --concurrency $TOOTCTL_CONCURRENCY
 mastodon_tootctl media remove --days 1 --concurrency $TOOTCTL_CONCURRENCY
 
-if [ -f "$backup_dir/media.tar.gz" ]; then
+if [ -f "$export_dir/media.tar.gz" ]; then
     echo Restoring uploads...
-    run_as_daemon_user tar -xzf "$backup_dir/media.tar.gz" -C "$MEDIA_DIR" --strip-components=1 --no-same-permissions --no-same-owner --skip-old-files
+    run_as_daemon_user tar -xzf "$export_dir/media.tar.gz" -C "$MEDIA_DIR" --strip-components=1 --no-same-permissions --no-same-owner --skip-old-files
 
     echo The following action may take a long time to complete
     confirm "Refresh recent media?" && \

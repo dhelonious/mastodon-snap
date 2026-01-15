@@ -8,7 +8,54 @@ check_root
 check_setup
 check_service postgres
 
-export_dir="${1:-$BACKUP_DIR}/$(date +'%Y%m%d-%H%M%S')"
+print_usage() {
+    echo "Usage: $SNAP_NAME.export [-p PATH] [NAME]"
+}
+
+backup_dir="$BACKUP_DIR"
+
+while getopts "p:h" OPTION; do
+    case "$OPTION" in
+    p)
+        backup_dir="$OPTARG"
+
+        case "$backup_dir" in
+            /media/*|/mnt/*|/run/media/*)
+                if ! [ -d "$backup_dir" ]; then
+                    echo_error The path $backup_dir does not exist or is not accessible
+                    echo_error
+                    echo_error External backups can only be accessed if the removable-media interface is connected.
+                    echo_error You can connect it using the command: sudo snap connect $SNAP_NAME:removable-media
+                    exit 1
+                fi
+                ;;
+            *)
+                echo_error "An external backup can only be on a removable media (/media/*, /mnt/*, /run/media/*)"
+                exit 1
+                ;;
+        esac
+        ;;
+    h)
+        print_usage
+        exit 0
+        ;;
+    esac
+done
+shift "$(($OPTIND-1))"
+
+if [ -n "$1" ]; then
+    export_dir="$backup_dir/$1"
+else
+    export_dir="$backup_dir/$(date +'%Y%m%d-%H%M%S')"
+fi
+
+if [ -d "$export_dir" ]; then
+    echo_error "The backup $export_dir does aleady exist"
+    echo_error
+    echo_error "Please choose another name or remove $export_dir manually."
+    exit 1
+fi
+
 mkdir -p "$export_dir"
 echo "Exporting backup to $export_dir..."
 
