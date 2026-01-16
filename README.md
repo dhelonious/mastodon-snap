@@ -1,3 +1,5 @@
+[![mastodon-server](https://snapcraft.io/mastodon-server/badge.svg)](https://snapcraft.io/mastodon-server)
+
 Unofficial Snap for Mastodon (decentralized social media server)
 
 <img src="docs/media/papodon.png" width=50% alt="An image of Papodon, an origami mastodon and the mastodon-snap mascot."/>
