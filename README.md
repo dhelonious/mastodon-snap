@@ -1,9 +1,8 @@
-[![mastodon-server](https://snapcraft.io/mastodon-server/badge.svg)](https://snapcraft.io/mastodon-server) [![build](https://github.com/dhelonious/mastodon-snap/actions/workflows/build.yml/badge.svg?branch=development&event=push)](https://github.com/dhelonious/mastodon-snap/actions/workflows/build.yml)
-
 Unofficial Snap for Mastodon (decentralized social media server)
 
 <img src="docs/media/papodon.png" width=50% alt="An image of Papodon, an origami mastodon and the mastodon-snap mascot."/>
 
+[![build](https://github.com/dhelonious/mastodon-snap/actions/workflows/build.yml/badge.svg?branch=development&event=push)](https://github.com/dhelonious/mastodon-snap/actions/workflows/build.yml) [![release](https://github.com/dhelonious/mastodon-snap/actions/workflows/release.yml/badge.svg)](https://github.com/dhelonious/mastodon-snap/actions/workflows/release.yml) [![mastodon-server](https://snapcraft.io/mastodon-server/badge.svg)](https://snapcraft.io/mastodon-server)
 
 # 📖 Table of contents
 
