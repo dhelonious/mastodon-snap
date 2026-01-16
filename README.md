@@ -1,4 +1,4 @@
-[![mastodon-server](https://snapcraft.io/mastodon-server/badge.svg)](https://snapcraft.io/mastodon-server)
+[![mastodon-server](https://snapcraft.io/mastodon-server/badge.svg)](https://snapcraft.io/mastodon-server) [![build](https://github.com/dhelonious/mastodon-snap/actions/workflows/build.yml/badge.svg?branch=development&event=push)](https://github.com/dhelonious/mastodon-snap/actions/workflows/build.yml)
 
 Unofficial Snap for Mastodon (decentralized social media server)
 
