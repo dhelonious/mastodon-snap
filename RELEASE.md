@@ -20,3 +20,4 @@ Changelog for 4.5.4snap2:
 
 * Add an additional `-p` option to the `mastodon-server.export` and `mastodon-server.restore` commands to select the path (requires the connection of the `removable-media` interface, see [docs/configuration.md](docs/configuration.md)).
 * Add the ability to specify a directory name in `mastodon-server.export`.
+* Update tangerine-ui to 2.5.3
