@@ -1,4 +1,6 @@
 name: mastodon-server
+title: Mastodon Server
+version: 4.5.4snap2
 summary: Unofficial snap for Mastodon (decentralized social media)
 description: |
   Mastodon is a free, open-source social network server based on ActivityPub
@@ -7,12 +9,11 @@ description: |
   are interoperable as a federated network (users on one server can seamlessly
   communicate with users from another one, including non-Mastodon software that
   implements ActivityPub!)
+license: AGPL-3.0
 
 base: core24
-version: 4.5.4snap2
 grade: stable
 confinement: strict
-
 platforms:
   amd64:
     build-on: amd64
@@ -1162,3 +1163,14 @@ parts:
       find $CRAFT_PRIME -type f -name "README.md" -execdir rm -f {} \;
       find $CRAFT_PRIME -xtype l -print -exec rm {} \;
       find $CRAFT_PRIME -type d -empty -depth -print -execdir rmdir {} \;
+
+lint:
+  ignore:
+    - metadata:
+      - website
+      - contact
+      - source-code
+      - issues
+      - donation
+    - library:
+      - lib/libhistory.so.*
