@@ -1,8 +1,17 @@
-Unofficial Snap for Mastodon (decentralized social media server)
+[![license](https://img.shields.io/github/license/dhelonious/mastodon-snap.svg)](LICENSE)
+![latest release](https://img.shields.io/github/v/release/dhelonious/mastodon-snap?label=latest)
+[![releases rss](https://img.shields.io/badge/rss-releases-ffa500?logo=rss)](https://github.com/dhelonious/mastodon-snap/releases.atom)
+![build status](https://img.shields.io/github/actions/workflow/status/dhelonious/mastodon-snap/build.yml)
+![release status](https://img.shields.io/github/actions/workflow/status/dhelonious/mastodon-snap/release.yml?label=release)
+<br/>
+[![snap store](https://snapcraft.io/mastodon-server/badge.svg)](https://snapcraft.io/mastodon-server)
+[![matrix](https://img.shields.io/matrix/mastodon-snap:matrix.org.svg?logo=matrix)](https://matrix.to/#/#mastodon-snap:matrix.org)
+[![discord](https://img.shields.io/discord/1463136909009227819)](https://discord.gg/ppkjub9FME)
 
 <img src="docs/media/papodon.png" width=50% alt="An image of Papodon, an origami mastodon and the mastodon-snap mascot."/>
 
-[![build](https://github.com/dhelonious/mastodon-snap/actions/workflows/build.yml/badge.svg?branch=development&event=push)](https://github.com/dhelonious/mastodon-snap/actions/workflows/build.yml) [![release](https://github.com/dhelonious/mastodon-snap/actions/workflows/release.yml/badge.svg)](https://github.com/dhelonious/mastodon-snap/actions/workflows/release.yml) [![mastodon-server](https://snapcraft.io/mastodon-server/badge.svg)](https://snapcraft.io/mastodon-server)
+Unofficial Snap for Mastodon (decentralized social media server)
+
 
 # 📖 Table of contents
 
