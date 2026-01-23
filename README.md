@@ -1,8 +1,8 @@
 [![license](https://img.shields.io/github/license/dhelonious/mastodon-snap.svg)](LICENSE)
-![latest release](https://img.shields.io/github/v/release/dhelonious/mastodon-snap?label=latest)
+[![latest release](https://img.shields.io/github/v/release/dhelonious/mastodon-snap?label=latest)](https://github.com/dhelonious/mastodon-snap/releases/latest)
 [![releases rss](https://img.shields.io/badge/rss-releases-ffa500?logo=rss)](https://github.com/dhelonious/mastodon-snap/releases.atom)
-![build status](https://img.shields.io/github/actions/workflow/status/dhelonious/mastodon-snap/build.yml)
-![release status](https://img.shields.io/github/actions/workflow/status/dhelonious/mastodon-snap/release.yml?label=release)
+[![build status](https://img.shields.io/github/actions/workflow/status/dhelonious/mastodon-snap/build.yml)](https://github.com/dhelonious/mastodon-snap/actions/workflows/build.yml)
+[![release status](https://img.shields.io/github/actions/workflow/status/dhelonious/mastodon-snap/release.yml?label=release)](https://github.com/dhelonious/mastodon-snap/actions/workflows/release.yml)
 <br/>
 [![snap store](https://snapcraft.io/mastodon-server/badge.svg)](https://snapcraft.io/mastodon-server)
 [![matrix](https://img.shields.io/matrix/mastodon-snap:matrix.org.svg?logo=matrix)](https://matrix.to/#/#mastodon-snap:matrix.org)
