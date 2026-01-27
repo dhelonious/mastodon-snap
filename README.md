@@ -213,5 +213,7 @@ If you encounter a problem, check if it has already been solved in the [troubles
 - [FediDB](https://fedidb.com/) provides statistics on the Fediverse.
 - [FediBuzz Relay](https://relay.fedi.buzz/) can be used to follow hashtags on other instances.
 - [Mastodon Starter Pack Directory](https://fedidevs.com/starter-packs/) provides community starter packs for Mastodon and the Fediverse.
-- [delightful activitypub development](https://delightful.coding.social/delightful_activitypub_development/) is a curated list of software for the Fediverse.
+- [The People Directory](https://fediverse.info/explore/people/) helps you to find people across the Fediverse by topic.
+- [Academics on Mastodon](https://trutzig89182.github.io/academics-on-mastodon/) contains a collection of various lists of academics on Mastodon.
+- [delightful activitypub development](https://delightful.coding.social/delightful_activitypub_development/) provides a curated list of software for the Fediverse.
 - [Mastodon - Simplified Federation!](https://addons.mozilla.org/en-US/firefox/addon/mastodon-simplified-federation/) is a Firefox add-on that simplifies the process of following or interacting with users on other Mastodon instances.
