@@ -19,7 +19,7 @@ set_default_settings
 
 mkdir -pm 0750 "$SECRET_DIR"
 chown root:$DAEMON_USER "$SECRET_DIR"
-mkdir -p "$UPDATE_DIR" "$DEFAULT_BACKUP_DIR"
+mkdir -p "$DEFAULT_BACKUP_DIR"
 mkdir_for_daemon_user "$CERT_DIR"
 mkdir_for_daemon_user "$DEFAULT_MEDIA_DIR"
 mkdir_for_daemon_user "$LOG_DIR"
