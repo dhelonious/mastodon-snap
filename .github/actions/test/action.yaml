@@ -442,63 +442,63 @@ runs:
     shell: bash
     run: |
       echo "::group::postgres.log:"
-      cat /var/snap/mastodon-server/current/logs/postgres.log
+      sudo cat /var/snap/mastodon-server/current/logs/postgres.log
       echo "::endgroup::"
   - name: show pgbouncer log
     if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
     shell: bash
     run: |
       echo "::group::pgbouncer.log:"
-      cat /var/snap/mastodon-server/current/logs/pgbouncer.log
+      sudo cat /var/snap/mastodon-server/current/logs/pgbouncer.log
       echo "::endgroup::"
   - name: show nginx log
     if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
     shell: bash
     run: |
       echo "::group::nginx.log:"
-      cat /var/snap/mastodon-server/current/logs/nginx.log
+      sudo cat /var/snap/mastodon-server/current/logs/nginx.log
       echo "::endgroup::"
   - name: show redis log
     if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
     shell: bash
     run: |
       echo "::group::redis.log:"
-      cat /var/snap/mastodon-server/current/logs/redis.log
+      sudo cat /var/snap/mastodon-server/current/logs/redis.log
       echo "::endgroup::"
   - name: show backend log
     if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
     shell: bash
     run: |
       echo "::group::backend.log:"
-      cat /var/snap/mastodon-server/current/logs/backend.log
+      sudo cat /var/snap/mastodon-server/current/logs/backend.log
       echo "::endgroup::"
   - name: show streaming log
     if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
     shell: bash
     run: |
       echo "::group::streaming.log:"
-      cat /var/snap/mastodon-server/current/logs/streaming.log
+      sudo cat /var/snap/mastodon-server/current/logs/streaming.log
       echo "::endgroup::"
   - name: show sidekiq-high log
     if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
     shell: bash
     run: |
       echo "::group::sidekiq-high.log:"
-      cat /var/snap/mastodon-server/current/logs/sidekiq-high.log
+      sudo cat /var/snap/mastodon-server/current/logs/sidekiq-high.log
       echo "::endgroup::"
   - name: show sidekiq-medium log
     if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
     shell: bash
     run: |
       echo "::group::sidekiq-medium.log:"
-      cat /var/snap/mastodon-server/current/logs/sidekiq-medium.log
+      sudo cat /var/snap/mastodon-server/current/logs/sidekiq-medium.log
       echo "::endgroup::"
   - name: show sidekiq-low log
     if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
     shell: bash
     run: |
       echo "::group::sidekiq-low.log:"
-      cat /var/snap/mastodon-server/current/logs/sidekiq-low.log
+      sudo cat /var/snap/mastodon-server/current/logs/sidekiq-low.log
       echo "::endgroup::"
   - name: remove snap
     shell: bash

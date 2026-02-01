@@ -88,8 +88,7 @@ stop_service sidekiq
 stop_service streaming
 
 echo Restoring configuration...
-rsync --ignore-times --no-owner --no-perms --chmod g+w --chown root:$DAEMON_USER "$export_dir/mastodon.conf" "$SNAP_COMMON/" \
-    && chmod 664 "$SNAP_COMMON/mastodon.conf"
+rsync --ignore-times --no-owner --no-perms --chmod u+rw,g+rw,o-rwx --chown $DAEMON_USER:root "$export_dir/mastodon.conf" "$SNAP_COMMON/"
 
 mastodon_set_var DB_PASS "$(get_secret postgres)"
 # mastodon_set_var REDIS_PASSWORD "$(get_secret redis)"
