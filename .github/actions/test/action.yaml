@@ -521,7 +521,7 @@ runs:
     run: |
       echo "::group::debug report:"
       echo "Print debug report" | yellow
-      mastodon-server.debug-report
+      sudo mastodon-server.debug-report
       echo "::endgroup::"
   - name: show install hook log
     if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}

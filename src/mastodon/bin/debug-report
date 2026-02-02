@@ -14,7 +14,7 @@ echo
 echo NOTE: This report contains your domain name and email address. Please review this information carefully before sharing it.
 
 echo
-echo_underline "=" Settings
+echo_underline "=" "Settings"
 echo
 
 for setting in $(sed "s/[.,].*//" <<< "$SETTINGS" | sort -u); do
@@ -24,13 +24,24 @@ echo "snap: $(snapctl get snap)"
 echo "service: $(snapctl get service)"
 
 echo
-echo_underline "=" Files
+echo_underline "=" "Files and directories"
 echo
 
-find "/var/snap/$SNAP_NAME" -maxdepth 3 | sed -e "s|^/var/snap/$SNAP_NAME/||" -e '2,$s|[^/]*/|  |g'
+find "/var/snap/$SNAP_NAME" -maxdepth 4 \
+    \( \
+        -path "*/data/*" -o \
+        -path "*/mastodon/*" -o \
+        -path "*/media/*" \
+    \) -prune -o \
+    -type f -printf "%p (%u:%g %m)\n" -o \
+    -type d -printf "%p# (%u:%g %m)\n" |
+sed -e "s|^/var/snap/$SNAP_NAME/||" \
+    -e '2,$s|[^/]*/|  |g' \
+    -e "s|#|/|" \
+|| true
 
 echo
-echo_underline "=" Environment
+echo_underline "=" "Environment"
 echo
 
 test -n "$PG_PASSWORD" && PG_PASSWORD="********"
@@ -41,7 +52,7 @@ test -n "$SMTP_PASSWORD" && SMTP_PASSWORD="********"
 printenv | sort
 
 echo
-echo_underline "=" Tuning
+echo_underline "=" "Tuning"
 echo
 
 begin_print_env
