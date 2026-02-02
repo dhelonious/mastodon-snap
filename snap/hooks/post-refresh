@@ -191,8 +191,11 @@ copy_nginx_configs
 
 # Acme
 
+. "$SNAP/acme.env"
+
 echo Set permissions on acme dir
 fix_daemon_user "$ACME_HOME"
+fix_daemon_user "$CERT_DIR"
 
 # Logrotate
 
