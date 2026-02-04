@@ -23,7 +23,10 @@ platforms:
 
 # TODO: From snapd 2.61 onwards, snap_daemon is being deprecated and replaced with _daemon_ (with underscores), which now possesses a UID of 584792.
 system-usernames:
+  # TODO: Remove snap_daemon if no longer required
   snap_daemon:
+    scope: shared
+  _daemon_:
     scope: shared
 
 environment:
