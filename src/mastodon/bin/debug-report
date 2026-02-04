@@ -29,6 +29,7 @@ echo
 
 find "/var/snap/$SNAP_NAME" -maxdepth 4 \
     \( \
+        -type d ! -readable -o \
         -path "*/data/*" -o \
         -path "*/mastodon/*" -o \
         -path "*/media/*" \
