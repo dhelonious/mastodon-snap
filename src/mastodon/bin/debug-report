@@ -27,7 +27,7 @@ echo
 echo_underline "=" "Files and directories"
 echo
 
-find "/var/snap/$SNAP_NAME" -maxdepth 4 \
+cd /tmp && find "/var/snap/$SNAP_NAME" -maxdepth 4 \
     \( \
         -type d ! -readable -o \
         -path "*/data/*" -o \
