@@ -96,14 +96,15 @@ runs:
       fi
       sleep 10
 
-  - name: print snap install tasks
+  - name: print snap debug timings
+    if: ${{ success() || failure() }}
     shell: bash
     run: |
       echo "Print snap debug timings" | yellow
-      echo "::group::debug timings --last=install"
+      echo "::group::snap debug timings --last=install"
       snap debug timings --last=install || true
       echo "::endgroup::"
-      echo "::group::debug timings --last=refresh"
+      echo "::group::snap debug timings --last=refresh"
       snap debug timings --last=refresh || true
       echo "::endgroup::"
 
@@ -429,19 +430,20 @@ runs:
         exit 1
       fi
 
-  - name: print snap install tasks
+  - name: print snap debug timings
+    if: ${{ inputs.upgrade == 'false' && failure() }}
     shell: bash
     run: |
       echo "Print snap debug timings" | yellow
-      echo "::group::debug timings --last=install"
+      echo "::group::snap debug timings --last=install"
       snap debug timings --last=install || true
       echo "::endgroup::"
-      echo "::group::debug timings --last=refresh"
+      echo "::group::snap debug timings --last=refresh"
       snap debug timings --last=refresh || true
       echo "::endgroup::"
 
   - name: print service statuses
-    if: ${{ failure() }}
+    if: ${{ inputs.upgrade == 'false' && failure() }}
     shell: bash
     run: |
       echo "Print service statuses" | yellow
@@ -488,7 +490,7 @@ runs:
       echo "Debug report" | yellow
       echo "::group::debug report"
       echo "Print debug report" | yellow
-      sudo mastodon-server.debug-report
+      sudo mastodon-server.debug-report || true
       echo "::endgroup::"
 
   - name: show hook logs
@@ -497,22 +499,22 @@ runs:
     run: |
       echo "Install hook log" | yellow
       echo "::group::install hook log"
-      sudo cat "/root/snap/mastodon-server/common/debug/logs/install.log" | yellow
+      sudo cat "/root/snap/mastodon-server/common/debug/logs/install.log" | yellow || true
       echo "::endgroup::"
 
       echo "Configure hook log" | yellow
       echo "::group::configure hook log"
-      sudo cat "/root/snap/mastodon-server/common/debug/logs/configure.log" | yellow
+      sudo cat "/root/snap/mastodon-server/common/debug/logs/configure.log" | yellow || true
       echo "::endgroup::"
 
       echo "Pre-refresh hook log" | yellow
       echo "::group::pre-refresh hook log"
-      sudo cat "/root/.snap/mastodon-server/common/debug/logs/pre-refresh.log" | yellow
+      sudo cat "/root/.snap/mastodon-server/common/debug/logs/pre-refresh.log" | yellow || true
       echo "::endgroup::"
 
       echo "Post-refresh hook log" | yellow
       echo "::group::post-refresh hook log"
-      sudo cat "/root/snap/mastodon-server/common/debug/logs/post-refresh.log" | yellow
+      sudo cat "/root/snap/mastodon-server/common/debug/logs/post-refresh.log" | yellow || true
       echo "::endgroup::"
 
   - name: show service logs
