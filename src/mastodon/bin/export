@@ -3,6 +3,7 @@
 . "$SNAP/mastodon.env"
 . "$SNAP/postgres.env"
 . "$SNAP/redis.env"
+. "$SNAP/settings.env"
 
 check_root
 check_setup

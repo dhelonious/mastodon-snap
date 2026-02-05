@@ -7,6 +7,7 @@
 . "$SNAP/postgres.env"
 . "$SNAP/redis.env"
 . "$SNAP/snap.env"
+. "$SNAP/settings.env"
 
 echo_border "=" "Debug report for snap version $(cat "$SNAP_COMMON/version")"
 

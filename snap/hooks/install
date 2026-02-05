@@ -5,7 +5,13 @@
 trap end_debug_log EXIT
 begin_debug_log install
 
+. "$SNAP/settings.env"
+
+set_default_settings
+
 . "$SNAP/snap.env"
+
+update_snap_version_file
 
 reset_restart_required redis
 reset_restart_required postgres
@@ -13,9 +19,6 @@ reset_restart_required backend
 reset_restart_required sidekiq
 reset_restart_required streaming
 reset_restart_required nginx
-
-update_snap_version_file
-set_default_settings
 
 mkdir -pm 0750 "$SECRET_DIR"
 chown root:$DAEMON_USER "$SECRET_DIR"

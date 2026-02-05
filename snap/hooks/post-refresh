@@ -5,9 +5,11 @@
 trap end_debug_log EXIT
 begin_debug_log post-refresh
 
-. "$SNAP/snap.env"
+. "$SNAP/settings.env"
 
 set_default_settings
+
+. "$SNAP/snap.env"
 
 export PREVIOUS_SNAP_VERSION="$(get_snap_version_file)"
 
