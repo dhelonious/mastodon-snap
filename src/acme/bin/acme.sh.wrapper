@@ -6,7 +6,7 @@ acme.sh \
     --home "$ACME_HOME" \
     --config-home "$ACME_CONFIG" \
     --cert-home "$CERT_DIR" \
-    --log "$LOG_DIR/acme.sh.log" \
+    --log "$LOG_DIR/acme.log" \
     --server "$ACME_SERVER" \
     -w "$SNAP_COMMON" \
     "$@"
