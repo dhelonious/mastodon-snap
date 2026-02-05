@@ -521,112 +521,112 @@ runs:
     run: |
       echo "Acme logs" | yellow
       echo "::group::acme.log"
-      sudo cat /var/snap/mastodon-server/current/logs/acme.log
+      sudo cat /var/snap/mastodon-server/current/logs/acme.log || true
       echo "::endgroup::"
       echo "::group::journalctl acme"
-      sudo journalctl -xu snap.mastodon-server.pgbouncer.service --all
+      sudo journalctl -xu snap.mastodon-server.pgbouncer.service --all || true
       echo "::endgroup::"
 
       echo "Backend logs" | yellow
       echo "::group::backend.log"
-      sudo cat /var/snap/mastodon-server/current/logs/backend.log
+      sudo cat /var/snap/mastodon-server/current/logs/backend.log || true
       echo "::endgroup::"
       echo "::group::journalctl backend"
-      sudo journalctl -xu snap.mastodon-server.backend.service --all
+      sudo journalctl -xu snap.mastodon-server.backend.service --all || true
       echo "::endgroup::"
 
       echo "Backup logs" | yellow
       echo "::group::journalctl backup"
-      sudo journalctl -xu snap.mastodon-server.backup.service --all
+      sudo journalctl -xu snap.mastodon-server.backup.service --all || true
       echo "::endgroup::"
 
       echo "Cleanup logs" | yellow
       echo "::group::journalctl cleanup"
-      sudo journalctl -xu snap.mastodon-server.cleanup.service --all
+      sudo journalctl -xu snap.mastodon-server.cleanup.service --all || true
       echo "::endgroup::"
 
       echo "Logrotate logs" | yellow
       echo "::group::journalctl logrotate"
-      sudo journalctl -xu snap.mastodon-server.logrotate.service --all
+      sudo journalctl -xu snap.mastodon-server.logrotate.service --all || true
       echo "::endgroup::"
 
       echo "Migrations logs" | yellow
       echo "::group::journalctl migrations"
-      sudo journalctl -xu snap.mastodon-server.migrations.service --all
+      sudo journalctl -xu snap.mastodon-server.migrations.service --all || true
       echo "::endgroup::"
 
       echo "Nginx logs" | yellow
       echo "::group::nginx.log"
-      sudo cat /var/snap/mastodon-server/current/logs/nginx.log
+      sudo cat /var/snap/mastodon-server/current/logs/nginx.log || true
       echo "::endgroup::"
       echo "::group::journalctl nginx"
-      sudo journalctl -xu snap.mastodon-server.nginx.service --all
+      sudo journalctl -xu snap.mastodon-server.nginx.service --all || true
       echo "::endgroup::"
 
       echo "Pgbouncer logs" | yellow
       echo "::group::pgbouncer.log"
-      sudo cat /var/snap/mastodon-server/current/logs/pgbouncer.log
+      sudo cat /var/snap/mastodon-server/current/logs/pgbouncer.log || true
       echo "::endgroup::"
       echo "::group::journalctl pgbouncer"
-      sudo journalctl -xu snap.mastodon-server.pgbouncer.service --all
+      sudo journalctl -xu snap.mastodon-server.pgbouncer.service --all || true
       echo "::endgroup::"
 
       echo "Postgres logs" | yellow
       echo "::group::postgres.log"
-      sudo cat /var/snap/mastodon-server/current/logs/postgres.log
+      sudo cat /var/snap/mastodon-server/current/logs/postgres.log || true
       echo "::endgroup::"
       echo "::group::journalctl postgres"
-      sudo journalctl -xu snap.mastodon-server.postgres.service --all
+      sudo journalctl -xu snap.mastodon-server.postgres.service --all || true
       echo "::endgroup::"
 
       echo "Postgres-upgrade logs" | yellow
       echo "::group::journalctl postgres-upgrade"
-      sudo journalctl -xu snap.mastodon-server.postgres-upgrade.service --all
+      sudo journalctl -xu snap.mastodon-server.postgres-upgrade.service --all || true
       echo "::endgroup::"
 
       echo "Recompile-assets logs" | yellow
       echo "::group::journalctl recompile-assets"
-      sudo journalctl -xu snap.mastodon-server.recompile-assets.service --all
+      sudo journalctl -xu snap.mastodon-server.recompile-assets.service --all || true
       echo "::endgroup::"
 
       echo "Redis logs" | yellow
       echo "::group::redis.log"
-      sudo cat /var/snap/mastodon-server/current/logs/redis.log
+      sudo cat /var/snap/mastodon-server/current/logs/redis.log || true
       echo "::endgroup::"
       echo "::group::journalctl redis"
-      sudo journalctl -xu snap.mastodon-server.redis.service --all
+      sudo journalctl -xu snap.mastodon-server.redis.service --all || true
       echo "::endgroup::"
 
       echo "Sidekiq-high logs" | yellow
       echo "::group::sidekiq-high.log"
-      sudo cat /var/snap/mastodon-server/current/logs/sidekiq-high.log
+      sudo cat /var/snap/mastodon-server/current/logs/sidekiq-high.log || true
       echo "::endgroup::"
       echo "::group::journalctl sidekiq-high"
-      sudo journalctl -xu snap.mastodon-server.sidekiq-high.service --all
+      sudo journalctl -xu snap.mastodon-server.sidekiq-high.service --all || true
       echo "::endgroup::"
 
       echo "Sidekiq-medium logs" | yellow
       echo "::group::sidekiq-medium.log"
-      sudo cat /var/snap/mastodon-server/current/logs/sidekiq-medium.log
+      sudo cat /var/snap/mastodon-server/current/logs/sidekiq-medium.log || true
       echo "::endgroup::"
       echo "::group::journalctl sidekiq-medium"
-      sudo journalctl -xu snap.mastodon-server.sidekiq-medium.service --all
+      sudo journalctl -xu snap.mastodon-server.sidekiq-medium.service --all || true
       echo "::endgroup::"
 
       echo "Sidekiq-low logs" | yellow
       echo "::group::sidekiq-low.log"
-      sudo cat /var/snap/mastodon-server/current/logs/sidekiq-low.log
+      sudo cat /var/snap/mastodon-server/current/logs/sidekiq-low.log || true
       echo "::endgroup::"
       echo "::group::journalctl sidekiq-low"
-      sudo journalctl -xu snap.mastodon-server.sidekiq-low.service --all
+      sudo journalctl -xu snap.mastodon-server.sidekiq-low.service --all || true
       echo "::endgroup::"
 
       echo "Streaming logs" | yellow
       echo "::group::streaming.log"
-      sudo cat /var/snap/mastodon-server/current/logs/streaming.log
+      sudo cat /var/snap/mastodon-server/current/logs/streaming.log || true
       echo "::endgroup::"
       echo "::group::journalctl streaming"
-      sudo journalctl -xu snap.mastodon-server.streaming.service --all
+      sudo journalctl -xu snap.mastodon-server.streaming.service --all || true
       echo "::endgroup::"
 
   ##############################################################################
