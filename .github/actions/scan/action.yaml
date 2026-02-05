@@ -1,32 +1,40 @@
 name: scan
 run-name: Scan snap for vulnerabilities
+
 inputs:
   snap:
     required: true
     type: string
+
 runs:
   using: composite
   steps:
+
   - uses: actions/download-artifact@v4
     with:
       name: ${{ inputs.snap }}
+
   - name: install syft
     shell: bash
     run: sudo snap install syft --classic
+
   - name: generate SBOM
     shell: bash
     run: |
       syft snap:${{ inputs.snap }} -o json > sbom.min.json
       jq "." sbom.min.json > sbom.json
+
   - uses: actions/upload-artifact@v4
     with:
       name: sbom.json
       path: sbom.json
       retention-days: 1
       overwrite: true
+
   - name: install grype
     shell: bash
     run: sudo snap install grype --classic
+
   - name: scan SBOM
     shell: bash
     run: |
@@ -40,12 +48,14 @@ runs:
           else 1 end;
           .matches |= sort_by(- (severity_weight))
         ' vulnerabilities.min.json > vulnerabilities.json
+
   - uses: actions/upload-artifact@v4
     with:
       name: vulnerabilities.json
       path: vulnerabilities.json
       retention-days: 1
       overwrite: true
+
   - name: print vulnerabilities
     shell: bash
     run: |

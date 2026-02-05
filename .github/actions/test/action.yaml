@@ -1,5 +1,6 @@
 name: test
 run-name: Test installation
+
 inputs:
   snap:
     required: true
@@ -8,9 +9,11 @@ inputs:
     required: false
     type: boolean
     default: false
+
 runs:
   using: composite
   steps:
+
   - name: define color commands
     shell: bash
     run: |
@@ -26,19 +29,24 @@ runs:
       echo -e "$SHEBANG\n$(colorize $YELLOW)" > ~/bin/yellow
       sudo chmod +x ~/bin/*
       echo "$HOME/bin" >> $GITHUB_PATH
+
   - name: set permissions on resolv.conf
     shell: bash
     run: sudo chmod 644 /etc/resolv.conf
+
   - name: enable memory overcommit
     shell: bash
     run: sudo sysctl vm.overcommit_memory=1
+
   - uses: actions/download-artifact@v4
     with:
       name: ${{ inputs.snap }}
+
   - name: print info
     shell: bash
     run: |
       echo "Run tests for ${{ inputs.snap }}" | yellow
+
   - name: set environment
     id: env
     shell: bash
@@ -52,6 +60,7 @@ runs:
       echo "COMPOSE_FORM_FILE=/var/snap/mastodon-server/current/mastodon/app/javascript/mastodon/features/compose/components/compose_form.jsx" >> $GITHUB_OUTPUT
       echo "STATUS_LENGTH_VALIDATOR_FILE=/var/snap/mastodon-server/current/mastodon/app/validators/status_length_validator.rb" >> $GITHUB_OUTPUT
       echo "STATUS_LENGTH=500" >> $GITHUB_OUTPUT
+
   - name: setup host
     shell: bash
     run: |
@@ -73,6 +82,7 @@ runs:
       sudo snap set mastodon-server logs.debug=true
       sudo mastodon-server.setup -u ${{ steps.env.outputs.USERNAME }} -c no
       sleep 10
+
   - name: install snap
     shell: bash
     run: |
@@ -85,18 +95,18 @@ runs:
         exit 1
       fi
       sleep 10
+
   - name: print snap install tasks
-    if: ${{ env.ACTIONS_RUNNER_DEBUG == 'true' }}
     shell: bash
     run: |
-      echo "Print snap install tasks" | yellow
-      snap debug timings --last=install
-  - name: print snap refresh tasks
-    if: ${{ env.ACTIONS_RUNNER_DEBUG == 'true' }}
-    shell: bash
-    run: |
-      echo "Print snap refresh tasks" | yellow
-      snap debug timings --last=refresh
+      echo "Print snap debug timings" | yellow
+      echo "::group::debug timings --last=install"
+      snap debug timings --last=install || true
+      echo "::endgroup::"
+      echo "::group::debug timings --last=refresh"
+      snap debug timings --last=refresh || true
+      echo "::endgroup::"
+
   - name: test setup
     if: ${{ inputs.upgrade == 'false' }}
     shell: bash
@@ -114,6 +124,7 @@ runs:
         exit 1
       fi
       sleep 30
+
   - name: print snap settings
     shell: bash
     run: |
@@ -125,6 +136,7 @@ runs:
         echo "$SETTINGS" | red
         exit 1
       fi
+
   - name: check services
     shell: bash
     run: |
@@ -156,6 +168,7 @@ runs:
       check_service_status sidekiq-low
       check_service_status streaming
       check_service_status nginx
+
   - name: check reachability
     shell: bash
     run: |
@@ -169,6 +182,7 @@ runs:
         sudo snap logs "mastodon-server"
         exit 1
       fi
+
   - name: generate ssl certificates
     shell: bash
     run: |
@@ -180,6 +194,7 @@ runs:
       echo "Restart mastodon-server.nginx"
       sudo snap restart mastodon-server.nginx
       sleep 10
+
   - name: check if https config is created
     shell: bash
     run: |
@@ -190,12 +205,14 @@ runs:
         echo "Check failed" | red
         exit 1
       fi
+
   - name: change http/https ports
     shell: bash
     run: |
       echo "Change HTTP/HTTPS ports" | yellow
       sudo snap set mastodon-server ports.http=${{ steps.env.outputs.HTTP_PORT }} ports.https=${{ steps.env.outputs.HTTPS_PORT }}
       sleep 30
+
   - name: check http port
     shell: bash
     run: |
@@ -209,6 +226,7 @@ runs:
         sudo snap logs "mastodon-server"
         exit 1
       fi
+
   - name: check https port
     shell: bash
     run: |
@@ -222,11 +240,13 @@ runs:
         sudo snap logs "mastodon-server"
         exit 1
       fi
+
   - name: connect removable-media
     shell: bash
     run: |
       echo "Connect removalbe-media" | yellow
       sudo snap connect mastodon-server:removable-media
+
   - name: change media dir
     shell: bash
     run: |
@@ -239,6 +259,7 @@ runs:
         echo "$COMMAND_OUTPUT" | yellow
         exit 1
       fi
+
   - name: test export
     shell: bash
     run: |
@@ -253,6 +274,7 @@ runs:
       BACKUP_DIR=$(echo "$EXPORT_OUTPUT" | sed -rn "s|^Export backup to .*/([0-9]+-[0-9]+)$|\1|p")
       echo "backup_dir=$BACKUP_DIR" >> $GITHUB_OUTPUT
     id: export
+
   - name: test restore
     shell: bash
     run: |
@@ -264,6 +286,7 @@ runs:
         echo "$RESTORE_OUTPUT" | yellow
         exit 1
       fi
+
   - name: trigger recompile
     shell: bash
     run: |
@@ -275,6 +298,7 @@ runs:
         sudo snap logs mastodon-server.recompile-assets -n=all | yellow
         exit 1
       fi
+
   - name: check max chars
     shell: bash
     run: |
@@ -287,6 +311,7 @@ runs:
         echo "MAX_CHARS = $MAX_CHARS" | yellow
         exit 1
       fi
+
   - name: check fulltext length
     shell: bash
     run: |
@@ -299,6 +324,7 @@ runs:
         echo "length(fulltext) > $FULLTEXT_LENGTH" | yellow
         exit 1
       fi
+
   - name: check character counter
     shell: bash
     run: |
@@ -311,6 +337,7 @@ runs:
         echo "CharacterCounter max={$MAX_CHARACTER_COUNTER}" | yellow
         exit 1
       fi
+
   - name: test rails console
     shell: bash
     run: |
@@ -324,6 +351,7 @@ runs:
           exit 1
         fi
       fi
+
   - name: test wrapstodon feature
     shell: bash
     run: |
@@ -335,6 +363,7 @@ runs:
         echo "$WRAPSTODON_OUTPUT" | yellow
         exit 1
       fi
+
   - name: test postgres dump
     shell: bash
     run: |
@@ -347,6 +376,7 @@ runs:
         sudo head ~/dump.sql 2>/dev/null | yellow
         exit 1
       fi
+
   - name: test announce command
     shell: bash
     run: |
@@ -358,6 +388,7 @@ runs:
         echo "$ANNOUNCE_OUTPUT" | yellow
         exit 1
       fi
+
   - name: test db-migrate command
     shell: bash
     run: |
@@ -369,6 +400,7 @@ runs:
         echo "$DB_MIGRATE_OUTPUT" | yellow
         exit 1
       fi
+
   - name: test db-rollback command
     shell: bash
     run: |
@@ -396,24 +428,25 @@ runs:
         echo "$REFRESH_OUTPUT" | yellow
         exit 1
       fi
+
   - name: print snap install tasks
-    if: ${{ env.ACTIONS_RUNNER_DEBUG == 'true' }}
     shell: bash
     run: |
-      echo "Print snap install tasks" | yellow
-      snap debug timings --last=install
-  - name: print snap refresh tasks
-    if: ${{ env.ACTIONS_RUNNER_DEBUG == 'true' }}
-    shell: bash
-    run: |
-      echo "Print snap refresh tasks" | yellow
-      snap debug timings --last=refresh
+      echo "Print snap debug timings" | yellow
+      echo "::group::debug timings --last=install"
+      snap debug timings --last=install || true
+      echo "::endgroup::"
+      echo "::group::debug timings --last=refresh"
+      snap debug timings --last=refresh || true
+      echo "::endgroup::"
+
   - name: print service statuses
     if: ${{ failure() }}
     shell: bash
     run: |
       echo "Print service statuses" | yellow
       snap services mastodon-server
+
   - name: check logs for warnings
     if: ${{ success() || failure() }}
     shell: bash
@@ -423,8 +456,12 @@ runs:
       if [ -z "$LOG_WARNINGS" ]; then
         echo "No warnings" | green
       else
+        echo "Warnings:" | yellow
+        echo "::group::warnings"
         echo "$LOG_WARNINGS" | yellow
+        echo "::endgroup::"
       fi
+
   - name: check logs for errors
     if: ${{ success() || failure() }}
     shell: bash
@@ -435,72 +472,168 @@ runs:
       if [ -z "$LOG_ERRORS" ]; then
         echo "No errors" | green
       else
+        echo "Errors:" | red
+        echo "::group::errors"
         echo "$LOG_ERRORS" | red
+        echo "::endgroup::"
       fi
-  - name: show postgres log
-    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
+
+  ##############################################################################
+  # Logs
+
+  - name: print debug report
+    if: ${{ success() || failure() }}
     shell: bash
     run: |
-      echo "::group::postgres.log:"
-      sudo cat /var/snap/mastodon-server/current/logs/postgres.log
+      echo "Debug report" | yellow
+      echo "::group::debug report"
+      echo "Print debug report" | yellow
+      sudo mastodon-server.debug-report
       echo "::endgroup::"
-  - name: show pgbouncer log
-    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
+
+  - name: show hook logs
+    if: ${{ success() || failure() }}
     shell: bash
     run: |
-      echo "::group::pgbouncer.log:"
-      sudo cat /var/snap/mastodon-server/current/logs/pgbouncer.log
+      echo "Install hook log" | yellow
+      echo "::group::install hook log"
+      sudo cat "/root/snap/mastodon-server/common/debug/logs/install.log" | yellow
       echo "::endgroup::"
-  - name: show nginx log
-    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
-    shell: bash
-    run: |
-      echo "::group::nginx.log:"
-      sudo cat /var/snap/mastodon-server/current/logs/nginx.log
+
+      echo "Configure hook log" | yellow
+      echo "::group::configure hook log"
+      sudo cat "/root/snap/mastodon-server/common/debug/logs/configure.log" | yellow
       echo "::endgroup::"
-  - name: show redis log
-    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
-    shell: bash
-    run: |
-      echo "::group::redis.log:"
-      sudo cat /var/snap/mastodon-server/current/logs/redis.log
+
+      echo "Pre-refresh hook log" | yellow
+      echo "::group::pre-refresh hook log"
+      sudo cat "/root/.snap/mastodon-server/common/debug/logs/pre-refresh.log" | yellow
       echo "::endgroup::"
-  - name: show backend log
-    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
+
+      echo "Post-refresh hook log" | yellow
+      echo "::group::post-refresh hook log"
+      sudo cat "/root/snap/mastodon-server/common/debug/logs/post-refresh.log" | yellow
+      echo "::endgroup::"
+
+  - name: show service logs
+    if: ${{ success() || failure() }}
     shell: bash
     run: |
-      echo "::group::backend.log:"
+      echo "Acme logs" | yellow
+      echo "::group::acme.log"
+      sudo cat /var/snap/mastodon-server/current/logs/acme.log
+      echo "::endgroup::"
+      echo "::group::journalctl acme"
+      sudo journalctl -xu snap.mastodon-server.pgbouncer.service --all
+      echo "::endgroup::"
+
+      echo "Backend logs" | yellow
+      echo "::group::backend.log"
       sudo cat /var/snap/mastodon-server/current/logs/backend.log
       echo "::endgroup::"
-  - name: show streaming log
-    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
-    shell: bash
-    run: |
-      echo "::group::streaming.log:"
-      sudo cat /var/snap/mastodon-server/current/logs/streaming.log
+      echo "::group::journalctl backend"
+      sudo journalctl -xu snap.mastodon-server.backend.service --all
       echo "::endgroup::"
-  - name: show sidekiq-high log
-    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
-    shell: bash
-    run: |
-      echo "::group::sidekiq-high.log:"
+
+      echo "Backup logs" | yellow
+      echo "::group::journalctl backup"
+      sudo journalctl -xu snap.mastodon-server.backup.service --all
+      echo "::endgroup::"
+
+      echo "Cleanup logs" | yellow
+      echo "::group::journalctl cleanup"
+      sudo journalctl -xu snap.mastodon-server.cleanup.service --all
+      echo "::endgroup::"
+
+      echo "Logrotate logs" | yellow
+      echo "::group::journalctl logrotate"
+      sudo journalctl -xu snap.mastodon-server.logrotate.service --all
+      echo "::endgroup::"
+
+      echo "Migrations logs" | yellow
+      echo "::group::journalctl migrations"
+      sudo journalctl -xu snap.mastodon-server.migrations.service --all
+      echo "::endgroup::"
+
+      echo "Nginx logs" | yellow
+      echo "::group::nginx.log"
+      sudo cat /var/snap/mastodon-server/current/logs/nginx.log
+      echo "::endgroup::"
+      echo "::group::journalctl nginx"
+      sudo journalctl -xu snap.mastodon-server.nginx.service --all
+      echo "::endgroup::"
+
+      echo "Pgbouncer logs" | yellow
+      echo "::group::pgbouncer.log"
+      sudo cat /var/snap/mastodon-server/current/logs/pgbouncer.log
+      echo "::endgroup::"
+      echo "::group::journalctl pgbouncer"
+      sudo journalctl -xu snap.mastodon-server.pgbouncer.service --all
+      echo "::endgroup::"
+
+      echo "Postgres logs" | yellow
+      echo "::group::postgres.log"
+      sudo cat /var/snap/mastodon-server/current/logs/postgres.log
+      echo "::endgroup::"
+      echo "::group::journalctl postgres"
+      sudo journalctl -xu snap.mastodon-server.postgres.service --all
+      echo "::endgroup::"
+
+      echo "Postgres-upgrade logs" | yellow
+      echo "::group::journalctl postgres-upgrade"
+      sudo journalctl -xu snap.mastodon-server.postgres-upgrade.service --all
+      echo "::endgroup::"
+
+      echo "Recompile-assets logs" | yellow
+      echo "::group::journalctl recompile-assets"
+      sudo journalctl -xu snap.mastodon-server.recompile-assets.service --all
+      echo "::endgroup::"
+
+      echo "Redis logs" | yellow
+      echo "::group::redis.log"
+      sudo cat /var/snap/mastodon-server/current/logs/redis.log
+      echo "::endgroup::"
+      echo "::group::journalctl redis"
+      sudo journalctl -xu snap.mastodon-server.redis.service --all
+      echo "::endgroup::"
+
+      echo "Sidekiq-high logs" | yellow
+      echo "::group::sidekiq-high.log"
       sudo cat /var/snap/mastodon-server/current/logs/sidekiq-high.log
       echo "::endgroup::"
-  - name: show sidekiq-medium log
-    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
-    shell: bash
-    run: |
-      echo "::group::sidekiq-medium.log:"
+      echo "::group::journalctl sidekiq-high"
+      sudo journalctl -xu snap.mastodon-server.sidekiq-high.service --all
+      echo "::endgroup::"
+
+      echo "Sidekiq-medium logs" | yellow
+      echo "::group::sidekiq-medium.log"
       sudo cat /var/snap/mastodon-server/current/logs/sidekiq-medium.log
       echo "::endgroup::"
-  - name: show sidekiq-low log
-    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
-    shell: bash
-    run: |
-      echo "::group::sidekiq-low.log:"
+      echo "::group::journalctl sidekiq-medium"
+      sudo journalctl -xu snap.mastodon-server.sidekiq-medium.service --all
+      echo "::endgroup::"
+
+      echo "Sidekiq-low logs" | yellow
+      echo "::group::sidekiq-low.log"
       sudo cat /var/snap/mastodon-server/current/logs/sidekiq-low.log
       echo "::endgroup::"
+      echo "::group::journalctl sidekiq-low"
+      sudo journalctl -xu snap.mastodon-server.sidekiq-low.service --all
+      echo "::endgroup::"
+
+      echo "Streaming logs" | yellow
+      echo "::group::streaming.log"
+      sudo cat /var/snap/mastodon-server/current/logs/streaming.log
+      echo "::endgroup::"
+      echo "::group::journalctl streaming"
+      sudo journalctl -xu snap.mastodon-server.streaming.service --all
+      echo "::endgroup::"
+
+  ##############################################################################
+  # Exit
+
   - name: remove snap
+    if: ${{ success() || failure() }}
     shell: bash
     run: |
       echo "Remove snap" | yellow
@@ -511,120 +644,3 @@ runs:
         echo "$REMOVE_OUTPUT" | yellow
         exit 1
       fi
-
-  ##############################################################################
-  # Debugging
-
-  - name: print debug report
-    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
-    shell: bash
-    run: |
-      echo "::group::debug report:"
-      echo "Print debug report" | yellow
-      sudo mastodon-server.debug-report
-      echo "::endgroup::"
-  - name: show install hook log
-    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
-    shell: bash
-    run: |
-      echo "::group::install hook log:"
-      sudo cat "/root/snap/mastodon-server/common/debug/logs/install.log" | yellow
-      echo "::endgroup::"
-  - name: show configure hook log
-    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
-    shell: bash
-    run: |
-      echo "::group::configure hook log:"
-      sudo cat "/root/snap/mastodon-server/common/debug/logs/configure.log" | yellow
-      echo "::endgroup::"
-  - name: show pre-refresh hook log
-    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
-    shell: bash
-    run: |
-      echo "::group::pre-refresh hook log:"
-      sudo cat "/root/.snap/mastodon-server/common/debug/logs/pre-refresh.log" | yellow
-      echo "::endgroup::"
-  - name: show post-refresh hook log
-    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
-    shell: bash
-    run: |
-      echo "::group::post-refresh hook log:"
-      sudo cat "/root/snap/mastodon-server/common/debug/logs/post-refresh.log" | yellow
-      echo "::endgroup::"
-  - name: show postgres journalctl
-    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
-    shell: bash
-    run: |
-      echo "::group::journalctl postgres:"
-      sudo journalctl -xu snap.mastodon-server.postgres.service --all
-      echo "::endgroup::"
-  - name: show nginx journalctl
-    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
-    shell: bash
-    run: |
-      echo "::group::journalctl nginx:"
-      sudo journalctl -xu snap.mastodon-server.nginx.service --all
-      echo "::endgroup::"
-  - name: show redis journalctl
-    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
-    shell: bash
-    run: |
-      echo "::group::journalctl redis:"
-      sudo journalctl -xu snap.mastodon-server.redis.service --all
-      echo "::endgroup::"
-  - name: show backend journalctl
-    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
-    shell: bash
-    run: |
-      echo "::group::journalctl backend:"
-      sudo journalctl -xu snap.mastodon-server.backend.service --all
-      echo "::endgroup::"
-  - name: show streaming journalctl
-    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
-    shell: bash
-    run: |
-      echo "::group::journalctl streaming:"
-      sudo journalctl -xu snap.mastodon-server.streaming.service --all
-      echo "::endgroup::"
-  - name: show sidekiq-high journalctl
-    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
-    shell: bash
-    run: |
-      echo "::group::journalctl sidekiq-high:"
-      sudo journalctl -xu snap.mastodon-server.sidekiq-high.service --all
-      echo "::endgroup::"
-  - name: show sidekiq-medium journalctl
-    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
-    shell: bash
-    run: |
-      echo "::group::journalctl sidekiq-medium:"
-      sudo journalctl -xu snap.mastodon-server.sidekiq-medium.service --all
-      echo "::endgroup::"
-  - name: show sidekiq-low journalctl
-    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
-    shell: bash
-    run: |
-      echo "::group::journalctl sidekiq-low:"
-      sudo journalctl -xu snap.mastodon-server.sidekiq-low.service --all
-      echo "::endgroup::"
-  - name: show postgres-upgrade journalctl
-    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
-    shell: bash
-    run: |
-      echo "::group::journalctl postgres-upgrade:"
-      sudo journalctl -xu snap.mastodon-server.postgres-upgrade.service --all
-      echo "::endgroup::"
-  - name: show migrations journalctl
-    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
-    shell: bash
-    run: |
-      echo "::group::journalctl migrations:"
-      sudo journalctl -xu snap.mastodon-server.migrations.service --all
-      echo "::endgroup::"
-  - name: show recompile-assets journalctl
-    if: ${{ failure() || env.ACTIONS_RUNNER_DEBUG == 'true' }}
-    shell: bash
-    run: |
-      echo "::group::journalctl recompile-assets:"
-      sudo journalctl -xu snap.mastodon-server.recompile-assets.service --all
-      echo "::endgroup::"

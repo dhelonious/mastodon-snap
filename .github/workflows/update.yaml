@@ -1,5 +1,6 @@
 name: update
 run-name: Rebuild snap and update release
+
 on:
   workflow_dispatch:
     inputs:
@@ -26,7 +27,9 @@ on:
       channel:
         required: false
         type: string
+
 jobs:
+
   build:
     runs-on: ${{ matrix.builder }}
     strategy:
@@ -50,6 +53,7 @@ jobs:
     outputs:
       amd64: ${{ steps.snap.outputs.amd64 }}
       channel: ${{ steps.channel_regex.outputs.group1 }}
+
   scan:
     needs: build
     runs-on: ${{ matrix.builder }}
@@ -63,6 +67,7 @@ jobs:
     - uses: ./.github/actions/scan
       with:
         snap: ${{ needs.build.outputs[matrix.arch] }}
+
   test:
     needs: build
     runs-on: ${{ matrix.builder }}
@@ -76,6 +81,7 @@ jobs:
     - uses: ./.github/actions/test
       with:
         snap: ${{ needs.build.outputs[matrix.arch] }}
+
   release:
     needs:
       - build
@@ -88,6 +94,7 @@ jobs:
         tag: ${{ inputs.tag }}
         channel: ${{ inputs.channel || needs.build.outputs.channel || 'stable' }}
         update: true
+
   publish:
     if: ${{ inputs.channel != 'none' }}
     needs:

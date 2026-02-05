@@ -1,5 +1,6 @@
 name: rebuild
 run-name: Rebuild snap and update release
+
 inputs:
   snap:
     required: true
@@ -11,28 +12,35 @@ inputs:
   SNAPCRAFT_STORE_CREDENTIALS:
     required: false
     type: string
+
 runs:
   using: composite
   steps:
+
   - name: use stable channel (default)
     if: ${{ inputs.channel == 'stable' }}
     shell: bash
     run: echo "channel=stable" >> $GITHUB_ENV
+
   - name: use candidate channel
     if: ${{ inputs.channel == 'candidate' || inputs.channel == 'rc' }}
     shell: bash
     run: echo "channel=candidate" >> $GITHUB_ENV
+
   - name: use beta channel
     if: ${{ inputs.channel == 'beta' }}
     shell: bash
     run: echo "channel=beta" >> $GITHUB_ENV
+
   - name: use edge channel
     if: ${{ inputs.channel == 'edge' || inputs.channel == 'alpha' }}
     shell: bash
     run: echo "channel=edge" >> $GITHUB_ENV
+
   - uses: actions/download-artifact@v4
     with:
       name: ${{ inputs.snap }}
+
   - uses: snapcore/action-publish@v1
     env:
       SNAPCRAFT_STORE_CREDENTIALS: ${{ inputs.SNAPCRAFT_STORE_CREDENTIALS }}

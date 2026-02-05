@@ -1,5 +1,6 @@
 name: update
 run-name: Rebuild snap and update release
+
 inputs:
   tag:
     required: false
@@ -12,13 +13,16 @@ inputs:
     required: false
     type: boolean
     default: false
+
 runs:
   using: composite
   steps:
+
   - uses: actions/download-artifact@v4
     with:
       pattern: "*.snap"
       merge-multiple: true
+
   - name: create new release
     if: ${{ inputs.update == 'false' }}
     uses: ncipollo/release-action@v1
@@ -30,6 +34,7 @@ runs:
       makeLatest: true
       skipIfReleaseExists: true
       artifactErrorsFailBuild: true
+
   - name: update existing release
     if: ${{ inputs.update == 'true' }}
     uses: ncipollo/release-action@v1

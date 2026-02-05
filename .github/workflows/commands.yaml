@@ -1,9 +1,11 @@
 name: commands
 run-name: Issue comment
+
 on:
   issue_comment:
     types:
     - created
+
 jobs:
   build:
     if: ${{ contains(github.event.comment.body, '/rebuild') }}
@@ -40,6 +42,7 @@ jobs:
       command_suffix: ${{ steps.command_regex.outputs.group1 }}
       tag: ${{ steps.command_regex.outputs.group2 }}
       channel: ${{ steps.tag_regex.outputs.group1 || steps.tag_regex.outputs.group3 }}
+
   scan:
     needs: build
     runs-on: ${{ matrix.builder }}
@@ -53,6 +56,7 @@ jobs:
     - uses: ./.github/actions/scan
       with:
         snap: ${{ needs.build.outputs[matrix.arch] }}
+
   test:
     needs: build
     runs-on: ${{ matrix.builder }}
@@ -66,6 +70,7 @@ jobs:
     - uses: ./.github/actions/test
       with:
         snap: ${{ needs.build.outputs[matrix.arch] }}
+
   release:
     needs:
       - build
@@ -82,6 +87,7 @@ jobs:
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GH_REPO: ${{ github.repository }}
+
   publish:
     if: ${{ needs.build.outputs.command_suffix == '+publish' }}
     needs:
@@ -104,6 +110,7 @@ jobs:
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GH_REPO: ${{ github.repository }}
+
   failure:
     if: ${{ failure() || cancelled() }}
     needs:
