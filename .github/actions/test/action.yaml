@@ -469,7 +469,7 @@ runs:
     shell: bash
     run: |
       echo "Check logs for errors" | yellow
-      LOG_ERRORS=$(sudo grep -iE "error|fail" /var/snap/mastodon-server/current/logs/*.log ~/snap/snap/mastodon-server/common/debug/logs/*.log || true)
+      LOG_ERRORS=$(sudo grep -iE "error|fail" /var/snap/mastodon-server/current/logs/*.log /root/snap/mastodon-server/common/debug/logs/*.log || true)
       LOG_ERRORS=$(echo "$LOG_ERRORS" | grep -v "SMTP-AUTH requested but missing user name" || true)
       if [ -z "$LOG_ERRORS" ]; then
         echo "No errors" | green
