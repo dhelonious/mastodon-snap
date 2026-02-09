@@ -70,6 +70,12 @@ if SYSTEM_RESTART_REQUIRED=$(snapctl get system.restart-required); then
     fi
 fi
 
+# Secrets
+
+export PG_PASSWORD=$(generate_secret postgres)
+export PGB_PASSWORD=$(generate_secret pgbouncer)
+# export REDIS_PASSWORD=$(generate_secret redis)
+
 # Postgres
 
 . "$SNAP/postgres.env"
