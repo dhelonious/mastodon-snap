@@ -10,7 +10,7 @@ This release also includes:
 * node 20.20.0
 * pgbouncer 1.25.1
 * postgres 18.1
-* redis 8.4.0
+* redis 8.4.1
 * ruby 3.4.7
 
 > [!IMPORTANT]
@@ -19,3 +19,4 @@ This release also includes:
 Changelog for 4.5.6snap2:
 
 * Fix permission settings outside snap hooks
+* Update redis to 8.4.1
