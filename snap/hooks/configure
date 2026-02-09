@@ -5,6 +5,11 @@
 trap end_debug_log EXIT
 begin_debug_log configure
 
+. "$SNAP/hook.env"
+
+trap end_hook EXIT
+begin_hook
+
 . "$SNAP/snap.env"
 . "$SNAP/pgbouncer.env"
 . "$SNAP/nginx.env"

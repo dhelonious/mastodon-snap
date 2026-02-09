@@ -5,6 +5,11 @@
 trap end_debug_log EXIT
 begin_debug_log pre-refresh
 
+. "$SNAP/hook.env"
+
+trap end_hook EXIT
+begin_hook
+
 . "$SNAP/postgres.env"
 . "$SNAP/mastodon.env"
 

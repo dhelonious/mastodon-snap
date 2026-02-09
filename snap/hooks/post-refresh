@@ -5,6 +5,11 @@
 trap end_debug_log EXIT
 begin_debug_log post-refresh
 
+. "$SNAP/hook.env"
+
+trap end_hook EXIT
+begin_hook
+
 . "$SNAP/settings.env"
 
 set_default_settings

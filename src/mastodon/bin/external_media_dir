@@ -10,9 +10,6 @@ if ! [ -d "$1" ]; then
     exit 0
 fi
 
-echo "Change owner of $1 to $DAEMON_USER"
-fix_for_daemon_user "$1"
-
 echo "Link media dir to $1"
 MEDIA_DIR="$1" link_media_dir
 snapctl set media.dir="$MEDIA_DIR"

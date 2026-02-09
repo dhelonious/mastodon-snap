@@ -225,6 +225,11 @@ Depending on how busy your server is, the media directory can grow quickly. If y
 > [!IMPORTANT]
 > The order of these steps matters if you are doing this after your instance has been running for a while. If you change the `media.dir` to an empty directory, Mastodon will not be able to display media and will have to fetch it, which causes unnecessary network traffic and may even require manual intervention.
 
+> [!IMPORTANT]
+> The media directory must be owned by `snap_daemon:root`!
+>
+>     chown -R snap_daemon:root /media/mastodon
+
 ### Backups
 
 Since each export contains a compressed archive of the media directory, the size of the backup directory also increases. Additionally, when you uninstall the Snap, all of the above-mentioned directories are deleted, including the default backup directory `/var/snap/mastodon-server/common/backups`, which contains all manual and automatic exports.

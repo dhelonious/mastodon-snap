@@ -16,8 +16,6 @@ This release also includes:
 > [!IMPORTANT]
 > Release 4.5.4snap1 should have greatly enhanced performance due to the addition of pgbouncer, extra sidekiq workers, and support for tuning based on system hardware. Take a look at the tuning section of the [readme](README.md) to find out more.
 
-Changelog for 4.5.6snap1:
+Changelog for 4.5.6snap2:
 
-* Upgrade nginx to 1.29.5
-* Improve permission handling
-* Rename `acme.sh.log` to `acme.log`
+* Fix permission settings outside snap hooks
