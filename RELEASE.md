@@ -18,5 +18,6 @@ This release also includes:
 
 Changelog for 4.5.6snap2:
 
-* Fix permission settings outside snap hooks
 * Update redis to 8.4.1
+* Fix permission settings outside snap hooks
+* Improve db user creation

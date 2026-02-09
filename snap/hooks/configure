@@ -32,10 +32,7 @@ reset_restart_required streaming
 reset_restart_required nginx
 reset_compilation_required
 
-if pgbouncer_user_exists; then
-    create_pgbouncer_user
-    restart_required pgbouncer
-fi
+mastodon_create_db_users
 
 if [ "$NGINX_ACCESS_LOG" != "$CURRENT_NGINX_ACCESS_LOG" ]; then
     restart_required nginx
