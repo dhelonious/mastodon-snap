@@ -171,6 +171,7 @@ runs:
       check_service_status sidekiq-low
       check_service_status streaming
       check_service_status nginx
+      echo "All services are running" | green
 
   - name: check reachability
     shell: bash
@@ -457,6 +458,7 @@ runs:
       check_service_status sidekiq-low
       check_service_status streaming
       check_service_status nginx
+      echo "All services are running" | green
 
   - name: check logs for warnings
     if: ${{ success() || failure() }}
