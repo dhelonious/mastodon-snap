@@ -81,7 +81,8 @@ echo Exporting configuration...
 rsync_export "$SNAP_COMMON/mastodon.conf" "$export_dir/"
 
 echo Exporting database...
-postgres_export_database "$export_dir/database.sql"
+postgres_waitready
+$SNAP/bin/pg_dumpall.wrapper -f "$export_dir/database.sql"
 sed -ri "1,100s/^(CREATE ROLE postgres;)/-- \1/" "$export_dir/database.sql"
 sed -ri "1,100s/^(CREATE ROLE $PG_USER;)/-- \1/" "$export_dir/database.sql"
 sed -ri "1,100s/^(CREATE ROLE $PGB_USER;)/-- \1/" "$export_dir/database.sql"

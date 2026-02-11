@@ -106,7 +106,8 @@ echo Setting up database users...
 mastodon_create_db_users
 
 echo Restoring database...
-postgres_restore_database "$export_dir/database.sql"
+postgres_waitready
+$SNAP/bin/psql.wrapper -f "$export_dir/database.sql" template1 > /dev/null
 if [ "$BACKUP_VERSION" != "$SNAP_VERSION" ]; then
     if confirm "Do you want to start a database migration?"; then
         mastodon_db_migrate
