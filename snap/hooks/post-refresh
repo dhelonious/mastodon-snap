@@ -156,10 +156,11 @@ if ANNOUNCEMENT_POST_REFRESH=$(snapctl get announcement.post-refresh); then
 fi
 snapctl unset announcement
 
+update_mastodon_files
+
 if [ "$SNAP_VERSION" != "$PREVIOUS_SNAP_VERSION" ]; then
     echo Update mastodon
     copy_mastodon_server_config
-    update_mastodon_files
 
     if mastodon_config_exists; then
         echo Update mastodon config
