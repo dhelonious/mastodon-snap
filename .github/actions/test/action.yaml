@@ -80,7 +80,9 @@ runs:
       sudo snap set mastodon-server domain="${{ steps.env.outputs.DOMAIN }}"
       sudo snap set mastodon-server email="${{ steps.env.outputs.EMAIL }}"
       sudo snap set mastodon-server logs.debug=true
+      echo "::group::mastodon-server.setup"
       sudo mastodon-server.setup -u ${{ steps.env.outputs.USERNAME }} -c no
+      echo "::endgroup::"
       sleep 10
 
   - name: install snap
@@ -121,7 +123,9 @@ runs:
       else
         echo "Mastodon setup failed" | red
         echo "Snap logs:" | yellow
+        echo "::group::snap logs"
         sudo snap logs mastodon-server -n=all | yellow
+        echo "::endgroup::"
         exit 1
       fi
       sleep 30
