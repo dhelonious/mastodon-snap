@@ -15,8 +15,15 @@ Before removing the Snap, make sure you move the backups out of `/var/snap/masto
 > [!TIP]
 > Additional debug logs will be created when the `logs.debug` setting is enabled (see the [configuration docs](docs/configuration.md)).
 
-## Statistics show "0 active users"
+## Backup cannot be restored
 
+This usually happens because of a permissions mismatch. Use the following commands to correct the permissions on your backup directory:
+
+    chmod u+rw,g+r,o-w -R /path/to/export
+    chown root:snap_daemon -R /path/to/export
+
+## Statistics show "0 active users"
+/var/snap/mastodon-server/common/backups/20260211-140044
 Statistics are compiled every night. So the number of users should be correct within 24 hours.
 
 ## Server admin info not loading
