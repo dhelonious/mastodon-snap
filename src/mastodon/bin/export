@@ -13,6 +13,14 @@ print_usage() {
     echo "Usage: $SNAP_NAME.export [-p PATH] [NAME]"
 }
 
+rsync_export() {
+    rsync --no-owner --no-perms --chmod u+rw,g+r,o-rwx "$1" "$2"
+}
+
+set_export_permissions() {
+    chmod -R u+rw,g+r,o-rwx "$1" && chown -R root:$DAEMON_USER "$1"
+}
+
 backup_dir="$BACKUP_DIR"
 
 while getopts "p:h" OPTION; do
@@ -61,7 +69,7 @@ mkdir -p "$export_dir"
 echo "Exporting backup to $export_dir..."
 
 echo Exporting version...
-cp "$SNAP_COMMON/version" "$export_dir/"
+rsync_export "$SNAP_COMMON/version" "$export_dir/"
 
 echo Exporting settings...
 for setting in $SETTINGS; do
@@ -70,30 +78,33 @@ for setting in $SETTINGS; do
 done
 
 echo Exporting configuration...
-rsync_clean "$SNAP_COMMON/mastodon.conf" "$export_dir/"
+rsync_export "$SNAP_COMMON/mastodon.conf" "$export_dir/"
 
 echo Exporting database...
 postgres_export_database "$export_dir/database.sql"
 sed -ri "1,100s/^(CREATE ROLE postgres;)/-- \1/" "$export_dir/database.sql"
 sed -ri "1,100s/^(CREATE ROLE $PG_USER;)/-- \1/" "$export_dir/database.sql"
+sed -ri "1,100s/^(CREATE ROLE $PGB_USER;)/-- \1/" "$export_dir/database.sql"
+set_export_permissions "$export_dir/database.sql"
 
 if [ -s "$REDIS_DATA/redis.rdb" ]; then
     if redis_waitready; then
         redis_save
     fi
     echo Exporting redis database...
-    rsync_clean "$REDIS_DATA/redis.rdb" "$export_dir/"
+    rsync_export "$REDIS_DATA/redis.rdb" "$export_dir/"
 fi
 
 if [ -n "$(ls -A $CERT_DIR)" ]; then
     echo Exporting certificates...
-    cp -r "$CERT_DIR" "$export_dir/"
+    rsync_export "$CERT_DIR" "$export_dir/"
 fi
 
 if [ -z "$SKIP_MEDIA_EXPORT" ]; then
     if ! [ -z "$(ls -A $MEDIA_DIR)" ]; then
         echo Exporting media...
         tar -czf "$export_dir/media.tar.gz" -C "$(dirname $MEDIA_DIR)" --exclude=*/cache "$(basename $MEDIA_DIR)"
+        set_export_permissions "$export_dir/media.tar.gz"
     fi
 fi
 
@@ -101,5 +112,14 @@ echo Export finished successfully!
 if [ "$BACKUP_DIR" == "$DEFAULT_BACKUP_DIR" ]; then
     echo
     echo [!] You are currently using the default backup directory.
-    echo Make sure you copy $export_dir to a safe location. Otherwise, your export will be deleted when you uninstall the snap. To permantently change the location of the backup directory, use 'snap set mastodon-server backup.dir=/mnt/backups'.
+    echo
+    echo Make sure you copy
+    echo
+    echo $export_dir
+    echo
+    echo to a safe location. Otherwise, your export will be deleted when you uninstall the snap.
+    echo
+    echo To permantently change the location of the backup directory, use:
+    echo
+    echo snap set mastodon-server backup.dir=/mnt/backups
 fi
