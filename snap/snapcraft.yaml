@@ -961,6 +961,7 @@ parts:
       - -mastodon/dist
       - -mastodon/chart
       - -mastodon/log
+      - -mastodon/docs
       - -mastodon/*.md
       - -mastodon/Vagrantfile
       - -mastodon/Dockerfile
