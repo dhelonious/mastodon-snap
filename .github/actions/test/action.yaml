@@ -142,24 +142,26 @@ runs:
     shell: bash
     run: |
       echo "Check service statuses" | yellow
-      check_service_status() {
-        STATUS=$(snap services mastodon-server | sed -rn "s/.*\.$1 +([a-z]+) +([a-z]+).*/\1,\2/p")
-        if [ "$STATUS" = "enabled,active" ]; then
-          echo "$1 $STATUS" | green
-        else
-          echo "$1 $STATUS" | red
-          echo "$(snap services mastodon-server)" | yellow
+      echo <<'EOF' > ~/bin/check_service_status
+      $SHEBANG
+      STATUS=$(snap services mastodon-server | sed -rn "s/.*\.$1 +([a-z]+) +([a-z]+).*/\1,\2/p")
+      if [ "$STATUS" = "enabled,active" ]; then
+        echo "$1 $STATUS" | green
+      else
+        echo "$1 $STATUS" | red
+        echo "$(snap services mastodon-server)" | yellow
+        echo
+        echo "Snap logs for $1:" | yellow
+        sudo snap logs mastodon-server.$1 -n=all | yellow
+        if sudo test -f "/var/snap/mastodon-server/current/logs/$1.log"; then
           echo
-          echo "Snap logs for $1:" | yellow
-          sudo snap logs mastodon-server.$1 -n=all | yellow
-          if sudo test -f "/var/snap/mastodon-server/current/logs/$1.log"; then
-            echo
-            echo "Log file for $1:" | yellow
-            sudo cat "/var/snap/mastodon-server/current/logs/$1.log" | yellow
-          fi
-          exit 1
+          echo "Log file for $1:" | yellow
+          sudo cat "/var/snap/mastodon-server/current/logs/$1.log" | yellow
         fi
-      }
+        exit 1
+      fi
+      EOF
+      sudo chmod +x ~/bin/check_service_status
       check_service_status redis
       check_service_status postgres
       check_service_status pgbouncer
@@ -442,12 +444,19 @@ runs:
       snap debug timings --last=refresh || true
       echo "::endgroup::"
 
-  - name: print service statuses
-    if: ${{ inputs.upgrade == 'false' && failure() }}
+  - name: check services
     shell: bash
     run: |
-      echo "Print service statuses" | yellow
-      snap services mastodon-server
+      echo "Check service statuses" | yellow
+      check_service_status redis
+      check_service_status postgres
+      check_service_status pgbouncer
+      check_service_status backend
+      check_service_status sidekiq-high
+      check_service_status sidekiq-medium
+      check_service_status sidekiq-low
+      check_service_status streaming
+      check_service_status nginx
 
   - name: check logs for warnings
     if: ${{ success() || failure() }}
