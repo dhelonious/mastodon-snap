@@ -71,7 +71,7 @@ if [ -d "$export_dir" ]; then
 fi
 
 mkdir -p "$export_dir"
-echo "Exporting backup to $export_dir..."
+echo "Creating a backup at $export_dir"
 
 echo Exporting version...
 rsync_export "$SNAP_COMMON/version" "$export_dir/"
@@ -81,6 +81,7 @@ for setting in $SETTINGS; do
     setting_key=${setting%,*}
     echo "$setting_key=$(snapctl get $setting_key)" >> "$export_dir/settings"
 done
+chmod o-rwx "$export_dir/settings"
 
 echo Exporting configuration...
 rsync_export "$SNAP_COMMON/mastodon.conf" "$export_dir/"
