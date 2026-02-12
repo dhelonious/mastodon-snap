@@ -117,15 +117,9 @@ fi
 echo Export finished successfully!
 if [ "$BACKUP_DIR" == "$DEFAULT_BACKUP_DIR" ]; then
     echo
-    echo [!] You are currently using the default backup directory.
+    echo [!] You are currently using the default backup directory!
     echo
-    echo Make sure you copy
-    echo
-    echo $export_dir
-    echo
-    echo to a safe location. Otherwise, your export will be deleted when you uninstall the snap.
-    echo
-    echo To permantently change the location of the backup directory, use:
-    echo
-    echo snap set mastodon-server backup.dir=/mnt/backups
+    echo Make sure you copy the export to a safe location. Otherwise, it will be deleted
+    echo when you uninstall the Snap. Refer to the documentation for information on how
+    echo to permanently change the location of the backup directory.
 fi
