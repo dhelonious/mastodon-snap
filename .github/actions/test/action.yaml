@@ -128,7 +128,7 @@ runs:
         echo "::endgroup::"
         exit 1
       fi
-      sleep 30
+      sleep 60
 
   - name: print snap settings
     shell: bash
