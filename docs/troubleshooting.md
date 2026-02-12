@@ -79,7 +79,7 @@ To fix this problem, add `vm.overcommit_memory = 1` to `/etc/sysctl.conf` and th
 
 ### "Too many open files" during restore
 
-The message "Too many open files" indicates that you have reached the file descriptor limit. You can check the current limit with `ulimit -n`. You can try to increase the limit to its maximum using
+The messages "Too many open files" or "Argument list too long" in the log files indicate that you have reached the file descriptor limit. You can check the current limit with `ulimit -n`. You can try to increase the limit to its maximum using:
 
     ulimit -n 65536
 
