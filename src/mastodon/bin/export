@@ -18,12 +18,13 @@ print_usage() {
     echo "Usage: $SNAP_NAME.export [-p PATH] [NAME]"
 }
 
-rsync_export() {
-    rsync -r --no-owner --no-perms --chmod u+rw,g+r,o-rwx "$1" "$2"
-}
-
 set_export_permissions() {
     chmod -R u+rw,g+r,o-rwx "$1" && chown -R root:$DAEMON_USER "$1"
+}
+
+rsync_export() {
+    rsync -r --ignore-times --no-owner --no-group --no-perms "$1" "$2"
+    set_export_permissions "$2"
 }
 
 backup_dir="$BACKUP_DIR"
@@ -81,7 +82,7 @@ for setting in $SETTINGS; do
     setting_key=${setting%,*}
     echo "$setting_key=$(snapctl get $setting_key)" >> "$export_dir/settings"
 done
-chmod o-rwx "$export_dir/settings"
+set_export_permissions "$export_dir/settings"
 
 echo Exporting configuration...
 rsync_export "$SNAP_COMMON/mastodon.conf" "$export_dir/"
