@@ -47,6 +47,9 @@ Supported architectures:
 
 For more information, see the latest [release readme](RELEASE.md) or the [FAQs](docs/faq.md).
 
+> [!IMPORTANT]
+> This is a community developed snap and is not officially supported or released by Mastodon GmbH.
+
 
 # 🚀 Quickstart
 
