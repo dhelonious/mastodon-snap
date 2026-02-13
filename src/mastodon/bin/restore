@@ -19,11 +19,12 @@ print_usage() {
 }
 
 set_restore_permissions() {
-    chmod -R u+rw,g+rw,o-rwx "$1" && chown -R $DAEMON_USER:root "$1"
+    chmod $CHMOD_DEBUG -R u+rw,g+rw,o-rwx "$1" \
+        && chown $CHOWN_DEBUG -R $DAEMON_USER:root "$1"
 }
 
 rsync_restore() {
-    rsync -rf --ignore-times --no-owner --no-group --no-perms "$1" "$2"
+    rsync $RSYNC_DEBUG -rf --ignore-times --no-owner --no-group --no-perms "$1" "$2"
     set_restore_permissions "$2"
 }
 
