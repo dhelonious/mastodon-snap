@@ -19,8 +19,9 @@ print_usage() {
 }
 
 set_export_permissions() {
-    chmod $CHMOD_DEBUG -R u+rw,g+r,o-rwx "$1" \
-        && chown $CHOWN_DEBUG -R root:$DAEMON_USER "$1"
+    find "$1" $FIND_DEBUG -type f -exec chmod 660 {} +
+    find "$1" $FIND_DEBUG -type d -exec chmod 770 {} +
+    chown $CHOWN_DEBUG -R root:$DAEMON_USER "$1"
 }
 
 rsync_export() {

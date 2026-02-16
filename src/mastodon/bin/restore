@@ -19,8 +19,9 @@ print_usage() {
 }
 
 set_restore_permissions() {
-    chmod $CHMOD_DEBUG -R u+rw,g+rw,o-rwx "$1" \
-        && chown $CHOWN_DEBUG -R $DAEMON_USER:root "$1"
+    find "$1" $FIND_DEBUG -type f -exec chmod 660 {} +
+    find "$1" $FIND_DEBUG -type d -exec chmod 2770 {} +
+    chown $CHOWN_DEBUG -R $DAEMON_USER:root "$1"
 }
 
 rsync_restore() {
