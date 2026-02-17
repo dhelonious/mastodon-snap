@@ -3,11 +3,12 @@
 . "$SNAP/snap.env"
 
 user="$(id -un)"
+umask 0007
 
 # TODO: Remove old daemon user if no longer required
 if [ "$user" = "$DAEMON_USER" ] || [ "$user" = "$OLD_DAEMON_USER" ]; then
     "$@"
 else
-    setpriv --clear-groups --reuid $DAEMON_USER --regid $DAEMON_USER -- "$@" \
+    setpriv --clear-groups --reuid $DAEMON_USER --regid root -- "$@" \
     || setpriv --clear-groups --reuid $OLD_DAEMON_USER --regid $OLD_DAEMON_USER -- "$@"
 fi
