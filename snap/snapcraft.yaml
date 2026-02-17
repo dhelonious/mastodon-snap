@@ -134,7 +134,7 @@ apps:
       - removable-media
 
   sidekiq-high:
-    command: bin/run_as_daemon_user sidekiq high
+    command: bin/run_as_daemon_user sidekiq.wrapper high
     daemon: simple
     after:
       - postgres
@@ -147,7 +147,7 @@ apps:
       - removable-media
 
   sidekiq-medium:
-    command: bin/run_as_daemon_user sidekiq medium
+    command: bin/run_as_daemon_user sidekiq.wrapper medium
     daemon: simple
     after:
       - postgres
@@ -160,7 +160,7 @@ apps:
       - removable-media
 
   sidekiq-low:
-    command: bin/run_as_daemon_user sidekiq low
+    command: bin/run_as_daemon_user sidekiq.wrapper low
     daemon: simple
     after:
       - postgres
@@ -173,7 +173,7 @@ apps:
       - removable-media
 
   streaming:
-    command: bin/run_as_daemon_user streaming
+    command: bin/run_as_daemon_user streaming.wrapper
     daemon: simple
     after:
       - redis

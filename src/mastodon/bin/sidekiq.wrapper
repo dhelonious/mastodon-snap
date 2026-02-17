@@ -15,23 +15,32 @@ export MALLOC_ARENA_MAX=2
 
 case "$1" in
     high)
+        name="sidekiq-high"
         concurrency=$(( SIDEKIQ_CONCURRENCY * 3 / 6 ))
+        queues="-q critical -q scheduler -q push,6 -q mailers,4 -q default,2"
         log_file=sidekiq-high.log
         ;;
     medium)
+        name="sidekiq-medium"
         concurrency=$(( SIDEKIQ_CONCURRENCY * 2 / 6  ))
+        queues="-q default,6 -q pull,4 -q push,2 -q mailers,2"
         log_file=sidekiq-medium.log
         ;;
     low)
+        name="sidekiq-low"
         concurrency=$(( SIDEKIQ_CONCURRENCY * 1 / 6 ))
+        queues="-q media,6 -q low,4 -q pull,2"
         log_file=sidekiq-low.log
         ;;
     *)
+        name="sidekiq"
         concurrency=$SIDEKIQ_CONCURRENCY
+        queues=""
         log_file=sidekiq.log
         ;;
 esac
 
+echo "Starting $name..."
 cd "$MASTODON_HOME" && \
-    run_as_daemon_user bundle exec sidekiq -c $concurrency "$@" \
+    run_as_daemon_user bundle exec sidekiq "$queues" -c $concurrency \
     2>&1 | tee -a "$LOG_DIR/$log_file"

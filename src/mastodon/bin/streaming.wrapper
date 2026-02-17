@@ -12,5 +12,5 @@ export DB_POOL=$STREAMING_DB_POOL
 export MALLOC_ARENA_MAX=2
 
 cd "$MASTODON_HOME" && \
-    run_as_daemon_user node streaming "$@" \
+    run_as_daemon_user node streaming \
     2>&1 | tee -a "$LOG_DIR/streaming.log"
