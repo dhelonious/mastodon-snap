@@ -75,6 +75,7 @@ fi
 confirm "Are you sure you want to restore $1?" || exit 0
 
 echo Restoring backup from $export_dir
+cd /tmp
 
 BACKUP_VERSION="$(cat $export_dir/version)"
 if [ "$BACKUP_VERSION" != "$SNAP_VERSION" ]; then

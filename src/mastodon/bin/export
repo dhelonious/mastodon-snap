@@ -75,6 +75,7 @@ fi
 
 mkdir -p "$export_dir"
 echo "Creating a backup at $export_dir"
+cd /tmp
 
 echo Exporting version...
 rsync_export "$SNAP_COMMON/version" "$export_dir/"
