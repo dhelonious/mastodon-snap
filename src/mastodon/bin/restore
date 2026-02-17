@@ -77,6 +77,23 @@ confirm "Are you sure you want to restore $1?" || exit 0
 echo Restoring backup from $export_dir
 cd /tmp
 
+if [ "$(get_owner $export_dir)" != "root" ] || [ "$(get_group $export_dir)" != "$DAEMON_USER" ]; then
+    echo "Trying to fix permissions for $export_dir..."
+    if find "$export_dir" \
+        \( -type d -exec chmod 2770 {} + -exec chown "root:$DAEMON_USER" {} + \) -o \
+        \( -type f -exec chmod 660 {} + -exec chown "root:$DAEMON_USER" {} + \)
+    then
+        echo Success!
+    else
+        echo_error [!] Permissions could not be fixed automatically!
+        echo_error
+        echo_error Please fix the permissions manually:
+        echo_error sudo chmod u+rw,g+r -R "$export_dir"
+        echo_error sudo chown root:$DAEMON_USER -R "$export_dir"
+        exit 1
+    fi
+fi
+
 BACKUP_VERSION="$(cat $export_dir/version)"
 if [ "$BACKUP_VERSION" != "$SNAP_VERSION" ]; then
     echo CAUTION: You are trying to restore a backup from another version!
