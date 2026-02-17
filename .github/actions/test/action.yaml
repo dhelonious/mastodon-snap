@@ -135,7 +135,9 @@ runs:
     run: |
       echo "Print snap settings" | yellow
       if SETTINGS=$(sudo snap get mastodon-server -d 2>&1); then
+        echo "::group::settings"
         echo "$SETTINGS" | green
+        echo "::endgroup::"
       else
         echo "Snap settings could not be retrieved" | red
         echo "$SETTINGS" | red
