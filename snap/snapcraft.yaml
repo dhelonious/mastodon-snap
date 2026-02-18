@@ -468,8 +468,8 @@ parts:
       - setpriv
       - envsubst
     # NOTE: https://www.postgresql.org/ftp/latest
-    source: https://ftp.postgresql.org/pub/source/v18.1/postgresql-18.1.tar.gz
-    source-checksum: sha256/b0f18c2d6973d2aa023cfc77feda787d7bbe9c31a3977d0f04ac29885fb98ec4
+    source: https://ftp.postgresql.org/pub/source/v18.2/postgresql-18.2.tar.gz
+    source-checksum: sha256/85268ec707b72665ecc88daf5438e84081dc07d9d16326ebf3ef9a5fec9ce1e0
     plugin: autotools
     build-packages:
       - clang
@@ -593,8 +593,8 @@ parts:
     after:
       - redis-customizations
     # NOTE: https://github.com/redis/redis/releases/latest
-    source: https://download.redis.io/releases/redis-8.4.1.tar.gz
-    source-checksum: sha256/859fe81b881f741843006eacf3e43d36b01af7ce3eabd5d7d2cb568533502162
+    source: https://download.redis.io/releases/redis-8.6.0.tar.gz
+    source-checksum: sha256/d7e5f65f0bb0b4753d0cf98a60f5409a7c9b430ff8ac3397d336260cf64e5a6e
     plugin: make
     override-build: |
       set -eux

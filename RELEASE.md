@@ -9,8 +9,8 @@ This release also includes:
 * nginx 1.29.5
 * node 20.20.0
 * pgbouncer 1.25.1
-* postgres 18.1
-* redis 8.4.1
+* postgres 18.2
+* redis 8.6.0
 * ruby 3.4.7
 
 > [!IMPORTANT]
@@ -18,6 +18,7 @@ This release also includes:
 
 Changelog for 4.5.6snap2:
 
-* Update redis to 8.4.1
+* Update postgres to 18.2
+* Update redis to 8.6.0
 * Fix permission settings outside snap hooks
 * Fix permissions of export files
