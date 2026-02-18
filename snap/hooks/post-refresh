@@ -18,15 +18,12 @@ set_default_settings
 
 export PREVIOUS_SNAP_VERSION="$(get_snap_version_file)"
 
-echo Set permissions on log dir
+echo Set permissions on snap directories
+fix_for_root "$SECRET_DIR"
+fix_for_root "$DEFAULT_BACKUP_DIR"
+fix_for_daemon_user "$CERT_DIR"
+fix_for_daemon_user "$DEFAULT_MEDIA_DIR"
 fix_for_daemon_user "$LOG_DIR"
-
-echo Set permissions on secret dir
-if [ -d "$SECRET_DIR" ]; then
-    chmod -f 750 "$SECRET_DIR" || true
-    chmod -fR 640 $SECRET_DIR/* || true
-    chown -fR root:$DAEMON_USER --no-dereference "$SECRET_DIR" || true
-fi
 
 # NOTE: This is a fix for versions < 4.4.5snap2 and should be removed in the future
 snapctl unset update.backup
