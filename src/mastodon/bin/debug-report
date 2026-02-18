@@ -28,19 +28,24 @@ echo
 echo_underline "=" "Files and directories"
 echo
 
-cd /tmp && find "/var/snap/$SNAP_NAME" -maxdepth 4 \
-    \( \
-        -type d ! -readable -o \
-        -path "*/data/*" -o \
-        -path "*/mastodon/*" -o \
-        -path "*/media/*" \
-    \) -prune -o \
-    -type f -printf "%p (%u:%g %m)\n" -o \
-    -type d -printf "%p# (%u:%g %m)\n" |
-sed -e "s|^/var/snap/$SNAP_NAME/||" \
-    -e '2,$s|[^/]*/|  |g' \
-    -e "s|#|/|" \
-|| true
+print_tree() {
+    cd /tmp && \
+    find "$1" -maxdepth 3 \
+        \( \
+            -type d ! -readable -o \
+            -path "*/data/*" -o \
+            -path "*/mastodon/*" -o \
+            -path "*/media/*" \
+        \) -prune -o \
+        -type f -printf "%p (%u:%g %m)\n" -o \
+        -type d -printf "%p# (%u:%g %m)\n" \
+    | sed -e "s|^/var/snap/$SNAP_NAME/||" \
+        -e '2,$s|[^/]*/|  |g' \
+        -E -e "s|/?#|/|"
+}
+
+print_tree "$SNAP_COMMON" || true
+print_tree "$SNAP_DATA" || true
 
 echo
 echo_underline "=" "Environment"
