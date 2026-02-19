@@ -19,14 +19,15 @@ print_usage() {
 }
 
 set_restore_permissions() {
-    find "$1" $FIND_DEBUG -type f -exec chmod 660 {} +
-    find "$1" $FIND_DEBUG -type d -exec chmod 2770 {} +
-    chown $CHOWN_DEBUG -R $DAEMON_USER:root "$1"
+    for dir_or_file in "$@"; do
+        find "$dir_or_file" $FIND_DEBUG -type f -exec chmod 660 {} +
+        find "$dir_or_file" $FIND_DEBUG -type d -exec chmod 2770 {} +
+        chown $CHOWN_DEBUG -R $DAEMON_USER:root "$dir_or_file"
+    done
 }
 
 rsync_restore() {
     rsync $RSYNC_DEBUG -r --ignore-times --no-owner --no-group --no-perms --force "$1" "$2"
-    set_restore_permissions "$2"
 }
 
 if [ -z "$1" ]; then
@@ -80,8 +81,8 @@ cd /tmp
 if [ "$(get_owner $export_dir)" != "root" ] || [ "$(get_group $export_dir)" != "$DAEMON_USER" ]; then
     echo "Trying to fix permissions for $export_dir..."
     if find "$export_dir" \
-        \( -type d -exec chmod 2770 {} + -exec chown "root:$DAEMON_USER" {} + \) -o \
-        \( -type f -exec chmod 660 {} + -exec chown "root:$DAEMON_USER" {} + \)
+        \( -type d -exec chmod 750 {} + -exec chown "root:$DAEMON_USER" {} + \) -o \
+        \( -type f -exec chmod 640 {} + -exec chown "root:$DAEMON_USER" {} + \)
     then
         echo Success!
     else
@@ -125,6 +126,7 @@ stop_service pgbouncer
 
 echo Restoring configuration...
 rsync_restore "$export_dir/mastodon.conf" "$SNAP_COMMON/"
+set_restore_permissions "$SNAP_COMMON/mastodon.conf"
 
 mastodon_set_var DB_PASS "$(get_secret postgres)"
 # mastodon_set_var REDIS_PASSWORD "$(get_secret redis)"
@@ -156,12 +158,14 @@ if [ -f "$export_dir/redis.rdb" ]; then
     echo Restoring redis database...
     stop_service redis
     rsync_restore "$export_dir/redis.rdb" "$REDIS_DATA/"
+    set_restore_permissions "$REDIS_DATA/redis.rdb"
     start_service redis
 fi
 
 if [ -d "$export_dir/certs" ]; then
     echo Restoring certificates...
     rsync_restore "$export_dir/certs/"* "$CERT_DIR/"
+    set_restore_permissions "$CERT_DIR/"*
 fi
 
 echo Cleaning up media references...

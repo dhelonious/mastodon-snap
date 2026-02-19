@@ -18,15 +18,8 @@ print_usage() {
     echo "Usage: $SNAP_NAME.export [-p PATH] [NAME]"
 }
 
-set_export_permissions() {
-    find "$1" $FIND_DEBUG -type f -exec chmod 660 {} +
-    find "$1" $FIND_DEBUG -type d -exec chmod 770 {} +
-    chown $CHOWN_DEBUG -R root:$DAEMON_USER "$1"
-}
-
 rsync_export() {
     rsync $RSYNC_DEBUG -r --ignore-times --no-owner --no-group --no-perms "$1" "$2"
-    set_export_permissions "$2"
 }
 
 backup_dir="$BACKUP_DIR"
@@ -73,7 +66,7 @@ if [ -d "$export_dir" ]; then
     exit 1
 fi
 
-mkdir -p "$export_dir"
+mkdir_for_root "$export_dir"
 echo "Creating a backup at $export_dir"
 cd /tmp
 
@@ -118,6 +111,10 @@ if [ -z "$SKIP_MEDIA_EXPORT" ]; then
         set_export_permissions "$export_dir/media.tar.gz"
     fi
 fi
+
+find "$export_dir" $FIND_DEBUG -type f -exec chmod 640 {} +
+find "$export_dir" $FIND_DEBUG -type d -exec chmod 750 {} +
+chown $CHOWN_DEBUG -R root:$DAEMON_USER "$export_dir"
 
 echo Export finished successfully!
 if [ "$BACKUP_DIR" == "$DEFAULT_BACKUP_DIR" ]; then
