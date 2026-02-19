@@ -18,11 +18,11 @@ print_usage() {
     echo "Usage: $SNAP_NAME.restore [-p PATH] NAME"
 }
 
-set_restore_permissions() {
+set_permissions_for_daemon_user() {
     for dir_or_file in "$@"; do
-        find "$dir_or_file" $FIND_DEBUG -type f -exec chmod 660 {} +
-        find "$dir_or_file" $FIND_DEBUG -type d -exec chmod 2770 {} +
-        chown $CHOWN_DEBUG -R $DAEMON_USER:root "$dir_or_file"
+        find "$dir_or_file" -type f -exec chmod 660 {} + $FIND_DEBUG
+        find "$dir_or_file" -type d -exec chmod 2770 {} + $FIND_DEBUG
+        chown -R $DAEMON_USER:root "$dir_or_file" $CHOWN_DEBUG
     done
 }
 
@@ -78,11 +78,13 @@ confirm "Are you sure you want to restore $1?" || exit 0
 echo Restoring backup from $export_dir
 cd /tmp
 
-if [ "$(get_owner $export_dir)" != "root" ] || [ "$(get_group $export_dir)" != "$DAEMON_USER" ]; then
+if [ "$(get_owner $export_dir)" != "root" ] \
+    || [ "$(get_permissions $export_dir)" != "750" ]
+then
     echo "Trying to fix permissions for $export_dir..."
-    if find "$export_dir" \
-        \( -type d -exec chmod 750 {} + -exec chown "root:$DAEMON_USER" {} + \) -o \
-        \( -type f -exec chmod 640 {} + -exec chown "root:$DAEMON_USER" {} + \)
+    if chown -R root "$export_dir" $CHOWN_DEBUG; \
+        find "$export_dir" -type f -exec chmod 640 {} + $FIND_DEBUG; \
+        find "$export_dir" -type d -exec chmod 750 {} + $FIND_DEBUG
     then
         echo Success!
     else
@@ -90,7 +92,6 @@ if [ "$(get_owner $export_dir)" != "root" ] || [ "$(get_group $export_dir)" != "
         echo_error
         echo_error Please fix the permissions manually:
         echo_error sudo chmod u+rw,g+r -R "$export_dir"
-        echo_error sudo chown root:$DAEMON_USER -R "$export_dir"
         exit 1
     fi
 fi
@@ -126,7 +127,7 @@ stop_service pgbouncer
 
 echo Restoring configuration...
 rsync_restore "$export_dir/mastodon.conf" "$SNAP_COMMON/"
-set_restore_permissions "$SNAP_COMMON/mastodon.conf"
+set_permissions_for_daemon_user "$SNAP_COMMON/mastodon.conf"
 
 mastodon_set_var DB_PASS "$(get_secret postgres)"
 # mastodon_set_var REDIS_PASSWORD "$(get_secret redis)"
@@ -158,14 +159,14 @@ if [ -f "$export_dir/redis.rdb" ]; then
     echo Restoring redis database...
     stop_service redis
     rsync_restore "$export_dir/redis.rdb" "$REDIS_DATA/"
-    set_restore_permissions "$REDIS_DATA/redis.rdb"
+    set_permissions_for_daemon_user "$REDIS_DATA/redis.rdb"
     start_service redis
 fi
 
 if [ -d "$export_dir/certs" ]; then
     echo Restoring certificates...
     rsync_restore "$export_dir/certs/"* "$CERT_DIR/"
-    set_restore_permissions "$CERT_DIR/"*
+    set_permissions_for_daemon_user "$CERT_DIR/"*
 fi
 
 echo Cleaning up media references...

@@ -78,7 +78,6 @@ for setting in $SETTINGS; do
     setting_key=${setting%,*}
     echo "$setting_key=$(snapctl get $setting_key)" >> "$export_dir/settings"
 done
-set_export_permissions "$export_dir/settings"
 
 echo Exporting configuration...
 rsync_export "$SNAP_COMMON/mastodon.conf" "$export_dir/"
@@ -89,7 +88,6 @@ $SNAP/bin/pg_dumpall.wrapper -f "$export_dir/database.sql"
 sed -ri "1,100s/^(CREATE ROLE postgres;)/-- \1/" "$export_dir/database.sql"
 sed -ri "1,100s/^(CREATE ROLE $PG_USER;)/-- \1/" "$export_dir/database.sql"
 sed -ri "1,100s/^(CREATE ROLE $PGB_USER;)/-- \1/" "$export_dir/database.sql"
-set_export_permissions "$export_dir/database.sql"
 
 if [ -s "$REDIS_DATA/redis.rdb" ]; then
     if redis_waitready; then
@@ -108,13 +106,11 @@ if [ -z "$SKIP_MEDIA_EXPORT" ]; then
     if ! [ -z "$(ls -A $MEDIA_DIR)" ]; then
         echo Exporting media...
         tar -czf "$export_dir/media.tar.gz" -C "$(dirname $MEDIA_DIR)" --exclude=*/cache "$(basename $MEDIA_DIR)"
-        set_export_permissions "$export_dir/media.tar.gz"
     fi
 fi
 
-find "$export_dir" $FIND_DEBUG -type f -exec chmod 640 {} +
-find "$export_dir" $FIND_DEBUG -type d -exec chmod 750 {} +
-chown $CHOWN_DEBUG -R root:$DAEMON_USER "$export_dir"
+find "$export_dir" -type f -exec chmod 640 {} + $FIND_DEBUG
+find "$export_dir" -type d -exec chmod 750 {} + $FIND_DEBUG
 
 echo Export finished successfully!
 if [ "$BACKUP_DIR" == "$DEFAULT_BACKUP_DIR" ]; then
