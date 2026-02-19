@@ -1,0 +1,41 @@
+name: check
+run-name: Prechecks
+
+inputs:
+  ref:
+    required: false
+    type: string
+
+runs:
+  using: composite
+  steps:
+
+  - uses: actions/checkout@v4
+    with:
+      ref: ${{ inputs.ref }}
+
+  - name: define color commands
+    shell: bash
+    run: |
+      RED="\033[31m"
+      GREEN="\033[32m"
+      YELLOW="\033[33m"
+      RESET="\033[0m"
+      SHEBANG="#!/bin/bash"
+      colorize() { echo "while IFS= read -r line; do echo -e \"$1\$line$RESET\"; done"; }
+      mkdir -p ~/bin
+      echo -e "$SHEBANG\n$(colorize $RED)" > ~/bin/red
+      echo -e "$SHEBANG\n$(colorize $GREEN)" > ~/bin/green
+      echo -e "$SHEBANG\n$(colorize $YELLOW)" > ~/bin/yellow
+      sudo chmod +x ~/bin/*
+      echo "$HOME/bin" >> $GITHUB_PATH
+
+  - name: run checks
+    shell: bash
+    run: |
+      echo "Run checks" | yellow
+      if errors=$(bash tools/check.sh); then
+        echo "Check passed" | green
+      else
+        echo $errors | red
+      fi

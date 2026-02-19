@@ -30,7 +30,22 @@ on:
 
 jobs:
 
+  checks:
+    if: ${{ !(inputs.checks == 'false') }}
+    runs-on: ${{ matrix.builder }}
+    strategy:
+      matrix:
+        include:
+          - builder: ubuntu-latest
+            arch: amd64
+    steps:
+    - uses: actions/checkout@v4
+    - uses: ./.github/actions/check
+      with:
+        ref: ${{ inputs.tag }}
+
   build:
+    needs: checks
     runs-on: ${{ matrix.builder }}
     strategy:
       matrix:
