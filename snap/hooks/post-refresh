@@ -125,7 +125,8 @@ echo Set permissions on mastodon files and dirs
 fix_for_daemon_user "$MASTODON_HOME"
 fix_for_daemon_user "$LOG_DIR/backend.log"
 fix_for_daemon_user "$LOG_DIR/streaming.log"
-fix_for_daemon_user "$LOG_DIR/sidekiq.log"
+fix_for_daemon_user "$LOG_DIR/sidekiq-push.log"
+fix_for_daemon_user "$LOG_DIR/sidekiq-pull.log"
 if [ "$(get_owner $MEDIA_DIR)" != "$DAEMON_USER" ]; then
     fix_for_daemon_user "$MEDIA_DIR"
 fi

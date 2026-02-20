@@ -22,3 +22,4 @@ Changelog for 4.5.6snap2:
 * Update redis to 8.6.0
 * Fix permission settings outside snap hooks
 * Fix permissions of export files
+* Reduce number of sidekiq processes (`sidekiq-push` and `sidekiq-pull`)

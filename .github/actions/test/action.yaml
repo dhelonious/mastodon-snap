@@ -172,9 +172,8 @@ runs:
       check_service_status postgres
       check_service_status pgbouncer
       check_service_status backend
-      check_service_status sidekiq-high
-      check_service_status sidekiq-medium
-      check_service_status sidekiq-low
+      check_service_status sidekiq-push
+      check_service_status sidekiq-pull
       check_service_status streaming
       check_service_status nginx
       echo "All services are running" | green
@@ -459,9 +458,8 @@ runs:
       check_service_status postgres
       check_service_status pgbouncer
       check_service_status backend
-      check_service_status sidekiq-high
-      check_service_status sidekiq-medium
-      check_service_status sidekiq-low
+      check_service_status sidekiq-push
+      check_service_status sidekiq-pull
       check_service_status streaming
       check_service_status nginx
       echo "All services are running" | green
@@ -616,28 +614,20 @@ runs:
       sudo journalctl -xu snap.mastodon-server.redis.service --all || true
       echo "::endgroup::"
 
-      echo "Sidekiq-high logs" | yellow
-      echo "::group::sidekiq-high.log"
-      sudo cat /var/snap/mastodon-server/current/logs/sidekiq-high.log || true
+      echo "sidekiq-push logs" | yellow
+      echo "::group::sidekiq-push.log"
+      sudo cat /var/snap/mastodon-server/current/logs/sidekiq-push.log || true
       echo "::endgroup::"
-      echo "::group::journalctl sidekiq-high"
-      sudo journalctl -xu snap.mastodon-server.sidekiq-high.service --all || true
-      echo "::endgroup::"
-
-      echo "Sidekiq-medium logs" | yellow
-      echo "::group::sidekiq-medium.log"
-      sudo cat /var/snap/mastodon-server/current/logs/sidekiq-medium.log || true
-      echo "::endgroup::"
-      echo "::group::journalctl sidekiq-medium"
-      sudo journalctl -xu snap.mastodon-server.sidekiq-medium.service --all || true
+      echo "::group::journalctl sidekiq-push"
+      sudo journalctl -xu snap.mastodon-server.sidekiq-push.service --all || true
       echo "::endgroup::"
 
-      echo "Sidekiq-low logs" | yellow
-      echo "::group::sidekiq-low.log"
-      sudo cat /var/snap/mastodon-server/current/logs/sidekiq-low.log || true
+      echo "sidekiq-pull logs" | yellow
+      echo "::group::sidekiq-pull.log"
+      sudo cat /var/snap/mastodon-server/current/logs/sidekiq-pull.log || true
       echo "::endgroup::"
-      echo "::group::journalctl sidekiq-low"
-      sudo journalctl -xu snap.mastodon-server.sidekiq-low.service --all || true
+      echo "::group::journalctl sidekiq-pull"
+      sudo journalctl -xu snap.mastodon-server.sidekiq-pull.service --all || true
       echo "::endgroup::"
 
       echo "Streaming logs" | yellow
