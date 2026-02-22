@@ -16,10 +16,11 @@ This release also includes:
 > [!IMPORTANT]
 > Release 4.5.4snap1 should have greatly enhanced performance due to the addition of pgbouncer, extra sidekiq workers, and support for tuning based on system hardware. Take a look at the tuning section of the [readme](README.md) to find out more.
 
-Changelog for 4.5.6snap2:
+Changelog for 4.5.6snap3:
 
-* Update postgres to 18.2
-* Update redis to 8.6.0
-* Fix permission settings outside snap hooks
-* Fix permissions of export files
-* Reduce number of sidekiq processes (`sidekiq-push` and `sidekiq-pull`)
+* Add hotfix for server.conf permissions of older installations
+* Update postgres to 18.2 (4.5.6snap2)
+* Update redis to 8.6.0 (4.5.6snap2)
+* Fix permission settings outside snap hooks (4.5.6snap2)
+* Fix permissions of export files (4.5.6snap2)
+* Reduce number of sidekiq processes (4.5.6snap2)
