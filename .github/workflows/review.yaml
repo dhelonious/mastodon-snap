@@ -101,17 +101,15 @@ jobs:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GH_REPO: ${{ github.repository }}
       run: |
-        echo "Run review-tools" | yellow
-        review_results=$(review-tools.check-notices ${{ needs.download.outputs[matrix.arch] }})
-        version=$(echo "$review_results" | jq -r '.["mastodon-server"] | keys[0]')
-        if [ -z "$version" ]; then
-          echo "Version not found" | red
-          echo "$review_results" | yellow
-          exit 1
+        echo "Get version" | yellow
+        version=$(echo "${{ needs.download.outputs[matrix.arch] }}" | sed -nE "s/^mastodon-server_([^_]+)_${{ matrix.arch }}\.snap$/\1/p")
+        if [ -n "$version" ]; then
+          echo "Version found: $version" | green
+          title="Review for release $version"
         else
-          echo "Release version: $version" | green
+          echo Version not found | red
+          exit 1
         fi
-        title="Review for release $version"
 
         echo "Get new versions" | yellow
         versions="$(python3 tools/versions.py -ms)"
@@ -132,15 +130,21 @@ jobs:
           body="$body## Vulnerabilities\n$vulnerabilities"
         fi
 
-        echo "Get security notices" | yellow
-        notices_json=$(echo "$review_results" | jq -r ".\"mastodon-server\".\"$version\"")
-        if [ "$notices_json" == "{}" ]; then
-          echo "No new security notice" | green
+        echo "Run review-tools" | yellow
+        if review_results=$(review-tools.check-notices ${{ needs.download.outputs[matrix.arch] }}); then
+          echo "Get security notices" | yellow
+          notices_json=$(echo "$review_results" | jq -r ".\"mastodon-server\".\"$version\"")
+          if [ "$notices_json" == "{}" ]; then
+            echo "No new security notice" | green
+          else
+            echo "Security notices found" | yellow
+            notices=$(echo $notices_json | jq -r 'to_entries | ["| Name | Security notices |", "| --- | --- |"] + map("| " + .key + " | " + ( .value | map("[\(. )](http://ubuntu.com/security/notices/\(.))") | join("<br>") ) + " |") | .[]')
+            if ! [ -z "$body" ]; then body="$body\n"; fi
+            body="$body## Security notices\n$notices"
+          fi
         else
-          echo "Security notices found" | yellow
-          notices=$(echo $notices_json | jq -r 'to_entries | ["| Name | Security notices |", "| --- | --- |"] + map("| " + .key + " | " + ( .value | map("[\(. )](http://ubuntu.com/security/notices/\(.))") | join("<br>") ) + " |") | .[]')
-          if ! [ -z "$body" ]; then body="$body\n"; fi
-          body="$body## Security notices\n$notices"
+          echo Running review-tools failed | red
+          echo "$review_results"
         fi
 
         if ! [ -z "$body" ]; then
