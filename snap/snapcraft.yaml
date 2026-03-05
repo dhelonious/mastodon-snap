@@ -1,6 +1,6 @@
 name: mastodon-server
 title: Mastodon Server
-version: 4.5.7snap1
+version: 4.5.7snap2
 summary: Unofficial snap for Mastodon (decentralized social media)
 description: |
   Mastodon is a free, open-source social network server based on ActivityPub
@@ -451,8 +451,8 @@ parts:
       - setpriv
       - envsubst
     # NOTE: https://www.postgresql.org/ftp/latest
-    source: https://ftp.postgresql.org/pub/source/v18.2/postgresql-18.2.tar.gz
-    source-checksum: sha256/85268ec707b72665ecc88daf5438e84081dc07d9d16326ebf3ef9a5fec9ce1e0
+    source: https://ftp.postgresql.org/pub/source/v18.3/postgresql-18.3.tar.gz
+    source-checksum: sha256/9e054ffd6e013da2c2c9a1bfd6e062c98875d340df080516551c96b9b0926a59
     plugin: autotools
     build-packages:
       - clang
@@ -891,7 +891,7 @@ parts:
       - libmagic-mgc
       - libssl3t64
     build-environment:
-      - YARN_VERSION: "4.12.0" # NOTE: https://github.com/yarnpkg/berry/releases/latest
+      - YARN_VERSION: "4.13.0" # NOTE: https://github.com/yarnpkg/berry/releases/latest
       - RUBY_BRANCH: "3.4" # NOTE: must be updated with ruby source
       - BUNDLER_VERSION: "2.7.2" # NOTE: see `Gemfile.lock`
       - RAILS_ENV: production
