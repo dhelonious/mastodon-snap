@@ -6,7 +6,7 @@ This release also includes:
 
 * ffmpeg 8.0.1
 * libvips 8.18.0
-* nginx 1.29.5
+* nginx 1.29.6
 * node 20.20.1
 * pgbouncer 1.25.1
 * postgres 18.3
@@ -18,3 +18,4 @@ Changelog for 4.5.7snap2:
 * Update postgres to 18.3
 * Update yarn to 4.13.0
 * Update node to 20.20.1
+* Update nginx to 1.29.6
