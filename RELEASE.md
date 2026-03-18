@@ -4,7 +4,7 @@ See the release notes for Mastodon: https://github.com/mastodon/mastodon/release
 
 This release also includes:
 
-* ffmpeg 8.0.1
+* ffmpeg 8.1
 * libvips 8.18.0
 * nginx 1.29.6
 * node 20.20.1
@@ -15,7 +15,8 @@ This release also includes:
 
 Changelog for 4.5.7snap2:
 
+* Update ffmpeg to 8.1
+* Update nginx to 1.29.6
+* Update node to 20.20.1
 * Update postgres to 18.3
 * Update yarn to 4.13.0
-* Update node to 20.20.1
-* Update nginx to 1.29.6
