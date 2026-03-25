@@ -1,6 +1,6 @@
 name: mastodon-server
 title: Mastodon Server
-version: 4.5.8snap1
+version: 4.5.8snap2
 summary: Unofficial snap for Mastodon (decentralized social media)
 description: |
   Mastodon is a free, open-source social network server based on ActivityPub
@@ -630,13 +630,13 @@ parts:
       set -eux
       case "$SNAP_ARCH" in
       "amd64")
-        source="https://nodejs.org/download/release/v20.20.1/node-v20.20.1-linux-x64.tar.gz"
-        checksum="6362e50804cdcc110592201f67beda93bcd702fdcbe1c42840a50d590e3af0ce"
+        source="https://nodejs.org/download/release/v20.20.2/node-v20.20.2-linux-x64.tar.gz"
+        checksum="19e56f0825510207dd904f087fe52faa0a4eb6b2aab5f0ea7a33830d04888b8b"
         arch="x64"
         ;;
       "arm64")
-        source="https://nodejs.org/download/release/v20.20.1/node-v20.20.1-linux-arm64.tar.gz"
-        checksum="d6947e10ddc124284aee92981cc739cd4581a6b4bf89520792f2b582600195fa"
+        source="https://nodejs.org/download/release/v20.20.2/node-v20.20.2-linux-arm64.tar.gz"
+        checksum="47ef73d543ecf6eb19435f6c03a0ac4809b3bf0dd6b26c7c571efc2a6572a74d"
         arch="arm64"
         ;;
       *)
