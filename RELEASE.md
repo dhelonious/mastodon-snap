@@ -13,8 +13,6 @@ This release also includes:
 * redis 8.6.2
 * ruby 3.4.7
 
-Changelog for 4.5.9snap1:
+Changelog for 4.5.9snap2:
 
-* Update libvips to 8.18.2
-* Update nginx to 1.30.0
-* Update node to 20.20.2
+* Update yarn to 4.14.0

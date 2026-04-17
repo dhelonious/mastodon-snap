@@ -1,6 +1,6 @@
 name: mastodon-server
 title: Mastodon Server
-version: 4.5.9snap1
+version: 4.5.9snap2
 summary: Unofficial snap for Mastodon (decentralized social media)
 description: |
   Mastodon is a free, open-source social network server based on ActivityPub
@@ -891,7 +891,7 @@ parts:
       - libmagic-mgc
       - libssl3t64
     build-environment:
-      - YARN_VERSION: "4.13.0" # NOTE: https://github.com/yarnpkg/berry/releases/latest
+      - YARN_VERSION: "4.14.0" # NOTE: https://github.com/yarnpkg/berry/releases/latest
       - RUBY_BRANCH: "3.4" # NOTE: must be updated with ruby source
       - BUNDLER_VERSION: "2.7.2" # NOTE: see `Gemfile.lock`
       - RAILS_ENV: production
@@ -909,7 +909,7 @@ parts:
       - BUNDLE_RAKEFILE: $CRAFT_PART_BUILD/Rakefile
       - GEM_HOME: $CRAFT_PART_BUILD/vendor/ruby
       - GEM_PATH: $GEM_HOME
-      - YARN_RC_FILENAME: $CRAFT_PART_BUILD/.yarnrc.yml
+      - YARN_RC_FILENAME: .yarnrc.yml
       - YARN_CACHE_FOLDER: /tmp/yarn
       - COREPACK_HOME: /tmp/corepack
       - MASTODON_USE_LIBVIPS: "true"
@@ -931,6 +931,7 @@ parts:
       corepack enable
       corepack prepare --activate
       corepack yarn set version $YARN_VERSION
+      corepack yarn install --no-immutable
       corepack yarn install --immutable
       npx update-browserslist-db@latest
       yarn cache clean
