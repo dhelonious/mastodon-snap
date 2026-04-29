@@ -601,8 +601,8 @@ parts:
       - acme-customizations
       - curl
     # NOTE: https://github.com/acmesh-official/acme.sh/releases/latest
-    source: https://github.com/acmesh-official/acme.sh/archive/refs/tags/3.1.2.tar.gz
-    source-checksum: sha256/a51511ad0e2912be45125cf189401e4ae776ca1a29d5768f020a1e35a9560186
+    source: https://github.com/acmesh-official/acme.sh/archive/refs/tags/3.1.3.tar.gz
+    source-checksum: sha256/efd12b265252f8875269960b6b31830731ccce2b3e6ff8e7ecfbee21fde35ab4
     plugin: dump
     organize:
       "*": acme/
@@ -891,7 +891,7 @@ parts:
       - libmagic-mgc
       - libssl3t64
     build-environment:
-      - YARN_VERSION: "4.14.0" # NOTE: https://github.com/yarnpkg/berry/releases/latest
+      - YARN_VERSION: "4.14.1" # NOTE: https://github.com/yarnpkg/berry/releases/latest
       - RUBY_BRANCH: "3.4" # NOTE: must be updated with ruby source
       - BUNDLER_VERSION: "2.7.2" # NOTE: see `Gemfile.lock`
       - RAILS_ENV: production

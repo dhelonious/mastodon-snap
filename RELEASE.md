@@ -15,4 +15,5 @@ This release also includes:
 
 Changelog for 4.5.9snap2:
 
-* Update yarn to 4.14.0
+* Update acme.sh to 3.1.3
+* Update yarn to 4.14.1
