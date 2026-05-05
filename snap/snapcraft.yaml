@@ -792,8 +792,8 @@ parts:
       - -libvips/lib/pkgconfig
 
   ffmpeg:
-    source: https://ffmpeg.org/releases/ffmpeg-8.1.tar.bz2 # NOTE: https://ffmpeg.org/releases
-    source-checksum: sha256/c07039598df7d64d3c8b42c4e25b1959fc908621c6f6c2946881133f3b27eda2
+    source: https://ffmpeg.org/releases/ffmpeg-8.1.1.tar.bz2 # NOTE: https://ffmpeg.org/releases
+    source-checksum: sha256/b08594a47ca475ddda21c7990d8e9e3ceb5cd74f9709b4b5995b24d11cafa467
     plugin: autotools
     build-packages:
       - clang
