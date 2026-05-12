@@ -498,8 +498,8 @@ parts:
     after:
       - postgres
     # NOTE: https://www.pgbouncer.org/downloads/
-    source: https://www.pgbouncer.org/downloads/files/1.25.1/pgbouncer-1.25.1.tar.gz
-    source-checksum: sha256/6e566ae92fe3ef7f6a1b9e26d6049f7d7ca39c40e29e7b38f6d5500ae15d8465
+    source: https://www.pgbouncer.org/downloads/files/1.25.2/pgbouncer-1.25.2.tar.gz
+    source-checksum: sha256/924ad35113fd0a71c8e2dbe85b5d03445532e2b7b37a9f8a48983beea238b332
     plugin: autotools
     build-packages:
       - make
@@ -576,8 +576,8 @@ parts:
     after:
       - redis-customizations
     # NOTE: https://github.com/redis/redis/releases/latest
-    source: https://download.redis.io/releases/redis-8.6.2.tar.gz
-    source-checksum: sha256/cea46526594fe05f05b9ff733179eb1263deccf4269059cf081fdef222634c88
+    source: https://download.redis.io/releases/redis-8.6.3.tar.gz
+    source-checksum: sha256/9f54d4458c52be5472cdd1347d737f1d488b520fc3d0911cba47302de8d836e2
     plugin: make
     override-build: |
       set -eux

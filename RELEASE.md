@@ -8,13 +8,15 @@ This release also includes:
 * libvips 8.18.2
 * nginx 1.30.0
 * node 20.20.2
-* pgbouncer 1.25.1
+* pgbouncer 1.25.2
 * postgres 18.3
-* redis 8.6.2
+* redis 8.6.3
 * ruby 3.4.7
 
 Changelog for 4.5.9snap2:
 
 * Update acme.sh to 3.1.3
 * Update ffmpeg to 8.1.1
+* Update pgbouncer to 1.25.2
+* Update redis to 8.6.3
 * Update yarn to 4.14.1
