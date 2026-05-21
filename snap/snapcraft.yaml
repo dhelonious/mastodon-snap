@@ -1,6 +1,6 @@
 name: mastodon-server
 title: Mastodon Server
-version: 4.5.9snap2
+version: 4.5.10snap1
 summary: Unofficial snap for Mastodon (decentralized social media)
 description: |
   Mastodon is a free, open-source social network server based on ActivityPub
@@ -451,8 +451,8 @@ parts:
       - setpriv
       - envsubst
     # NOTE: https://www.postgresql.org/ftp/latest
-    source: https://ftp.postgresql.org/pub/source/v18.3/postgresql-18.3.tar.gz
-    source-checksum: sha256/9e054ffd6e013da2c2c9a1bfd6e062c98875d340df080516551c96b9b0926a59
+    source: https://ftp.postgresql.org/pub/source/v18.4/postgresql-18.4.tar.gz
+    source-checksum: sha256/450aa8f2da06c46f8221916e82ae06b04fb1040f8f00643dbf8b7d663caac0b9
     plugin: autotools
     build-packages:
       - clang
@@ -530,8 +530,8 @@ parts:
       - nginx-customizations
       - wraplib
     # NOTE: https://nginx.org/en/download.html (mainline version)
-    source: https://nginx.org/download/nginx-1.30.0.tar.gz
-    source-checksum: sha256/058188c64bf22baecaa72b809a6318a4f9ba623889c554feab03f7cb853ab31b
+    source: https://nginx.org/download/nginx-1.31.0.tar.gz
+    source-checksum: sha256/6d5b00d45393af2e4e7c52a442d2a198f0ccbc7678ed062a46f403edd833ebaa
     plugin: autotools
     build-environment:
       - PATH: $CRAFT_STAGE/nginx/bin:$PATH
@@ -873,8 +873,8 @@ parts:
       - ffmpeg
       - rsync
     # NOTE: https://github.com/mastodon/mastodon/releases/latest
-    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.5.9.tar.gz
-    source-checksum: sha256/cb86fe5f06ee3f442eefa9d1fd75c9ea692a1a1ad3986a6148b1cd18bfab573a
+    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.5.10.tar.gz
+    source-checksum: sha256/ff48fa44dc1ffde29d004b400888d511e147b6c6c5acc2c90fd2d44523768dff
     plugin: nil
     build-packages:
       - git
@@ -891,7 +891,7 @@ parts:
       - libmagic-mgc
       - libssl3t64
     build-environment:
-      - YARN_VERSION: "4.14.1" # NOTE: https://github.com/yarnpkg/berry/releases/latest
+      - YARN_VERSION: "4.15.0" # NOTE: https://github.com/yarnpkg/berry/releases/latest
       - RUBY_BRANCH: "3.4" # NOTE: must be updated with ruby source
       - BUNDLER_VERSION: "2.7.2" # NOTE: see `Gemfile.lock`
       - RAILS_ENV: production
