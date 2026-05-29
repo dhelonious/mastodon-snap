@@ -10,9 +10,10 @@ This release also includes:
 * node 20.20.2
 * pgbouncer 1.25.2
 * postgres 18.4
-* redis 8.6.3
+* redis 8.8.0
 * ruby 3.4.7
 
 Changelog for 4.5.10snap2:
 
 * Update nginx to 1.31.1
+* Update redis to 8.8.0
