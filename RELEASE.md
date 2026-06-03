@@ -1,6 +1,6 @@
-# Unofficial Snap for Mastodon 4.5.10
+# Unofficial Snap for Mastodon 4.5.11
 
-See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.5.10
+See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.5.11
 
 This release also includes:
 
@@ -13,7 +13,8 @@ This release also includes:
 * redis 8.8.0
 * ruby 3.4.7
 
-Changelog for 4.5.10snap2:
+Changelog for 4.5.11snap1:
 
 * Update nginx to 1.31.1
 * Update redis to 8.8.0
+* Update yarn to 4.16.0
