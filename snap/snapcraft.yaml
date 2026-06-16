@@ -1,6 +1,6 @@
 name: mastodon-server
 title: Mastodon Server
-version: 4.5.11snap2
+version: 4.6.0-rc.2snap1
 summary: Unofficial snap for Mastodon (decentralized social media)
 description: |
   Mastodon is a free, open-source social network server based on ActivityPub
@@ -630,13 +630,13 @@ parts:
       set -eux
       case "$SNAP_ARCH" in
       "amd64")
-        source="https://nodejs.org/download/release/v20.20.2/node-v20.20.2-linux-x64.tar.gz"
-        checksum="19e56f0825510207dd904f087fe52faa0a4eb6b2aab5f0ea7a33830d04888b8b"
+        source="https://nodejs.org/download/release/v24.16.0/node-v24.16.0-linux-x64.tar.gz"
+        checksum="2faf6a387e9b62b888e21c54f01249fb27537ffecf1842f29f4c919d0a59a0ff"
         arch="x64"
         ;;
       "arm64")
-        source="https://nodejs.org/download/release/v20.20.2/node-v20.20.2-linux-arm64.tar.gz"
-        checksum="47ef73d543ecf6eb19435f6c03a0ac4809b3bf0dd6b26c7c571efc2a6572a74d"
+        source="https://nodejs.org/download/release/v24.16.0/node-v24.16.0-linux-arm64.tar.gz"
+        checksum="589f5b6dd4fcfee4dfda73013903c966abaa8abd93dbc9d436544e472b4f0e74"
         arch="arm64"
         ;;
       *)
@@ -666,8 +666,8 @@ parts:
       - curl
       - libjemalloc2
     # NOTE: see `.ruby-version`
-    source: https://cache.ruby-lang.org/pub/ruby/3.4/ruby-3.4.7.tar.gz
-    source-checksum: sha256/23815a6d095696f7919090fdc3e2f9459b2c83d57224b2e446ce1f5f7333ef36
+    source: https://cache.ruby-lang.org/pub/ruby/4.0/ruby-4.0.5.tar.gz
+    source-checksum: sha256/7d6149079a63f8ae1d326c9fa65c6019ba2dc3155eae7b39159817911c88958e
     plugin: autotools
     build-packages:
       - clang
@@ -681,8 +681,8 @@ parts:
       - libdb-dev
       - libjemalloc-dev
     build-environment:
-      - RUBY_VERSION: "3.4.7" # NOTE: must be updated with ruby source
-      - RUBY_BRANCH: "3.4" # NOTE: must be updated with ruby source
+      - RUBY_VERSION: "4.0.5" # NOTE: must be updated with ruby source
+      - RUBY_BRANCH: "4.0" # NOTE: must be updated with ruby source
       - DEBIAN_DISABLE_RUBYGEMS_INTEGRATION: "true"
       - CC: clang
       - CXX: clang++
@@ -873,8 +873,8 @@ parts:
       - ffmpeg
       - rsync
     # NOTE: https://github.com/mastodon/mastodon/releases/latest
-    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.5.11.tar.gz
-    source-checksum: sha256/60ee3df6173df9bcdd8b4b6d9c2bb7ea34fb85c935d0c6ccb02880de5d586ce8
+    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.6.0-rc.2.tar.gz
+    source-checksum: sha256/7aa562fe3581e6da3d054cfa68b673961bc54e6074add085f2777466c539826d
     plugin: nil
     build-packages:
       - git
@@ -892,8 +892,8 @@ parts:
       - libssl3t64
     build-environment:
       - YARN_VERSION: "4.17.0" # NOTE: https://github.com/yarnpkg/berry/releases/latest
-      - RUBY_BRANCH: "3.4" # NOTE: must be updated with ruby source
-      - BUNDLER_VERSION: "2.7.2" # NOTE: see `Gemfile.lock`
+      - RUBY_BRANCH: "4.0" # NOTE: must be updated with ruby source
+      - BUNDLER_VERSION: "4.0.13" # NOTE: see `Gemfile.lock`
       - RAILS_ENV: production
       - NODE_ENV: production
       - OTP_SECRET: precompile_placeholder
@@ -1099,7 +1099,7 @@ parts:
       - tangerine-ui
     plugin: nil
     build-environment:
-      - RUBY_BRANCH: "3.4" # NOTE: must be updated with ruby source
+      - RUBY_BRANCH: "4.0" # NOTE: must be updated with ruby source
       - RUBYLIB: $CRAFT_STAGE/ruby/lib/ruby/$RUBY_BRANCH.0:$CRAFT_STAGE/ruby/lib/ruby/$RUBY_BRANCH.0/$SNAP_ARCH
       - PATH: $CRAFT_STAGE/mastodon/bin:$CRAFT_STAGE/ruby/bin:$CRAFT_STAGE/node/bin:$PATH:$CRAFT_STAGE/libvips/bin
       - LD_LIBRARY_PATH: $CRAFT_STAGE/mastodon/lib:$CRAFT_STAGE/ruby/lib:$CRAFT_STAGE/node/lib:$CRAFT_STAGE/libvips/lib
