@@ -5,7 +5,7 @@ See the release notes for Mastodon: https://github.com/mastodon/mastodon/release
 This release also includes:
 
 * ffmpeg 8.1.1
-* libvips 8.18.2
+* libvips 8.18.3
 * nginx 1.31.1
 * node 20.20.2
 * pgbouncer 1.25.2
@@ -13,8 +13,7 @@ This release also includes:
 * redis 8.8.0
 * ruby 3.4.7
 
-Changelog for 4.5.11snap1:
+Changelog for 4.5.11snap2:
 
-* Update nginx to 1.31.1
-* Update redis to 8.8.0
-* Update yarn to 4.16.0
+* Update libvips to 8.18.3
+* Update yarn to 4.17.0

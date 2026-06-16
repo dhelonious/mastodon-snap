@@ -1,6 +1,6 @@
 name: mastodon-server
 title: Mastodon Server
-version: 4.5.11snap1
+version: 4.5.11snap2
 summary: Unofficial snap for Mastodon (decentralized social media)
 description: |
   Mastodon is a free, open-source social network server based on ActivityPub
@@ -731,8 +731,8 @@ parts:
 
   libvips:
     # NOTE: https://github.com/libvips/libvips/releases/latest
-    source: https://github.com/libvips/libvips/archive/refs/tags/v8.18.2.tar.gz
-    source-checksum: sha256/c6e9f3c384436c6ffc75848d1ad76347368b9639897f6d9f909178dc986d5200
+    source: https://github.com/libvips/libvips/archive/refs/tags/v8.18.3.tar.gz
+    source-checksum: sha256/21aa79be2a83f1f46582c58e0fc7fc2b355e6fbb661091fb963a3b20f494dbaf
     plugin: nil
     build-packages:
       - meson
@@ -891,7 +891,7 @@ parts:
       - libmagic-mgc
       - libssl3t64
     build-environment:
-      - YARN_VERSION: "4.16.0" # NOTE: https://github.com/yarnpkg/berry/releases/latest
+      - YARN_VERSION: "4.17.0" # NOTE: https://github.com/yarnpkg/berry/releases/latest
       - RUBY_BRANCH: "3.4" # NOTE: must be updated with ruby source
       - BUNDLER_VERSION: "2.7.2" # NOTE: see `Gemfile.lock`
       - RAILS_ENV: production
