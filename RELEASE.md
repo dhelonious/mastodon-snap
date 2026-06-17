@@ -21,3 +21,4 @@ Changelog for 4.6.0-rc.2:
 * Update ruby to 4.0.5
 * Update yarn to 4.17.0
 * Update bird-ui to 4.0.0-beta.1.rc
+* Remove wrapstodon (no longer supported)

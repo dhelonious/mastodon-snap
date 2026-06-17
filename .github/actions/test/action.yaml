@@ -361,18 +361,6 @@ runs:
         fi
       fi
 
-  - name: test wrapstodon feature
-    shell: bash
-    run: |
-      echo "Test wrapstodon feature" | yellow
-      if WRAPSTODON_OUTPUT="$(sudo mastodon-server.generate-wrapstodon)"; then
-        echo "Test passed" | green
-      else
-        echo "Test failed" | red
-        echo "$WRAPSTODON_OUTPUT" | yellow
-        exit 1
-      fi
-
   - name: test postgres dump
     shell: bash
     run: |
