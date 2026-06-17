@@ -999,36 +999,38 @@ parts:
     after:
       - curl
       - mastodon
-    plugin: nil
+    source: https://github.com/rollecode/mastodon-bird-ui
+    source-tag: 4.0.0-beta.1.rc # NOTE: https://github.com/ronilaukkarinen/mastodon-bird-ui/releases/latest
+    source-type: git
+    plugin: dump
     build-environment:
-      - BIRD_UI_TAG: 3.0.0 # NOTE: https://github.com/ronilaukkarinen/mastodon-bird-ui/releases/latest
       - MASTODON_STYLES: $CRAFT_STAGE/mastodon/app/javascript/styles
       - MASTODON_LOCALES: $CRAFT_STAGE/mastodon/config/locales
     override-build: |
       set -eux
+
       mkdir -p $MASTODON_STYLES/mastodon-bird-ui
+      cp -f $CRAFT_PART_SRC/LICENSE $MASTODON_STYLES/mastodon-bird-ui/
+      cp -f $CRAFT_PART_SRC/src/_index.scss $MASTODON_STYLES/mastodon-bird-ui/
+      for dir in variables components layouts micro-interactions variants; do
+        cp -rf $CRAFT_PART_SRC/src/$dir $MASTODON_STYLES/mastodon-bird-ui/
+      done
 
-      curl https://raw.githubusercontent.com/ronilaukkarinen/mastodon-bird-ui/refs/tags/$BIRD_UI_TAG/LICENSE -o $MASTODON_STYLES/mastodon-bird-ui/LICENSE
-      curl https://raw.githubusercontent.com/ronilaukkarinen/mastodon-bird-ui/refs/tags/$BIRD_UI_TAG/layout-single-column.css -o $MASTODON_STYLES/mastodon-bird-ui/layout-single-column.scss
-      sed -i "s/theme-contrast/theme-mastodon-bird-ui-contrast/g" $MASTODON_STYLES/mastodon-bird-ui/layout-single-column.scss
-      sed -i "s/theme-mastodon-light/theme-mastodon-bird-ui-light/g" $MASTODON_STYLES/mastodon-bird-ui/layout-single-column.scss
-      curl https://raw.githubusercontent.com/ronilaukkarinen/mastodon-bird-ui/refs/tags/$BIRD_UI_TAG/layout-multiple-columns.css -o $MASTODON_STYLES/mastodon-bird-ui/layout-multiple-columns.scss
-      sed -i "s/theme-contrast/theme-mastodon-bird-ui-contrast/g" $MASTODON_STYLES/mastodon-bird-ui/layout-multiple-columns.scss
-      sed -i "s/theme-mastodon-light/theme-mastodon-bird-ui-light/g" $MASTODON_STYLES/mastodon-bird-ui/layout-multiple-columns.scss
+      echo -e "@use 'index';" >> $MASTODON_STYLES/mastodon-bird-ui/mastodon-bird-ui.scss
+      cp $CRAFT_STAGE/themes/mastodon-bird-ui/auto.scss $MASTODON_STYLES/mastodon-bird-ui-auto.scss
 
-      echo -e "@use 'application';\n@use 'mastodon-bird-ui/layout-single-column.scss';\n@use 'mastodon-bird-ui/layout-multiple-columns.scss';" > $MASTODON_STYLES/mastodon-bird-ui-dark.scss
-      echo -e "mastodon-bird-ui-dark: styles/mastodon-bird-ui-dark.scss" >> $CRAFT_STAGE/mastodon/config/themes.yml
-      echo -e "@use 'mastodon-light/variables';\n@use 'application';\n@use 'mastodon-light/diff';\n@use 'mastodon-bird-ui/layout-single-column.scss';\n@use 'mastodon-bird-ui/layout-multiple-columns.scss';" > $MASTODON_STYLES/mastodon-bird-ui-light.scss
-      echo -e "mastodon-bird-ui-light: styles/mastodon-bird-ui-light.scss" >> $CRAFT_STAGE/mastodon/config/themes.yml
-      echo -e "@use 'contrast/variables';\n@use 'application';\n@use 'contrast/diff';\n@use 'mastodon-bird-ui/layout-single-column.scss';\n@use 'mastodon-bird-ui/layout-multiple-columns.scss';" > $MASTODON_STYLES/mastodon-bird-ui-contrast.scss
-      echo -e "mastodon-bird-ui-contrast: styles/mastodon-bird-ui-contrast.scss" >> $CRAFT_STAGE/mastodon/config/themes.yml
-      cat $MASTODON_STYLES/mastodon-bird-ui-contrast.scss $CRAFT_STAGE/themes/mastodon-bird-ui/accessible.scss > $MASTODON_STYLES/mastodon-bird-ui-accessible.scss
-      echo -e "mastodon-bird-ui-accessible: styles/mastodon-bird-ui-accessible.scss" >> $CRAFT_STAGE/mastodon/config/themes.yml
+      echo -e "@use 'application';\n@use 'mastodon-bird-ui';\n@use 'mastodon-bird-ui/variants/accessible';" > $MASTODON_STYLES/mastodon-bird-ui-accessible.scss
+      echo -e "@use 'index';\n@use 'variants/accessible';" > $MASTODON_STYLES/mastodon-bird-ui/mastodon-bird-ui-accessible.scss
+      echo -e "@use 'application';\n@use 'mastodon-bird-ui';\n@use 'mastodon-bird-ui/variants/accessible-plus';" > $MASTODON_STYLES/mastodon-bird-ui-accessible-plus.scss
+      echo -e "@use 'index';\n@use 'variants/accessible-plus';" > $MASTODON_STYLES/mastodon-bird-ui/mastodon-bird-ui-accessible-plus.scss
+
+      echo -e "bird-ui-auto: styles/mastodon-bird-ui-auto.scss" >> $CRAFT_STAGE/mastodon/config/themes.yml
+      echo -e "bird-ui-accessible: styles/mastodon-bird-ui-accessible.scss" >> $CRAFT_STAGE/mastodon/config/themes.yml
+      echo -e "bird-ui-accessible-plus: styles/mastodon-bird-ui-accessible-plus.scss" >> $CRAFT_STAGE/mastodon/config/themes.yml
 
       for locale in $MASTODON_LOCALES/*.yml; do
-        sed -i "s/default: Mastodon (\(.*\))/&\n    mastodon-bird-ui-dark: Mastodon Bird UI (\1)/" $locale
-        sed -i "s/mastodon-light: Mastodon (\(.*\))/&\n    mastodon-bird-ui-light: Mastodon Bird UI (\1)/" $locale
-        sed -i "s/contrast: Mastodon (\(.*\))/&\n    mastodon-bird-ui-contrast: Mastodon Bird UI (\1)\n    mastodon-bird-ui-accessible: Mastodon Bird UI (\1++) ♿/" $locale
+        sed -i "s/default: Mastodon (\(.*\))/&\n    mastodon-bird-ui-auto: Mastodon Bird UI (\1)/" $locale
+        sed -i "s/contrast: Mastodon (\(.*\))/&\n    mastodon-bird-ui-accessible: Mastodon Bird UI (\1)\n    mastodon-bird-ui-accessible-plus: Mastodon Bird UI (\1++) ♿/" $locale
       done
 
   tangerine-ui:
