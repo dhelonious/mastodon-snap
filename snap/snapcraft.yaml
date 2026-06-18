@@ -1012,6 +1012,7 @@ parts:
 
       echo -e "@use 'index';" >> $MASTODON_STYLES/mastodon-bird-ui/mastodon-bird-ui.scss
       cp $CRAFT_STAGE/themes/mastodon-bird-ui/auto.scss $MASTODON_STYLES/mastodon-bird-ui-auto.scss
+      cp $CRAFT_STAGE/themes/mastodon-bird-ui/locale.yml  $MASTODON_LOCALES/mastodon-bird-ui.yml
 
       echo -e "@use 'application';\n@use 'mastodon-bird-ui';\n@use 'mastodon-bird-ui/variants/accessible';" > $MASTODON_STYLES/mastodon-bird-ui-accessible.scss
       echo -e "@use 'index';\n@use 'variants/accessible';" > $MASTODON_STYLES/mastodon-bird-ui/mastodon-bird-ui-accessible.scss
@@ -1021,11 +1022,6 @@ parts:
       echo -e "bird-ui-auto: styles/mastodon-bird-ui-auto.scss" >> $CRAFT_STAGE/mastodon/config/themes.yml
       echo -e "bird-ui-accessible: styles/mastodon-bird-ui-accessible.scss" >> $CRAFT_STAGE/mastodon/config/themes.yml
       echo -e "bird-ui-accessible-plus: styles/mastodon-bird-ui-accessible-plus.scss" >> $CRAFT_STAGE/mastodon/config/themes.yml
-
-      for locale in $MASTODON_LOCALES/*.yml; do
-        sed -i "s/default: Mastodon (\(.*\))/&\n    mastodon-bird-ui-auto: Mastodon Bird UI (\1)/" $locale
-        sed -i "s/contrast: Mastodon (\(.*\))/&\n    mastodon-bird-ui-accessible: Mastodon Bird UI (\1)\n    mastodon-bird-ui-accessible-plus: Mastodon Bird UI (\1++) ♿/" $locale
-      done
 
   tangerine-ui:
     after:

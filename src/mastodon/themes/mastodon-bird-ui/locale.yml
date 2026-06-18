@@ -1,0 +1,96 @@
+---
+ar:
+  themes:
+    bird-ui-auto: Mastodon Bird UI
+    bird-ui-accessible: Mastodon Bird UI (إمكانية الوصول)
+    bird-ui-accessible-plus: Mastodon Bird UI (إمكانية الوصول++) ♿
+bn:
+  themes:
+    bird-ui-auto: Mastodon Bird UI
+    bird-ui-accessible: Mastodon Bird UI (অ্যাক্সেসিবিলিটি)
+    bird-ui-accessible-plus: Mastodon Bird UI (অ্যাক্সেসিবিলিটি++) ♿
+de:
+  themes:
+    bird-ui-auto: Mastodon Bird UI
+    bird-ui-accessible: Mastodon Bird UI (Barrierefreiheit)
+    bird-ui-accessible-plus: Mastodon Bird UI (Barrierefreiheit++) ♿
+en:
+  themes:
+    bird-ui-auto: Mastodon Bird UI
+    bird-ui-accessible: Mastodon Bird UI (Accessibility)
+    bird-ui-accessible-plus: Mastodon Bird UI (Accessibility++) ♿
+es:
+  themes:
+    bird-ui-auto: Mastodon Bird UI
+    bird-ui-accessible: Mastodon Bird UI (Accesibilidad)
+    bird-ui-accessible-plus: Mastodon Bird UI (Accesibilidad++) ♿
+fi:
+  themes:
+    bird-ui-auto: Mastodon Bird UI
+    bird-ui-accessible: Mastodon Bird UI (Esteettömyys)
+    bird-ui-accessible-plus: Mastodon Bird UI (Esteettömyys++) ♿
+fr:
+  themes:
+    bird-ui-auto: Mastodon Bird UI
+    bird-ui-accessible: Mastodon Bird UI (Accessibilité)
+    bird-ui-accessible-plus: Mastodon Bird UI (Accessibilité++) ♿
+hi:
+  themes:
+    bird-ui-auto: Mastodon Bird UI
+    bird-ui-accessible: Mastodon Bird UI (सुलभता)
+    bird-ui-accessible-plus: Mastodon Bird UI (सुलभता++) ♿
+id:
+  themes:
+    bird-ui-auto: Mastodon Bird UI
+    bird-ui-accessible: Mastodon Bird UI (Aksesibilitas)
+    bird-ui-accessible-plus: Mastodon Bird UI (Aksesibilitas++) ♿
+it:
+  themes:
+    bird-ui-auto: Mastodon Bird UI
+    bird-ui-accessible: Mastodon Bird UI (Accessibilità)
+    bird-ui-accessible-plus: Mastodon Bird UI (Accessibilità++) ♿
+ja:
+  themes:
+    bird-ui-auto: Mastodon Bird UI
+    bird-ui-accessible: Mastodon Bird UI (アクセシビリティ)
+    bird-ui-accessible-plus: Mastodon Bird UI (アクセシビリティ++) ♿
+ko:
+  themes:
+    bird-ui-auto: Mastodon Bird UI
+    bird-ui-accessible: Mastodon Bird UI (접근성)
+    bird-ui-accessible-plus: Mastodon Bird UI (접근성++) ♿
+nl:
+  themes:
+    bird-ui-auto: Mastodon Bird UI
+    bird-ui-accessible: Mastodon Bird UI (Toegankelijkheid)
+    bird-ui-accessible-plus: Mastodon Bird UI (Toegankelijkheid++) ♿
+pt:
+  themes:
+    bird-ui-auto: Mastodon Bird UI
+    bird-ui-accessible: Mastodon Bird UI (Acessibilidade)
+    bird-ui-accessible-plus: Mastodon Bird UI (Acessibilidade++) ♿
+ru:
+  themes:
+    bird-ui-auto: Mastodon Bird UI
+    bird-ui-accessible: Mastodon Bird UI (Доступность)
+    bird-ui-accessible-plus: Mastodon Bird UI (Доступность++) ♿
+tr:
+  themes:
+    bird-ui-auto: Mastodon Bird UI
+    bird-ui-accessible: Mastodon Bird UI (Erişilebilirlik)
+    bird-ui-accessible-plus: Mastodon Bird UI (Erişilebilirlik++) ♿
+zh-CN:
+  themes:
+    bird-ui-auto: Mastodon Bird UI
+    bird-ui-accessible: Mastodon Bird UI (无障碍)
+    bird-ui-accessible-plus: Mastodon Bird UI (无障碍++) ♿
+zh-TW:
+  themes:
+    bird-ui-auto: Mastodon Bird UI
+    bird-ui-accessible: Mastodon Bird UI (無障礙)
+    bird-ui-accessible-plus: Mastodon Bird UI (無障礙++) ♿
+zh-HK:
+  themes:
+    bird-ui-auto: Mastodon Bird UI
+    bird-ui-accessible: Mastodon Bird UI (無障礙)
+    bird-ui-accessible-plus: Mastodon Bird UI (無障礙++) ♿
