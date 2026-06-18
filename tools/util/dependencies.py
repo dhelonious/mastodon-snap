@@ -3,7 +3,7 @@ import re
 
 dependencies_regexes = {
     "acme.sh": r"https://github\.com/acmesh-official/acme\.sh/archive/refs/tags/([0-9\.]+)\.tar\.gz",
-    "bird-ui": r"BIRD_UI_TAG: ([0-9a-z-\.]+)",
+    "bird-ui": r"source-tag: ([0-9a-z-\.]+)",
     "bundler": r"BUNDLER_VERSION: \"([0-9\.]+)\"",
     "ffmpeg": r"https://ffmpeg\.org/releases/ffmpeg-([0-9\.]+)\.tar\.bz2",
     "libvips": r"https://github\.com/libvips/libvips/archive/refs/tags/v([0-9\.]+)\.tar\.gz",
