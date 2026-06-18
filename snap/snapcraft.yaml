@@ -1,6 +1,6 @@
 name: mastodon-server
 title: Mastodon Server
-version: 4.6.0-rc.2snap1
+version: 4.6.0snap1
 summary: Unofficial snap for Mastodon (decentralized social media)
 description: |
   Mastodon is a free, open-source social network server based on ActivityPub
@@ -524,8 +524,8 @@ parts:
       - nginx-customizations
       - wraplib
     # NOTE: https://nginx.org/en/download.html (mainline version)
-    source: https://nginx.org/download/nginx-1.31.1.tar.gz
-    source-checksum: sha256/9fcaaeb8f22544b09a19a761f3412c4112215422401634bebdd1296a403cc4bc
+    source: https://nginx.org/download/nginx-1.31.2.tar.gz
+    source-checksum: sha256/af2a957c41da636ddc4f883e4523c6d140b4784dbce42000c364ae5092aa473c
     plugin: autotools
     build-environment:
       - PATH: $CRAFT_STAGE/nginx/bin:$PATH
@@ -624,13 +624,13 @@ parts:
       set -eux
       case "$SNAP_ARCH" in
       "amd64")
-        source="https://nodejs.org/download/release/v24.16.0/node-v24.16.0-linux-x64.tar.gz"
-        checksum="2faf6a387e9b62b888e21c54f01249fb27537ffecf1842f29f4c919d0a59a0ff"
+        source="https://nodejs.org/download/release/v24.17.0/node-v24.17.0-linux-x64.tar.gz"
+        checksum="e0472427aa791ad80bdc426ff7cc73cdd28ed0f616d1ff9689a23a7f47f1265f"
         arch="x64"
         ;;
       "arm64")
-        source="https://nodejs.org/download/release/v24.16.0/node-v24.16.0-linux-arm64.tar.gz"
-        checksum="589f5b6dd4fcfee4dfda73013903c966abaa8abd93dbc9d436544e472b4f0e74"
+        source="https://nodejs.org/download/release/v24.17.0/node-v24.17.0-linux-arm64.tar.gz"
+        checksum="faa0d59ba7fe7045c950ed09b190578fb8eee73e4358686d38fcc99ca58c1480"
         arch="arm64"
         ;;
       *)
@@ -786,8 +786,8 @@ parts:
       - -libvips/lib/pkgconfig
 
   ffmpeg:
-    source: https://ffmpeg.org/releases/ffmpeg-8.1.1.tar.bz2 # NOTE: https://ffmpeg.org/releases
-    source-checksum: sha256/b08594a47ca475ddda21c7990d8e9e3ceb5cd74f9709b4b5995b24d11cafa467
+    source: https://ffmpeg.org/releases/ffmpeg-8.1.2.tar.bz2 # NOTE: https://ffmpeg.org/releases
+    source-checksum: sha256/b4925bd4411e654ad3884bc8da1860b0d860bd64a95a17220de48cfcd5f0a859
     plugin: autotools
     build-packages:
       - clang
@@ -867,8 +867,8 @@ parts:
       - ffmpeg
       - rsync
     # NOTE: https://github.com/mastodon/mastodon/releases/latest
-    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.6.0-rc.2.tar.gz
-    source-checksum: sha256/7aa562fe3581e6da3d054cfa68b673961bc54e6074add085f2777466c539826d
+    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.6.0.tar.gz
+    source-checksum: sha256/ee0d373b61c33735d487dd57bc21b4e0533fe1d6bdd9ad2acfc2d29a97f35e57
     plugin: nil
     build-packages:
       - git
