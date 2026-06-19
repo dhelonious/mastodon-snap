@@ -13,14 +13,6 @@ This release also includes:
 * redis 8.8.0
 * ruby 4.0.5
 
-Changelog for 4.6.0snap1:
+Changelog for 4.6.0snap2:
 
-* Update bundler to 4.0.13
-* Update ffmpeg to 8.1.2
-* Update libvips to 8.18.3
-* Update nginx to 1.31.2
-* Update node to 24.17.0
-* Update ruby to 4.0.5
-* Update yarn to 4.17.0
-* Update bird-ui to 4.0.0-beta.1.rc
-* Remove wrapstodon (no longer supported)
+* Update bird-ui to 4.0.0

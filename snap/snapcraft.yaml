@@ -1,6 +1,6 @@
 name: mastodon-server
 title: Mastodon Server
-version: 4.6.0snap1
+version: 4.6.0snap2
 summary: Unofficial snap for Mastodon (decentralized social media)
 description: |
   Mastodon is a free, open-source social network server based on ActivityPub
@@ -994,7 +994,7 @@ parts:
       - curl
       - mastodon
     source: https://github.com/rollecode/mastodon-bird-ui
-    source-tag: 4.0.0-beta.1.rc # NOTE: https://github.com/ronilaukkarinen/mastodon-bird-ui/releases/latest
+    source-tag: 4.0.0 # NOTE: https://github.com/ronilaukkarinen/mastodon-bird-ui/releases/latest
     source-type: git
     plugin: dump
     build-environment:
