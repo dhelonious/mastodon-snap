@@ -55,10 +55,6 @@ osv_packages = {
         "name": "https://github.com/ruby/ruby",
         "ecosystem": "GIT",
     },
-    "tangerine-ui": {
-        "name": "https://github.com/nileane/TangerineUI-for-Mastodon",
-        "ecosystem": "GIT",
-    },
     "yarn": {
         "name": "yarn",
         "ecosystem": "npm",

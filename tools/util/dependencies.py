@@ -16,7 +16,6 @@ dependencies_regexes = {
     "postgresql": r"https://ftp\.postgresql\.org/pub/source/v[0-9\.]+/postgresql-([0-9\.]+)\.tar\.gz",
     "redis": r"https://download\.redis\.io/releases/redis-([0-9\.]+)\.tar\.gz",
     "ruby": r"https://cache\.ruby-lang\.org/pub/ruby/[0-9\.]+/ruby-([0-9\.]+)\.tar\.gz",
-    "tangerine-ui": r"TANGERINE_UI_TAG: ([0-9a-z-\.]+)",
     "yarn": r"YARN_VERSION: \"([0-9\.]+)\"",
 }
 
@@ -95,12 +94,6 @@ def get_dependencies_urls(mastodon_release, node_major):
         "ruby": {
             "url": f"https://raw.githubusercontent.com/mastodon/mastodon/{ mastodon_release }/.ruby-version",
             "file_regex": f"source: ({dependencies_regexes['ruby']})",
-        },
-        "tangerine-ui": {
-            "url": "https://github.com/nileane/TangerineUI-for-Mastodon/releases/latest",
-            # NOTE: tag -> "url": "https://api.github.com/repos/nileane/TangerineUI-for-Mastodon/tags",
-            "file_regex": dependencies_regexes["tangerine-ui"],
-            "lstrip": "v",
         },
         "yarn": {
             "url": "https://github.com/yarnpkg/berry/releases/latest",
