@@ -160,10 +160,10 @@ Read the [backups guide](docs/backups.md) to learn how to export and restore you
 
 ## Themes
 
-Coming from ~~Twitter~~ X and wanting a familiar look? Then the included [Mastodon Bird UI](https://github.com/ronilaukkarinen/mastodon-bird-ui) and [Tangerine UI](https://github.com/nileane/TangerineUI-for-Mastodon) themes might be for you. Both themes automatically switches to a light or dark variant depending on what your browser requests. You can change the theme in *Preferences/Appearance*.
+Coming from ~~Twitter~~ X and wanting a familiar look? Then the included [Mastodon Bird UI](https://github.com/ronilaukkarinen/mastodon-bird-ui) theme might be for you. You can change the theme in *Preferences/Appearance*.
 
 > [!IMPORTANT]
-> If you have a severe visual impairment, an accessible version of the Bird UI theme is included by default with an increased font size. This theme is indicated by the phrase ***Accessability++***, which contains ***two plus signs*** and is translated into your selected language. In addition, this theme is marked with the ♿ ***emoji representing a person in a wheelchair*** as the [International Symbol of Access](https://en.wikipedia.org/wiki/International_Symbol_of_Access).
+> If you have a severe visual impairment, an accessible version of the Bird UI theme is included by default with high contrast and an increased font size. This theme is indicated by the phrase ***Accessability++***, which contains ***two plus signs*** and is translated into your selected language. In addition, this theme is marked with the ♿ ***emoji representing a person in a wheelchair*** as the [International Symbol of Access](https://en.wikipedia.org/wiki/International_Symbol_of_Access).
 
 ## Migration
 
