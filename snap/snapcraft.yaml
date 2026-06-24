@@ -1,6 +1,6 @@
 name: mastodon-server
 title: Mastodon Server
-version: 4.6.0snap2
+version: 4.6.1snap1
 summary: Unofficial snap for Mastodon (decentralized social media)
 description: |
   Mastodon is a free, open-source social network server based on ActivityPub
@@ -624,13 +624,13 @@ parts:
       set -eux
       case "$SNAP_ARCH" in
       "amd64")
-        source="https://nodejs.org/download/release/v24.17.0/node-v24.17.0-linux-x64.tar.gz"
-        checksum="e0472427aa791ad80bdc426ff7cc73cdd28ed0f616d1ff9689a23a7f47f1265f"
+        source="https://nodejs.org/download/release/v24.18.0/node-v24.18.0-linux-x64.tar.gz"
+        checksum="783130984963db7ba9cbd01089eaf2c2efb055c7c1693c943174b967b3050cb8"
         arch="x64"
         ;;
       "arm64")
-        source="https://nodejs.org/download/release/v24.17.0/node-v24.17.0-linux-arm64.tar.gz"
-        checksum="faa0d59ba7fe7045c950ed09b190578fb8eee73e4358686d38fcc99ca58c1480"
+        source="https://nodejs.org/download/release/v24.18.0/node-v24.18.0-linux-arm64.tar.gz"
+        checksum="6b4484c2190274175df9aa8f28e2d758a819cb1c1fe6ab481e2f95b463ab8508"
         arch="arm64"
         ;;
       *)
@@ -867,8 +867,8 @@ parts:
       - ffmpeg
       - rsync
     # NOTE: https://github.com/mastodon/mastodon/releases/latest
-    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.6.0.tar.gz
-    source-checksum: sha256/ee0d373b61c33735d487dd57bc21b4e0533fe1d6bdd9ad2acfc2d29a97f35e57
+    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.6.1.tar.gz
+    source-checksum: sha256/0531f26d5555841550f85bce2cf8a55e9690b35a1aca5e1bfdebe253b68c4b78
     plugin: nil
     build-packages:
       - git

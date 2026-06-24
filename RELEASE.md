@@ -1,6 +1,6 @@
-# Unofficial Snap for Mastodon 4.6.0
+# Unofficial Snap for Mastodon 4.6.1
 
-See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.6.0
+See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.6.1
 
 This release also includes:
 
@@ -16,7 +16,6 @@ This release also includes:
 > [!IMPORTANT]
 > Unfortunately, the Tangerine UI Mastodon theme will no longer be maintained and will be removed from mastodon-snap with release 4.6.0snap2. [It’s time to say goodbye to Tangerine UI](https://github.com/nileane/TangerineUI-for-Mastodon/releases/tag/v2.5.4-EOL).
 
-Changelog for 4.6.0snap2:
+Changelog for 4.6.1snap1:
 
-* Update bird-ui to 4.0.0
-* Remove tangerine-ui (EOL)
+* Update node to 24.18.0
