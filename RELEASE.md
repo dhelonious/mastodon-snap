@@ -5,7 +5,7 @@ See the release notes for Mastodon: https://github.com/mastodon/mastodon/release
 This release also includes:
 
 * ffmpeg 8.1.2
-* libvips 8.18.3
+* libvips 8.18.4
 * nginx 1.31.2
 * node 24.18.0
 * pgbouncer 1.25.2
@@ -15,3 +15,7 @@ This release also includes:
 
 > [!IMPORTANT]
 > Unfortunately, the Tangerine UI Mastodon theme will no longer be maintained and will be removed from mastodon-snap with release 4.6.0snap2. [It’s time to say goodbye to Tangerine UI](https://github.com/nileane/TangerineUI-for-Mastodon/releases/tag/v2.5.4-EOL).
+
+Changelog for 4.6.3snap1:
+
+* Update libvips to 8.18.4

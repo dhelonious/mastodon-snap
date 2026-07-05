@@ -725,8 +725,8 @@ parts:
 
   libvips:
     # NOTE: https://github.com/libvips/libvips/releases/latest
-    source: https://github.com/libvips/libvips/archive/refs/tags/v8.18.3.tar.gz
-    source-checksum: sha256/21aa79be2a83f1f46582c58e0fc7fc2b355e6fbb661091fb963a3b20f494dbaf
+    source: https://github.com/libvips/libvips/archive/refs/tags/v8.18.4.tar.gz
+    source-checksum: sha256/1e8d2228a4ffae7498e357dcddb3775440afa7b11726841cd511674dced84257
     plugin: nil
     build-packages:
       - meson
