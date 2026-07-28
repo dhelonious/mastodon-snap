@@ -31,6 +31,11 @@ on:
         required: true
         type: boolean
         default: true
+      test_upgrade:
+        description: Run test upgrade from previous release
+        required: false
+        type: boolean
+        default: true
       ref:
         description: Tag/Commit
         required: false
@@ -105,3 +110,4 @@ jobs:
       with:
         snap: ${{ needs.build.outputs[matrix.arch] }}
         upgrade: true
+      if: ${{ inputs.test_upgrade }}
