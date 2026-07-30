@@ -576,8 +576,8 @@ parts:
     override-build: |
       set -eux
       sed -ri "s,/sys/devices/system/clocksource/clocksource0/(current|available)_clocksource,/dev/null," $CRAFT_PART_BUILD/src/syscheck.c
-      make -j"$(nproc)"
-      make install PREFIX=$CRAFT_PART_INSTALL/redis
+      make -C src -j"$(nproc)" redis-server redis-cli
+      make -C src install PREFIX=$CRAFT_PART_INSTALL/redis
       cp -f $CRAFT_PART_SRC/LICENSE.txt $CRAFT_PART_INSTALL/redis/
     stage:
       - redis/bin/redis-server
