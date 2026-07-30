@@ -1,6 +1,6 @@
 name: mastodon-server
 title: Mastodon Server
-version: 4.6.4snap1
+version: 4.6.4snap2
 summary: Unofficial snap for Mastodon (decentralized social media)
 description: |
   Mastodon is a free, open-source social network server based on ActivityPub
@@ -570,8 +570,8 @@ parts:
     after:
       - redis-customizations
     # NOTE: https://github.com/redis/redis/releases/latest
-    source: https://download.redis.io/releases/redis-8.8.1.tar.gz
-    source-checksum: sha256/1d1e423c9c808de3cb01dd3300d2b8d305b7691382e31a847ec17b66d3157477
+    source: https://download.redis.io/releases/redis-8.10.0.tar.gz
+    source-checksum: sha256/f1baa4b28befd417aa6577ebeedde9e9fc7814cfcc299b2a6d2fd99ef7420a6c
     plugin: make
     override-build: |
       set -eux
@@ -624,13 +624,13 @@ parts:
       set -eux
       case "$SNAP_ARCH" in
       "amd64")
-        source="https://nodejs.org/download/release/v24.18.0/node-v24.18.0-linux-x64.tar.gz"
-        checksum="783130984963db7ba9cbd01089eaf2c2efb055c7c1693c943174b967b3050cb8"
+        source="https://nodejs.org/download/release/v24.18.1/node-v24.18.1-linux-x64.tar.gz"
+        checksum="9f5eb6ac21845a66c493c91a253b1da32fd684e89e9b7202d4936982336be4ca"
         arch="x64"
         ;;
       "arm64")
-        source="https://nodejs.org/download/release/v24.18.0/node-v24.18.0-linux-arm64.tar.gz"
-        checksum="6b4484c2190274175df9aa8f28e2d758a819cb1c1fe6ab481e2f95b463ab8508"
+        source="https://nodejs.org/download/release/v24.18.1/node-v24.18.1-linux-arm64.tar.gz"
+        checksum="df224555a083b918e46260cc969838501b9f9a87140c1195e5b9597b56d5dae2"
         arch="arm64"
         ;;
       *)
@@ -885,7 +885,7 @@ parts:
       - libmagic-mgc
       - libssl3t64
     build-environment:
-      - YARN_VERSION: "4.17.1" # NOTE: https://github.com/yarnpkg/berry/releases/latest
+      - YARN_VERSION: "4.18.0" # NOTE: https://github.com/yarnpkg/berry/releases/latest
       - RUBY_BRANCH: "4.0" # NOTE: must be updated with ruby source
       - BUNDLER_VERSION: "4.0.13" # NOTE: see `Gemfile.lock`
       - RAILS_ENV: production
