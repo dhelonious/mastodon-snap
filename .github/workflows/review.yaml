@@ -34,7 +34,7 @@ jobs:
     - name: set snap name
       run: echo "${{ matrix.arch }}=$(basename "${{ fromJson(steps.download.outputs.downloaded_files)[0] }}")" >> "$GITHUB_OUTPUT"
       id: snap_file
-    - uses: actions/upload-artifact@v4
+    - uses: actions/upload-artifact@v7
       with:
         name: ${{ steps.snap_file.outputs[matrix.arch] }}
         path: ${{ steps.snap_file.outputs[matrix.arch] }}
@@ -52,7 +52,7 @@ jobs:
           - builder: ubuntu-latest
             arch: amd64
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
     - uses: ./.github/actions/scan
       with:
         snap: ${{ needs.download.outputs[matrix.arch] }}
@@ -68,7 +68,7 @@ jobs:
           - builder: ubuntu-latest
             arch: amd64
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
 
     - name: install review-tools
       shell: bash
@@ -90,7 +90,7 @@ jobs:
         sudo chmod +x ~/bin/*
         echo "$HOME/bin" >> $GITHUB_PATH
 
-    - uses: actions/download-artifact@v4
+    - uses: actions/download-artifact@v8
       with:
         name: ${{ needs.download.outputs[matrix.arch] }}
 

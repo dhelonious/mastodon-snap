@@ -16,17 +16,17 @@ jobs:
           - builder: ubuntu-latest
             arch: amd64
     steps:
-    - uses: kaisugi/action-regex-match@v1.0.1
+    - uses: kaisugi/action-regex-match@v1.0.2
       with:
         text: ${{ github.event.comment.body }}
         regex: '^/rebuild(\+[a-z]*)?\s*([\w\.]+)$'
       id: command_regex
-    - uses: kaisugi/action-regex-match@v1.0.1
+    - uses: kaisugi/action-regex-match@v1.0.2
       with:
         text: ${{ steps.regex.outputs.group2 }}
         regex: '^[\d\.]+-?(beta|rc)?([\d\.]+)?snap\d+-?(beta|rc)?([\d\.]+)?$'
       id: tag_regex
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
     - uses: ./.github/actions/build
       with:
         ref: ${{ steps.command_regex.outputs.group2 }}
@@ -52,7 +52,7 @@ jobs:
           - builder: ubuntu-latest
             arch: amd64
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
     - uses: ./.github/actions/scan
       with:
         snap: ${{ needs.build.outputs[matrix.arch] }}
@@ -66,7 +66,7 @@ jobs:
           - builder: ubuntu-latest
             arch: amd64
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
     - uses: ./.github/actions/test
       with:
         snap: ${{ needs.build.outputs[matrix.arch] }}
@@ -77,7 +77,7 @@ jobs:
       - test
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
     - uses: ./.github/actions/release
       with:
         tag: ${{ needs.build.outputs.tag }}
@@ -100,7 +100,7 @@ jobs:
           - builder: ubuntu-latest
             arch: amd64
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
     - uses: ./.github/actions/publish
       with:
         snap: ${{ needs.build.outputs[matrix.arch] }}
