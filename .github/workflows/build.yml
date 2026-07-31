@@ -52,7 +52,7 @@ jobs:
           - builder: ubuntu-latest
             arch: amd64
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
     - uses: ./.github/actions/check
       with:
         ref: ${{ inputs.ref }}
@@ -67,7 +67,7 @@ jobs:
           - builder: ubuntu-latest
             arch: amd64
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
     - uses: ./.github/actions/build
       with:
         ref: ${{ inputs.ref }}
@@ -87,7 +87,7 @@ jobs:
           - builder: ubuntu-latest
             arch: amd64
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
     - uses: ./.github/actions/scan
       with:
         snap: ${{ needs.build.outputs[matrix.arch] }}
@@ -102,7 +102,7 @@ jobs:
           - builder: ubuntu-latest
             arch: amd64
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
     - uses: ./.github/actions/test
       with:
         snap: ${{ needs.build.outputs[matrix.arch] }}
