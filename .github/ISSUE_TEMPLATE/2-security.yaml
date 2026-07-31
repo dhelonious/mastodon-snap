@@ -1,5 +1,5 @@
 name: 🛡️ Security Issue
-description: Use this to report a vulnerability or other security issue
+description: Use this to report security issues that can be disclosed publicly
 labels: ["security"]
 body:
 - type: checkboxes
@@ -8,6 +8,13 @@ body:
     description: Please search to see if the vulnerability has already been reported.
     options:
     - label: I have searched the existing issues
+      required: true
+- type: checkboxes
+  attributes:
+    label: Should this issue be reported publicly?
+    description: If you think this issue could put users at risk, please report it privately via [GitHub Private Vulnerability Reporting](https://github.com/dhelonious/mastodon-snap/security/advisories).
+    options:
+    - label: This issue does not require private vulnerability reporting
       required: true
 - type: textarea
   attributes:
