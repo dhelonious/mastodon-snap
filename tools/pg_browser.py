@@ -9,9 +9,8 @@ requirements:
 """
 
 from textual.app import App
-from textual.widgets import Header, Footer, Static, DataTable, Select, Button
+from textual.widgets import Header, Footer, Static, DataTable, Select
 from textual.binding import Binding
-from textual.events import Key
 from textual.containers import Horizontal, Vertical
 from textual.reactive import reactive
 
