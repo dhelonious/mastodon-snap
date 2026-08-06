@@ -1,13 +1,13 @@
-# Unofficial Snap for Mastodon 4.6.4
+# Unofficial Snap for Mastodon 4.6.5
 
-See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.6.4
+See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.6.5
 
 This release also includes:
 
-* ffmpeg 8.1.2
-* libvips 8.18.4
+* ffmpeg 9.0
+* libvips 8.18.5
 * nginx 1.31.3
-* node 24.18.1
+* node 24.19.0
 * pgbouncer 1.25.2
 * postgres 18.4
 * redis 8.10.0
@@ -16,8 +16,8 @@ This release also includes:
 > [!IMPORTANT]
 > Unfortunately, the Tangerine UI Mastodon theme will no longer be maintained and will be removed from mastodon-snap with release 4.6.0snap2. [It’s time to say goodbye to Tangerine UI](https://github.com/nileane/TangerineUI-for-Mastodon/releases/tag/v2.5.4-EOL).
 
-Changelog for 4.6.4snap2:
+Changelog for 4.6.5snap1:
 
-* Update node to 24.18.1
-* Update redis to 8.10.0
-* Update yarn to 4.18.0
+* Update ffmpeg to 9.0
+* Update libvips to 8.18.5
+* Update node to 24.19.0

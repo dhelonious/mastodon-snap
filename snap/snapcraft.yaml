@@ -1,6 +1,6 @@
 name: mastodon-server
 title: Mastodon Server
-version: 4.6.4snap2
+version: 4.6.5snap1
 summary: Unofficial snap for Mastodon (decentralized social media)
 description: |
   Mastodon is a free, open-source social network server based on ActivityPub
@@ -624,13 +624,13 @@ parts:
       set -eux
       case "$SNAP_ARCH" in
       "amd64")
-        source="https://nodejs.org/download/release/v24.18.1/node-v24.18.1-linux-x64.tar.gz"
-        checksum="9f5eb6ac21845a66c493c91a253b1da32fd684e89e9b7202d4936982336be4ca"
+        source="https://nodejs.org/download/release/v24.19.0/node-v24.19.0-linux-x64.tar.gz"
+        checksum="f625d97cd707df4ff96254916fbc5ff014f09c09effe5a1e0ca8f6d41a8789d4"
         arch="x64"
         ;;
       "arm64")
-        source="https://nodejs.org/download/release/v24.18.1/node-v24.18.1-linux-arm64.tar.gz"
-        checksum="df224555a083b918e46260cc969838501b9f9a87140c1195e5b9597b56d5dae2"
+        source="https://nodejs.org/download/release/v24.19.0/node-v24.19.0-linux-arm64.tar.gz"
+        checksum="d28c8a5bf0a808f0ed434a1dce8c54ae98f0371c0bd86ac58abc613f73e6643f"
         arch="arm64"
         ;;
       *)
@@ -725,8 +725,8 @@ parts:
 
   libvips:
     # NOTE: https://github.com/libvips/libvips/releases/latest
-    source: https://github.com/libvips/libvips/archive/refs/tags/v8.18.4.tar.gz
-    source-checksum: sha256/1e8d2228a4ffae7498e357dcddb3775440afa7b11726841cd511674dced84257
+    source: https://github.com/libvips/libvips/archive/refs/tags/v8.18.5.tar.gz
+    source-checksum: sha256/95e51e4dc890eac8c9fd1d2ded62930bd59825b017558efa52858790779c90a6
     plugin: nil
     build-packages:
       - meson
@@ -786,8 +786,8 @@ parts:
       - -libvips/lib/pkgconfig
 
   ffmpeg:
-    source: https://ffmpeg.org/releases/ffmpeg-8.1.2.tar.bz2 # NOTE: https://ffmpeg.org/releases
-    source-checksum: sha256/b4925bd4411e654ad3884bc8da1860b0d860bd64a95a17220de48cfcd5f0a859
+    source: https://ffmpeg.org/releases/ffmpeg-9.0.tar.bz2 # NOTE: https://ffmpeg.org/releases
+    source-checksum: sha256/ce84a9d01766eacd271bef8fa6447593ccc691801b48ac4e7b9dc90a9483a422
     plugin: autotools
     build-packages:
       - clang
@@ -867,8 +867,8 @@ parts:
       - ffmpeg
       - rsync
     # NOTE: https://github.com/mastodon/mastodon/releases/latest
-    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.6.4.tar.gz
-    source-checksum: sha256/daec715f3edaec2791d0e51e0704e17079395a0618ffa7110c9f6593d0005a96
+    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.6.5.tar.gz
+    source-checksum: sha256/cb574c54fbb3634a6d719996ee798525e74b726fb213b4fe505b62d9343e7b75
     plugin: nil
     build-packages:
       - git
