@@ -1,6 +1,6 @@
 name: mastodon-server
 title: Mastodon Server
-version: 4.6.6snap1
+version: 4.7.0-rc.1snap1
 summary: Unofficial snap for Mastodon (decentralized social media)
 description: |
   Mastodon is a free, open-source social network server based on ActivityPub
@@ -660,8 +660,8 @@ parts:
       - curl
       - libjemalloc2
     # NOTE: see `.ruby-version`
-    source: https://cache.ruby-lang.org/pub/ruby/4.0/ruby-4.0.5.tar.gz
-    source-checksum: sha256/7d6149079a63f8ae1d326c9fa65c6019ba2dc3155eae7b39159817911c88958e
+    source: https://cache.ruby-lang.org/pub/ruby/4.0/ruby-4.0.6.tar.gz
+    source-checksum: sha256/837d299e8f7ddf2be31a229a7a7e019d354979825117989acb3b32b1a9be262a
     plugin: autotools
     build-packages:
       - clang
@@ -675,7 +675,7 @@ parts:
       - libdb-dev
       - libjemalloc-dev
     build-environment:
-      - RUBY_VERSION: "4.0.5" # NOTE: must be updated with ruby source
+      - RUBY_VERSION: "4.0.6" # NOTE: must be updated with ruby source
       - RUBY_BRANCH: "4.0" # NOTE: must be updated with ruby source
       - DEBIAN_DISABLE_RUBYGEMS_INTEGRATION: "true"
       - CC: clang
@@ -867,8 +867,8 @@ parts:
       - ffmpeg
       - rsync
     # NOTE: https://github.com/mastodon/mastodon/releases/latest
-    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.6.6.tar.gz
-    source-checksum: sha256/ff61e473bab7188d2a4cacab633ab83e48dc25401ed056c8562181714c53b332
+    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.7.0-rc.1.tar.gz
+    source-checksum: sha256/932a9c51b7894d221043703b21c723f920ffaa957ea315af9ae01322544a6711
     plugin: nil
     build-packages:
       - git
@@ -887,7 +887,7 @@ parts:
     build-environment:
       - YARN_VERSION: "4.18.0" # NOTE: https://github.com/yarnpkg/berry/releases/latest
       - RUBY_BRANCH: "4.0" # NOTE: must be updated with ruby source
-      - BUNDLER_VERSION: "4.0.13" # NOTE: see `Gemfile.lock`
+      - BUNDLER_VERSION: "4.0.18" # NOTE: see `Gemfile.lock`
       - RAILS_ENV: production
       - NODE_ENV: production
       - OTP_SECRET: precompile_placeholder

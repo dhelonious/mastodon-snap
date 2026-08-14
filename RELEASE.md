@@ -1,6 +1,6 @@
-# Unofficial Snap for Mastodon 4.6.6
+# Unofficial Snap for Mastodon 4.7.0-rc.1
 
-See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.6.6
+See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.7.0-rc.1
 
 This release also includes:
 
@@ -11,12 +11,9 @@ This release also includes:
 * pgbouncer 1.25.2
 * postgres 18.6
 * redis 8.10.0
-* ruby 4.0.5
+* ruby 4.0.6
 
-> [!IMPORTANT]
-> Unfortunately, the Tangerine UI Mastodon theme will no longer be maintained and will be removed from mastodon-snap with release 4.6.0snap2. [It’s time to say goodbye to Tangerine UI](https://github.com/nileane/TangerineUI-for-Mastodon/releases/tag/v2.5.4-EOL).
+Changelog for 4.7.0-rc.1snap1:
 
-Changelog for 4.6.6snap1:
-
-* Update ffmpeg to 9.0.1
-* Update postgres to 18.6
+* Update bundler to 4.0.18
+* Update ruby to 4.0.6
