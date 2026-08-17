@@ -1,7 +1,7 @@
 // Based on snow addon by Roni Laukkarinen
 // https://github.com/ronilaukkarinen/mastodon
 
-import { me, owner, reduceMotion } from 'mastodon/initial_state';
+import { me, reduceMotion } from 'mastodon/initial_state';
 import { store } from 'mastodon/store';
 
 const CONFETTI_COLORS = [
