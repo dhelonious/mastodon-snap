@@ -1,6 +1,6 @@
 name: mastodon-server
 title: Mastodon Server
-version: 4.7.0-rc.1snap1
+version: 4.7.0snap1
 summary: Unofficial snap for Mastodon (decentralized social media)
 description: |
   Mastodon is a free, open-source social network server based on ActivityPub
@@ -524,8 +524,8 @@ parts:
       - nginx-customizations
       - wraplib
     # NOTE: https://nginx.org/en/download.html (mainline version)
-    source: https://nginx.org/download/nginx-1.31.3.tar.gz
-    source-checksum: sha256/a7657c50811c2d92d9895395e8b873ef60398142c4db21eb647811c38f6dd525
+    source: https://nginx.org/download/nginx-1.31.4.tar.gz
+    source-checksum: sha256/e6f20b644a17a643f059ae6467a1971fe2811587d025e071068753a1f1e3b3c3
     plugin: autotools
     build-environment:
       - PATH: $CRAFT_STAGE/nginx/bin:$PATH
@@ -570,8 +570,8 @@ parts:
     after:
       - redis-customizations
     # NOTE: https://github.com/redis/redis/releases/latest
-    source: https://download.redis.io/releases/redis-8.10.0.tar.gz
-    source-checksum: sha256/f1baa4b28befd417aa6577ebeedde9e9fc7814cfcc299b2a6d2fd99ef7420a6c
+    source: https://download.redis.io/releases/redis-8.10.1.tar.gz
+    source-checksum: sha256/60166c95ab7aedaa9dfe516de685be0a4dd87be95ded59ba429df14c13f1b663
     plugin: make
     override-build: |
       set -eux
@@ -867,8 +867,8 @@ parts:
       - ffmpeg
       - rsync
     # NOTE: https://github.com/mastodon/mastodon/releases/latest
-    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.7.0-rc.1.tar.gz
-    source-checksum: sha256/932a9c51b7894d221043703b21c723f920ffaa957ea315af9ae01322544a6711
+    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.7.0.tar.gz
+    source-checksum: sha256/e39dac3d02740cef927957d574cb95c2341549587c588d884554093c76a52c49
     plugin: nil
     build-packages:
       - git
