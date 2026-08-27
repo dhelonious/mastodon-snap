@@ -1,6 +1,6 @@
 name: mastodon-server
 title: Mastodon Server
-version: 4.7.0snap1
+version: 4.7.0snap2
 summary: Unofficial snap for Mastodon (decentralized social media)
 description: |
   Mastodon is a free, open-source social network server based on ActivityPub
@@ -624,13 +624,13 @@ parts:
       set -eux
       case "$SNAP_ARCH" in
       "amd64")
-        source="https://nodejs.org/download/release/v24.19.0/node-v24.19.0-linux-x64.tar.gz"
-        checksum="f625d97cd707df4ff96254916fbc5ff014f09c09effe5a1e0ca8f6d41a8789d4"
+        source="https://nodejs.org/download/release/v24.20.0/node-v24.20.0-linux-x64.tar.gz"
+        checksum="855d581f8a4eb1a8117e3426de25fe02770592febcfb31369aee1ffbfee9e8ec"
         arch="x64"
         ;;
       "arm64")
-        source="https://nodejs.org/download/release/v24.19.0/node-v24.19.0-linux-arm64.tar.gz"
-        checksum="d28c8a5bf0a808f0ed434a1dce8c54ae98f0371c0bd86ac58abc613f73e6643f"
+        source="https://nodejs.org/download/release/v24.20.0/node-v24.20.0-linux-arm64.tar.gz"
+        checksum="3515603e2487879a39bc75716f1a2affd027500c64ba50e845cf72cb33219013"
         arch="arm64"
         ;;
       *)
@@ -725,8 +725,8 @@ parts:
 
   libvips:
     # NOTE: https://github.com/libvips/libvips/releases/latest
-    source: https://github.com/libvips/libvips/archive/refs/tags/v8.18.5.tar.gz
-    source-checksum: sha256/95e51e4dc890eac8c9fd1d2ded62930bd59825b017558efa52858790779c90a6
+    source: https://github.com/libvips/libvips/archive/refs/tags/v8.18.6.tar.gz
+    source-checksum: sha256/f410acb673e0b71c1eacbf757f28c9b235cbd29bf960001a0d2f21587bbce3ff
     plugin: nil
     build-packages:
       - meson
