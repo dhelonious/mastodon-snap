@@ -25,8 +25,8 @@ Unofficial Snap for Mastodon (decentralized social media server)
 - [Setup your instance](#-setup-your-instance)
   - [Certificates](#certificates)
   - [Backups](#backups)
-  - [Themes](#themes)
   - [Migration](#migration)
+  - [Themes](#themes)
   - [Tuning](#tuning)
 - [Configuration](#️-configuration)
 - [Features](#-features)
@@ -159,16 +159,16 @@ See the [certificates docs](docs/certificates.md) for advanced certificate topic
 
 Read the [backups guide](docs/backups.md) to learn how to export and restore your Mastodon server.
 
+## Migration
+
+Refer to the [migration guide](docs/migration.md) to migrate an existing account or instance to your mastodon-server Snap. The guide also contains instructions on how to migrate away from it, should you wish to do so.
+
 ## Themes
 
 Coming from ~~Twitter~~ X and wanting a familiar look? Then the included [Mastodon Bird UI](https://github.com/ronilaukkarinen/mastodon-bird-ui) theme might be for you. You can change the theme in *Preferences/Appearance*.
 
 > [!IMPORTANT]
 > If you have a severe visual impairment, an accessible version of the Bird UI theme is included by default with high contrast and an increased font size. This theme is indicated by the phrase ***Accessability++***, which contains ***two plus signs*** and is translated into your selected language. In addition, this theme is marked with the ♿ ***emoji representing a person in a wheelchair*** as the [International Symbol of Access](https://en.wikipedia.org/wiki/International_Symbol_of_Access).
-
-## Migration
-
-Refer to the [migration guide](docs/migration.md) to migrate an existing account or instance to your mastodon-server Snap. The guide also contains instructions on how to migrate away from it, should you wish to do so.
 
 ## Tuning
 
