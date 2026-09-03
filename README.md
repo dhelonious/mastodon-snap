@@ -32,6 +32,7 @@ Unofficial Snap for Mastodon (decentralized social media server)
 - [Features](#-features)
 - [Maintenance](#-maintenance)
 - [Troubleshooting](#-troubleshooting)
+- [Documentation](#-documentation)
 - [Resources](#-resources)
 
 
@@ -150,7 +151,7 @@ Use the `acme.server` setting to select the CA (see the [configuration docs](doc
 > `get-certificate` will automatically enable HTTPS on port `ports.https`.
 
 > [!IMPORTANT]
-> HTTP is no longer supported in production. Mastodon will always serve https:// links.
+> HTTP is no longer supported in production. Mastodon will always serve `https://` links.
 
 See the [certificates docs](docs/certificates.md) for advanced certificate topics.
 
@@ -207,6 +208,13 @@ The `mastodon-server.announce` command can be used to create automated server no
 # 🔥 Troubleshooting
 
 If you encounter a problem, check if it has already been solved in the [troubleshooting guide](docs/troubleshooting.md). Otherwise, open a new [issue on GitHub](https://github.com/dhelonious/mastodon-snap/issues).
+
+
+# 📚 Documentation
+
+The documentation for this Snap package can be found in the [docs](docs) directory. Some of this documentation has already been referenced throughout this readme file.
+
+The documentation for Mastodon can be found [here](https://docs.joinmastodon.org/).
 
 
 # 🔗 Resources
