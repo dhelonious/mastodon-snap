@@ -1,6 +1,6 @@
 name: mastodon-server
 title: Mastodon Server
-version: 4.7.1snap2
+version: 4.7.2snap1
 summary: Unofficial snap for Mastodon (decentralized social media)
 description: |
   Mastodon is a free, open-source social network server based on ActivityPub
@@ -524,8 +524,8 @@ parts:
       - nginx-customizations
       - wraplib
     # NOTE: https://nginx.org/en/download.html (mainline version)
-    source: https://nginx.org/download/nginx-1.31.5.tar.gz
-    source-checksum: sha256/e951607d534836624bd36b6b45a71dbfb055237deae3738da6bbf3270dada279
+    source: https://nginx.org/download/nginx-1.31.6.tar.gz
+    source-checksum: sha256/974ed5298a5e398e008704ed5db284e655fc270c596493dbccada452448fc9f1
     plugin: autotools
     build-environment:
       - PATH: $CRAFT_STAGE/nginx/bin:$PATH
@@ -867,8 +867,8 @@ parts:
       - ffmpeg
       - rsync
     # NOTE: https://github.com/mastodon/mastodon/releases/latest
-    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.7.1.tar.gz
-    source-checksum: sha256/4fe287ac3a22fa9e5848eac700333de84815ad18d2a5f5a2b567e5b12b648cfa
+    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.7.2.tar.gz
+    source-checksum: sha256/658bb926521fdf5278afa9df76e4224dc2effa3732f60ac36e3b46c2ef4b34e8
     plugin: nil
     build-packages:
       - git
