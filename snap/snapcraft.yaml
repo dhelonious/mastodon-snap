@@ -1,6 +1,6 @@
 name: mastodon-server
 title: Mastodon Server
-version: 4.7.2snap1
+version: 4.7.2snap2
 summary: Unofficial snap for Mastodon (decentralized social media)
 description: |
   Mastodon is a free, open-source social network server based on ActivityPub
@@ -570,8 +570,8 @@ parts:
     after:
       - redis-customizations
     # NOTE: https://github.com/redis/redis/releases/latest
-    source: https://download.redis.io/releases/redis-8.10.1.tar.gz
-    source-checksum: sha256/60166c95ab7aedaa9dfe516de685be0a4dd87be95ded59ba429df14c13f1b663
+    source: https://download.redis.io/releases/redis-8.10.2.tar.gz
+    source-checksum: sha256/b9ffee226b5eecdba98a679260dad764b2a4ebd90dce4ad5ac9e9f3eef9c02b3
     plugin: make
     override-build: |
       set -eux
@@ -786,8 +786,8 @@ parts:
       - -libvips/lib/pkgconfig
 
   ffmpeg:
-    source: https://ffmpeg.org/releases/ffmpeg-9.0.1.tar.bz2 # NOTE: https://ffmpeg.org/releases
-    source-checksum: sha256/3317ad21d5e2c2eab8423ae6f49b12463960055925f39a025496964afeb9042c
+    source: https://ffmpeg.org/releases/ffmpeg-9.0.2.tar.bz2 # NOTE: https://ffmpeg.org/releases
+    source-checksum: sha256/ee80a25a5621df84498cef46917be87eab3b4f01951e85c2c7cbe5c94914ee70
     plugin: autotools
     build-packages:
       - clang
