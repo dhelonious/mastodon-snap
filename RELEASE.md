@@ -15,5 +15,9 @@ This release also includes:
 
 Changelog for 4.7.2snap2:
 
+* Update acme.sh to 3.1.6
 * Update ffmpeg to 9.0.2
+* Update libvips to 8.18.7
+* Update pgbouncer to 1.26.0
 * Update redis to 8.10.2
+* Update yarn to 4.18.1

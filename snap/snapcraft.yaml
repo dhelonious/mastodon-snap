@@ -492,8 +492,8 @@ parts:
     after:
       - postgres
     # NOTE: https://www.pgbouncer.org/downloads/
-    source: https://www.pgbouncer.org/downloads/files/1.25.2/pgbouncer-1.25.2.tar.gz
-    source-checksum: sha256/924ad35113fd0a71c8e2dbe85b5d03445532e2b7b37a9f8a48983beea238b332
+    source: https://www.pgbouncer.org/downloads/files/1.26.0/pgbouncer-1.26.0.tar.gz
+    source-checksum: sha256/afd25dd61ee6775d37b40629b87ce08736b3e6955f3057bb212e410fbf21c71d
     plugin: autotools
     build-packages:
       - make
@@ -595,8 +595,8 @@ parts:
       - acme-customizations
       - curl
     # NOTE: https://github.com/acmesh-official/acme.sh/releases/latest
-    source: https://github.com/acmesh-official/acme.sh/archive/refs/tags/3.1.4.tar.gz
-    source-checksum: sha256/e5f8e187bbf5251e0cd8891f2622daab9850366bd17bea9f92c2fe2ee091fd32
+    source: https://github.com/acmesh-official/acme.sh/archive/refs/tags/3.1.6.tar.gz
+    source-checksum: sha256/0d3f9000ac44a6331314742a88c475f79134e24fc991997883652adc59efc486
     plugin: dump
     organize:
       "*": acme/
@@ -725,8 +725,8 @@ parts:
 
   libvips:
     # NOTE: https://github.com/libvips/libvips/releases/latest
-    source: https://github.com/libvips/libvips/archive/refs/tags/v8.18.6.tar.gz
-    source-checksum: sha256/f410acb673e0b71c1eacbf757f28c9b235cbd29bf960001a0d2f21587bbce3ff
+    source: https://github.com/libvips/libvips/archive/refs/tags/v8.18.7.tar.gz
+    source-checksum: sha256/5024b4b36f20e722c267f4a9bfbdbbafb3b37d48d7125cf425c55bbf76cc9286
     plugin: nil
     build-packages:
       - meson
@@ -885,7 +885,7 @@ parts:
       - libmagic-mgc
       - libssl3t64
     build-environment:
-      - YARN_VERSION: "4.18.0" # NOTE: https://github.com/yarnpkg/berry/releases/latest
+      - YARN_VERSION: "4.18.1" # NOTE: https://github.com/yarnpkg/berry/releases/latest
       - RUBY_BRANCH: "4.0" # NOTE: must be updated with ruby source
       - BUNDLER_VERSION: "4.0.18" # NOTE: see `Gemfile.lock`
       - RAILS_ENV: production
