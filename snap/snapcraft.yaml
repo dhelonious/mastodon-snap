@@ -1,6 +1,6 @@
 name: mastodon-server
 title: Mastodon Server
-version: 4.7.3snap1
+version: 4.7.3snap2
 summary: Unofficial snap for Mastodon (decentralized social media)
 description: |
   Mastodon is a free, open-source social network server based on ActivityPub
@@ -492,8 +492,8 @@ parts:
     after:
       - postgres
     # NOTE: https://www.pgbouncer.org/downloads/
-    source: https://www.pgbouncer.org/downloads/files/1.26.0/pgbouncer-1.26.0.tar.gz
-    source-checksum: sha256/afd25dd61ee6775d37b40629b87ce08736b3e6955f3057bb212e410fbf21c71d
+    source: https://www.pgbouncer.org/downloads/files/1.26.1/pgbouncer-1.26.1.tar.gz
+    source-checksum: sha256/00886a2994b4844cd37110970df777772cfc42a74c400522c82fba509a3f42d9
     plugin: autotools
     build-packages:
       - make
@@ -524,8 +524,8 @@ parts:
       - nginx-customizations
       - wraplib
     # NOTE: https://nginx.org/en/download.html (mainline version)
-    source: https://nginx.org/download/nginx-1.31.6.tar.gz
-    source-checksum: sha256/974ed5298a5e398e008704ed5db284e655fc270c596493dbccada452448fc9f1
+    source: https://nginx.org/download/nginx-1.31.7.tar.gz
+    source-checksum: sha256/89ea8a3dc171511f7325043b50e4c036248d9fad5feb7ec809c0b82d5df42c65
     plugin: autotools
     build-environment:
       - PATH: $CRAFT_STAGE/nginx/bin:$PATH
@@ -624,13 +624,13 @@ parts:
       set -eux
       case "$SNAP_ARCH" in
       "amd64")
-        source="https://nodejs.org/download/release/v24.21.0/node-v24.21.0-linux-x64.tar.gz"
-        checksum="6e1db87ef58b8819e5d5402eff1536491b18edd8eb7bee5ef7897876e88dc5ff"
+        source="https://nodejs.org/download/release/v24.22.0/node-v24.22.0-linux-x64.tar.gz"
+        checksum="28ea0a438de9a13bd7891fd758eee6c7819ee8af5442dfd8d45bd65e56d4228c"
         arch="x64"
         ;;
       "arm64")
-        source="https://nodejs.org/download/release/v24.21.0/node-v24.21.0-linux-arm64.tar.gz"
-        checksum="724282c3b43aec998aa9527380465b45d229e021b58035f5f4f63095eabfe5d5"
+        source="https://nodejs.org/download/release/v24.22.0/node-v24.22.0-linux-arm64.tar.gz"
+        checksum="b7e7991d5407815adfa74a2a9cd4db683552c8ce32ff4a295c22e972849c3f5d"
         arch="arm64"
         ;;
       *)
