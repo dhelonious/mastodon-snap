@@ -994,7 +994,7 @@ parts:
       - curl
       - mastodon
     source: https://github.com/rollecode/mastodon-bird-ui
-    source-tag: 4.0.0 # NOTE: https://github.com/ronilaukkarinen/mastodon-bird-ui/releases/latest
+    source-tag: 4.7.3-2026-10-11 # NOTE: https://github.com/ronilaukkarinen/mastodon-bird-ui/releases/latest
     source-type: git
     plugin: dump
     build-environment:

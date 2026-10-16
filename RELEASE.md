@@ -15,6 +15,7 @@ This release also includes:
 
 Changelog for 4.7.3snap2:
 
+* Update bird-ui to 4.7.3-2026-10-11
 * Update nginx to 1.31.7
 * Update node to 24.22.0
 * Update pgbouncer to 1.26.1
