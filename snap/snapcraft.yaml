@@ -524,8 +524,8 @@ parts:
       - nginx-customizations
       - wraplib
     # NOTE: https://nginx.org/en/download.html (mainline version)
-    source: https://nginx.org/download/nginx-1.31.7.tar.gz
-    source-checksum: sha256/89ea8a3dc171511f7325043b50e4c036248d9fad5feb7ec809c0b82d5df42c65
+    source: https://nginx.org/download/nginx-1.31.8.tar.gz
+    source-checksum: sha256/0652b760b3b772d2ec17b47c2fc15d9a95e6fe35cd5b877eadc1a62d9bc75af1
     plugin: autotools
     build-environment:
       - PATH: $CRAFT_STAGE/nginx/bin:$PATH
@@ -624,13 +624,13 @@ parts:
       set -eux
       case "$SNAP_ARCH" in
       "amd64")
-        source="https://nodejs.org/download/release/v24.22.0/node-v24.22.0-linux-x64.tar.gz"
-        checksum="28ea0a438de9a13bd7891fd758eee6c7819ee8af5442dfd8d45bd65e56d4228c"
+        source="https://nodejs.org/download/release/v24.22.1/node-v24.22.1-linux-x64.tar.gz"
+        checksum="eb6728e77c576a35162c122c45ccadf224d89ff00abc8dae46cc2897c6002d7c"
         arch="x64"
         ;;
       "arm64")
-        source="https://nodejs.org/download/release/v24.22.0/node-v24.22.0-linux-arm64.tar.gz"
-        checksum="b7e7991d5407815adfa74a2a9cd4db683552c8ce32ff4a295c22e972849c3f5d"
+        source="https://nodejs.org/download/release/v24.22.1/node-v24.22.1-linux-arm64.tar.gz"
+        checksum="33c37be234ba8bee041961047b19160f4d7d0f164e8e246f78bdd10feff148b3"
         arch="arm64"
         ;;
       *)
