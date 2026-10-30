@@ -22,7 +22,7 @@ runs:
     shell: bash
     run: find src -type f -path "*/bin/*" -exec chmod +x {} \;
 
-  - uses: snapcore/action-build@v1
+  - uses: canonical/action-build@v1
     id: build
 
   - uses: actions/upload-artifact@v4
@@ -31,3 +31,13 @@ runs:
       path: ${{ steps.build.outputs.snap }}
       retention-days: 1
       overwrite: true
+
+  - name: show snapcraft logs
+    if: ${{ success() || failure() }}
+    shell: bash
+    run: |
+      for file in /home/runner/.local/state/snapcraft/log/*.log; do
+        echo "::group::$file"
+        sudo cat $file
+        echo "::endgroup::"
+      done

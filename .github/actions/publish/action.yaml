@@ -41,7 +41,7 @@ runs:
     with:
       name: ${{ inputs.snap }}
 
-  - uses: snapcore/action-publish@v1
+  - uses: canonical/action-publish@v1
     env:
       SNAPCRAFT_STORE_CREDENTIALS: ${{ inputs.SNAPCRAFT_STORE_CREDENTIALS }}
     with:
