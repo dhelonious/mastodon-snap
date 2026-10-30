@@ -1,6 +1,6 @@
 name: mastodon-server
 title: Mastodon Server
-version: 4.7.3snap2
+version: 4.7.4snap1
 summary: Unofficial snap for Mastodon (decentralized social media)
 description: |
   Mastodon is a free, open-source social network server based on ActivityPub
@@ -570,8 +570,8 @@ parts:
     after:
       - redis-customizations
     # NOTE: https://github.com/redis/redis/releases/latest
-    source: https://download.redis.io/releases/redis-8.10.2.tar.gz
-    source-checksum: sha256/b9ffee226b5eecdba98a679260dad764b2a4ebd90dce4ad5ac9e9f3eef9c02b3
+    source: https://download.redis.io/releases/redis-8.10.3.tar.gz
+    source-checksum: sha256/edde778f6bdee7581e42fc139ca9e07e2822212092f7501f99989656e3629d02
     plugin: make
     override-build: |
       set -eux
@@ -624,13 +624,13 @@ parts:
       set -eux
       case "$SNAP_ARCH" in
       "amd64")
-        source="https://nodejs.org/download/release/v24.22.1/node-v24.22.1-linux-x64.tar.gz"
-        checksum="eb6728e77c576a35162c122c45ccadf224d89ff00abc8dae46cc2897c6002d7c"
+        source="https://nodejs.org/download/release/v24.22.2/node-v24.22.2-linux-x64.tar.gz"
+        checksum="361718c444e49af2ca5a110c83ba6a8901143f23ab285ebbef0341f391f482a9"
         arch="x64"
         ;;
       "arm64")
-        source="https://nodejs.org/download/release/v24.22.1/node-v24.22.1-linux-arm64.tar.gz"
-        checksum="33c37be234ba8bee041961047b19160f4d7d0f164e8e246f78bdd10feff148b3"
+        source="https://nodejs.org/download/release/v24.22.2/node-v24.22.2-linux-arm64.tar.gz"
+        checksum="95c264150aceb7f3437a29fd6984924f5f8d1511ea3cbd6c508b83f6c555dae2"
         arch="arm64"
         ;;
       *)
@@ -660,8 +660,8 @@ parts:
       - curl
       - libjemalloc2
     # NOTE: see `.ruby-version`
-    source: https://cache.ruby-lang.org/pub/ruby/4.0/ruby-4.0.6.tar.gz
-    source-checksum: sha256/837d299e8f7ddf2be31a229a7a7e019d354979825117989acb3b32b1a9be262a
+    source: https://cache.ruby-lang.org/pub/ruby/4.0/ruby-4.0.9.tar.gz
+    source-checksum: sha256/c35350682ff050b79702d57ade4516e7336063f510155d19fb2fb5b3f3909511
     plugin: autotools
     build-packages:
       - clang
@@ -867,8 +867,8 @@ parts:
       - ffmpeg
       - rsync
     # NOTE: https://github.com/mastodon/mastodon/releases/latest
-    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.7.3.tar.gz
-    source-checksum: sha256/b9fca0d53c9005c2e84f23f55b2e32b045909afeb1931ae6de350a63497b85b2
+    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.7.4.tar.gz
+    source-checksum: sha256/76066150ff8228db3c7b1bf771d4c35dd6cc9fc5a0e5d479d53d529f36798ac1
     plugin: nil
     build-packages:
       - git
