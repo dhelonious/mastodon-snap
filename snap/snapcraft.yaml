@@ -675,7 +675,7 @@ parts:
       - libdb-dev
       - libjemalloc-dev
     build-environment:
-      - RUBY_VERSION: "4.0.6" # NOTE: must be updated with ruby source
+      - RUBY_VERSION: "4.0.9" # NOTE: must be updated with ruby source
       - RUBY_BRANCH: "4.0" # NOTE: must be updated with ruby source
       - DEBIAN_DISABLE_RUBYGEMS_INTEGRATION: "true"
       - CC: clang
