@@ -18,6 +18,8 @@ jobs:
 
   download:
     runs-on: ${{ matrix.builder }}
+    permissions:
+      contents: read
     strategy:
       matrix:
         include:
@@ -46,6 +48,8 @@ jobs:
   scan:
     needs: download
     runs-on: ${{ matrix.builder }}
+    permissions:
+      contents: read
     strategy:
       matrix:
         include:
@@ -62,6 +66,8 @@ jobs:
     - download
     - scan
     runs-on: ${{ matrix.builder }}
+    permissions:
+      contents: read
     strategy:
       matrix:
         include:

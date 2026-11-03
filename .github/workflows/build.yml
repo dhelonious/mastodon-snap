@@ -46,6 +46,8 @@ jobs:
   checks:
     if: ${{ !startsWith(github.ref, 'refs/tags') }}
     runs-on: ${{ matrix.builder }}
+    permissions:
+      contents: read
     strategy:
       matrix:
         include:
@@ -61,6 +63,8 @@ jobs:
     if: ${{ !startsWith(github.ref, 'refs/tags') }}
     needs: checks
     runs-on: ${{ matrix.builder }}
+    permissions:
+      contents: read
     strategy:
       matrix:
         include:
@@ -81,6 +85,8 @@ jobs:
     if: ${{ !(inputs.scan == 'false') }}
     needs: build
     runs-on: ${{ matrix.builder }}
+    permissions:
+      contents: read
     strategy:
       matrix:
         include:
@@ -96,6 +102,8 @@ jobs:
     if: ${{ !(inputs.test == 'false') }}
     needs: build
     runs-on: ${{ matrix.builder }}
+    permissions:
+      contents: read
     strategy:
       matrix:
         include:
