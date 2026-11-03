@@ -27,7 +27,7 @@ jobs:
             arch: amd64
     steps:
     - name: download snap
-      uses: robinraju/release-downloader@v1
+      uses: robinraju/release-downloader@v1.13
       with:
         latest: true
         tag: ${{ inputs.ref }}
