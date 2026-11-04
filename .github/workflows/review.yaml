@@ -67,7 +67,7 @@ jobs:
     - scan
     runs-on: ${{ matrix.builder }}
     permissions:
-      contents: read
+      contents: write
     strategy:
       matrix:
         include:
