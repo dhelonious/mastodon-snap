@@ -1,6 +1,6 @@
-# Unofficial Snap for Mastodon 4.7.4
+# Unofficial Snap for Mastodon 4.7.5
 
-See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.7.4
+See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v4.7.5
 
 This release also includes:
 
@@ -12,9 +12,3 @@ This release also includes:
 * postgres 18.6
 * redis 8.10.3
 * ruby 4.0.9
-
-Changelog for 4.7.3snap2:
-
-* Update node to 24.22.2
-* Update redis to 8.10.3
-* Update ruby to 4.0.9
