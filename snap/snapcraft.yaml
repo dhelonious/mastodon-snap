@@ -922,6 +922,7 @@ parts:
       bundle install -j"$(nproc)"
 
       mkdir -p $COREPACK_HOME $YARN_CACHE_FOLDER
+      npm install -g corepack
       corepack enable
       corepack prepare --activate
       corepack yarn set version $YARN_VERSION
