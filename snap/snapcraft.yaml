@@ -1,6 +1,6 @@
 name: mastodon-server
 title: Mastodon Server
-version: 4.7.5snap1
+version: 5.0.0-beta.1snap1
 summary: Unofficial snap for Mastodon (decentralized social media)
 description: |
   Mastodon is a free, open-source social network server based on ActivityPub
@@ -624,13 +624,13 @@ parts:
       set -eux
       case "$SNAP_ARCH" in
       "amd64")
-        source="https://nodejs.org/download/release/v24.22.2/node-v24.22.2-linux-x64.tar.gz"
-        checksum="361718c444e49af2ca5a110c83ba6a8901143f23ab285ebbef0341f391f482a9"
+        source="https://nodejs.org/download/release/v26.13.0/node-v26.13.0-linux-x64.tar.gz"
+        checksum="5848553868b402d3fabb5b09270649977780a390f832155721025a08b5104455"
         arch="x64"
         ;;
       "arm64")
-        source="https://nodejs.org/download/release/v24.22.2/node-v24.22.2-linux-arm64.tar.gz"
-        checksum="95c264150aceb7f3437a29fd6984924f5f8d1511ea3cbd6c508b83f6c555dae2"
+        source="https://nodejs.org/download/release/v26.13.0/node-v26.13.0-linux-arm64.tar.gz"
+        checksum="439e9c438acdf6a6ffe47418da709153d66c4bed812e30a473faacb107dd2791"
         arch="arm64"
         ;;
       *)
@@ -867,8 +867,8 @@ parts:
       - ffmpeg
       - rsync
     # NOTE: https://github.com/mastodon/mastodon/releases/latest
-    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.7.5.tar.gz
-    source-checksum: sha256/77f3eaeb3c7fbe40d24b3053ba6586ffa9c948a2ca205d4bd1b3a3092922f9a5
+    source: https://github.com/mastodon/mastodon/archive/refs/tags/v5.0.0-beta.1.tar.gz
+    source-checksum: sha256/bdfbfafcd019f29d8b9e8e0a44244a84b5356960effb97499df199b88edb8f41
     plugin: nil
     build-packages:
       - git
@@ -887,7 +887,7 @@ parts:
     build-environment:
       - YARN_VERSION: "4.18.1" # NOTE: https://github.com/yarnpkg/berry/releases/latest
       - RUBY_BRANCH: "4.0" # NOTE: must be updated with ruby source
-      - BUNDLER_VERSION: "4.0.18" # NOTE: see `Gemfile.lock`
+      - BUNDLER_VERSION: "4.0.23" # NOTE: see `Gemfile.lock`
       - RAILS_ENV: production
       - NODE_ENV: production
       - OTP_SECRET: precompile_placeholder
