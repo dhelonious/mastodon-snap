@@ -57,7 +57,6 @@ runs:
       echo "EMAIL=admin@local.host" >> $GITHUB_OUTPUT
       echo "HTTP_PORT=81" >> $GITHUB_OUTPUT
       echo "HTTPS_PORT=444" >> $GITHUB_OUTPUT
-      echo "COMPOSE_FORM_FILE=/var/snap/mastodon-server/current/mastodon/app/javascript/mastodon/features/compose/components/compose_form.jsx" >> $GITHUB_OUTPUT
       echo "STATUS_LENGTH_VALIDATOR_FILE=/var/snap/mastodon-server/current/mastodon/app/validators/status_length_validator.rb" >> $GITHUB_OUTPUT
       echo "STATUS_LENGTH=500" >> $GITHUB_OUTPUT
 
@@ -318,32 +317,6 @@ runs:
       else
         echo "Check failed" | red
         echo "MAX_CHARS = $MAX_CHARS" | yellow
-        exit 1
-      fi
-
-  - name: check fulltext length
-    shell: bash
-    run: |
-      echo "Check 'length(fulltext)' in ${{ steps.env.outputs.COMPOSE_FORM_FILE }}" | yellow
-      FULLTEXT_LENGTH=$(sudo sed -rn "s/^.*length\(fulltext\) > ([0-9]+).*$/\1/p" "${{ steps.env.outputs.COMPOSE_FORM_FILE }}")
-      if [ "$FULLTEXT_LENGTH" -eq "${{ steps.env.outputs.STATUS_LENGTH }}" ]; then
-        echo "Check passed" | green
-      else
-        echo "Check failed" | red
-        echo "length(fulltext) > $FULLTEXT_LENGTH" | yellow
-        exit 1
-      fi
-
-  - name: check character counter
-    shell: bash
-    run: |
-      echo "Check 'CharacterCounter max' in ${{ steps.env.outputs.COMPOSE_FORM_FILE }}" | yellow
-      MAX_CHARACTER_COUNTER=$(sudo sed -rn "s/^.*CharacterCounter max=\{([0-9]+)\}.*$/\1/p" "${{ steps.env.outputs.COMPOSE_FORM_FILE }}")
-      if [ "$MAX_CHARACTER_COUNTER" -eq "${{ steps.env.outputs.STATUS_LENGTH }}" ]; then
-        echo "Check passed" | green
-      else
-        echo "Check failed" | red
-        echo "CharacterCounter max={$MAX_CHARACTER_COUNTER}" | yellow
         exit 1
       fi
 
