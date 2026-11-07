@@ -1,8 +1,0 @@
-#!/bin/bash -e
-
-. "$SNAP/mastodon.env"
-
-run_as_daemon_user mkdir -p "$COREPACK_HOME"
-run_as_daemon_user mkdir -p "$YARN_CACHE_FOLDER"
-
-cd "$MASTODON_HOME" && corepack yarn "$@"
