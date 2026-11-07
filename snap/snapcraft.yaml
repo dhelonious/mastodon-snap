@@ -895,7 +895,7 @@ parts:
       - ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY: precompile_placeholder
       - ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT: precompile_placeholder
       - ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY: precompile_placeholder
-      - PATH: $CRAFT_STAGE/ruby/bin:$CRAFT_STAGE/node/bin:$CRAFT_STAGE/libvips/bin:$PATH
+      - PATH: $CRAFT_PART_INSTALL/bin:$CRAFT_STAGE/ruby/bin:$CRAFT_STAGE/node/bin:$CRAFT_STAGE/libvips/bin:$PATH
       - LD_LIBRARY_PATH: $CRAFT_STAGE/ruby/lib:$CRAFT_STAGE/node/lib:$CRAFT_STAGE/libvips/lib
       - RUBYLIB: $CRAFT_STAGE/ruby/lib/ruby/$RUBY_BRANCH.0:$CRAFT_STAGE/ruby/lib/ruby/$RUBY_BRANCH.0/$SNAP_ARCH:$CRAFT_PART_BUILD/vendor/bundle/ruby/$RUBY_BRANCH.0
       - BUNDLE_PATH: $CRAFT_PART_BUILD/vendor/bundle
@@ -922,7 +922,7 @@ parts:
       bundle install -j"$(nproc)"
 
       mkdir -p $COREPACK_HOME $YARN_CACHE_FOLDER
-      npm install -g corepack
+      npm install -g corepack --prefix $CRAFT_PART_INSTALL
       corepack enable
       corepack prepare --activate
       corepack yarn set version $YARN_VERSION
