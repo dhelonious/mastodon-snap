@@ -993,7 +993,7 @@ parts:
       - curl
       - mastodon
     source: https://github.com/rollecode/mastodon-bird-ui
-    source-tag: 4.7.3-2026-10-11 # NOTE: https://github.com/ronilaukkarinen/mastodon-bird-ui/releases/latest
+    source-tag: 5.0.0-beta.1-2026-11-08 # NOTE: https://github.com/ronilaukkarinen/mastodon-bird-ui/releases/latest
     source-type: git
     plugin: dump
     build-environment:
@@ -1005,7 +1005,7 @@ parts:
       mkdir -p $MASTODON_STYLES/mastodon-bird-ui
       cp -f $CRAFT_PART_SRC/LICENSE $MASTODON_STYLES/mastodon-bird-ui/
       cp -f $CRAFT_PART_SRC/src/_index.scss $MASTODON_STYLES/mastodon-bird-ui/
-      for dir in variables components layouts micro-interactions variants; do
+      for dir in variables components micro-interactions variants; do
         cp -rf $CRAFT_PART_SRC/src/$dir $MASTODON_STYLES/mastodon-bird-ui/
       done
 

@@ -15,5 +15,6 @@ This release also includes:
 
 Changelog for 5.0.0-beta.1snap1:
 
+* Update bird-ui to 5.0.0-beta.1-2026-11-08
 * Update bundler to 4.0.23
 * Update node to 26.13.0
