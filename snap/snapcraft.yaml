@@ -999,29 +999,17 @@ parts:
     plugin: dump
     build-environment:
       - MASTODON_STYLES: $CRAFT_STAGE/mastodon/app/javascript/styles
+      - MASTODON_THEMES: $CRAFT_STAGE/mastodon/config/themes.yml
       - MASTODON_LOCALES: $CRAFT_STAGE/mastodon/config/locales
     override-build: |
       set -eux
 
       mkdir -p $MASTODON_STYLES/mastodon-bird-ui
       cp -f $CRAFT_PART_SRC/LICENSE $MASTODON_STYLES/mastodon-bird-ui/
-      cp -f $CRAFT_PART_SRC/src/_index.scss $MASTODON_STYLES/mastodon-bird-ui/
-      for dir in variables components micro-interactions variants; do
-        cp -rf $CRAFT_PART_SRC/src/$dir $MASTODON_STYLES/mastodon-bird-ui/
-      done
-
-      echo -e "@use 'index';" >> $MASTODON_STYLES/mastodon-bird-ui/mastodon-bird-ui.scss
-      cp $CRAFT_STAGE/themes/mastodon-bird-ui/auto.scss $MASTODON_STYLES/mastodon-bird-ui-auto.scss
-      cp $CRAFT_STAGE/themes/mastodon-bird-ui/locale.yml  $MASTODON_LOCALES/mastodon-bird-ui.yml
-
-      echo -e "@use 'application';\n@use 'mastodon-bird-ui';\n@use 'mastodon-bird-ui/variants/accessible';" > $MASTODON_STYLES/mastodon-bird-ui-accessible.scss
-      echo -e "@use 'index';\n@use 'variants/accessible';" > $MASTODON_STYLES/mastodon-bird-ui/mastodon-bird-ui-accessible.scss
-      echo -e "@use 'application';\n@use 'mastodon-bird-ui';\n@use 'mastodon-bird-ui/variants/accessible-plus';" > $MASTODON_STYLES/mastodon-bird-ui-accessible-plus.scss
-      echo -e "@use 'index';\n@use 'variants/accessible-plus';" > $MASTODON_STYLES/mastodon-bird-ui/mastodon-bird-ui-accessible-plus.scss
-
-      echo -e "bird-ui-auto: styles/mastodon-bird-ui-auto.scss" >> $CRAFT_STAGE/mastodon/config/themes.yml
-      echo -e "bird-ui-accessible: styles/mastodon-bird-ui-accessible.scss" >> $CRAFT_STAGE/mastodon/config/themes.yml
-      echo -e "bird-ui-accessible-plus: styles/mastodon-bird-ui-accessible-plus.scss" >> $CRAFT_STAGE/mastodon/config/themes.yml
+      cp -rf $CRAFT_PART_SRC/src/* $MASTODON_STYLES/mastodon-bird-ui/
+      cp $CRAFT_STAGE/themes/mastodon-bird-ui/*.scss $MASTODON_STYLES/
+      cat $CRAFT_STAGE/themes/mastodon-bird-ui/themes.yml >> $MASTODON_THEMES
+      cp $CRAFT_STAGE/themes/mastodon-bird-ui/locale.yml $MASTODON_LOCALES/mastodon-bird-ui.yml
 
   mastodon-precompile:
     after:

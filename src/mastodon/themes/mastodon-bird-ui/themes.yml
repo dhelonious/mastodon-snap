@@ -1,0 +1,3 @@
+bird-ui-auto: styles/mastodon-bird-ui-auto.scss
+bird-ui-accessible: styles/mastodon-bird-ui-accessible.scss
+bird-ui-accessible-plus: styles/mastodon-bird-ui-accessible-plus.scss
