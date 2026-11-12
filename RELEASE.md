@@ -7,14 +7,13 @@ This release also includes:
 * ffmpeg 9.0.2
 * libvips 8.18.7
 * nginx 1.31.8
-* node 26.13.2
+* node 26.13.1
 * pgbouncer 1.26.1
 * postgres 18.6
 * redis 8.10.3
 * ruby 4.0.9
 
-Changelog for 5.0.0-beta.1snap1:
+Changelog for 5.0.0-beta.1snap2:
 
-* Update bird-ui to 5.0.0-beta.1-2026-11-08
-* Update bundler to 4.0.23
-* Update node to 26.13.0
+* Update bird-ui to 5.0.0-beta.1-2026-11-09
+* Update node to 26.13.1
