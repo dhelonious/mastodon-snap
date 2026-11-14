@@ -1,6 +1,6 @@
 name: mastodon-server
 title: Mastodon Server
-version: 5.0.0-beta.1snap1
+version: 5.0.0-beta.1snap2
 summary: Unofficial snap for Mastodon (decentralized social media)
 description: |
   Mastodon is a free, open-source social network server based on ActivityPub
