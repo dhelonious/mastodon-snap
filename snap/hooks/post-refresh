@@ -67,6 +67,9 @@ if SYSTEM_RESTART_REQUIRED=$(snapctl get system.restart-required); then
     fi
 fi
 
+# NOTE: This removes log backups that may have been created due to wrong file permissions
+run_as_daemon_user find "$LOG_DIR" -type f -name "*.backup" -delete
+
 # Secrets
 
 export PG_PASSWORD=$(generate_secret postgres)
