@@ -28,7 +28,7 @@ First, install and set up a Mastodon Server Snap (see the [installation readme](
 
 If the database dump was created using a lower version of Mastodon than the installed Snap, you must migrate the database using `mastodon-server.db-migrate`.
 
-The media directory can be restored by copying the files to the Mastodon server's media directory. It is located by default in `/var/snap/mastodon-server/common/media`, but this can be changed to an external directory (see the [configuration docs](docs/configuration.md)). You can skip this part if you don't have a backup of your media directory.
+The media directory can be restored by copying the files to the Mastodon server's media directory. It is located by default in `/var/snap/mastodon-server/common/media`, but this can be changed to an external directory (see the [configuration docs](configuration.md)). You can skip this part if you don't have a backup of your media directory.
 
 Last but not least, you should always clean up and restore the media for recent posts:
 
@@ -40,7 +40,7 @@ Last but not least, you should always clean up and restore the media for recent 
 > [!NOTE]
 > The `media refresh` and `accounts refresh` commands may take some time to complete depending on the number of posts in your database dump.
 
-If you only have a PostgreSQL cluster dump, you can first use the `mastodon-server.export` command to create a new backup file (see the [backups guide](docs/backups.md) for more information). The backup directory will contain a database dump called `database.sql`. Delete and replace it with your file. If you have a backup of your media directory, archive it using the command
+If you only have a PostgreSQL cluster dump, you can first use the `mastodon-server.export` command to create a new backup file (see the [backups guide](backups.md) for more information). The backup directory will contain a database dump called `database.sql`. Delete and replace it with your file. If you have a backup of your media directory, archive it using the command
 
     tar -czf media.tar.gz /path/to/media
 
