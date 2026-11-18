@@ -13,7 +13,7 @@ If none of the answers below help, you can always uninstall and reinstall the ap
 Before removing the Snap, make sure you move the backups out of `/var/snap/mastodon-server/common/backups/`.
 
 > [!TIP]
-> Additional debug logs will be created when the `logs.debug` setting is enabled (see the [configuration docs](docs/configuration.md)).
+> Additional debug logs will be created when the `logs.debug` setting is enabled (see the [configuration docs](configuration.md)).
 
 ## Backup cannot be restored
 

@@ -181,12 +181,10 @@ runs:
     shell: bash
     run: |
       echo "Check reachability" | yellow
-      HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" --resolve ${{ steps.env.outputs.DOMAIN }}:80:127.0.0.1 http://${{ steps.env.outputs.DOMAIN }}:80)
-      if [ "$HTTP_STATUS" -eq 200 ]; then
+      if curl -s -o /dev/null --resolve ${{ steps.env.outputs.DOMAIN }}:80:127.0.0.1 http://${{ steps.env.outputs.DOMAIN }}:80; then
         echo "Check passed" | green
       else
         echo "Check failed" | red
-        echo "HTTP_STATUS=$HTTP_STATUS" | yellow
         sudo snap logs "mastodon-server"
         exit 1
       fi
