@@ -1,5 +1,8 @@
 # Unofficial Snap for Mastodon 5.0.0-beta.1
 
+> [!WARNING]
+> This is an important security update for nginx2root. Update as soon as possible to protect your server!
+
 See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v5.0.0-beta.1
 
 This release also includes:
