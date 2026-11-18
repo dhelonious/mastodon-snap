@@ -15,8 +15,9 @@ This release also includes:
 
 Changelog for 5.0.0-beta.1snap3:
 
-* Update nginx config
+* Update nginx to 1.31.9 (fixes nginx2root)
 * Update node to 26.13.1
 * Update postgres to 18.7
+* Update nginx config
 * Update bird-ui to 5.0.0-beta.1-2026-11-09
 * Fix log file permissions and rotation
