@@ -547,7 +547,8 @@ parts:
         --with-stream \
         --with-stream_ssl_module \
         --with-http_ssl_module \
-        --with-http_v2_module
+        --with-http_v2_module \
+        --with-http_gzip_static_module
       make -j"$(nproc)"
       make install
       cp -f $CRAFT_PART_SRC/LICENSE $CRAFT_PART_INSTALL/nginx/
