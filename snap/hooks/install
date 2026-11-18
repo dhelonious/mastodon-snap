@@ -99,6 +99,7 @@ mkdir_for_daemon_user "$ACME_HOME"
 
 cd $SNAP/acme && run_as_daemon_user $SNAP/acme/acme.sh \
     --install --nocron --noprofile \
+    --log "$LOG_DIR/acme.log" \
     --home "$ACME_HOME" \
     --config-home "$ACME_CONFIG" \
     --cert-home "$CERT_DIR"

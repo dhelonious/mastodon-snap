@@ -34,7 +34,7 @@ fi
 
 if $CLEANUP_STATUSES; then
     echo_log "Cleanup unreferenced statuses older than $CLEANUP_DAYS days"
-    mastodon_tootctl statuses remove --days=$CLEANUP_DAYS --concurrency $TOOTCTL_CONCURRENCY \
+    mastodon_tootctl statuses remove --days=$CLEANUP_DAYS \
         2>&1 | tee -a "$LOG_DIR/cleanup.log"
 fi
 
