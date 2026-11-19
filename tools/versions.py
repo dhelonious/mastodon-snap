@@ -78,8 +78,8 @@ if args.mastodon_version:
     )
     print_silent(f"Mastodon release checksum: {mastodon_checksum}")
 
-with requests.get(f"https://raw.githubusercontent.com/mastodon/mastodon/{ MASTODON_RELEASE }/Vagrantfile", headers=HEADERS) as r:
-    NODE_MAJOR = re.findall(r".*NODE_MAJOR=([0-9]+).*", r.text)[0]
+with requests.get(f"https://raw.githubusercontent.com/mastodon/mastodon/{ MASTODON_RELEASE }/.nvmrc", headers=HEADERS) as r:
+    NODE_MAJOR = re.findall(r"^([0-9]+).*$", r.text)[0]
 
 dependencies = get_dependencies_urls(MASTODON_RELEASE, NODE_MAJOR)
 snapcraft_yaml = read_snapcraft_yaml()

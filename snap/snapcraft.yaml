@@ -1,6 +1,6 @@
 name: mastodon-server
 title: Mastodon Server
-version: 4.7.5snap2
+version: 4.7.6snap1
 summary: Unofficial snap for Mastodon (decentralized social media)
 description: |
   Mastodon is a free, open-source social network server based on ActivityPub
@@ -445,8 +445,8 @@ parts:
       - setpriv
       - envsubst
     # NOTE: https://www.postgresql.org/ftp/latest
-    source: https://ftp.postgresql.org/pub/source/v18.6/postgresql-18.6.tar.gz
-    source-checksum: sha256/983ee554ec53dbeb9b70797bef9fcf4e67e117e7e48ca1463cc80b3ff8e8ff3f
+    source: https://ftp.postgresql.org/pub/source/v18.7/postgresql-18.7.tar.gz
+    source-checksum: sha256/19c2dc7d8520e10532d082b43c36c4d2dcc6cd9e40506c6f598e7338f84bbde7
     plugin: autotools
     build-packages:
       - clang
@@ -595,8 +595,8 @@ parts:
       - acme-customizations
       - curl
     # NOTE: https://github.com/acmesh-official/acme.sh/releases/latest
-    source: https://github.com/acmesh-official/acme.sh/archive/refs/tags/3.1.6.tar.gz
-    source-checksum: sha256/0d3f9000ac44a6331314742a88c475f79134e24fc991997883652adc59efc486
+    source: https://github.com/acmesh-official/acme.sh/archive/refs/tags/3.1.7.tar.gz
+    source-checksum: sha256/1b674f31aab8844e0ed770d4a5907a777d259f58b476c5f9334cc846832081e7
     plugin: dump
     organize:
       "*": acme/
@@ -624,13 +624,13 @@ parts:
       set -eux
       case "$SNAP_ARCH" in
       "amd64")
-        source="https://nodejs.org/download/release/v24.22.2/node-v24.22.2-linux-x64.tar.gz"
-        checksum="361718c444e49af2ca5a110c83ba6a8901143f23ab285ebbef0341f391f482a9"
+        source="https://nodejs.org/download/release/v26.13.1/node-v26.13.1-linux-x64.tar.gz"
+        checksum="518674de2b621728a5e4486f5fb3b7d2900bb3cc4aa97969edaa463db99f9778"
         arch="x64"
         ;;
       "arm64")
-        source="https://nodejs.org/download/release/v24.22.2/node-v24.22.2-linux-arm64.tar.gz"
-        checksum="95c264150aceb7f3437a29fd6984924f5f8d1511ea3cbd6c508b83f6c555dae2"
+        source="https://nodejs.org/download/release/v26.13.1/node-v26.13.1-linux-arm64.tar.gz"
+        checksum="80a330b35415382878df18d41afbd106ea89bfb3be0087d6608e289a14c5cc7d"
         arch="arm64"
         ;;
       *)
@@ -660,8 +660,8 @@ parts:
       - curl
       - libjemalloc2
     # NOTE: see `.ruby-version`
-    source: https://cache.ruby-lang.org/pub/ruby/4.0/ruby-4.0.9.tar.gz
-    source-checksum: sha256/c35350682ff050b79702d57ade4516e7336063f510155d19fb2fb5b3f3909511
+    source: https://cache.ruby-lang.org/pub/ruby/4.0/ruby-4.0.10.tar.gz
+    source-checksum: sha256/b53eef3371fa5d3e3b74340edcd015f06d5d8853968d4e539a5264fce41ed9f1
     plugin: autotools
     build-packages:
       - clang
@@ -675,7 +675,7 @@ parts:
       - libdb-dev
       - libjemalloc-dev
     build-environment:
-      - RUBY_VERSION: "4.0.9" # NOTE: must be updated with ruby source
+      - RUBY_VERSION: "4.0.10" # NOTE: must be updated with ruby source
       - RUBY_BRANCH: "4.0" # NOTE: must be updated with ruby source
       - DEBIAN_DISABLE_RUBYGEMS_INTEGRATION: "true"
       - CC: clang
@@ -867,8 +867,8 @@ parts:
       - ffmpeg
       - rsync
     # NOTE: https://github.com/mastodon/mastodon/releases/latest
-    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.7.5.tar.gz
-    source-checksum: sha256/77f3eaeb3c7fbe40d24b3053ba6586ffa9c948a2ca205d4bd1b3a3092922f9a5
+    source: https://github.com/mastodon/mastodon/archive/refs/tags/v4.7.6.tar.gz
+    source-checksum: sha256/5b069da8bf9f281712e99fd1d3e22c11289131bc3632d76965f35759c931e4a7
     plugin: nil
     build-packages:
       - git
@@ -887,7 +887,7 @@ parts:
     build-environment:
       - YARN_VERSION: "4.18.1" # NOTE: https://github.com/yarnpkg/berry/releases/latest
       - RUBY_BRANCH: "4.0" # NOTE: must be updated with ruby source
-      - BUNDLER_VERSION: "4.0.18" # NOTE: see `Gemfile.lock`
+      - BUNDLER_VERSION: "4.0.24" # NOTE: see `Gemfile.lock`
       - RAILS_ENV: production
       - NODE_ENV: production
       - OTP_SECRET: precompile_placeholder
