@@ -1,9 +1,9 @@
 # Unofficial Snap for Mastodon 5.0.0-beta.1
 
 > [!WARNING]
-> This is an important security update for nginx2root. Update as soon as possible to protect your server!
+> This is an important security update that contains critical fixes for nginx and ruby. Update as soon as possible to protect your server!
 
-See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v5.0.0-beta.1
+See the release notes for Mastodon: https://github.com/mastodon/mastodon/releases/tag/v5.0.0-beta.2
 
 This release also includes:
 
@@ -14,13 +14,10 @@ This release also includes:
 * pgbouncer 1.26.1
 * postgres 18.7
 * redis 8.10.3
-* ruby 4.0.9
+* ruby 4.0.10
 
-Changelog for 5.0.0-beta.1snap3:
+Changelog for 5.0.0-beta.2snap1:
 
-* Update nginx to 1.31.9 (fixes nginx2root)
-* Update node to 26.13.1
-* Update postgres to 18.7
-* Update nginx config
-* Update bird-ui to 5.0.0-beta.1-2026-11-09
-* Fix log file permissions and rotation
+* Update acme.sh to 3.1.7
+* Update bundler to 4.0.24
+* Update ruby to 4.0.10
