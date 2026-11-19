@@ -7,8 +7,8 @@ on:
     branches:
     - development
     - development_beta
-    - 'development-**'
-    - 'feature-**'
+    - development-*
+    - feature-*
     paths:
     - 'snap/**'
     - 'src/**'
