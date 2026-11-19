@@ -1,6 +1,6 @@
 name: mastodon-server
 title: Mastodon Server
-version: 5.0.0-beta.1snap3
+version: 5.0.0-beta.2snap1
 summary: Unofficial snap for Mastodon (decentralized social media)
 description: |
   Mastodon is a free, open-source social network server based on ActivityPub
@@ -596,8 +596,8 @@ parts:
       - acme-customizations
       - curl
     # NOTE: https://github.com/acmesh-official/acme.sh/releases/latest
-    source: https://github.com/acmesh-official/acme.sh/archive/refs/tags/3.1.6.tar.gz
-    source-checksum: sha256/0d3f9000ac44a6331314742a88c475f79134e24fc991997883652adc59efc486
+    source: https://github.com/acmesh-official/acme.sh/archive/refs/tags/3.1.7.tar.gz
+    source-checksum: sha256/1b674f31aab8844e0ed770d4a5907a777d259f58b476c5f9334cc846832081e7
     plugin: dump
     organize:
       "*": acme/
@@ -619,7 +619,7 @@ parts:
     build-environment:
       - PATH: $CRAFT_STAGE/node/bin:$PATH
       - LD_LIBRARY_PATH: $CRAFT_STAGE/node/lib
-    # NOTE: source see `Vagrantfile`
+    # NOTE: source see `.nvmrc`
     override-build: |
       craftctl default
       set -eux
@@ -661,8 +661,8 @@ parts:
       - curl
       - libjemalloc2
     # NOTE: see `.ruby-version`
-    source: https://cache.ruby-lang.org/pub/ruby/4.0/ruby-4.0.9.tar.gz
-    source-checksum: sha256/c35350682ff050b79702d57ade4516e7336063f510155d19fb2fb5b3f3909511
+    source: https://cache.ruby-lang.org/pub/ruby/4.0/ruby-4.0.10.tar.gz
+    source-checksum: sha256/b53eef3371fa5d3e3b74340edcd015f06d5d8853968d4e539a5264fce41ed9f1
     plugin: autotools
     build-packages:
       - clang
@@ -676,7 +676,7 @@ parts:
       - libdb-dev
       - libjemalloc-dev
     build-environment:
-      - RUBY_VERSION: "4.0.9" # NOTE: must be updated with ruby source
+      - RUBY_VERSION: "4.0.10" # NOTE: must be updated with ruby source
       - RUBY_BRANCH: "4.0" # NOTE: must be updated with ruby source
       - DEBIAN_DISABLE_RUBYGEMS_INTEGRATION: "true"
       - CC: clang
@@ -868,8 +868,8 @@ parts:
       - ffmpeg
       - rsync
     # NOTE: https://github.com/mastodon/mastodon/releases/latest
-    source: https://github.com/mastodon/mastodon/archive/refs/tags/v5.0.0-beta.1.tar.gz
-    source-checksum: sha256/bdfbfafcd019f29d8b9e8e0a44244a84b5356960effb97499df199b88edb8f41
+    source: https://github.com/mastodon/mastodon/archive/refs/tags/v5.0.0-beta.2.tar.gz
+    source-checksum: sha256/4540f5812f9c75f06fca856ef9531a685a170ef7bd7392aa6f7fb47b672631dd
     plugin: nil
     build-packages:
       - git
@@ -889,7 +889,7 @@ parts:
     build-environment:
       - YARN_VERSION: "4.18.1" # NOTE: https://github.com/yarnpkg/berry/releases/latest
       - RUBY_BRANCH: "4.0" # NOTE: must be updated with ruby source
-      - BUNDLER_VERSION: "4.0.23" # NOTE: see `Gemfile.lock`
+      - BUNDLER_VERSION: "4.0.24" # NOTE: see `Gemfile.lock`
       - RAILS_ENV: production
       - NODE_ENV: production
       - OTP_SECRET: precompile_placeholder
@@ -942,7 +942,6 @@ parts:
       - -mastodon/log
       - -mastodon/docs
       - -mastodon/*.md
-      - -mastodon/Vagrantfile
       - -mastodon/Dockerfile
       - -mastodon/streaming/Dockerfile
       - -mastodon/docker-compose.yml
@@ -956,6 +955,7 @@ parts:
       - -mastodon/.gitignore
       - -mastodon/.dockerignore
       - -mastodon/.nanoignore
+      - -mastodon/.nvmrc
       - -mastodon/.slugignore
       - -mastodon/.prettierignore
       - -mastodon/.prettierrc.js
