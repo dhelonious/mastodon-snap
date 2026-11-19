@@ -3,9 +3,8 @@ run-name: Build and release snap
 
 on:
   create:
-    branches:
-    - main
-    - beta
+    tags:
+      - '*'
   workflow_dispatch:
     inputs:
       tag:
