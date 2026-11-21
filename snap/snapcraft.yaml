@@ -474,11 +474,11 @@ parts:
       make install
       cp -f $CRAFT_PART_SRC/COPYRIGHT $CRAFT_PART_INSTALL/postgres/
     stage:
-      - -postgres/lib/share
-      - -postgres/lib/pgxs
-      - -postgres/lib/pkgconfig
       - -postgres/lib/libecpg*
       - -postgres/lib/libpgtypes.so*
+      - -postgres/lib/pgxs
+      - -postgres/lib/pkgconfig
+      - -postgres/lib/share
       - -usr/lib/*-linux-gnu/libicutest.so*
       - -usr/lib/*-linux-gnu/libicutu.so*
 
@@ -937,34 +937,35 @@ parts:
       sed -ri "s/MAX_CHARS = 500/MAX_CHARS = $MASTODON_STATUS_LENGTH/" app/validators/status_length_validator.rb
       cp -rf $CRAFT_PART_BUILD $CRAFT_PART_INSTALL/mastodon
     stage:
-      - -mastodon/dist
-      - -mastodon/chart
-      - -mastodon/log
-      - -mastodon/docs
       - -mastodon/*.md
-      - -mastodon/Dockerfile
-      - -mastodon/streaming/Dockerfile
-      - -mastodon/docker-compose.yml
-      - -mastodon/.env.*
-      - -mastodon/.devcontainer
-      - -mastodon/.husky
+      - -mastodon/.*lint*
       - -mastodon/.buildpacks
+      - -mastodon/.devcontainer
+      - -mastodon/.dockerignore
       - -mastodon/.editorconfig
+      - -mastodon/.env.*
       - -mastodon/.foreman
       - -mastodon/.gitattributes
+      - -mastodon/.github
       - -mastodon/.gitignore
-      - -mastodon/.dockerignore
+      - -mastodon/.husky
       - -mastodon/.nanoignore
       - -mastodon/.nvmrc
-      - -mastodon/.slugignore
       - -mastodon/.prettierignore
       - -mastodon/.prettierrc.js
       - -mastodon/.rubocop*
-      - -mastodon/stylelint.config.js
-      - -mastodon/.*lint*
-      - -mastodon/.github
+      - -mastodon/.slugignore
       - -mastodon/Aptfile
+      - -mastodon/chart
+      - -mastodon/dist
+      - -mastodon/docker-compose.yml
+      - -mastodon/Dockerfile
+      - -mastodon/docs
+      - -mastodon/log
       - -mastodon/node_modules/*/prebuilds/win32-*
+      - -mastodon/Procfile.dev
+      - -mastodon/streaming/Dockerfile
+      - -mastodon/stylelint.config.js
     override-prime: |
       craftctl default
       set -eux
@@ -1044,6 +1045,19 @@ parts:
       bundle exec rails assets:precompile --trace
       bundle exec rails log:clear tmp:clear
 
+  docs:
+    plugin: dump
+    source: .
+    override-build: |
+      craftctl default
+      find . -type f -name "*.md" -exec sed -i '/^\(\[\)\?!\[\|<img\|<br/d' {} +
+      find . -type f -not -name "*.md" -execdir rm -f {} \;
+    stage:
+      - README.md
+      - RELEASE.md
+      - SECURITY.md
+      - docs
+
   cleanup:
     after:
       - logrotate
@@ -1066,7 +1080,7 @@ parts:
       rm -rf $CRAFT_PRIME/usr/include
       find $CRAFT_PRIME -type d -name include -prune -print -execdir rm -rf {} \;
       find $CRAFT_PRIME/usr/share/doc -type f -not -name "copyright" -execdir rm -f {} \;
-      mv -f $CRAFT_PRIME/usr/share/doc $CRAFT_PRIME/doc
+      mv -f $CRAFT_PRIME/usr/share/doc $CRAFT_PRIME/copyright
       find $CRAFT_PRIME -type d -name doc -not -path $CRAFT_PRIME/doc -prune -print -execdir rm -rf {} \;
       find $CRAFT_PRIME -type f -name "README.md" -execdir rm -f {} \;
       find $CRAFT_PRIME -xtype l -print -exec rm {} \;
