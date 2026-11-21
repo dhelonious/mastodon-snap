@@ -7,7 +7,7 @@ See the release notes for Mastodon: https://github.com/mastodon/mastodon/release
 
 This release also includes:
 
-* ffmpeg 9.0.2
+* ffmpeg 9.1
 * libvips 8.18.7
 * nginx 1.31.8
 * node 26.13.1
@@ -16,8 +16,6 @@ This release also includes:
 * redis 8.10.3
 * ruby 4.0.10
 
-Changelog for 5.0.0-beta.2snap1:
+Changelog for 5.0.0-beta.2snap2:
 
-* Update acme.sh to 3.1.7
-* Update bundler to 4.0.24
-* Update ruby to 4.0.10
+* Upgrade ffmpeg to 9.1

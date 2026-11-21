@@ -1,6 +1,6 @@
 name: mastodon-server
 title: Mastodon Server
-version: 5.0.0-beta.2snap1
+version: 5.0.0-beta.2snap2
 summary: Unofficial snap for Mastodon (decentralized social media)
 description: |
   Mastodon is a free, open-source social network server based on ActivityPub
@@ -787,8 +787,8 @@ parts:
       - -libvips/lib/pkgconfig
 
   ffmpeg:
-    source: https://ffmpeg.org/releases/ffmpeg-9.0.2.tar.bz2 # NOTE: https://ffmpeg.org/releases
-    source-checksum: sha256/ee80a25a5621df84498cef46917be87eab3b4f01951e85c2c7cbe5c94914ee70
+    source: https://ffmpeg.org/releases/ffmpeg-9.1.tar.bz2 # NOTE: https://ffmpeg.org/releases
+    source-checksum: sha256/1ba978f21a9cdf3506a98afb6b410f62c42a7225b08952ff437204156dfe7bef
     plugin: autotools
     build-packages:
       - clang
