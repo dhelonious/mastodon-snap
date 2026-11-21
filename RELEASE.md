@@ -19,3 +19,4 @@ This release also includes:
 Changelog for 5.0.0-beta.2snap2:
 
 * Upgrade ffmpeg to 9.1
+* Include docs in snap

@@ -1044,6 +1044,16 @@ parts:
       bundle exec rails assets:precompile --trace
       bundle exec rails log:clear tmp:clear
 
+  docs:
+    plugin: dump
+    source: .
+    override-build: |
+      craftctl default
+      find . -type f -name "*.md" -exec sed -i '/^\(\[\?!\[\|<img\)/d' {} +
+    stage:
+      - README.md
+      - docs/**/*.md
+
   cleanup:
     after:
       - logrotate
