@@ -45,7 +45,8 @@ jobs:
         retention-days: 1
         overwrite: true
     outputs:
-      amd64: ${{ steps.snap_file.outputs[matrix.arch] }}
+      amd64: ${{ steps.snap_file.outputs.amd64 }}
+      arm64: ${{ steps.snap_file.outputs.arm64 }}
 
   scan:
     needs: download

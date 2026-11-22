@@ -69,6 +69,7 @@ jobs:
       id: snap
     outputs:
       amd64: ${{ steps.snap.outputs.amd64 }}
+      arm64: ${{ steps.snap.outputs.arm64 }}
       channel: ${{ steps.regex.outputs.group1 || steps.regex.outputs.group3 }}
 
   scan:
