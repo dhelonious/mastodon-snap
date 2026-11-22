@@ -74,7 +74,7 @@ runs:
     shell: bash
     run: |
       echo "Install previous snap" | yellow
-      sudo snap install mastodon-server
+      sudo snap install mastodon-server --channel=stable
       sleep 10
       sudo snap set mastodon-server domain="${{ steps.env.outputs.DOMAIN }}"
       sudo snap set mastodon-server email="${{ steps.env.outputs.EMAIL }}"

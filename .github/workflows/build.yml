@@ -124,8 +124,15 @@ jobs:
     - uses: ./.github/actions/test
       with:
         snap: ${{ needs.build.outputs[matrix.arch] }}
+    - run: |
+        if snap download "${{ needs.build.outputs[matrix.arch] }}" --channel=stable; then
+          echo "available=yes" >> "$GITHUB_OUTPUT"
+        else
+          echo "available=no" >> "$GITHUB_OUTPUT"
+        fi
+      id: arch_check
     - uses: ./.github/actions/test
       with:
         snap: ${{ needs.build.outputs[matrix.arch] }}
         upgrade: true
-      if: ${{ inputs.test_upgrade }}
+      if: ${{ inputs.test_upgrade && steps.arch_check.outputs.available == 'yes' }}
