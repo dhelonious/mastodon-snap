@@ -27,6 +27,7 @@ body:
     description: Which architecture are you running?
     options:
       - amd64
+      - arm64
     default: 0
   validations:
     required: true

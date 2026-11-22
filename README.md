@@ -45,6 +45,7 @@ The goal of this project is to simplify the setup of a Mastodon instance without
 Supported architectures:
 
 * amd64
+* arm64
 
 For more information, see the latest [release readme](RELEASE.md) or the [FAQs](docs/faq.md).
 

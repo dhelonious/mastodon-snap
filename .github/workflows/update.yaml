@@ -38,8 +38,10 @@ jobs:
     strategy:
       matrix:
         include:
-          - builder: ubuntu-latest
+          - builder: ubuntu-24.04
             arch: amd64
+          - builder: ubuntu-24.04-arm
+            arch: arm64
     steps:
     - uses: actions/checkout@v7
     - uses: ./.github/actions/check
@@ -54,8 +56,10 @@ jobs:
     strategy:
       matrix:
         include:
-          - builder: ubuntu-latest
+          - builder: ubuntu-24.04
             arch: amd64
+          - builder: ubuntu-24.04-arm
+            arch: arm64
     steps:
     - uses: kaisugi/action-regex-match@v1.0.2
       with:
@@ -81,8 +85,10 @@ jobs:
     strategy:
       matrix:
         include:
-          - builder: ubuntu-latest
+          - builder: ubuntu-24.04
             arch: amd64
+          - builder: ubuntu-24.04-arm
+            arch: arm64
     steps:
     - uses: actions/checkout@v7
     - uses: ./.github/actions/scan
@@ -97,8 +103,10 @@ jobs:
     strategy:
       matrix:
         include:
-          - builder: ubuntu-latest
+          - builder: ubuntu-24.04
             arch: amd64
+          - builder: ubuntu-24.04-arm
+            arch: arm64
     steps:
     - uses: actions/checkout@v7
     - uses: ./.github/actions/test
@@ -131,8 +139,10 @@ jobs:
     strategy:
       matrix:
         include:
-          - builder: ubuntu-latest
+          - builder: ubuntu-24.04
             arch: amd64
+          - builder: ubuntu-24.04-arm
+            arch: arm64
     steps:
     - uses: actions/checkout@v7
     - uses: ./.github/actions/publish

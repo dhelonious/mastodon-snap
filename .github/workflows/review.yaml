@@ -23,8 +23,10 @@ jobs:
     strategy:
       matrix:
         include:
-          - builder: ubuntu-latest
+          - builder: ubuntu-24.04
             arch: amd64
+          - builder: ubuntu-24.04-arm
+            arch: arm64
     steps:
     - name: download snap
       uses: robinraju/release-downloader@v1.13
@@ -53,8 +55,10 @@ jobs:
     strategy:
       matrix:
         include:
-          - builder: ubuntu-latest
+          - builder: ubuntu-24.04
             arch: amd64
+          - builder: ubuntu-24.04-arm
+            arch: arm64
     steps:
     - uses: actions/checkout@v7
     - uses: ./.github/actions/scan
@@ -65,14 +69,9 @@ jobs:
     needs:
     - download
     - scan
-    runs-on: ${{ matrix.builder }}
+    runs-on: ubuntu-latest
     permissions:
       issues: write
-    strategy:
-      matrix:
-        include:
-          - builder: ubuntu-latest
-            arch: amd64
     steps:
     - uses: actions/checkout@v7
 
@@ -98,7 +97,10 @@ jobs:
 
     - uses: actions/download-artifact@v8
       with:
-        name: ${{ needs.download.outputs[matrix.arch] }}
+        name: ${{ needs.download.outputs['amd64'] }}
+    - uses: actions/download-artifact@v8
+      with:
+        name: ${{ needs.download.outputs['arm64'] }}
 
     - name: review snap
       id: review
@@ -108,7 +110,7 @@ jobs:
         GH_REPO: ${{ github.repository }}
       run: |
         echo "Get version" | yellow
-        version=$(echo "${{ needs.download.outputs[matrix.arch] }}" | sed -nE "s/^mastodon-server_([^_]+)_${{ matrix.arch }}\.snap$/\1/p")
+        version=$(echo "${{ needs.download.outputs['amd64'] }}" | sed -nE "s/^mastodon-server_([^_]+)_amd64\.snap$/\1/p")
         if [ -n "$version" ]; then
           echo "Version found: $version" | green
           title="Review for release $version"
@@ -136,21 +138,38 @@ jobs:
           body="$body## Vulnerabilities\n$vulnerabilities"
         fi
 
-        echo "Run review-tools" | yellow
-        if review_results=$(review-tools.check-notices ${{ needs.download.outputs[matrix.arch] }}); then
-          echo "Get security notices" | yellow
-          notices_json=$(echo "$review_results" | jq -r ".\"mastodon-server\".\"$version\"")
-          if [ "$notices_json" == "{}" ]; then
-            echo "No new security notice" | green
+        notices_json="{}"
+
+        for arch in amd64 arm64; do
+          case "$arch" in
+            amd64) snap_file="${{ needs.download.outputs.amd64 }}" ;;
+            arm64) snap_file="${{ needs.download.outputs.arm64 }}" ;;
+          esac
+
+          echo "Run review-tools" | yellow
+          if review_results=$(review-tools.check-notices $snap_file); then
+            echo "Get security notices" | yellow
+            notices_json_arch=$(echo "$review_results" | jq -r ".\"mastodon-server\".\"$version\"")
+            notices_json=$(jq -n \
+              --argjson notices "$notices_json" \
+              --argjson add "$notices_json_arch" \
+              'reduce (($notices, $add) | to_entries[]) as $entry
+                ({}; .[$entry.key] = ((.[$entry.key] // []) + $entry.value))
+                | with_entries(.value |= unique)')
           else
-            echo "Security notices found" | yellow
-            notices=$(echo $notices_json | jq -r 'to_entries | ["| Name | Security notices |", "| --- | --- |"] + map("| " + .key + " | " + ( .value | map("[\(. )](http://ubuntu.com/security/notices/\(.))") | join("<br>") ) + " |") | .[]')
-            if ! [ -z "$body" ]; then body="$body\n"; fi
-            body="$body## Security notices\n$notices"
+            echo Running review-tools for $arch failed | red
+            echo "$review_results"
+            exit 1
           fi
+        done
+
+        if [ "$notices_json" == "{}" ]; then
+          echo "No new security notice" | green
         else
-          echo Running review-tools failed | red
-          echo "$review_results"
+          echo "Security notices found" | yellow
+          notices=$(echo "$notices_json" | jq -r 'to_entries | ["| Name | Security notices |", "| --- | --- |"] + map("| " + .key + " | " + ( .value | map("[\(. )](http://ubuntu.com/security/notices/\(.))") | join("<br>") ) + " |") | .[]')
+          if ! [ -z "$body" ]; then body="$body\n"; fi
+          body="$body## Security notices\n$notices"
         fi
 
         if ! [ -z "$body" ]; then
