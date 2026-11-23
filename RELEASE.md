@@ -7,19 +7,17 @@ See the release notes for Mastodon: https://github.com/mastodon/mastodon/release
 
 This release also includes:
 
-* ffmpeg 9.0.2
+* ffmpeg 9.1
 * libvips 8.18.7
 * nginx 1.31.9
 * node 26.13.1
 * pgbouncer 1.26.1
 * postgres 18.7
-* redis 8.10.3
+* redis 8.12.0
 * ruby 4.0.10
 
-Changelog for 4.7.6snap1:
+Changelog for 4.7.6snap2:
 
-* Upgrade acme.sh to 3.1.7
-* Upgrade bundler to 4.0.24
-* Upgrade node to 26.13.1
-* Upgrade postgres to 18.7
-* Upgrade ruby to 4.0.10
+* Upgrade ffmpeg to 9.1
+* Upgrade redis to 8.12.0
+* Upgrade yarn to 4.19.0
