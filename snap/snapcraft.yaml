@@ -571,8 +571,8 @@ parts:
     after:
       - redis-customizations
     # NOTE: https://github.com/redis/redis/releases/latest
-    source: https://download.redis.io/releases/redis-8.10.3.tar.gz
-    source-checksum: sha256/edde778f6bdee7581e42fc139ca9e07e2822212092f7501f99989656e3629d02
+    source: https://download.redis.io/releases/redis-8.12.0.tar.gz
+    source-checksum: sha256/b0100a879b2d45dc97d8fda941127609d648f8913008db1b65a2f72a8ae36c8b
     plugin: make
     override-build: |
       set -eux
@@ -887,7 +887,7 @@ parts:
       - libssl3t64
       - libatomic1
     build-environment:
-      - YARN_VERSION: "4.18.1" # NOTE: https://github.com/yarnpkg/berry/releases/latest
+      - YARN_VERSION: "4.19.0" # NOTE: https://github.com/yarnpkg/berry/releases/latest
       - RUBY_BRANCH: "4.0" # NOTE: must be updated with ruby source
       - BUNDLER_VERSION: "4.0.24" # NOTE: see `Gemfile.lock`
       - RAILS_ENV: production
@@ -996,7 +996,7 @@ parts:
       - curl
       - mastodon
     source: https://github.com/rollecode/mastodon-bird-ui
-    source-tag: 5.0.0-beta.1-2026-11-09 # NOTE: https://github.com/ronilaukkarinen/mastodon-bird-ui/releases/latest
+    source-tag: 5.0.0-beta.2-2026-11-22 # NOTE: https://github.com/ronilaukkarinen/mastodon-bird-ui/releases/latest
     source-type: git
     plugin: dump
     build-environment:

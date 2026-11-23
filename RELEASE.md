@@ -18,5 +18,8 @@ This release also includes:
 
 Changelog for 5.0.0-beta.2snap2:
 
+* Upgrade bird-ui to 5.0.0-beta.2-2026-11-22
 * Upgrade ffmpeg to 9.1
+* Upgrade redis to 8.12.0
+* Upgrade yarn to 4.19.0
 * Include docs in snap
