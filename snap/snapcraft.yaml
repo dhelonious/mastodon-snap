@@ -1,6 +1,6 @@
 name: mastodon-server
 title: Mastodon Server
-version: 5.0.0-beta.2snap2
+version: 5.0.0-rc.1snap1
 summary: Unofficial snap for Mastodon (decentralized social media)
 description: |
   Mastodon is a free, open-source social network server based on ActivityPub
@@ -868,8 +868,8 @@ parts:
       - ffmpeg
       - rsync
     # NOTE: https://github.com/mastodon/mastodon/releases/latest
-    source: https://github.com/mastodon/mastodon/archive/refs/tags/v5.0.0-beta.2.tar.gz
-    source-checksum: sha256/4540f5812f9c75f06fca856ef9531a685a170ef7bd7392aa6f7fb47b672631dd
+    source: https://github.com/mastodon/mastodon/archive/refs/tags/v5.0.0-rc.1.tar.gz
+    source-checksum: sha256/de5148dce2fa801af3bcf1b03c682f2731113501e06d1252778c04fcbfd53a6b
     plugin: nil
     build-packages:
       - git
@@ -889,7 +889,7 @@ parts:
     build-environment:
       - YARN_VERSION: "4.19.0" # NOTE: https://github.com/yarnpkg/berry/releases/latest
       - RUBY_BRANCH: "4.0" # NOTE: must be updated with ruby source
-      - BUNDLER_VERSION: "4.0.24" # NOTE: see `Gemfile.lock`
+      - BUNDLER_VERSION: "4.1.0" # NOTE: see `Gemfile.lock`
       - RAILS_ENV: production
       - NODE_ENV: production
       - OTP_SECRET: precompile_placeholder
