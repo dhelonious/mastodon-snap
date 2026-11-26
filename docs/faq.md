@@ -59,7 +59,7 @@ There are two ways to reset the password:
 
 2. Use the following command to reset the user's password:
 
-    mastodon-server.tootctl accounts modify <username> --reset-password
+        mastodon-server.tootctl accounts modify <username> --reset-password
 
 > [!TIP]
 > This also works for the admin account.
