@@ -1,6 +1,6 @@
 name: mastodon-server
 title: Mastodon Server
-version: 5.0.0-rc.1snap1
+version: 5.0.0-rc.2snap1
 summary: Unofficial snap for Mastodon (decentralized social media)
 description: |
   Mastodon is a free, open-source social network server based on ActivityPub
@@ -868,8 +868,8 @@ parts:
       - ffmpeg
       - rsync
     # NOTE: https://github.com/mastodon/mastodon/releases/latest
-    source: https://github.com/mastodon/mastodon/archive/refs/tags/v5.0.0-rc.1.tar.gz
-    source-checksum: sha256/de5148dce2fa801af3bcf1b03c682f2731113501e06d1252778c04fcbfd53a6b
+    source: https://github.com/mastodon/mastodon/archive/refs/tags/v5.0.0-rc.2.tar.gz
+    source-checksum: sha256/8ee78dc1a15c27be213bfd5da727b3b7b6d8c1a841b17531036dc3ae08d64bfe
     plugin: nil
     build-packages:
       - git
