@@ -4,11 +4,11 @@ It is also possible to build the Snap file yourself:
 
 1. Clone this repository:
 
-    git clone https://github.com/dhelonious/mastodon-server
+        git clone https://github.com/dhelonious/mastodon-server
 
 2. Build the Snap by running
 
-    snapcraft
+        snapcraft
 
 in the repository's root directory.
 
