@@ -6,7 +6,7 @@
 <br/>
 [![snap store](https://snapcraft.io/mastodon-server/badge.svg)](https://snapcraft.io/mastodon-server)
 [![matrix](https://img.shields.io/matrix/mastodon-snap:matrix.org.svg?logo=matrix)](https://matrix.to/#/#mastodon-snap:matrix.org)
-[![discord](https://img.shields.io/discord/1463136909009227819)](https://discord.gg/ppkjub9FME)
+[![discord](https://img.shields.io/discord/1463136909009227819?logo=discord)](https://discord.gg/ppkjub9FME)
 
 <img src="docs/media/papodon.png" width=50% alt="An image of Papodon, an origami mastodon and the mastodon-snap mascot."/>
 
